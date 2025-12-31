@@ -44,7 +44,7 @@ enum class MainTab(
         }
 
         fun contains(predicate: (Route) -> Boolean): Boolean {
-            return entries.map { it.route }.any { predicate(it) }
+            return entries.any { predicate(it.route) }
         }
     }
 }
