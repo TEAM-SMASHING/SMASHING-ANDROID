@@ -2,11 +2,12 @@ package com.smashing.app.presentation.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.runtime.Composable
 import com.smashing.app.R.drawable.ic_launcher_background
+import com.smashing.app.R.string.dummy
 import com.smashing.app.R.string.home
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.presentation.dummy.Dummy
 import com.smashing.app.presentation.home.navigation.Home
 
 enum class MainTab(
@@ -21,20 +22,20 @@ enum class MainTab(
     ),
 
     // TODO: 추후 변경 예정
-    Dummy(
+    DUMMY(
         iconRes = ic_launcher_background,
-        titleRes = home,
-        route = Home,
+        titleRes = dummy,
+        route = Dummy,
     ),
-    Dummy1(
+    DUMMY1(
         iconRes = ic_launcher_background,
-        titleRes = home,
-        route = Home,
+        titleRes = dummy,
+        route = Dummy,
     ),
-    Dummy2(
+    DUMMY2(
         iconRes = ic_launcher_background,
-        titleRes = home,
-        route = Home,
+        titleRes = dummy,
+        route = Dummy,
     );
 
     companion object {

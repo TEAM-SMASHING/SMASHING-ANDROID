@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.smashing.app.core.extension.stateInWhileSubscribed
+import com.smashing.app.presentation.dummy.navigateToDummy
 import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import kotlinx.coroutines.CoroutineScope
@@ -78,9 +79,9 @@ class MainAppState(
         // TODO: navigate 함수 추가 예정
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
-            MainTab.Dummy -> {}
-            MainTab.Dummy1 -> {}
-            MainTab.Dummy2 -> {}
+            MainTab.DUMMY -> navController.navigateToDummy(navOptions = navOptions)
+            MainTab.DUMMY1 -> {}
+            MainTab.DUMMY2 -> {}
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
+import com.smashing.app.presentation.dummy.dummyGraph
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import kotlinx.collections.immutable.toImmutableList
@@ -56,6 +57,10 @@ private fun MainNavHost(
         startDestination = appState.startDestination
     ) {
         homeGraph(
+            innerPadding = innerPadding,
+        )
+
+        dummyGraph(
             innerPadding = innerPadding,
         )
     }

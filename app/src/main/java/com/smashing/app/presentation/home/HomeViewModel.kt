@@ -22,7 +22,7 @@ class HomeViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun fetchDummyUsers() = viewModelScope.launch {
-        dummyRepository.fetchDummyUserList(page = 2).onSuccess { userList ->
+        dummyRepository.fetchDummyUserList(page = 1).onSuccess { userList ->
             if (userList.isNotEmpty()) {
                 updateDummyUiState(UiState.Success(userList.toImmutableList()))
             } else {
