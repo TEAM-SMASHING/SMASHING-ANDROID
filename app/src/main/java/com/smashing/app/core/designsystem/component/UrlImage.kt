@@ -50,7 +50,7 @@ fun UrlImage(
 
 @Preview
 @Composable
-fun UrlImagePreview() {
+private fun UrlImagePreview() {
     UrlImage(
         url = "",
         modifier = Modifier.size(100.dp),
