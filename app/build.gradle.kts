@@ -89,5 +89,6 @@ dependencies {
 
     implementation(libs.timber)
     implementation(libs.lottie.compose)
+    ksp(libs.kotlin.metadata.jvm)
 
 }
