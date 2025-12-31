@@ -34,7 +34,7 @@ fun LazyListState.onBottomReached(
     val shouldLoadMore by remember {
         derivedStateOf {
             val total = layoutInfo.totalItemsCount
-            if (total == 0 || isLoading) return@derivedStateOf false
+            if (total == 0 || loading) return@derivedStateOf false
 
             val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
             lastVisible + threshold >= total - 1
