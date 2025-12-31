@@ -32,7 +32,7 @@ object NetworkModule {
     fun provideJson(): Json = Json {
         encodeDefaults = true
         ignoreUnknownKeys = true
-        prettyPrint = true
+        prettyPrint = BuildConfig.DEBUG
     }
 
     @Provides
