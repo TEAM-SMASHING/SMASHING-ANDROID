@@ -1,4 +1,4 @@
-package com.smashing.app.ui.theme
+package com.smashing.app.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
