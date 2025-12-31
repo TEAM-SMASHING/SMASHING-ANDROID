@@ -20,20 +20,20 @@ composeBom = "2025.10.01"
 navigationCompose = "2.9.5"
 
 # Kotlin
-kotlin = "2.3.0"
+kotlin = "2.2.21"
 kotlinxImmutable = "0.4.0"
 kotlinxSerializationJson = "1.9.0"
-kotlinParcelize = "2.3.0"
+kotlinParcelize = "2.2.21"
 
 ## Kotlin Symbol Processing
-ksp = "2.3.0"
+ksp = "2.2.21-2.0.4"
 
 # Test
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 
-# Thrid party
+# Third Party
 lottieCompose = "6.6.6"
 coil = "3.3.0"
 
