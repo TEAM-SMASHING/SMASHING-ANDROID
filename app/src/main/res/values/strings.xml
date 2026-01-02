@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Smashing-Android</string>
+    <!--Common  -->
+    <!-- TODO: 삭제 예정 --><string name="dummy">더미</string>
+    <string name="home">홈</string>
+    <!--Home    -->
 </resources>
