@@ -54,7 +54,7 @@ private fun MainNavHost(
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
         navController = appState.navController,
-        startDestination = appState.startDestination
+        startDestination = appState.startDestination,
     ) {
         homeGraph(
             innerPadding = innerPadding,
