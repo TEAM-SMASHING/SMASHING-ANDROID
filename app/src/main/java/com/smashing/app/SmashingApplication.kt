@@ -2,6 +2,7 @@ package com.smashing.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -10,6 +11,7 @@ class SmashingApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        initKakaoSdk()
         initTimber()
         setDayMode()
     }
@@ -20,5 +22,9 @@ class SmashingApplication : Application() {
 
     private fun setDayMode() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
+    private fun initKakaoSdk() {
+        KakaoSdk.init(this, BuildConfig.KAKAO_APP_KEY)
     }
 }
