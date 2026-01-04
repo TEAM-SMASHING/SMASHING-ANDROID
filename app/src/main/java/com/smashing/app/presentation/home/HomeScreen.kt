@@ -26,7 +26,6 @@ import com.smashing.app.core.common.state.UiState
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.DummyUser
 import com.smashing.app.presentation.home.component.DummyUserItem
-import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.KakaoLoginManager
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
