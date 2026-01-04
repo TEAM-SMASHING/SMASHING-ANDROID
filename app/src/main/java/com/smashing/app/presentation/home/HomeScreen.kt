@@ -67,6 +67,10 @@ private fun HomeScreen(
 
             is UiState.Failure -> {
                 // 에러 상태 화면
+                KakaoButton(
+                    onKakaoLogoutClick = onKakaoLogoutClick,
+                    onKakaoUnlinkClick = onKakaoUnlinkClick,
+                )
             }
 
             is UiState.Loading -> {
