@@ -23,15 +23,14 @@ import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun LoginRoute(
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
     LoginScreen(
         modifier = modifier,
-        onKakaoLoginClick = { KakaoLoginManager(context).logInKakao() },
-        onKakaoLogoutClick = { KakaoLoginManager(context).logOutKakao() },
-        onKakaoUnlinkClick = { KakaoLoginManager(context).unlinkKakao() },
+        onKakaoLoginClick = { KakaoLoginManager(context).logInKakao(navigateToHome) },
     )
 }
 
@@ -39,8 +38,6 @@ fun LoginRoute(
 private fun LoginScreen(
     modifier: Modifier = Modifier,
     onKakaoLoginClick: () -> Unit = {},
-    onKakaoLogoutClick: () -> Unit = {},
-    onKakaoUnlinkClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -54,7 +51,7 @@ private fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(30.dp))
-
+/*
         Box(
             modifier = Modifier
                 .size(70.dp, 50.dp)
@@ -81,7 +78,7 @@ private fun LoginScreen(
                 text = "회원 탈퇴",
                 color = Color.White,
             )
-        }
+        }*/
     }
 }
 

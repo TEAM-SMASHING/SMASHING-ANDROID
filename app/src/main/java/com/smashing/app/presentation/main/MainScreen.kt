@@ -13,6 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import com.smashing.app.presentation.dummy.dummyGraph
 import com.smashing.app.presentation.home.navigation.homeGraph
+import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import kotlinx.collections.immutable.toImmutableList
 
@@ -57,10 +58,16 @@ private fun MainNavHost(
         startDestination = appState.startDestination,
     ) {
         homeGraph(
+            navController = appState.navController,
             innerPadding = innerPadding,
         )
 
         dummyGraph(
+            innerPadding = innerPadding,
+        )
+
+        loginGraph(
+            navController = appState.navController,
             innerPadding = innerPadding,
         )
     }
