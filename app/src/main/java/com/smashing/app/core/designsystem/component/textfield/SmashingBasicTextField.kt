@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.KeyboardActionHandler
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -49,12 +51,12 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 @Composable
 fun SmashingBasicTextField(
     state: TextFieldState,
-    modifier: Modifier = Modifier,
     textColor: Color,
     textStyle: TextStyle,
     placeholder: String,
     placeholderColor: Color,
     placeholderStyle: TextStyle,
+    modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isReadOnly: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -62,6 +64,8 @@ fun SmashingBasicTextField(
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
     cursorColor: Color = MaterialTheme.colorScheme.primary,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    inputTransformation: InputTransformation? = null,
+    outputTransformation: OutputTransformation? = null,
     suffix: (@Composable (() -> Unit))? = null,
 ) {
     BasicTextField(
@@ -75,6 +79,8 @@ fun SmashingBasicTextField(
         interactionSource = interactionSource,
         cursorBrush = SolidColor(cursorColor),
         lineLimits = lineLimits,
+        inputTransformation = inputTransformation,
+        outputTransformation = outputTransformation,
         decorator = { innerTextField ->
             Row(
                 modifier = Modifier
@@ -95,7 +101,6 @@ fun SmashingBasicTextField(
                     innerTextField()
                 }
                 suffix?.invoke()
-
             }
         }
     )
@@ -107,18 +112,18 @@ fun SmashingBasicTextField(
 private fun SmashingBasicTextFieldInputPreview() {
     SmashingAndroidTheme {
         val state = rememberTextFieldState(initialText = "http://open.kakao.com/")
-                Box(
-                    modifier = Modifier
-                        .padding(20.dp)
-                ) {
-                    SmashingBasicTextField(
-                        state = state,
-                        placeholder = "placeholder",
-                        placeholderColor = Color.Gray,
-                        placeholderStyle = TextStyle(fontSize = 16.sp),
-                        textColor = Color.Gray,
-                        textStyle = TextStyle(fontSize = 16.sp)
-                    )
-                }
+        Box(
+            modifier = Modifier
+                .padding(20.dp)
+        ) {
+            SmashingBasicTextField(
+                state = state,
+                placeholder = "placeholder",
+                placeholderColor = Color.Gray,
+                placeholderStyle = TextStyle(fontSize = 16.sp),
+                textColor = Color.Gray,
+                textStyle = TextStyle(fontSize = 16.sp)
+            )
+        }
     }
 }
