@@ -13,7 +13,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +26,12 @@ import com.smashing.app.core.common.state.UiState
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.Region
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
+@OptIn(FlowPreview::class)
 @Composable
 fun RegionRoute(
     modifier: Modifier = Modifier,
@@ -33,10 +40,19 @@ fun RegionRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(uiState.searchQuery) {
+        snapshotFlow { uiState.searchQuery }
+            .distinctUntilChanged()
+            .filter { it.isNotBlank() }
+            .debounce(500)
+            .collect { query ->
+                viewModel.fetchRegion(query)
+            }
+    }
+
     RegionScreen(
         uiState = uiState,
         onSearchQueryChange = viewModel::updateSearchQuery,
-        onSearch = viewModel::fetchRegion,
         onRegionSelected = viewModel::getRegion,
         modifier = modifier,
     )
@@ -46,7 +62,6 @@ fun RegionRoute(
 private fun RegionScreen(
     uiState: RegionContract.State,
     onSearchQueryChange: (String) -> Unit,
-    onSearch: (String) -> Unit,
     onRegionSelected: (Region) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -64,12 +79,7 @@ private fun RegionScreen(
 
         OutlinedTextField(
             value = uiState.searchQuery,
-            onValueChange = { query ->
-                onSearchQueryChange(query)
-                if (query.isNotBlank()) {
-                    onSearch(query)
-                }
-            },
+            onValueChange = onSearchQueryChange,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
@@ -174,7 +184,6 @@ private fun RegionScreenPreview() {
     RegionScreen(
         uiState = RegionContract.State(),
         onSearchQueryChange = {},
-        onSearch = {},
         onRegionSelected = {},
     )
 }
