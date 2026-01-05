@@ -1,5 +1,6 @@
 package com.smashing.app.data.di.dummy
 
+import com.smashing.app.core.network.qualifier.Smashing
 import com.smashing.app.data.remote.service.DummyService
 import dagger.Module
 import dagger.Provides
@@ -14,5 +15,7 @@ import javax.inject.Singleton
 object DummyServiceModule {
     @Provides
     @Singleton
-    fun provideDummyService(retrofit: Retrofit): DummyService = retrofit.create()
+    fun provideDummyService(
+        @Smashing retrofit: Retrofit
+    ): DummyService = retrofit.create()
 }
