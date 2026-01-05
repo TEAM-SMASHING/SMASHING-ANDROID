@@ -5,6 +5,8 @@ import com.smashing.app.BuildConfig
 import com.smashing.app.BuildConfig.BASE_URL
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
+import com.smashing.app.core.network.qualifier.Kakao
+import com.smashing.app.core.network.qualifier.Smashing
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,12 +28,14 @@ import javax.inject.Singleton
 object NetworkModule {
     private const val CONTENT_TYPE = "application/json"
     private const val LOGGING_TAG = "okhttp"
+    private const val KAKAO_BASE_URL = "https://dapi.kakao.com"
 
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
         encodeDefaults = true
         ignoreUnknownKeys = true
+        coerceInputValues = true
         prettyPrint = BuildConfig.DEBUG
     }
 
@@ -72,11 +76,24 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @Smashing
     fun provideRetrofit(
         client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(client)
+        .addConverterFactory(factory)
+        .build()
+
+    @Provides
+    @Singleton
+    @Kakao
+    fun provideKakaoRetrofit(
+        client: OkHttpClient,
+        factory: Converter.Factory,
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(KAKAO_BASE_URL)
         .client(client)
         .addConverterFactory(factory)
         .build()
