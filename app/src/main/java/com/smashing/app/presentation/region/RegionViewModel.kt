@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.common.state.UiState
 import com.smashing.app.data.model.Region
-import com.smashing.app.data.repository.api.KakaoRegionRepository
+import com.smashing.app.data.repository.api.RegionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegionViewModel @Inject constructor(
-    private val regionRepository: KakaoRegionRepository,
+    private val regionRepository: RegionRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RegionContract.State())
     val uiState = _uiState.asStateFlow()

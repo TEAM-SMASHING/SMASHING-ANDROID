@@ -2,12 +2,12 @@ package com.smashing.app.data.repository.impl
 
 import com.smashing.app.data.model.Region
 import com.smashing.app.data.remote.datasource.api.KakaoRegionDataSource
-import com.smashing.app.data.repository.api.KakaoRegionRepository
+import com.smashing.app.data.repository.api.RegionRepository
 import javax.inject.Inject
 
-class KakaoRegionRepositoryImpl @Inject constructor(
+class RegionRepositoryImpl @Inject constructor(
     private val regionDataSource: KakaoRegionDataSource,
-) : KakaoRegionRepository {
+) : RegionRepository {
     override suspend fun searchAddress(query: String): Result<List<Region>> {
         return regionDataSource.searchAddress(query).mapCatching { response ->
             response.documents.map { document ->
