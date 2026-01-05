@@ -83,8 +83,7 @@ fun SmashingBasicTextField(
         outputTransformation = outputTransformation,
         decorator = { innerTextField ->
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
             ) {
                 Box(
