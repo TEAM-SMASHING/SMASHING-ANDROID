@@ -1,6 +1,5 @@
 package com.smashing.app.data.di.dummy
 
-import com.smashing.app.core.network.qualifier.Smashing
 import com.smashing.app.data.remote.service.DummyService
 import dagger.Module
 import dagger.Provides
@@ -16,6 +15,6 @@ object DummyServiceModule {
     @Provides
     @Singleton
     fun provideDummyService(
-        @Smashing retrofit: Retrofit
+        retrofit: Retrofit
     ): DummyService = retrofit.create()
 }

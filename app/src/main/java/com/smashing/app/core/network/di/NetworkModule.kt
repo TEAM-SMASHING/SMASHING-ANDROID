@@ -7,7 +7,6 @@ import com.smashing.app.BuildConfig.KAKAO_BASE_URL
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
 import com.smashing.app.core.network.qualifier.Kakao
-import com.smashing.app.core.network.qualifier.Smashing
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -76,7 +75,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Smashing
     fun provideRetrofit(
         client: OkHttpClient,
         factory: Converter.Factory,
