@@ -78,7 +78,7 @@ private fun RegionScreen(
                     .padding(bottom = 16.dp),
             ) {
                 Text(
-                    text = "선택된 지역: ${selected.region2depthName}",
+                    text = "선택된 지역: ${selected.districtName}",
                     modifier = Modifier.padding(16.dp),
                 )
             }
@@ -154,7 +154,7 @@ private fun RegionItem(
                 modifier = Modifier.padding(16.dp),
             )
             Text(
-                text = region.region2depthName,
+                text = region.districtName,
                 modifier = Modifier.padding(16.dp),
             )
         }
