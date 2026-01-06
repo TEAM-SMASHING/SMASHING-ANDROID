@@ -1,0 +1,10 @@
+package com.smashing.app.core.common.type.event
+
+enum class NotificationType {
+    MATCHING_REQUESTED,
+    MATCHING_ACCEPTED,
+    MATCHING_RESULT_SUBMITTED,
+    RESULT_REJECTED_SCORE_MISMATCH,
+    RESULT_REJECTED_WIN_LOSE_REVERSED,
+    REVIEW_RECEIVED,
+}
