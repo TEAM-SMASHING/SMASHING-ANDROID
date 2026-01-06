@@ -1,6 +1,7 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
+import com.smashing.app.data.mapper.toRegionList
 import com.smashing.app.data.model.Region
 import com.smashing.app.data.remote.datasource.api.KakaoRegionDataSource
 import com.smashing.app.data.repository.api.RegionRepository
@@ -13,17 +14,7 @@ class RegionRepositoryImpl @Inject constructor(
         return suspendRunCatching {
             val response = regionDataSource.searchAddress(query)
 
-            response.documents.map { document ->
-                val address = document.address
-                val roadAddress = document.roadAddress
-
-                Region(
-                    addressName = document.addressName,
-                    region2depthName = address?.region2depthName
-                        ?: roadAddress?.region2depthName
-                        ?: "",
-                )
-            }
+           response.toRegionList()
         }
     }
 }
