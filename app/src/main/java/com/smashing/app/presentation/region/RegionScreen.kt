@@ -53,7 +53,7 @@ fun RegionRoute(
     RegionScreen(
         uiState = uiState,
         onSearchQueryChange = viewModel::updateSearchQuery,
-        onRegionSelected = viewModel::getRegion,
+        onRegionSelected = viewModel::updateSelectedRegion,
         modifier = modifier,
     )
 }

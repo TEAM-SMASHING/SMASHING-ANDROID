@@ -62,10 +62,8 @@ class RegionViewModel @Inject constructor(
             }
     }
 
-    fun getRegion(region: Region) {
-        _uiState.update { currentState ->
-            Timber.d(region.region2depthName)
-            currentState.copy(selectedRegion = region)
-        }
+    fun updateSelectedRegion(region: Region) = _uiState.update { currentState ->
+        currentState.copy(selectedRegion = region)
     }
+
 }
