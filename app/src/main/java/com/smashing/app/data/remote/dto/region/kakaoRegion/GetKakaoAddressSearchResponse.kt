@@ -1,4 +1,4 @@
-package com.smashing.app.data.remote.dto
+package com.smashing.app.data.remote.dto.region.kakaoRegion
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.kakao
+package com.smashing.app.data.di.region.kakaoRegion
 
 import com.smashing.app.data.remote.datasource.api.KakaoRegionDataSource
 import com.smashing.app.data.remote.datasource.impl.KakaoRegionDataSourceImpl
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RegionDataSourceModule {
+abstract class KakaoRegionDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindRegionDataSource(

@@ -1,5 +1,6 @@
 package com.smashing.app.data.repository.impl
 
+import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.model.Region
 import com.smashing.app.data.remote.datasource.api.KakaoRegionDataSource
 import com.smashing.app.data.repository.api.RegionRepository
@@ -9,7 +10,9 @@ class RegionRepositoryImpl @Inject constructor(
     private val regionDataSource: KakaoRegionDataSource,
 ) : RegionRepository {
     override suspend fun searchAddress(query: String): Result<List<Region>> {
-        return regionDataSource.searchAddress(query).mapCatching { response ->
+        return suspendRunCatching {
+            val response = regionDataSource.searchAddress(query)
+
             response.documents.map { document ->
                 val address = document.address
                 val roadAddress = document.roadAddress
