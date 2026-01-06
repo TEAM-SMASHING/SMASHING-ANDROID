@@ -14,11 +14,14 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.sse.EventSource
+import okhttp3.sse.EventSources
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Converter
 import retrofit2.Retrofit
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -80,4 +83,20 @@ object NetworkModule {
         .client(client)
         .addConverterFactory(factory)
         .build()
+
+    @Provides
+    @Singleton
+    @SSE
+    fun provideSSEOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+        // TODO: authInterceptor 추가 예정
+        .readTimeout(0, TimeUnit.MILLISECONDS)
+        .retryOnConnectionFailure(true)
+        .build()
+
+    @Provides
+    @Singleton
+    fun provideEventSourceFactory(
+        @SSE client: OkHttpClient,
+    ): EventSource.Factory = EventSources.createFactory(client)
+
 }
