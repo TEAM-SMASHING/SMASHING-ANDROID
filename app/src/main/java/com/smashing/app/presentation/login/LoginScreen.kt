@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.smashing.app.R
 import com.smashing.app.core.extension.noRippleClickable
 
@@ -21,19 +22,21 @@ fun LoginRoute(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
 
     LoginScreen(
         modifier = modifier,
-        onKakaoLoginClick = { KakaoLoginManager(context).logInKakao(navigateToHome) },
+        navigateToHome = navigateToHome,
     )
 }
 
 @Composable
 private fun LoginScreen(
     modifier: Modifier = Modifier,
-    onKakaoLoginClick: () -> Unit = {},
+    navigateToHome: () -> Unit = {},
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -42,7 +45,12 @@ private fun LoginScreen(
         Image(
             painter = painterResource(R.drawable.img_kakao_login),
             contentDescription = null,
-            modifier = Modifier.noRippleClickable(onClick = onKakaoLoginClick),
+            modifier = Modifier.noRippleClickable {
+                viewModel.fetchKakaoLogin(
+                    context = context,
+                    onKakaoLoginSuccess = navigateToHome
+                )
+            },
         )
 
         Spacer(modifier = Modifier.height(30.dp))
