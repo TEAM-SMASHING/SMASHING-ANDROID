@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(
                 authRepository.fetchKakaoLogin(authorization = token)
                     .onSuccess {
                         onKakaoLoginSuccess()
-                        Timber.tag("KakaoLogin").d("로그인 성공")
+                        Timber.tag("KakaoLogin").d("로그인 성공 $token")
                     }
                     .onFailure { error ->
                         Timber.tag("KakaoLogin").e("로그인 실패 : $error")

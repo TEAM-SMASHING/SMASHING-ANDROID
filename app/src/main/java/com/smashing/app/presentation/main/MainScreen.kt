@@ -58,7 +58,6 @@ private fun MainNavHost(
         startDestination = appState.startDestination,
     ) {
         homeGraph(
-            navController = appState.navController,
             innerPadding = innerPadding,
         )
 

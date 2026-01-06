@@ -10,6 +10,16 @@ class AuthRemoteDataSourceImpl @Inject constructor(
     private val kakaoLoginService: KakaoLoginService,
 ) : AuthRemoteDataSource {
     override suspend fun postKakaoLogin(authorization: String): BaseResponse<PostKakaoLoginResponse> {
-        return kakaoLoginService.postKakaoLogin(authorization = authorization)
+        // Todo: 서버 배포 후 수정 필요
+        //return kakaoLoginService.postKakaoLogin(authorization = authorization)
+        return BaseResponse(
+            status = "success_mock",
+            statusCode = 200,
+            data = PostKakaoLoginResponse(
+                accessToken = "fake_access_token",
+                refreshToken = "fake_refresh_token"
+            ),
+            timestamp = "",
+        )
     }
 }

@@ -9,10 +9,11 @@ import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class KakaoAuthDataSourceImpl() : KakaoAuthDataSource {
+class KakaoAuthDataSourceImpl @Inject constructor() : KakaoAuthDataSource {
     override suspend fun loginKakao(context: Context): Result<String> =
         suspendRunCatching {
             val accessToken = getKakaoAccessToken(context)
@@ -38,6 +39,7 @@ class KakaoAuthDataSourceImpl() : KakaoAuthDataSource {
                         Timber.e("카카오톡으로 로그인 실패 ${error}")
 
                         if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                            continuation.resumeWithException(error)
                             return@loginWithKakaoTalk
                         }
 
