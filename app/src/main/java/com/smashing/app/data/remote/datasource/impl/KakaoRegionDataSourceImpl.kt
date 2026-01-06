@@ -11,7 +11,7 @@ class KakaoRegionDataSourceImpl @Inject constructor(
 ) : KakaoRegionDataSource {
     override suspend fun searchAddress(query: String): Result<GetKakaoAddressSearchResponse> {
         return runCatching {
-            val authHeader = "KakaoAK ${BuildConfig.KAKAO_REST_API_KEY}"
+            val authHeader = "KakaoAK ${BuildConfig.KAKAO_API_KEY}"
             kakaoLocalService.searchAddress(
                 authorization = authHeader,
                 query = query,

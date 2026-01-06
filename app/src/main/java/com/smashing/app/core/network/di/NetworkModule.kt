@@ -3,6 +3,7 @@ package com.smashing.app.core.network.di
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.smashing.app.BuildConfig
 import com.smashing.app.BuildConfig.BASE_URL
+import com.smashing.app.BuildConfig.KAKAO_BASE_URL
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
 import com.smashing.app.core.network.qualifier.Kakao
@@ -28,7 +29,6 @@ import javax.inject.Singleton
 object NetworkModule {
     private const val CONTENT_TYPE = "application/json"
     private const val LOGGING_TAG = "okhttp"
-    private const val KAKAO_BASE_URL = "https://dapi.kakao.com"
 
     @Provides
     @Singleton
