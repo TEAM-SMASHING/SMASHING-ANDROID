@@ -7,19 +7,38 @@ import com.smashing.app.data.model.Region
 import com.smashing.app.data.repository.api.RegionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(FlowPreview::class)
 class RegionViewModel @Inject constructor(
     private val regionRepository: RegionRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RegionContract.State())
     val uiState = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            _uiState
+                .map { it.searchQuery }
+                .distinctUntilChanged()
+                .filter { it.isNotBlank() }
+                .debounce(timeoutMillis = 500)
+                .collect { query ->
+                    fetchRegion(query)
+                }
+        }
+    }
 
     fun updateSearchQuery(query: String) = _uiState.update { currentState ->
         currentState.copy(searchQuery = query)
