@@ -109,7 +109,7 @@ fun SmashingChip(
 
 @Preview(showBackground = true, backgroundColor = 0xFFBFC5D0)
 @Composable
-fun PreviewSmashingChips() {
+private fun PreviewSmashingChips() {
     Row(
         modifier = Modifier.padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
