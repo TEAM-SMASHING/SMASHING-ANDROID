@@ -1,6 +1,6 @@
 package com.smashing.app.data.remote.service
 
-import com.smashing.app.data.remote.dto.GetUserListResponse
+import com.smashing.app.data.remote.dto.dummy.GetUserListResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
