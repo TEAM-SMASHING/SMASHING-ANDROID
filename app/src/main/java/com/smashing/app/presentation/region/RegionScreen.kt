@@ -44,7 +44,7 @@ fun RegionRoute(
         snapshotFlow { uiState.searchQuery }
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
-            .debounce(500)
+            .debounce(timeoutMillis = 500)
             .collect { query ->
                 viewModel.fetchRegion(query)
             }
@@ -88,7 +88,7 @@ private fun RegionScreen(
             },
         )
         uiState.selectedRegion?.let { selected ->
-            Spacer(Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,7 +100,7 @@ private fun RegionScreen(
                 )
             }
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         when (val loadState = uiState.regionLoadState) {
             is UiState.Idle -> {
 

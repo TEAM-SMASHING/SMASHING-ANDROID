@@ -21,11 +21,10 @@ class RegionViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RegionContract.State())
     val uiState = _uiState.asStateFlow()
 
-    fun updateSearchQuery(query: String) {
-        _uiState.update { currentState ->
-            currentState.copy(searchQuery = query)
-        }
+    fun updateSearchQuery(query: String) = _uiState.update { currentState ->
+        currentState.copy(searchQuery = query)
     }
+
 
     fun fetchRegion(query: String) = viewModelScope.launch {
         if (query.isBlank()) return@launch
