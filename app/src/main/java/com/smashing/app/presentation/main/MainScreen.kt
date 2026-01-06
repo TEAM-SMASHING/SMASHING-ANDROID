@@ -11,8 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
 import com.smashing.app.presentation.dummy.dummyGraph
+import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.homeGraph
+import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import kotlinx.collections.immutable.toImmutableList
@@ -66,7 +69,17 @@ private fun MainNavHost(
         )
 
         loginGraph(
-            navController = appState.navController,
+            navigateToHome = {
+                appState.navController.navigate(
+                    route = Home,
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
             innerPadding = innerPadding,
         )
     }

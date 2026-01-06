@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.smashing.app.R
+import com.smashing.app.R.drawable.img_kakao_login
 import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
@@ -43,7 +43,7 @@ private fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(R.drawable.img_kakao_login),
+            painter = painterResource(id = img_kakao_login),
             contentDescription = null,
             modifier = Modifier.noRippleClickable {
                 viewModel.fetchKakaoLogin(
