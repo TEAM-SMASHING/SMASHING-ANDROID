@@ -81,6 +81,5 @@ private fun SmashingAlertPrimaryMediumButtonPreview() {
             Modifier
                 .width(130.dp),
         )
-
     }
 }
