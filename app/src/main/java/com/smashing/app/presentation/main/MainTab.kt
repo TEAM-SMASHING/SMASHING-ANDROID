@@ -9,6 +9,7 @@ import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.dummy.Dummy
 import com.smashing.app.presentation.home.navigation.Home
+import com.smashing.app.presentation.matching.Matching
 
 enum class MainTab(
     @DrawableRes val iconRes: Int,
@@ -30,7 +31,7 @@ enum class MainTab(
     DUMMY1(
         iconRes = ic_launcher_background,
         titleRes = dummy,
-        route = Dummy,
+        route = Matching,
     ),
     DUMMY2(
         iconRes = ic_launcher_background,

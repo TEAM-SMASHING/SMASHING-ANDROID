@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import com.smashing.app.presentation.dummy.dummyGraph
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
+import com.smashing.app.presentation.matching.matchingGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -61,6 +62,10 @@ private fun MainNavHost(
         )
 
         dummyGraph(
+            innerPadding = innerPadding,
+        )
+
+        matchingGraph(
             innerPadding = innerPadding,
         )
     }

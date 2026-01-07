@@ -12,6 +12,7 @@ import com.smashing.app.core.extension.stateInWhileSubscribed
 import com.smashing.app.presentation.dummy.navigateToDummy
 import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.navigateToHome
+import com.smashing.app.presentation.matching.navigateToMatching
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -80,7 +81,7 @@ class MainAppState(
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.DUMMY -> navController.navigateToDummy(navOptions = navOptions)
-            MainTab.DUMMY1 -> {}
+            MainTab.DUMMY1 -> navController.navigateToMatching(navOptions = navOptions)
             MainTab.DUMMY2 -> {}
         }
     }
