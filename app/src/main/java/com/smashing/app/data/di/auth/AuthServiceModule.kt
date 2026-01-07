@@ -1,6 +1,6 @@
 package com.smashing.app.data.di.auth
 
-import com.smashing.app.data.remote.service.KakaoLoginService
+import com.smashing.app.data.remote.service.AuthService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +14,5 @@ import javax.inject.Singleton
 object AuthServiceModule {
     @Provides
     @Singleton
-    fun provideAuthService(retrofit: Retrofit): KakaoLoginService = retrofit.create()
+    fun provideAuthService(retrofit: Retrofit): AuthService = retrofit.create()
 }
