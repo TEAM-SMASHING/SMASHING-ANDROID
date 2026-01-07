@@ -7,9 +7,6 @@ fun GetKakaoAddressSearchResponse.toRegionList(): List<Region> =
     documents.map { it.toRegion() }
 
 private fun GetKakaoAddressSearchResponse.Document.toRegion(): Region {
-    val address = address
-    val roadAddress = roadAddress
-
     return Region(
         addressName = addressName,
         districtName = roadAddress?.region2depthName
