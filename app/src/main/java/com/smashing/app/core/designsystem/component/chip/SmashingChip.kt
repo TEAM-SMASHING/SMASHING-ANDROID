@@ -52,12 +52,12 @@ fun SmashingChip(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(999.dp))
             .background(state.backgroundColor)
             .border(
                 width = 1.dp,
                 color = state.borderColor ?: Color.Transparent,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(999.dp)
             )
             .then(
                 if (state != ChipType.DISABLED) {
