@@ -24,10 +24,19 @@ import com.smashing.app.core.designsystem.component.button.SmashingAlertButton
 
 /**
  * 다이얼로그 공통 컴포넌트입니다.
- * @param title 다이얼로그 중앙 상단에 표시될 메인 제목 텍스트
- * @param onDismissRequest 다이얼로그 외부 클릭 또는 뒤로가기 버튼 클릭 시 호출되는 콜백
- * @param subtitle (Optional) 제목 아래에 표시될 부가 설명 텍스트. 값이 없으면 표시되지 않음.
+ * [DialogType]에 따라 알림(Alert) 또는 확인(Confirm) 모드로 동작하며,
+ * 이에 따라 버튼의 개수와 배치가 자동으로 변경됩니다.
+ *
+ * @param title 다이얼로그 상단에 표시될 메인 제목 텍스트
+ * @param onDismissRequest 다이얼로그 외부(Scrim) 클릭 또는 뒤로가기 버튼 클릭 시 호출되는 콜백
+ * @param type 다이얼로그 타입 (ALERT: 확인 버튼 1개, CONFIRM: 취소/확인 버튼 2개)
+ * @param confirmText 확인(Primary) 버튼에 표시될 텍스트 (ALERT 모드에서는 유일한 버튼, CONFIRM 모드에서는 우측 버튼)
+ * @param onConfirmClick 확인(Primary) 버튼 클릭 시 실행될 콜백
+ * @param subtitle (Optional) 제목 아래에 표시될 부가 설명 텍스트. null일 경우 표시되지 않음.
+ * @param dismissText (Optional) 취소(Secondary) 버튼에 표시될 텍스트. [DialogType.CONFIRM]일 때만 좌측에 표시됨.
+ * @param onDismissClick (Optional) 취소(Secondary) 버튼 클릭 시 실행될 콜백. [DialogType.CONFIRM]일 때만 동작함.
  */
+
 @Composable
 fun SmashingDialog(
     title: String,
