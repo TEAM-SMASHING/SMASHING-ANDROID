@@ -33,7 +33,7 @@ class RegionViewModel @Inject constructor(
                 .map { it.searchQuery }
                 .distinctUntilChanged()
                 .filter { it.isNotBlank() }
-                .debounce(timeoutMillis = 500)
+                .debounce(timeoutMillis = SEARCH_DELAY)
                 .collect { query ->
                     fetchRegion(query)
                 }
@@ -78,4 +78,7 @@ class RegionViewModel @Inject constructor(
         currentState.copy(selectedRegion = region)
     }
 
+    companion object {
+        private const val SEARCH_DELAY = 500L
+    }
 }
