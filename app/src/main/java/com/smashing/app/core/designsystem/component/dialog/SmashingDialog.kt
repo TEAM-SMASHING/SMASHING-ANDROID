@@ -72,11 +72,9 @@ private fun SmashingDialogContent(
                 textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(20.dp))
-        }
-        else {
+        } else {
             Spacer(modifier = Modifier.height(24.dp))
         }
-
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
             modifier = Modifier.fillMaxWidth(),
@@ -100,8 +98,6 @@ private fun SmashingDialogPrimaryPreview() {
                 modifier = Modifier.fillMaxWidth(),
             )
         }
-
-
     )
 }
 
@@ -143,8 +139,6 @@ private fun SmashingDialogSecondaryPreview() {
                 modifier = Modifier.fillMaxWidth(),
             )
         }
-
-
     )
 }
 
