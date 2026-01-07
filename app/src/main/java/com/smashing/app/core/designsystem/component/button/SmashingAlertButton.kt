@@ -56,7 +56,7 @@ fun SmashingAlertButton(
 
 @Preview
 @Composable
-private fun SmashingAlertPrimaryMediumButtonPreview() {
+private fun SmashingAlertButtonPreview() {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
