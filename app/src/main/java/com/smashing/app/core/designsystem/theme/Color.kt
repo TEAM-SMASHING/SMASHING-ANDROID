@@ -88,11 +88,11 @@ data class SmashingColors(
     val bgDimmedDark: Color,
 
     // Button
-    val btnTextPrimaryActive: Color,
-    val btnTextPrimaryDisabled: Color,
-    val btnTextPrimaryPressed: Color,
-    val btnTextSecondaryActive: Color,
-    val btnTextRejected: Color,
+    val btnTxtPrimaryActive: Color,
+    val btnTxtPrimaryDisabled: Color,
+    val btnTxtPrimaryPressed: Color,
+    val btnTxtSecondaryActive: Color,
+    val btnTxtRejected: Color,
     val btnBgPrimaryActive: Color,
     val btnBgPrimaryDisabled: Color,
     val btnBgPrimaryPressed: Color,
@@ -122,19 +122,19 @@ data class SmashingColors(
     val iconCrown: Color,
 
     // Tier
-    val tierIronText: Color,
+    val tierIronTxt: Color,
     val tierIronBg: Color,
-    val tierBronzeText: Color,
+    val tierBronzeTxt: Color,
     val tierBronzeBg: Color,
-    val tierSilverText: Color,
+    val tierSilverTxt: Color,
     val tierSilverBg: Color,
-    val tierGoldText: Color,
+    val tierGoldTxt: Color,
     val tierGoldBg: Color,
-    val tierPlatinumText: Color,
+    val tierPlatinumTxt: Color,
     val tierPlatinumBg: Color,
-    val tierDiamondText: Color,
+    val tierDiamondTxt: Color,
     val tierDiamondBg: Color,
-    val tierChallengerText: Color,
+    val tierChallengerTxt: Color,
     val tierChallengerBg: Color,
 
     // State
@@ -166,11 +166,11 @@ val defaultSmashingColors = SmashingColors(
     bgDimmedDark = alphaDark,
 
     // Button
-    btnTextPrimaryActive = black,
-    btnTextPrimaryDisabled = gray500,
-    btnTextPrimaryPressed = gray300,
-    btnTextSecondaryActive = white,
-    btnTextRejected = redMain,
+    btnTxtPrimaryActive = black,
+    btnTxtPrimaryDisabled = gray500,
+    btnTxtPrimaryPressed = gray300,
+    btnTxtSecondaryActive = white,
+    btnTxtRejected = redMain,
     btnBgPrimaryActive = white,
     btnBgPrimaryDisabled = gray800,
     btnBgPrimaryPressed = gray600,
@@ -200,19 +200,19 @@ val defaultSmashingColors = SmashingColors(
     iconCrown = gold,
 
     // Tier
-    tierIronText = ashbrnMain,
+    tierIronTxt = ashbrnMain,
     tierIronBg = ashbrnSub,
-    tierBronzeText = brownMain,
+    tierBronzeTxt = brownMain,
     tierBronzeBg = brownSub,
-    tierSilverText = gray200,
+    tierSilverTxt = gray200,
     tierSilverBg = gray600,
-    tierGoldText = yellowMain,
+    tierGoldTxt = yellowMain,
     tierGoldBg = yellowSub,
-    tierPlatinumText = mintMain,
+    tierPlatinumTxt = mintMain,
     tierPlatinumBg = mintSub,
-    tierDiamondText = primary100,
+    tierDiamondTxt = primary100,
     tierDiamondBg = primary300,
-    tierChallengerText = purpleMain,
+    tierChallengerTxt = purpleMain,
     tierChallengerBg = purpleSub,
 
     // State
@@ -222,7 +222,6 @@ val defaultSmashingColors = SmashingColors(
     stateProgressTrack = gray300,
     stateProgressFill = primary200,
 )
-
 val LocalSmashingColors = staticCompositionLocalOf { defaultSmashingColors }
 
 @Preview(showBackground = true)
