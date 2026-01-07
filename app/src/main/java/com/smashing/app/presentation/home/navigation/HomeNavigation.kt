@@ -9,7 +9,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.presentation.home.HomeRoute
-import com.smashing.app.presentation.login.navigation.navigateToLogin
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(

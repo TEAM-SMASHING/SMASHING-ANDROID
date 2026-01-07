@@ -1,6 +1,5 @@
 package com.smashing.app.data.di.auth
 
-import com.smashing.app.data.remote.service.DummyService
 import com.smashing.app.data.remote.service.KakaoLoginService
 import dagger.Module
 import dagger.Provides
