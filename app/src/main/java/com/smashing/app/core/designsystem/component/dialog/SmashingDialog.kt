@@ -23,6 +23,13 @@ import androidx.compose.ui.window.Dialog
 import com.smashing.app.core.extension.noRippleClickable
 
 //TODO 디자인시스템 등록 후 변경
+/**
+ * 다이얼로그 공통 컴포넌트입니다.
+ * @param title 다이얼로그 중앙 상단에 표시될 메인 제목 텍스트
+ * @param onDismissRequest 다이얼로그 외부 클릭 또는 뒤로가기 버튼 클릭 시 호출되는 콜백
+ * @param buttonContent 다이얼로그 하단에 위치할 버튼 영역. [RowScope]를 제공하여 하나 이상의 [SmashingAlertButton] 등을 가로로 배치.
+ * @param subtitle (Optional) 제목 아래에 표시될 부가 설명 텍스트. 값이 없으면 표시되지 않음.
+ */
 @Composable
 fun SmashingDialog(
     title: String,
