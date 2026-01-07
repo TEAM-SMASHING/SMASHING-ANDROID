@@ -11,8 +11,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_arrow_down
@@ -32,27 +34,30 @@ fun MatchingSearchFilterChip(
     modifier: Modifier = Modifier,
     onFilterClick: () -> Unit = {},
 ) {
+    val filterStyle = type.style()
+
     Row(
         modifier = modifier
             .background(
-                color = type.style().bgColor,
+                color = filterStyle.bgColor,
                 shape = RoundedCornerShape(999.dp),
             )
             .noRippleClickable(onClick = onFilterClick)
-            .padding(vertical = 4.dp)
+            .padding(vertical = 5.dp)
             .padding(start = 14.dp, end = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = text,
-            color = type.style().txtColor,
+            color = filterStyle.txtColor,
         )
 
         Spacer(modifier = Modifier.width(7.dp))
 
         Icon(
-            painter = painterResource(type.style().iconRes),
+            imageVector = ImageVector.vectorResource(filterStyle.iconRes),
             contentDescription = null,
-            tint = type.style().iconTint,
+            tint = filterStyle.iconTint,
         )
     }
 }
