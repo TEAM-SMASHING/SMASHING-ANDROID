@@ -1,33 +1,33 @@
 package com.smashing.app.core.common.type
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 
+enum class ChipType {
+    ACTIVE, INACTIVE, DISABLED, PRESSED;
 
-//TODO 디자인 시스템 등록 후 수정 현재는 임시로 값 할당함
-enum class ChipType(
-    val backgroundColor: Color,
-    val contentColor: Color,
-    val borderColor: Color? = null,
-) {
-    ACTIVE(
-        backgroundColor = Color(0xFFE2E6EA),
-        contentColor = Color.Black,
-        borderColor = Color(0xFFE2E6EA),
-    ),
-    INACTIVE(
-        backgroundColor = Color.Transparent,
-        contentColor = Color.White,
-        borderColor = Color(0xFF252A36),
-    ),
-    DISABLED(
-        backgroundColor = Color(0xFF252A36),
-        contentColor = Color.White,
-        borderColor = Color.Transparent,
-    ),
-    PRESSED(
-        backgroundColor = Color(0xFFE2E6EA),
-        contentColor = Color.Black,
-        borderColor =Color.White
-    )
+    @Composable
+    fun backgroundColor(): Color = when (this) {
+        ACTIVE -> SmashingTheme.colors.bgCanvasReverse
+        INACTIVE -> Color.Transparent
+        DISABLED -> SmashingTheme.colors.bgOverlay
+        PRESSED -> SmashingTheme.colors.btnBgPrimaryPressed
+    }
 
+    @Composable
+    fun contentColor(): Color = when (this) {
+        ACTIVE -> SmashingTheme.colors.txtPrimaryReverse
+        INACTIVE -> SmashingTheme.colors.txtSecondary
+        DISABLED -> SmashingTheme.colors.txtSecondary
+        PRESSED -> SmashingTheme.colors.btnTxtPrimaryPressed
+    }
+
+    @Composable
+    fun borderColor(): Color? = when (this) {
+        ACTIVE -> SmashingTheme.colors.bgCanvasReverse
+        INACTIVE -> SmashingTheme.colors.borderSecondary
+        DISABLED -> Color.Transparent
+        PRESSED -> SmashingTheme.colors.bgCanvasReverse
+    }
 }

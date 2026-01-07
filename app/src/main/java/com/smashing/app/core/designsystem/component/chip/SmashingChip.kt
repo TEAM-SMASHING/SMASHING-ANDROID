@@ -53,10 +53,10 @@ fun SmashingChip(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(999.dp))
-            .background(state.backgroundColor)
+            .background(state.backgroundColor())
             .border(
                 width = 1.dp,
-                color = state.borderColor ?: Color.Transparent,
+                color = state.borderColor() ?: Color.Transparent,
                 shape = RoundedCornerShape(999.dp)
             )
             .then(
@@ -73,7 +73,7 @@ fun SmashingChip(
         Icon(
             imageVector = icon,
             contentDescription = iconContentDescription,
-            tint = state.contentColor,
+            tint = state.contentColor(),
             modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(10.dp))
@@ -84,7 +84,7 @@ fun SmashingChip(
                 fontSize = 14.sp,
                 lineHeight = 21.sp,
                 fontWeight = FontWeight(400),
-                color = state.contentColor,
+                color = state.contentColor(),
             )
         )
 
@@ -92,7 +92,7 @@ fun SmashingChip(
 }
 
 
-@Preview(showBackground = true, backgroundColor = 0xFFBFC5D0)
+@Preview
 @Composable
 private fun PreviewSmashingChips() {
     Row(
