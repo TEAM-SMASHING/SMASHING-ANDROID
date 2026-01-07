@@ -64,7 +64,6 @@ val gold = Color(0xFFFFD700)
 val silver = Color(0xFFC9CCD6)
 val copper = Color(0xFFC07A3A)
 val alpha = Color(0xFF000000).copy(alpha = 0.5f)
-val alphaDark = Color(0xFF000000).copy(alpha = 1f)
 
 @Immutable
 data class SmashingColors(
@@ -85,7 +84,6 @@ data class SmashingColors(
     val bgOverlay: Color,
     val bgSelected: Color,
     val bgDimmed: Color,
-    val bgDimmedDark: Color,
 
     // Button
     val btnTxtPrimaryActive: Color,
@@ -163,7 +161,6 @@ val defaultSmashingColors = SmashingColors(
     bgOverlay = gray700,
     bgSelected = white,
     bgDimmed = alpha,
-    bgDimmedDark = alphaDark,
 
     // Button
     btnTxtPrimaryActive = black,
@@ -273,7 +270,6 @@ private fun SmashingColorsPreview() {
                 silver,
                 copper,
                 alpha,
-                alphaDark,
             ).chunked(6).forEach { rowColors ->
                 Row(modifier = Modifier.padding(vertical = 4.dp)) {
                     rowColors.forEach { c ->
