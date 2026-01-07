@@ -11,8 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.smashing.app.R.font.pretendard_bold
 import com.smashing.app.R.font.pretendard_medium
@@ -92,135 +95,151 @@ data class SmashingTypography(
     val xxs: TypographyTokens.Xxs,
 )
 
+private fun smashingTextStyle(
+    fontFamily: FontFamily,
+    fontSize: TextUnit,
+    lineHeight: TextUnit,
+    letterSpacing: TextUnit,
+): TextStyle = TextStyle(
+    fontFamily = fontFamily,
+    fontSize = fontSize,
+    lineHeight = lineHeight,
+    letterSpacing = letterSpacing,
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Center,
+        trim = LineHeightStyle.Trim.None,
+    ),
+)
+
 val defaultSmashingTypography = SmashingTypography(
     hero = TypographyTokens.Hero(
-        bold28 = TextStyle(
+        bold28 = smashingTextStyle(
             fontFamily = PretendardFont.Bold,
             fontSize = 28.sp,
-            lineHeight = 28.sp * 1.5f,
-            letterSpacing = 28.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em
         ),
-        semibold28 = TextStyle(
+        semibold28 = smashingTextStyle(
             fontFamily = PretendardFont.SemiBold,
             fontSize = 28.sp,
-            lineHeight = 28.sp * 1.5f,
-            letterSpacing = 28.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
     ),
     xxl = TypographyTokens.Xxl(
-        bold24 = TextStyle(
+        bold24 = smashingTextStyle(
             fontFamily = PretendardFont.Bold,
             fontSize = 24.sp,
-            lineHeight = 24.sp * 1.5f,
-            letterSpacing = 24.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
-        semibold24 = TextStyle(
+        semibold24 = smashingTextStyle(
             fontFamily = PretendardFont.SemiBold,
             fontSize = 24.sp,
-            lineHeight = 24.sp * 1.5f,
-            letterSpacing = 24.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
-        medium24 = TextStyle(
+        medium24 = smashingTextStyle(
             fontFamily = PretendardFont.Medium,
             fontSize = 24.sp,
-            lineHeight = 24.sp * 1.5f,
-            letterSpacing = 24.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
     ),
     xl = TypographyTokens.Xl(
-        semibold20 = TextStyle(
+        semibold20 = smashingTextStyle(
             fontFamily = PretendardFont.SemiBold,
             fontSize = 20.sp,
-            lineHeight = 20.sp * 1.5f,
-            letterSpacing = 20.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
-        medium20 = TextStyle(
+        medium20 = smashingTextStyle(
             fontFamily = PretendardFont.Medium,
             fontSize = 20.sp,
-            lineHeight = 20.sp * 1.5f,
-            letterSpacing = 20.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
     ),
     lg = TypographyTokens.Lg(
-        semibold18 = TextStyle(
+        semibold18 = smashingTextStyle(
             fontFamily = PretendardFont.SemiBold,
             fontSize = 18.sp,
-            lineHeight = 18.sp * 1.5f,
-            letterSpacing = 18.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
-        medium18 = TextStyle(
+        medium18 = smashingTextStyle(
             fontFamily = PretendardFont.Medium,
             fontSize = 18.sp,
-            lineHeight = 18.sp * 1.5f,
-            letterSpacing = 18.sp * -0.02f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.02).em,
         ),
     ),
     md = TypographyTokens.Md(
-        semibold16 = TextStyle(
+        semibold16 = smashingTextStyle(
             fontFamily = PretendardFont.SemiBold,
             fontSize = 16.sp,
-            lineHeight = 16.sp * 1.5f,
-            letterSpacing = 16.sp * -0.01f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.01).em,
         ),
-        medium16 = TextStyle(
+        medium16 = smashingTextStyle(
             fontFamily = PretendardFont.Medium,
             fontSize = 16.sp,
-            lineHeight = 16.sp * 1.5f,
-            letterSpacing = 16.sp * -0.01f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.01).em,
         ),
-        regular16 = TextStyle(
+        regular16 = smashingTextStyle(
             fontFamily = PretendardFont.Regular,
             fontSize = 16.sp,
-            lineHeight = 16.sp * 1.5f,
-            letterSpacing = 16.sp * -0.01f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.01).em,
         ),
     ),
     sm = TypographyTokens.Sm(
-        semibold14 = TextStyle(
+        semibold14 = smashingTextStyle(
             fontFamily = PretendardFont.SemiBold,
             fontSize = 14.sp,
-            lineHeight = 14.sp * 1.5f,
-            letterSpacing = 14.sp * -0.01f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.01).em,
         ),
-        medium14 = TextStyle(
+        medium14 = smashingTextStyle(
             fontFamily = PretendardFont.Medium,
             fontSize = 14.sp,
-            lineHeight = 14.sp * 1.5f,
-            letterSpacing = 14.sp * -0.01f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.01).em,
         ),
-        regular14 = TextStyle(
+        regular14 = smashingTextStyle(
             fontFamily = PretendardFont.Regular,
             fontSize = 14.sp,
-            lineHeight = 14.sp * 1.5f,
-            letterSpacing = 14.sp * -0.01f,
+            lineHeight = 1.5.em,
+            letterSpacing = (-0.01).em,
         ),
     ),
     xs = TypographyTokens.Xs(
-        medium12 = TextStyle(
+        medium12 = smashingTextStyle(
             fontFamily = PretendardFont.Medium,
             fontSize = 12.sp,
-            lineHeight = 12.sp * 1.5f,
-            letterSpacing = 0.sp,
+            lineHeight = 1.5.em,
+            letterSpacing = 0.em,
         ),
-        regular12 = TextStyle(
+        regular12 = smashingTextStyle(
             fontFamily = PretendardFont.Regular,
             fontSize = 12.sp,
-            lineHeight = 12.sp * 1.5f,
-            letterSpacing = 0.sp,
+            lineHeight = 1.5.em,
+            letterSpacing = 0.em,
         ),
     ),
     xxs = TypographyTokens.Xxs(
-        medium10 = TextStyle(
+        medium10 = smashingTextStyle(
             fontFamily = PretendardFont.Medium,
             fontSize = 10.sp,
-            lineHeight = 10.sp * 1.5f,
-            letterSpacing = 0.sp,
+            lineHeight = 1.5.em,
+            letterSpacing = 0.em,
         ),
-        regular10 = TextStyle(
+        regular10 = smashingTextStyle(
             fontFamily = PretendardFont.Regular,
             fontSize = 10.sp,
-            lineHeight = 10.sp * 1.5f,
-            letterSpacing = 0.sp,
+            lineHeight = 1.5.em,
+            letterSpacing = 0.em,
         ),
     ),
 )
