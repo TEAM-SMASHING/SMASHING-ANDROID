@@ -17,13 +17,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.ic_arrow_down
-import com.smashing.app.R.drawable.ic_close_sm
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.designsystem.theme.gray300
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.presentation.matchingsearch.type.FilterStyle
 import com.smashing.app.presentation.matchingsearch.type.FilterType
 
 
@@ -34,7 +30,7 @@ fun MatchingSearchFilterChip(
     modifier: Modifier = Modifier,
     onFilterClick: () -> Unit = {},
 ) {
-    val filterStyle = type.style()
+    val filterStyle = type.getStyle()
 
     Row(
         modifier = modifier
@@ -60,24 +56,6 @@ fun MatchingSearchFilterChip(
             tint = filterStyle.iconTint,
         )
     }
-}
-
-
-@Composable
-private fun FilterType.style(): FilterStyle = when (this) {
-    FilterType.DEFAULT -> FilterStyle(
-        bgColor = SmashingTheme.colors.bgSurfacePressed,
-        txtColor = SmashingTheme.colors.txtPrimary,
-        iconRes = ic_arrow_down,
-        iconTint = SmashingTheme.colors.iconPrimary,
-    )
-
-    FilterType.VARIANT -> FilterStyle(
-        bgColor = SmashingTheme.colors.bgSelected,
-        txtColor = SmashingTheme.colors.txtPrimaryReverse,
-        iconRes = ic_close_sm,
-        iconTint = SmashingTheme.colors.iconTertiary,
-    )
 }
 
 
