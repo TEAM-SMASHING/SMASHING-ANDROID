@@ -2,7 +2,6 @@ package com.smashing.app.core.designsystem.component.chip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.core.common.type.ChipType
+import com.smashing.app.core.extension.noRippleClickable
 
 
 /**
@@ -47,26 +48,23 @@ fun SmashingChip(
     onClick: () -> Unit,
     icon: ImageVector,
     iconContentDescription: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(state.backgroundColor)
+            .border(
+                width = 1.dp,
+                color = state.borderColor ?: Color.Transparent,
+                shape = RoundedCornerShape(12.dp)
+            )
             .then(
-                if (state.borderColor != null) {
-                    Modifier.border(
-                        width = 1.dp,
-                        color = state.borderColor,
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                if (state != ChipType.DISABLED) {
+                    Modifier.noRippleClickable(onClick = onClick)
                 } else {
                     Modifier
                 }
-            )
-            .clickable(
-                onClick = onClick,
-                enabled = state != ChipType.DISABLED
             )
             .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -76,7 +74,7 @@ fun SmashingChip(
             imageVector = icon,
             contentDescription = iconContentDescription,
             tint = state.contentColor,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(10.dp))
 
@@ -86,7 +84,7 @@ fun SmashingChip(
                 fontSize = 14.sp,
                 lineHeight = 21.sp,
                 fontWeight = FontWeight(400),
-                color = state.contentColor
+                color = state.contentColor,
             )
         )
 
@@ -98,15 +96,14 @@ fun SmashingChip(
 @Composable
 private fun PreviewSmashingChips() {
     Row(
-        modifier = Modifier.padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         SmashingChip(
             text = "text",
             state = ChipType.ACTIVE,
             icon = ImageVector.vectorResource(id = ic_fake_red),
             iconContentDescription = "icon",
-            onClick = {}
+            onClick = {},
         )
 
         SmashingChip(
@@ -114,7 +111,7 @@ private fun PreviewSmashingChips() {
             state = ChipType.INACTIVE,
             icon = ImageVector.vectorResource(id = ic_fake_red),
             iconContentDescription = "icon",
-            onClick = {}
+            onClick = {},
         )
 
         SmashingChip(
@@ -122,7 +119,15 @@ private fun PreviewSmashingChips() {
             state = ChipType.DISABLED,
             icon = ImageVector.vectorResource(id = ic_fake_red),
             iconContentDescription = "icon",
-            onClick = {}
+            onClick = {},
+        )
+
+        SmashingChip(
+            text = "text",
+            state = ChipType.PRESSED,
+            icon = ImageVector.vectorResource(id = ic_fake_red),
+            iconContentDescription = "icon",
+            onClick = {},
         )
     }
 }

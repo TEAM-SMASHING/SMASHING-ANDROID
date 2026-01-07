@@ -10,7 +10,7 @@ enum class ChipType(
     val borderColor: Color? = null,
 ) {
     ACTIVE(
-        backgroundColor = Color.White,
+        backgroundColor = Color(0xFFE2E6EA),
         contentColor = Color.Black,
         borderColor = Color(0xFFE2E6EA),
     ),
@@ -22,7 +22,12 @@ enum class ChipType(
     DISABLED(
         backgroundColor = Color(0xFF252A36),
         contentColor = Color.White,
-        borderColor = Color(0xFF252A36),
+        borderColor = Color.Transparent,
+    ),
+    PRESSED(
+        backgroundColor = Color(0xFFE2E6EA),
+        contentColor = Color.Black,
+        borderColor =Color.White
     )
 
 }
