@@ -63,7 +63,7 @@ val ashbrnSub = Color(0xFF3A2F2C)
 val gold = Color(0xFFFFD700)
 val silver = Color(0xFFC9CCD6)
 val copper = Color(0xFFC07A3A)
-val alpha = Color(0xFF000000).copy(alpha = 0.5f)
+val alpha = Color(0x80000000)
 
 @Immutable
 data class SmashingColors(
