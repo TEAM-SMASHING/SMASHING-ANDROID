@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.core.designsystem.component.button.SmashingAlertButton
 
 //TODO 디자인시스템 등록 후 변경
 /**
