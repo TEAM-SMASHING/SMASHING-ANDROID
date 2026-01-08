@@ -89,13 +89,13 @@ private fun MainBottomBarItem(
         isSelected -> Triple(
             colors.txtPrimary,
             colors.iconActive,
-            tab.selectedIconRes
+            tab.selectedIconRes,
         )
 
         else -> Triple(
             colors.txtDisabled,
             colors.iconInactive,
-            tab.unselectedIconRes
+            tab.unselectedIconRes,
         )
     }
 
