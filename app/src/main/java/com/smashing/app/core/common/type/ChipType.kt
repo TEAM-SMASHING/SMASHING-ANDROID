@@ -24,7 +24,7 @@ enum class ChipType {
     }
 
     @Composable
-    fun borderColor(): Color? = when (this) {
+    fun borderColor(): Color = when (this) {
         ACTIVE -> SmashingTheme.colors.bgCanvasReverse
         INACTIVE -> SmashingTheme.colors.borderSecondary
         DISABLED -> Color.Transparent

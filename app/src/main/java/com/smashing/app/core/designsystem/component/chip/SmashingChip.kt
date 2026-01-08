@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +43,6 @@ fun SmashingChip(
     state: ChipType,
     onClick: () -> Unit,
     icon: ImageVector,
-    iconContentDescription: String,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -53,23 +51,17 @@ fun SmashingChip(
             .background(state.backgroundColor())
             .border(
                 width = 1.dp,
-                color = state.borderColor() ?: Color.Transparent,
+                color = state.borderColor(),
                 shape = RoundedCornerShape(999.dp),
             )
-            .then(
-                if (state != ChipType.DISABLED) {
-                    Modifier.noRippleClickable(onClick = onClick)
-                } else {
-                    Modifier
-                }
-            )
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .noRippleClickable(onClick = onClick, isEnabled = state != ChipType.DISABLED)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = iconContentDescription,
+            contentDescription = null,
             tint = state.contentColor(),
             modifier = Modifier.size(24.dp),
         )
@@ -95,7 +87,6 @@ private fun PreviewSmashingChips() {
             text = "text",
             state = ChipType.ACTIVE,
             icon = ImageVector.vectorResource(id = ic_fake_red),
-            iconContentDescription = "icon",
             onClick = {},
         )
 
@@ -103,7 +94,6 @@ private fun PreviewSmashingChips() {
             text = "text",
             state = ChipType.INACTIVE,
             icon = ImageVector.vectorResource(id = ic_fake_red),
-            iconContentDescription = "icon",
             onClick = {},
         )
 
@@ -111,7 +101,6 @@ private fun PreviewSmashingChips() {
             text = "text",
             state = ChipType.DISABLED,
             icon = ImageVector.vectorResource(id = ic_fake_red),
-            iconContentDescription = "icon",
             onClick = {},
         )
 
@@ -119,7 +108,6 @@ private fun PreviewSmashingChips() {
             text = "text",
             state = ChipType.PRESSED,
             icon = ImageVector.vectorResource(id = ic_fake_red),
-            iconContentDescription = "icon",
             onClick = {},
         )
     }
