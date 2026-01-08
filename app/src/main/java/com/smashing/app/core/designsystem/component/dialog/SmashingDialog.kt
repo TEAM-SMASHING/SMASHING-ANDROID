@@ -2,6 +2,7 @@ package com.smashing.app.core.designsystem.component.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,13 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.smashing.app.core.common.type.DialogType
-import com.smashing.app.core.designsystem.component.button.SmashingAlertButton
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.noRippleClickable
 
 /**
  * 다이얼로그 공통 컴포넌트입니다.
@@ -109,7 +111,7 @@ private fun SmashingDialogContent(
                     SmashingAlertButton(
                         text = confirmText,
                         onClick = onConfirmClick,
-                        isPrimary = true,
+                        containerColor = SmashingTheme.colors.btnBgSecondaryActive,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -118,19 +120,52 @@ private fun SmashingDialogContent(
                     SmashingAlertButton(
                         text = dismissText ?: "",
                         onClick = { onDismissClick?.invoke() },
-                        isPrimary = false,
+                        containerColor = SmashingTheme.colors.btnBgTertiaryActive,
                         modifier = Modifier.weight(1f),
                     )
                     SmashingAlertButton(
                         text = confirmText,
                         onClick = onConfirmClick,
-                        isPrimary = true,
+                        containerColor = SmashingTheme.colors.btnBgSecondaryActive,
                         modifier = Modifier.weight(1f),
                     )
-
                 }
             }
         }
+    }
+}
+
+
+/**
+ *  다이얼로그에서 사용되는 Alert  버튼 컴포넌트입니다.
+ *  @param text 버튼 내부에 표시될 텍스트
+ * @param onClick 버튼 클릭 시 실행될 콜백 함수
+ * @param containerColor 버튼의 배경색
+ */
+
+@Composable
+private fun SmashingAlertButton(
+    text: String,
+    onClick: () -> Unit,
+    containerColor: Color,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .height(40.dp)
+            .background(
+                color = containerColor,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .noRippleClickable(onClick = onClick),
+    ) {
+        Text(
+            text = text,
+            color = SmashingTheme.colors.txtPrimary,
+            style = SmashingTheme.typography.sm.medium14
+        )
     }
 }
 
