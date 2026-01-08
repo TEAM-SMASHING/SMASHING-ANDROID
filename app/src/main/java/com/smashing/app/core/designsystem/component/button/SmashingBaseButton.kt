@@ -36,9 +36,9 @@ fun SmashingBaseButton(
     onClick: () -> Unit,
     buttonColor: SmashingBtnColor,
     contentPadding: PaddingValues,
+    shape: Shape,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    shape: Shape = RoundedCornerShape(8.dp),
 ) {
     Button(
         onClick = onClick,
@@ -83,6 +83,7 @@ private fun SmashingBaseButtonPreview() {
                     vertical = 13.dp,
                     horizontal = 12.dp,
                 ),
+                shape = RoundedCornerShape(8.dp),
             )
         }
     }
