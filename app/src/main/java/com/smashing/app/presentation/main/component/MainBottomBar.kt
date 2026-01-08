@@ -12,23 +12,27 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.presentation.main.MainTab
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
-// TODO: Color, padding 디자인 사항에 맞게 수정 예정
 @Composable
 fun MainBottomBar(
     isVisible: Boolean,
@@ -43,17 +47,21 @@ fun MainBottomBar(
         exit = fadeOut() + slideOut { IntOffset(0, it.height) },
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(
-                    color = Color.White,
+                    color = colors.bgSurface,
+                    shape = RoundedCornerShape(
+                        topStart = 16.dp,
+                        topEnd = 16.dp,
+                    ),
                 )
                 .padding(
-                    top = 10.dp,
-                    bottom = 10.dp,
+                    top = 8.dp,
+                    bottom = 18.dp,
                 )
                 .navigationBarsPadding(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             tabs.forEach { tab ->
@@ -77,21 +85,48 @@ private fun MainBottomBarItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val (textColor, iconColor, iconRes) = when {
+        isSelected -> Triple(
+            colors.txtPrimary,
+            colors.iconActive,
+            tab.selectedIconRes
+        )
+
+        else -> Triple(
+            colors.txtDisabled,
+            colors.iconInactive,
+            tab.unselectedIconRes
+        )
+    }
+
     Column(
         modifier = modifier
             .noRippleClickable(onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(tab.iconRes),
+            imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = stringResource(tab.titleRes),
-            tint = Color.Unspecified,
+            tint = iconColor,
         )
 
         Text(
             text = stringResource(tab.titleRes),
-            color = Color.Black,
+            color = textColor,
+            style = SmashingTheme.typography.xs.regular12
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MainBottomBarPreview() {
+    SmashingAndroidTheme {
+        MainBottomBar(
+            isVisible = true,
+            tabs = MainTab.entries.toImmutableList(),
+            currentTab = MainTab.HOME,
+            onTabSelected = {},
         )
     }
 }
