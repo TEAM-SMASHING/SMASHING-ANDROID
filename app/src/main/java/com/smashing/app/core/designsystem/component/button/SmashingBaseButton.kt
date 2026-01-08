@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +27,10 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
  * 버튼 기본 컴포넌트
  * @param text 버튼 텍스트
  * @param onClick 버튼 클릭 이벤트
- * @buttonColor 버튼 색상
- * @contentPadding 버튼 내부 패딩
- * @isEnabled 버튼 활성화 여부
+ * @param buttonColor 버튼 색상
+ * @param contentPadding 버튼 내부 패딩
+ * @param isEnabled 버튼 활성화 여부
+ * @param isRippleEnabled 리플 효과 여부
  */
 @Composable
 fun SmashingBaseButton(
@@ -39,27 +42,32 @@ fun SmashingBaseButton(
     shape: Shape,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
+    isRippleEnabled: Boolean = true,
 ) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = isEnabled,
-        shape = shape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = buttonColor.backgroundColor,
-            contentColor = buttonColor.textColor,
-            disabledContainerColor = buttonColor.disabledBackgroundColor,
-            disabledContentColor = buttonColor.disabledTextColor,
-        ),
-        contentPadding = contentPadding,
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
+    val rippleConfig = if (isRippleEnabled) LocalRippleConfiguration.current else null
+
+    CompositionLocalProvider(LocalRippleConfiguration provides rippleConfig) {
+        Button(
+            onClick = onClick,
+            modifier = modifier,
+            enabled = isEnabled,
+            shape = shape,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = buttonColor.backgroundColor,
+                contentColor = buttonColor.textColor,
+                disabledContainerColor = buttonColor.disabledBackgroundColor,
+                disabledContentColor = buttonColor.disabledTextColor,
+            ),
+            contentPadding = contentPadding,
         ) {
-            Text(
-                text = text,
-                style = textStyle,
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = text,
+                    style = textStyle,
+                )
+            }
         }
     }
 }
