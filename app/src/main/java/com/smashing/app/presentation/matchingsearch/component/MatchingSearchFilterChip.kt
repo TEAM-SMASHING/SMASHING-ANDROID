@@ -28,8 +28,9 @@ import com.smashing.app.presentation.matchingsearch.type.FilterType
 fun MatchingSearchFilterChip(
     type: FilterType,
     text: String,
+    onFilterClick: () -> Unit,
+    onFilterDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    onFilterClick: () -> Unit = {},
 ) {
     val filterStyle = type.getStyle()
 
@@ -55,6 +56,11 @@ fun MatchingSearchFilterChip(
         Icon(
             imageVector = ImageVector.vectorResource(filterStyle.iconRes),
             contentDescription = null,
+            modifier = if(type == FilterType.VARIANT) {
+                Modifier.noRippleClickable(onClick = onFilterDelete)
+            } else {
+                Modifier
+            },
             tint = filterStyle.iconTint,
         )
     }
@@ -73,6 +79,8 @@ private fun MatchingSearchFilterChipPreview() {
             MatchingSearchFilterChip(
                 type = FilterType.DEFAULT,
                 text = "티어",
+                onFilterClick = {},
+                onFilterDelete = {},
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -80,6 +88,8 @@ private fun MatchingSearchFilterChipPreview() {
             MatchingSearchFilterChip(
                 type = FilterType.VARIANT,
                 text = "브론즈",
+                onFilterClick = {},
+                onFilterDelete = {},
             )
         }
     }
