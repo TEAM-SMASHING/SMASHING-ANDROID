@@ -2,7 +2,14 @@ package com.smashing.app.presentation.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.smashing.app.R
+import com.smashing.app.R.drawable.ic_home_selected
+import com.smashing.app.R.drawable.ic_home_unselected
+import com.smashing.app.R.drawable.ic_profile_selected
+import com.smashing.app.R.drawable.ic_profile_unselected
+import com.smashing.app.R.drawable.ic_search_selected
+import com.smashing.app.R.drawable.ic_search_unselected
+import com.smashing.app.R.drawable.ic_trophy_selected
+import com.smashing.app.R.drawable.ic_trophy_unselected
 import com.smashing.app.R.string.home
 import com.smashing.app.R.string.matching_manage
 import com.smashing.app.R.string.matching_search
@@ -21,26 +28,26 @@ enum class MainTab(
     val route: MainTabRoute,
 ) {
     HOME(
-        selectedIconRes = R.drawable.ic_home_selected,
-        unselectedIconRes = R.drawable.ic_home_unselected,
+        selectedIconRes = ic_home_selected,
+        unselectedIconRes = ic_home_unselected,
         titleRes = home,
         route = Home,
     ),
     SEARCH(
-        selectedIconRes = R.drawable.ic_search_selected,
-        unselectedIconRes = R.drawable.ic_search_unselected,
+        selectedIconRes = ic_search_selected,
+        unselectedIconRes = ic_search_unselected,
         titleRes = matching_search,
         route = Search,
     ),
     MATCHING(
-        selectedIconRes = R.drawable.ic_trophy_selected,
-        unselectedIconRes = R.drawable.ic_trophy_unselected,
+        selectedIconRes = ic_trophy_selected,
+        unselectedIconRes = ic_trophy_unselected,
         titleRes = matching_manage,
         route = Matching,
     ),
     PROFILE(
-        selectedIconRes = R.drawable.ic_profile_selected,
-        unselectedIconRes = R.drawable.ic_profile_unselected,
+        selectedIconRes = ic_profile_selected,
+        unselectedIconRes = ic_profile_unselected,
         titleRes = profile,
         route = Profile,
     );
