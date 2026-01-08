@@ -1,38 +1,30 @@
-package com.smashing.app.presentation.home
+package com.smashing.app.presentation.matching
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 
 @Composable
-fun HomeRoute(
+fun MatchingRoute(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: MatchingViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchDummyUsers()
-    }
-    HomeScreen(
-        uiState = uiState,
+    MatchingScreen(
         modifier = modifier,
     )
 }
 
 @Composable
-private fun HomeScreen(
-    uiState: HomeContract.State,
+private fun MatchingScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -42,7 +34,7 @@ private fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "홈",
+            text = "매칭 관리",
             color = Color.White,
         )
     }
@@ -50,8 +42,8 @@ private fun HomeScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenPreview() {
-    HomeScreen(
-        uiState = HomeContract.State(),
-    )
+private fun MatchingScreenPreview() {
+    SmashingAndroidTheme {
+        MatchingScreen()
+    }
 }
