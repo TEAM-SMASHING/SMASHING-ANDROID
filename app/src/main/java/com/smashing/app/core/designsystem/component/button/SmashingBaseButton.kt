@@ -24,7 +24,8 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 /**
- * 버튼 기본 컴포넌트
+ * 버튼 공통 컴포넌트
+ * 버튼 구현시 사용하는 컴포넌트입니다.
  * @param text 버튼 텍스트
  * @param onClick 버튼 클릭 이벤트
  * @param buttonColor 버튼 색상
@@ -60,14 +61,10 @@ fun SmashingBaseButton(
             ),
             contentPadding = contentPadding,
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = text,
-                    style = textStyle,
-                )
-            }
+            Text(
+                text = text,
+                style = textStyle,
+            )
         }
     }
 }
