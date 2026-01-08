@@ -3,6 +3,7 @@ package com.smashing.app.core.designsystem.component.chip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -18,26 +19,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.core.common.type.ChipType
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
 
 /**
- *Smashing Chip
- *
- * 클릭 가능한 chip component
+ *클릭 가능한 chip component 입니다
  * 아이콘, 텍스트 포함하며 세가지 상태(Active, Inactive, Disabled)를 나타냄
  *
  * @param text Chip에 표시될 텍스트
  * @param state Chip의 상태 (Active, Inactive, Disabled)
  * @param icon 표시할 아이콘(선택사항)
  * @param onClick 칩 클릭 시 실행될 콜백 함수
- *
  *
  */
 
@@ -80,12 +77,7 @@ fun SmashingChip(
 
         Text(
             text = text,
-            style = androidx.compose.ui.text.TextStyle(
-                fontSize = 14.sp,
-                lineHeight = 21.sp,
-                fontWeight = FontWeight(400),
-                color = state.contentColor(),
-            )
+            style = SmashingTheme.typography.sm.medium14
         )
 
     }
@@ -95,8 +87,8 @@ fun SmashingChip(
 @Preview
 @Composable
 private fun PreviewSmashingChips() {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         SmashingChip(
             text = "text",
