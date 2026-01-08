@@ -37,6 +37,7 @@ private fun LoginScreen(
 ) {
     val context = LocalContext.current
 
+    // TODO: 추후 수정 예정
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -45,12 +46,14 @@ private fun LoginScreen(
         Image(
             painter = painterResource(id = img_kakao_login),
             contentDescription = null,
-            modifier = Modifier.noRippleClickable {
-                viewModel.fetchKakaoLogin(
-                    context = context,
-                    onKakaoLoginSuccess = navigateToHome
-                )
-            },
+            modifier = Modifier.noRippleClickable(
+                onClick = {
+                    viewModel.fetchKakaoLogin(
+                        context = context,
+                        onKakaoLoginSuccess = navigateToHome
+                    )
+                }
+            ),
         )
 
         Spacer(modifier = Modifier.height(30.dp))
