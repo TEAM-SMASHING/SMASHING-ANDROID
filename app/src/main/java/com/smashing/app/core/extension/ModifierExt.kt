@@ -13,10 +13,14 @@ import androidx.compose.ui.composed
  *
  * @param onClick 클릭 시 실행될 콜백
  */
-fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
+fun Modifier.noRippleClickable(
+    onClick: () -> Unit,
+    isEnabled: Boolean = true,
+): Modifier = composed {
     clickable(
         indication = null,
         interactionSource = remember { MutableInteractionSource() },
         onClick = onClick,
+        enabled = isEnabled,
     )
 }
