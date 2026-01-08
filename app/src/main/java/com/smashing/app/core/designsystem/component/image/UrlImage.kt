@@ -1,4 +1,4 @@
-package com.smashing.app.core.designsystem.component
+package com.smashing.app.core.designsystem.component.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
