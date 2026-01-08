@@ -18,6 +18,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.designsystem.theme.gray300
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.presentation.matchingsearch.type.FilterType
@@ -41,11 +42,12 @@ fun MatchingSearchFilterChip(
             .noRippleClickable(onClick = onFilterClick)
             .padding(vertical = 5.dp)
             .padding(start = 14.dp, end = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = text,
             color = filterStyle.txtColor,
+            style = typography.sm.medium14,
         )
 
         Spacer(modifier = Modifier.width(7.dp))
