@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
-//TODO 디자인 시스템 정의 후 수정
 
 /**
  *  다이얼로그에서 사용되는 Alert 공용 버튼 컴포넌트입니다.
@@ -38,7 +37,9 @@ fun SmashingAlertButton(
         modifier = modifier
             .height(40.dp)
             .background(
-                color = if (isPrimary) Color(0xFF2261FF) else Color(0xFF363C4B),
+                color = if (isPrimary) Color(SmashingTheme.colors.btnBgSecondaryActive.value) else Color(
+                    SmashingTheme.colors.btnBgTertiaryActive.value
+                ),
                 shape = RoundedCornerShape(8.dp),
             )
             .padding(horizontal = 20.dp, vertical = 10.dp)
@@ -47,8 +48,8 @@ fun SmashingAlertButton(
         ) {
         Text(
             text = text,
-            color = Color.White,
-            style = MaterialTheme.typography.bodyLarge,
+            color = SmashingTheme.colors.btnTxtSecondaryActive,
+            style = SmashingTheme.typography.sm.regular14,
         )
     }
 }
@@ -64,22 +65,19 @@ private fun SmashingAlertButtonPreview() {
             text = "text",
             onClick = {},
             isPrimary = true,
-            Modifier
-                .width(130.dp),
+            Modifier.width(130.dp),
         )
         SmashingAlertButton(
             text = "text",
             onClick = {},
             isPrimary = true,
-            Modifier
-                .width(273.dp),
+            Modifier.width(273.dp),
         )
         SmashingAlertButton(
             text = "text",
             onClick = {},
             isPrimary = false,
-            Modifier
-                .width(130.dp),
+            Modifier.width(130.dp),
         )
     }
 }
