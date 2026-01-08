@@ -13,15 +13,15 @@ class SmashingApplication : Application() {
 
         initKakaoSdk()
         initTimber()
-        setDayMode()
+        setDarkMode()
     }
 
     private fun initTimber() {
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 
-    private fun setDayMode() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    private fun setDarkMode() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     private fun initKakaoSdk() {
