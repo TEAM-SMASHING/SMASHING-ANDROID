@@ -91,6 +91,7 @@ private fun SmashingDialogContent(
             color = SmashingTheme.colors.txtPrimary,
             style = SmashingTheme.typography.md.semibold16,
         )
+
         if (subtitle != null) {
             Text(
                 text = subtitle,
@@ -158,13 +159,13 @@ private fun SmashingAlertButton(
                 color = containerColor,
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(horizontal = 20.dp, vertical = 10.dp)
-            .noRippleClickable(onClick = onClick),
+            .noRippleClickable(onClick = onClick)
+            .padding(horizontal = 20.dp, vertical = 10.dp),
     ) {
         Text(
             text = text,
             color = SmashingTheme.colors.txtPrimary,
-            style = SmashingTheme.typography.sm.medium14
+            style = SmashingTheme.typography.sm.medium14,
         )
     }
 }
