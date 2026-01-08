@@ -54,7 +54,7 @@ fun SmashingChip(
             .border(
                 width = 1.dp,
                 color = state.borderColor() ?: Color.Transparent,
-                shape = RoundedCornerShape(999.dp)
+                shape = RoundedCornerShape(999.dp),
             )
             .then(
                 if (state != ChipType.DISABLED) {
@@ -77,7 +77,8 @@ fun SmashingChip(
 
         Text(
             text = text,
-            style = SmashingTheme.typography.sm.medium14
+            style = SmashingTheme.typography.sm.medium14,
+            color = state.contentColor(),
         )
 
     }
