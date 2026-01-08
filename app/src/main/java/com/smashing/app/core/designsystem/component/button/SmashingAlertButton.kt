@@ -44,7 +44,6 @@ fun SmashingAlertButton(
             )
             .padding(horizontal = 20.dp, vertical = 10.dp)
             .noRippleClickable(onClick = onClick),
-
         ) {
         Text(
             text = text,
