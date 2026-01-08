@@ -32,6 +32,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_arrow_down
+import com.smashing.app.R.drawable.ic_location
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
@@ -42,6 +43,8 @@ fun SmashingDropdown(
     items: List<DropdownItem>,
     modifier: Modifier = Modifier,
     placeholder: String = "승자 선택",
+    isDivide: Boolean = true,
+    backgroundColor: Color = SmashingTheme.colors.bgSurface,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -54,7 +57,7 @@ fun SmashingDropdown(
             modifier = Modifier
                 .menuAnchor()
                 .background(
-                    color = SmashingTheme.colors.bgSurface,
+                    color = backgroundColor,
                     shape = RoundedCornerShape(8.dp),
                 )
                 .padding(vertical = 10.dp)
@@ -62,6 +65,14 @@ fun SmashingDropdown(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
+            if (selectedItem?.icon != null) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(selectedItem.icon),
+                    contentDescription = selectedItem.iconDescription,
+                    tint = SmashingTheme.colors.iconPrimary,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
             Text(
                 text = selectedItem?.label ?: placeholder,
                 style = SmashingTheme.typography.sm.medium14,
@@ -91,6 +102,7 @@ fun SmashingDropdown(
                     color = Color.Transparent
                 )
                 .offset(y = 2.dp),
+            // 기본 패딩이 8.dp라고 하여 y offset 2.dp를 주었습니다.
             tonalElevation = 4.dp,
             containerColor = Color.Transparent,
             shadowElevation = 0.dp,
@@ -129,7 +141,7 @@ fun SmashingDropdown(
                             enabled = item.isEnabled,
                         )
 
-                        if (index < items.size - 1) {
+                        if (index < items.size - 1 && isDivide) {
                             HorizontalDivider(
                                 modifier = Modifier.fillMaxWidth(),
                                 color = SmashingTheme.colors.borderPrimary,
@@ -202,6 +214,8 @@ private fun SmashingDropdownPreview() {
                             selectedItem2 = it
                             println("name1 선택됨")
                         },
+                        icon = ic_location,
+                        iconDescription = "location",
                     ),
                     DropdownItem(
                         label = "name22222222222",
@@ -209,6 +223,8 @@ private fun SmashingDropdownPreview() {
                             selectedItem2 = it
                             println("name2 선택됨")
                         },
+                        icon = ic_location,
+                        iconDescription = "location",
                     ),
                 )
             }
@@ -228,6 +244,7 @@ private fun SmashingDropdownPreview() {
                 selectedItem = selectedItem2,
                 items = items2,
                 placeholder = "승자 선택",
+                isDivide = false,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
