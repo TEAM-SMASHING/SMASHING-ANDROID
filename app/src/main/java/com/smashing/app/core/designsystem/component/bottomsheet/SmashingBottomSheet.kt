@@ -44,8 +44,10 @@ import kotlinx.collections.immutable.persistentListOf
  *
  * @param title 바텀 시트 내부 타이틀
  * @param items 바텀 시트 내부 리스트
+ * @param selectedItem 내부 리스트 중 선택된 아이템
  * @param contentToBtnPadding 바텀 시트 내부 리스트와 버튼 사이 간격
  * @param btnText 하단 버튼 텍스트
+ * @param onItemClick 내부 리스트 아이템 클릭 이벤트
  * @param onDismissRequest 바텀 시트 사라짐
  * @param onBtnClick 하단 버튼 클릭 이벤트
  */
@@ -56,8 +58,10 @@ import kotlinx.collections.immutable.persistentListOf
 fun SmashingBottomSheet(
     title: String,
     items: ImmutableList<String>,
+    selectedItem: String,
     contentToBtnPadding: Dp,
     btnText: String,
+    onItemClick: (String) -> Unit,
     onDismissRequest: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -90,8 +94,7 @@ fun SmashingBottomSheet(
                     bottom = 47.dp,
                 ),
         ) {
-
-            var selectedItemIndex by remember { mutableStateOf<Int?>(null) }
+            var isItemSelected by remember { mutableStateOf(false) }
 
             Box(
                 modifier = Modifier
@@ -119,15 +122,17 @@ fun SmashingBottomSheet(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            items.forEachIndexed { index, item ->
+            items.forEach { item ->
+                isItemSelected = selectedItem == item
+
                 Text(
                     text = item,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .noRippleClickable(onClick = { selectedItemIndex = index })
+                        .noRippleClickable(onClick = { onItemClick(item) })
                         .background(
                             color = (
-                                    if (selectedItemIndex == index)
+                                    if (isItemSelected)
                                         SmashingTheme.colors.bgSurfacePressed
                                      else Color.Unspecified
                                     ),
@@ -153,7 +158,7 @@ fun SmashingBottomSheet(
                     .fillMaxWidth()
                     .align(alignment = Alignment.CenterHorizontally)
                     .padding(horizontal = 16.dp),
-                isEnabled = selectedItemIndex != null,
+                isEnabled = selectedItem != "",
             )
         }
     }
@@ -169,6 +174,9 @@ private fun SmashingBottomSheetPreview() {
         var isBottomSheetShow1 by remember { mutableStateOf(false) }
         var isBottomSheetShow2 by remember { mutableStateOf(false) }
 
+        var selectedItem1 by remember { mutableStateOf("") }
+        var selectedItem2 by remember { mutableStateOf("") }
+
         Row(
             modifier = Modifier
                 .padding(20.dp),
@@ -179,7 +187,7 @@ private fun SmashingBottomSheetPreview() {
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Text(
-                    text = "매칭결과"
+                    text = "매칭결과\n$selectedItem1"
                 )
             }
 
@@ -191,7 +199,7 @@ private fun SmashingBottomSheetPreview() {
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Text(
-                    text = "매칭관리"
+                    text = "매칭관리\n$selectedItem2"
                 )
             }
 
@@ -207,8 +215,10 @@ private fun SmashingBottomSheetPreview() {
                         "스코어와 승자가 모두 잘못됐어요",
                         "아직 진행하지 않은 경기에요",
                     ),
+                    selectedItem = selectedItem1,
                     contentToBtnPadding = 20.dp,
                     btnText = "완료",
+                    onItemClick = { selectedItem1 = it },
                     onBtnClick = {
                         isBottomSheetShow1 = false
                     },
@@ -230,8 +240,10 @@ private fun SmashingBottomSheetPreview() {
                         "다이아",
                         "챌린저",
                     ),
+                    selectedItem = selectedItem2,
                     contentToBtnPadding = 4.dp,
                     btnText = "적용하기",
+                    onItemClick = { selectedItem2 = it },
                     onBtnClick = {
                         isBottomSheetShow2 = false
                     },
