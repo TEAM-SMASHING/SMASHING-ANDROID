@@ -40,8 +40,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 /**
- * 바텀 시트 공통 컴포넌트
- * 바텀 시트 구현시 사용하는 컴포넌트입니다.
+ * 바텀 시트 공통 컴포넌트입니다.
  *
  * @param title 바텀 시트 내부 타이틀
  * @param items 바텀 시트 내부 리스트
