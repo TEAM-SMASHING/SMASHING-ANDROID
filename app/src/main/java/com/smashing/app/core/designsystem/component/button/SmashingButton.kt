@@ -21,7 +21,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 /**
  * 앱의 기본 버튼 컴포넌트
- * @param buttonType 버튼 색상 타입
+ * @param buttonStyle 버튼 색상 타입
  * @param text 버튼 텍스트
  * @param onClick 클릭 시 실행될 콜백
  * @param isEnabled 활성화 상태
