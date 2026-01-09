@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.matchingsearch.component
+package com.smashing.app.presentation.search.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.designsystem.theme.gray300
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.presentation.matchingsearch.type.FilterType
+import com.smashing.app.presentation.search.type.FilterType
 
 
 @Composable

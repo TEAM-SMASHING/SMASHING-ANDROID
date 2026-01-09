@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.matchingsearch.type
+package com.smashing.app.presentation.search.type
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
