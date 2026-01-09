@@ -95,7 +95,6 @@ fun SmashingBottomSheet(
                     bottom = 47.dp,
                 ),
         ) {
-            var isItemSelected by remember { mutableStateOf(false) }
 
             Box(
                 modifier = Modifier
@@ -124,7 +123,7 @@ fun SmashingBottomSheet(
             Spacer(modifier = Modifier.height(12.dp))
 
             items.forEach { item ->
-                isItemSelected = selectedItem == item
+                val isItemSelected = selectedItem == item
 
                 Text(
                     text = item,
