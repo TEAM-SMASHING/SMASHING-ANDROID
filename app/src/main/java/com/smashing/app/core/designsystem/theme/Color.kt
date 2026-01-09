@@ -75,6 +75,7 @@ data class SmashingColors(
     val txtDisabled: Color,
     val txtBlue: Color,
     val txtRed: Color,
+    val txtKakaoLinkGray: Color,
 
     // Background
     val bgCanvas: Color,
@@ -152,6 +153,7 @@ val defaultSmashingColors = SmashingColors(
     txtDisabled = gray500,
     txtBlue = primary200,
     txtRed = redMain,
+    txtKakaoLinkGray = gray300,
 
     // Background
     bgCanvas = black,
