@@ -3,20 +3,15 @@ package com.smashing.app.core.designsystem.component.bottomsheet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
@@ -36,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_close_lg
+import com.smashing.app.core.common.type.ButtonType
+import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -49,6 +46,7 @@ import kotlinx.collections.immutable.persistentListOf
  * @param title 바텀 시트 내부 타이틀
  * @param items 바텀 시트 내부 리스트
  * @param contentToBtnPadding 바텀 시트 내부 리스트와 버튼 사이 간격
+ * @param btnText 하단 버튼 텍스트
  * @param onDismissRequest 바텀 시트 사라짐
  * @param onBtnClick 하단 버튼 클릭 이벤트
  */
@@ -60,6 +58,7 @@ fun SmashingBottomSheet(
     title: String,
     items: ImmutableList<String>,
     contentToBtnPadding: Dp,
+    btnText: String,
     onDismissRequest: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -147,26 +146,16 @@ fun SmashingBottomSheet(
 
             Spacer(modifier = Modifier.height(contentToBtnPadding))
 
-            //TODO: 버튼 컴포넌트 머지 후 수정 예정
-            Button(
+            SmashingButton(
+                buttonType = ButtonType.PRIMARY_WITH_DISABLED,
+                text = btnText,
                 onClick = onBtnClick,
                 modifier = Modifier
-                    .align(alignment = Alignment.CenterHorizontally),
-                enabled = selectedItemIndex != null,
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonColors(
-                    containerColor = SmashingTheme.colors.btnBgPrimaryActive,
-                    contentColor = SmashingTheme.colors.btnTxtPrimaryActive,
-                    disabledContainerColor = SmashingTheme.colors.btnBgPrimaryDisabled,
-                    disabledContentColor = SmashingTheme.colors.btnTxtPrimaryDisabled,
-                ),
-                contentPadding = PaddingValues(horizontal = 70.dp, vertical = 5.dp)
-            ) {
-                Text(
-                    text = "버튼이다",
-                    style = SmashingTheme.typography.lg.semibold18
-                )
-            }
+                    .fillMaxWidth()
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp),
+                isEnabled = selectedItemIndex != null,
+            )
         }
     }
 }
@@ -178,7 +167,7 @@ fun SmashingBottomSheet(
 private fun SmashingBottomSheetPreview() {
     SmashingAndroidTheme {
 
-        var isBottomSheetShow1 by remember { mutableStateOf(true) }
+        var isBottomSheetShow1 by remember { mutableStateOf(false) }
         var isBottomSheetShow2 by remember { mutableStateOf(false) }
 
         Row(
@@ -220,6 +209,7 @@ private fun SmashingBottomSheetPreview() {
                         "아직 진행하지 않은 경기에요",
                     ),
                     contentToBtnPadding = 20.dp,
+                    btnText = "완료",
                     onBtnClick = {
                         isBottomSheetShow1 = false
                     },
@@ -242,6 +232,7 @@ private fun SmashingBottomSheetPreview() {
                         "챌린저",
                     ),
                     contentToBtnPadding = 4.dp,
+                    btnText = "적용하기",
                     onBtnClick = {
                         isBottomSheetShow2 = false
                     },
