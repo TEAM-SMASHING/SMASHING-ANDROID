@@ -14,8 +14,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
+import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.home.navigation.homeGraph
+import com.smashing.app.presentation.login.navigation.Login
+import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
@@ -76,6 +80,21 @@ private fun MainNavHost(
         )
 
         profileGraph(
+            innerPadding = innerPadding,
+        )
+
+        loginGraph(
+            navigateToHome = {
+                appState.navController.navigate(
+                    route = Home,
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
             innerPadding = innerPadding,
         )
     }
