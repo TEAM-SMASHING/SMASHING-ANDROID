@@ -77,7 +77,7 @@ fun SearchTextField(
             placeholderStyle = SmashingTheme.typography.sm.medium14,
             textColor = SmashingTheme.colors.txtPrimary,
             textStyle = SmashingTheme.typography.sm.medium14,
-            interactionSource = interactionSource, // 포커스 감지를 위해 전달
+            interactionSource = interactionSource,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             onKeyboardAction = {
                 focusManager.clearFocus()
