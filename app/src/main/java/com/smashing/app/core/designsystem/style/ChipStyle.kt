@@ -1,10 +1,10 @@
-package com.smashing.app.core.common.type
+package com.smashing.app.core.designsystem.style
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
-enum class ChipType {
+enum class ChipStyle {
     ACTIVE, INACTIVE, DISABLED, PRESSED;
 
     @Composable

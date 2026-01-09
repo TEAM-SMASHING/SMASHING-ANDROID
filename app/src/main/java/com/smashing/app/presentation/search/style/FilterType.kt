@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search.type
+package com.smashing.app.presentation.search.style
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -11,15 +11,15 @@ enum class FilterType {
     VARIANT;
 
     @Composable
-    fun getStyle(): FilterStyle = when (this) {
-        DEFAULT -> FilterStyle(
+    fun getStyle(): FilterStyleData = when (this) {
+        DEFAULT -> FilterStyleData(
             bgColor = SmashingTheme.colors.bgSurfacePressed,
             txtColor = SmashingTheme.colors.txtPrimary,
             iconRes = ic_arrow_down,
             iconTint = SmashingTheme.colors.iconPrimary,
         )
 
-        VARIANT -> FilterStyle(
+        VARIANT -> FilterStyleData(
             bgColor = SmashingTheme.colors.bgSelected,
             txtColor = SmashingTheme.colors.txtPrimaryReverse,
             iconRes = ic_close_sm,
@@ -28,7 +28,7 @@ enum class FilterType {
     }
 }
 
-data class FilterStyle(
+data class FilterStyleData(
     val bgColor: Color,
     val txtColor: Color,
     val iconRes: Int,

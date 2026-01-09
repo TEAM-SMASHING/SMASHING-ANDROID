@@ -1,10 +1,10 @@
-package com.smashing.app.core.common.type
+package com.smashing.app.core.designsystem.style
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 
-enum class ButtonType {
+enum class ButtonStyle {
     PRIMARY,
     PRIMARY_WITH_DISABLED,
     SECONDARY,
