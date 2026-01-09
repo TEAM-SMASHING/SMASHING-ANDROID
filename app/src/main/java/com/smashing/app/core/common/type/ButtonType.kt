@@ -10,43 +10,41 @@ enum class ButtonType {
     SECONDARY,
     DISABLED_ACTIVE,
     REJECTED,
-    DIMMED;
+    TERTIARY;
 
     @Composable
-    fun getButtonColor(): SmashingBtnColor {
-        return when (this) {
-            PRIMARY -> SmashingBtnColor(
-                backgroundColor = colors.btnBgPrimaryActive,
-                textColor = colors.btnTxtPrimaryActive,
-            )
+    fun getButtonColor(): SmashingBtnColor = when (this) {
+        PRIMARY -> SmashingBtnColor(
+            backgroundColor = colors.btnBgPrimaryActive,
+            textColor = colors.btnTxtPrimaryActive,
+        )
 
-            PRIMARY_WITH_DISABLED -> SmashingBtnColor(
-                backgroundColor = colors.btnBgPrimaryActive,
-                textColor = colors.btnTxtPrimaryActive,
-                disabledBackgroundColor = colors.btnBgPrimaryDisabled,
-                disabledTextColor = colors.btnTxtPrimaryDisabled,
-            )
+        PRIMARY_WITH_DISABLED -> SmashingBtnColor(
+            backgroundColor = colors.btnBgPrimaryActive,
+            textColor = colors.btnTxtPrimaryActive,
+            disabledBackgroundColor = colors.btnBgPrimaryDisabled,
+            disabledTextColor = colors.btnTxtPrimaryDisabled,
+        )
 
-            SECONDARY -> SmashingBtnColor(
-                backgroundColor = colors.btnBgSecondaryActive,
-                textColor = colors.btnBgPrimaryActive,
-            )
+        SECONDARY -> SmashingBtnColor(
+            backgroundColor = colors.btnBgSecondaryActive,
+            textColor = colors.btnTxtSecondaryActive,
+        )
 
-            DISABLED_ACTIVE -> SmashingBtnColor(
-                backgroundColor = colors.btnBgPrimaryDisabled,
-                textColor = colors.btnTxtSecondaryActive,
-            )
+        DISABLED_ACTIVE -> SmashingBtnColor(
+            backgroundColor = colors.btnBgPrimaryDisabled,
+            textColor = colors.btnTxtSecondaryActive,
+        )
 
-            REJECTED -> SmashingBtnColor(
-                backgroundColor = colors.btnBgPrimaryActive,
-                textColor = colors.btnTxtRejected,
-            )
+        REJECTED -> SmashingBtnColor(
+            backgroundColor = colors.btnBgPrimaryActive,
+            textColor = colors.btnTxtRejected,
+        )
 
-            DIMMED -> SmashingBtnColor(
-                backgroundColor = colors.btnBgTertiaryPressed,
-                textColor = colors.btnTxtPrimaryPressed,
-            )
-        }
+        TERTIARY -> SmashingBtnColor(
+            backgroundColor = colors.btnBgTertiaryPressed,
+            textColor = colors.btnTxtPrimaryPressed,
+        )
     }
 }
 
