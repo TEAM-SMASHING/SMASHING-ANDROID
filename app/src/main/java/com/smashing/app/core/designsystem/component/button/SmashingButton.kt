@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.core.common.type.ButtonType
+import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
@@ -29,7 +29,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 @Composable
 fun SmashingButton(
-    buttonType: ButtonType,
+    buttonStyle: ButtonStyle,
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -40,7 +40,7 @@ fun SmashingButton(
         text = text,
         textStyle = SmashingTheme.typography.lg.semibold18,
         onClick = onClick,
-        buttonColor = buttonType.getButtonColor(),
+        buttonColor = buttonStyle.getButtonColor(),
         contentPadding = PaddingValues(
             vertical = 10.dp,
         ),
@@ -63,7 +63,7 @@ private fun PreviewSmashingButton() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SmashingButton(
-                buttonType = ButtonType.PRIMARY_WITH_DISABLED,
+                buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "버튼",
                 onClick = {},
                 modifier = Modifier
@@ -72,7 +72,7 @@ private fun PreviewSmashingButton() {
             )
 
             SmashingButton(
-                buttonType = ButtonType.PRIMARY_WITH_DISABLED,
+                buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "버튼",
                 onClick = {},
                 isEnabled = false,
@@ -82,7 +82,7 @@ private fun PreviewSmashingButton() {
             )
 
             SmashingButton(
-                buttonType = ButtonType.PRIMARY,
+                buttonStyle = ButtonStyle.PRIMARY,
                 text = "버튼",
                 modifier = Modifier
                     .width(185.dp),
@@ -90,7 +90,7 @@ private fun PreviewSmashingButton() {
             )
 
             SmashingButton(
-                buttonType = ButtonType.DISABLED_ACTIVE,
+                buttonStyle = ButtonStyle.DISABLED_ACTIVE,
                 text = "버튼",
                 modifier = Modifier
                     .width(131.dp),

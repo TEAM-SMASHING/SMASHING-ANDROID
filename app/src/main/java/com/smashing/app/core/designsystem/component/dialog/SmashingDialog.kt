@@ -19,13 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.smashing.app.core.common.type.DialogType
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
 /**
  * 다이얼로그 공통 컴포넌트입니다.
- * [DialogType]에 따라 알림(Alert) 또는 확인(Confirm) 모드로 동작하며,
+ * [DialogStyle]에 따라 알림(Alert) 또는 확인(Confirm) 모드로 동작하며,
  * 이에 따라 버튼의 개수와 배치가 자동으로 변경됩니다.
  *
  * @param title 다이얼로그 상단에 표시될 메인 제목 텍스트
@@ -34,15 +34,15 @@ import com.smashing.app.core.extension.noRippleClickable
  * @param confirmText 확인(Primary) 버튼에 표시될 텍스트 (CONFIRM 모드에서는 유일한 버튼, ALERT 모드에서는 우측 버튼)
  * @param onConfirmClick 확인(Primary) 버튼 클릭 시 실행될 콜백
  * @param subtitle (Optional) 제목 아래에 표시될 부가 설명 텍스트. null일 경우 표시되지 않음.
- * @param dismissText (Optional) 취소(Secondary) 버튼에 표시될 텍스트. [DialogType.ALERT]일 때만 좌측에 표시됨.
- * @param onDismissClick (Optional) 취소(Secondary) 버튼 클릭 시 실행될 콜백. [DialogType.ALERT]일 때만 동작함.
+ * @param dismissText (Optional) 취소(Secondary) 버튼에 표시될 텍스트. [DialogStyle.ALERT]일 때만 좌측에 표시됨.
+ * @param onDismissClick (Optional) 취소(Secondary) 버튼 클릭 시 실행될 콜백. [DialogStyle.ALERT]일 때만 동작함.
  */
 
 @Composable
 fun SmashingDialog(
     title: String,
     onDismissRequest: () -> Unit,
-    type: DialogType,
+    type: DialogStyle,
     confirmText: String,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -68,7 +68,7 @@ fun SmashingDialog(
 @Composable
 private fun SmashingDialogContent(
     title: String,
-    type: DialogType,
+    type: DialogStyle,
     confirmText: String,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -108,7 +108,7 @@ private fun SmashingDialogContent(
             modifier = Modifier.fillMaxWidth(),
         ) {
             when (type) {
-                DialogType.CONFIRM -> {
+                DialogStyle.CONFIRM -> {
                     SmashingAlertButton(
                         text = confirmText,
                         onClick = onConfirmClick,
@@ -117,7 +117,7 @@ private fun SmashingDialogContent(
                     )
                 }
 
-                DialogType.ALERT -> {
+                DialogStyle.ALERT -> {
                     SmashingAlertButton(
                         text = dismissText ?: "",
                         onClick = { onDismissClick?.invoke() },
@@ -178,7 +178,7 @@ private fun SmashingDialogConfirmPreview() {
     SmashingDialog(
         title = "매칭 상대가 작성 완료한 경기입니다",
         subtitle = "매칭 결과 확인을 통해 확인해주세요",
-        type = DialogType.CONFIRM,
+        type = DialogStyle.CONFIRM,
         confirmText = "확인",
         onConfirmClick = {},
         onDismissRequest = {}
@@ -192,7 +192,7 @@ private fun SmashingDialogAlertPreview() {
     SmashingDialog(
         title = "매칭 결과를 제출하시겠습니까?",
         subtitle = "정확한 경기결과가 아닐 경우 반려됩니다",
-        type = DialogType.ALERT,
+        type = DialogStyle.ALERT,
         confirmText = "예",
         dismissText = "아니요",
         onConfirmClick = {},
@@ -207,7 +207,7 @@ private fun SmashingDialogNoSubtitlePreview() {
     // 버튼이 2개인 CONFIRM+SubTitle 없는 타입
     SmashingDialog(
         title = "동네를 변경하시겠습니까?",
-        type = DialogType.ALERT,
+        type = DialogStyle.ALERT,
         confirmText = "예",
         dismissText = "아니요",
         onConfirmClick = {},

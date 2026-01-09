@@ -21,7 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_fake_red
-import com.smashing.app.core.common.type.ChipType
+import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
@@ -40,7 +40,7 @@ import com.smashing.app.core.extension.noRippleClickable
 @Composable
 fun SmashingChip(
     text: String,
-    state: ChipType,
+    state: ChipStyle,
     onClick: () -> Unit,
     icon: ImageVector,
     modifier: Modifier = Modifier,
@@ -54,7 +54,7 @@ fun SmashingChip(
                 color = state.borderColor(),
                 shape = RoundedCornerShape(999.dp),
             )
-            .noRippleClickable(onClick = onClick, isEnabled = state != ChipType.DISABLED)
+            .noRippleClickable(onClick = onClick, isEnabled = state != ChipStyle.DISABLED)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -85,28 +85,28 @@ private fun PreviewSmashingChips() {
     ) {
         SmashingChip(
             text = "text",
-            state = ChipType.ACTIVE,
+            state = ChipStyle.ACTIVE,
             icon = ImageVector.vectorResource(id = ic_fake_red),
             onClick = {},
         )
 
         SmashingChip(
             text = "text",
-            state = ChipType.INACTIVE,
+            state = ChipStyle.INACTIVE,
             icon = ImageVector.vectorResource(id = ic_fake_red),
             onClick = {},
         )
 
         SmashingChip(
             text = "text",
-            state = ChipType.DISABLED,
+            state = ChipStyle.DISABLED,
             icon = ImageVector.vectorResource(id = ic_fake_red),
             onClick = {},
         )
 
         SmashingChip(
             text = "text",
-            state = ChipType.PRESSED,
+            state = ChipStyle.PRESSED,
             icon = ImageVector.vectorResource(id = ic_fake_red),
             onClick = {},
         )

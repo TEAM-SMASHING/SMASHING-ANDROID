@@ -21,7 +21,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.designsystem.theme.gray300
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.presentation.search.type.FilterType
+import com.smashing.app.presentation.search.style.FilterType
 
 
 @Composable
