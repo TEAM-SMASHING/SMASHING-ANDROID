@@ -58,8 +58,7 @@ fun SearchTextField(
                 color = backgroundColor,
                 shape = RoundedCornerShape(8.dp),
             )
-            .padding(vertical = 13.dp)
-            .padding(horizontal = 16.dp),
+            .padding(vertical = 13.dp,horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (!isFilled) {
