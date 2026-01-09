@@ -56,11 +56,11 @@ fun SearchTextField(
         modifier = modifier
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             )
             .padding(vertical = 13.dp)
             .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (!isFilled) {
             Icon(
@@ -91,7 +91,7 @@ fun SearchTextField(
                         contentDescription = "삭제",
                         tint = Color.Unspecified,
                         modifier = Modifier
-                            .noRippleClickable(onClick = state::clearText)
+                            .noRippleClickable(onClick = state::clearText),
                     )
                 }
             }
@@ -112,7 +112,7 @@ private fun SearchTextFieldStatesPreview() {
                 onSearch = { query ->
                     // 실제 검색 로직 수행 (예: ViewModel 호출)
                     println("검색어: $query")
-                }
+                },
             )
         }
     }
