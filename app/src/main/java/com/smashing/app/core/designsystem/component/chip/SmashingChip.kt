@@ -37,7 +37,7 @@ import com.smashing.app.core.extension.noRippleClickable
  * 아이콘, 텍스트 포함하며 세가지 상태(Active, Inactive, Disabled)를 나타냄
  *
  * @param text Chip에 표시될 텍스트
- * @param state Chip의 상태 (Active, Inactive, Disabled)
+ * @param style Chip의 상태 스타일 (Active, Inactive, Disabled)
  * @param icon 표시할 아이콘(선택사항)
  * @param onClick 칩 클릭 시 실행될 콜백 함수
  *
@@ -92,7 +92,7 @@ private fun ChipStyle.backgroundColor(): Color = when (this) {
 
 @ReadOnlyComposable
 @Composable
-fun ChipStyle.contentColor(): Color = when (this) {
+private fun ChipStyle.contentColor(): Color = when (this) {
     ACTIVE -> SmashingTheme.colors.txtPrimaryReverse
     INACTIVE -> SmashingTheme.colors.txtSecondary
     DISABLED -> SmashingTheme.colors.txtSecondary
