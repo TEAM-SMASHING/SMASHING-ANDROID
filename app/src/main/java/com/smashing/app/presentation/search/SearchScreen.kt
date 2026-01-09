@@ -1,48 +1,45 @@
-package com.smashing.app.presentation.home
+package com.smashing.app.presentation.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 
 @Composable
-fun HomeRoute(
+fun SearchRoute(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: SearchViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchDummyUsers()
-    }
-    HomeScreen(
-        uiState = uiState,
+    SearchScreen(
         modifier = modifier,
     )
 }
 
 @Composable
-private fun HomeScreen(
-    uiState: HomeContract.State,
+private fun SearchScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .statusBarsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "홈",
+            text = "매칭 탐색",
             color = Color.White,
         )
     }
@@ -50,8 +47,8 @@ private fun HomeScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenPreview() {
-    HomeScreen(
-        uiState = HomeContract.State(),
-    )
+private fun SearchScreenPreview() {
+    SmashingAndroidTheme {
+        SearchScreen()
+    }
 }

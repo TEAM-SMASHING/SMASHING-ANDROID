@@ -9,9 +9,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.smashing.app.core.extension.stateInWhileSubscribed
-import com.smashing.app.presentation.dummy.navigateToDummy
-import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.navigateToHome
+import com.smashing.app.presentation.login.navigation.Login
+import com.smashing.app.presentation.home.navigation.Home
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
+import com.smashing.app.presentation.profile.navigation.navigateToProfile
+import com.smashing.app.presentation.search.navigation.navigateToSearch
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +26,7 @@ class MainAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope,
 ) {
-    val startDestination = Home
+    val startDestination = Login
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }
@@ -76,12 +79,12 @@ class MainAppState(
                 restoreState = true
             }
         }
-        // TODO: navigate 함수 추가 예정
+
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
-            MainTab.DUMMY -> navController.navigateToDummy(navOptions = navOptions)
-            MainTab.DUMMY1 -> {}
-            MainTab.DUMMY2 -> {}
+            MainTab.SEARCH -> navController.navigateToSearch(navOptions = navOptions)
+            MainTab.MATCHING -> navController.navigateToMatching(navOptions = navOptions)
+            MainTab.PROFILE -> navController.navigateToProfile(navOptions = navOptions)
         }
     }
 

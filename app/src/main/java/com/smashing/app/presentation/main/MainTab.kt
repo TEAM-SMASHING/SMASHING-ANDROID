@@ -2,40 +2,54 @@ package com.smashing.app.presentation.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.smashing.app.R.drawable.ic_launcher_background
-import com.smashing.app.R.string.dummy
+import com.smashing.app.R.drawable.ic_home_selected
+import com.smashing.app.R.drawable.ic_home_unselected
+import com.smashing.app.R.drawable.ic_profile_selected
+import com.smashing.app.R.drawable.ic_profile_unselected
+import com.smashing.app.R.drawable.ic_search_selected
+import com.smashing.app.R.drawable.ic_search_unselected
+import com.smashing.app.R.drawable.ic_trophy_selected
+import com.smashing.app.R.drawable.ic_trophy_unselected
 import com.smashing.app.R.string.home
+import com.smashing.app.R.string.matching_manage
+import com.smashing.app.R.string.matching_search
+import com.smashing.app.R.string.profile
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.presentation.dummy.Dummy
 import com.smashing.app.presentation.home.navigation.Home
+import com.smashing.app.presentation.matching.navigation.Matching
+import com.smashing.app.presentation.profile.navigation.Profile
+import com.smashing.app.presentation.search.navigation.Search
 
 enum class MainTab(
-    @DrawableRes val iconRes: Int,
+    @DrawableRes val selectedIconRes: Int,
+    @DrawableRes val unselectedIconRes: Int,
     @StringRes val titleRes: Int,
     val route: MainTabRoute,
 ) {
     HOME(
-        iconRes = ic_launcher_background,
+        selectedIconRes = ic_home_selected,
+        unselectedIconRes = ic_home_unselected,
         titleRes = home,
         route = Home,
     ),
-
-    // TODO: 추후 변경 예정
-    DUMMY(
-        iconRes = ic_launcher_background,
-        titleRes = dummy,
-        route = Dummy,
+    SEARCH(
+        selectedIconRes = ic_search_selected,
+        unselectedIconRes = ic_search_unselected,
+        titleRes = matching_search,
+        route = Search,
     ),
-    DUMMY1(
-        iconRes = ic_launcher_background,
-        titleRes = dummy,
-        route = Dummy,
+    MATCHING(
+        selectedIconRes = ic_trophy_selected,
+        unselectedIconRes = ic_trophy_unselected,
+        titleRes = matching_manage,
+        route = Matching,
     ),
-    DUMMY2(
-        iconRes = ic_launcher_background,
-        titleRes = dummy,
-        route = Dummy,
+    PROFILE(
+        selectedIconRes = ic_profile_selected,
+        unselectedIconRes = ic_profile_unselected,
+        titleRes = profile,
+        route = Profile,
     );
 
     companion object {
