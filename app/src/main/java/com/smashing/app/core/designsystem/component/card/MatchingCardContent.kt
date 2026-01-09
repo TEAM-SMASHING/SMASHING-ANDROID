@@ -25,7 +25,7 @@ import com.smashing.app.R.string.count
 import com.smashing.app.R.string.record
 import com.smashing.app.R.string.review
 import com.smashing.app.R.string.win_lose_count
-import com.smashing.app.core.common.badge.TierBadge
+import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.designsystem.style.MatchingCardStyle
 import com.smashing.app.core.designsystem.style.MatchingCardStyle.RECEIVE
@@ -97,7 +97,7 @@ fun MatchingCardContent(
                 )
             }
 
-            else -> null
+            else -> Unit
         }
     }
 }

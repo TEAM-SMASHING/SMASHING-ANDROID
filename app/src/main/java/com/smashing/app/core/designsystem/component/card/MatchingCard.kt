@@ -52,7 +52,7 @@ import com.smashing.app.core.extension.noRippleClickable
  * @param reviewCount 작성된 리뷰 수
  * @param onProfileClick 프로필 카드 클릭
  * @param onCloseClick 우측 상단 닫기(X) 버튼 클릭
- * @param onSkippClick 매칭 요청 건너뛰기 클릭
+ * @param onSkipClick 매칭 요청 건너뛰기 클릭
  * @param onAcceptClick 매칭 요청 수락 클릭
  * @param onKakaoLinkClick 카카오톡 링크 클릭
  * @param onConfirmClick 매칭 확정 결과 작성 클릭
@@ -70,7 +70,7 @@ fun MatchingCard(
     modifier: Modifier = Modifier,
     onProfileClick: (() -> Unit)? = null,
     onCloseClick: (() -> Unit)? = null,
-    onSkippClick: (() -> Unit)? = null,
+    onSkipClick: (() -> Unit)? = null,
     onAcceptClick: (() -> Unit)? = null,
     onKakaoLinkClick: (() -> Unit)? = null,
     onConfirmClick: (() -> Unit)? = null,
@@ -117,7 +117,7 @@ fun MatchingCard(
         when (cardType) {
             RECEIVE ->
                 SendButtons(
-                    onSkippClick = { onSkippClick?.invoke() },
+                    onSkipClick = { onSkipClick?.invoke() },
                     onAcceptClick = { onAcceptClick?.invoke() },
                     modifier = Modifier.padding(top = 8.dp),
                 )
@@ -161,14 +161,14 @@ fun MatchingCard(
                 )
             }
 
-            else -> null
+            else -> Unit
         }
     }
 }
 
 @Composable
 private fun SendButtons(
-    onSkippClick: () -> Unit,
+    onSkipClick: () -> Unit,
     onAcceptClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -185,7 +185,7 @@ private fun SendButtons(
             text = stringResource(R.string.skip),
             style = SmashingTheme.typography.xs.regular12,
             color = SmashingTheme.colors.txtSecondary,
-            modifier = Modifier.noRippleClickable(onClick = onSkippClick),
+            modifier = Modifier.noRippleClickable(onClick = onSkipClick),
         )
 
         SmashingBaseButton(
