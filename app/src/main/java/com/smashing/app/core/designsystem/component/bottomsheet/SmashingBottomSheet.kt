@@ -34,7 +34,8 @@ import com.smashing.app.R.drawable.ic_close_lg
 import com.smashing.app.core.common.type.ButtonType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -78,12 +79,12 @@ fun SmashingBottomSheet(
             topStart = 20.dp,
             topEnd = 20.dp,
         ),
-        containerColor = SmashingTheme.colors.bgSurface,
-        scrimColor = SmashingTheme.colors.bgDimmed,
+        containerColor = colors.bgSurface,
+        scrimColor = colors.bgDimmed,
         dragHandle = {
             BottomSheetDefaults.DragHandle(
                 width = 40.dp,
-                color = SmashingTheme.colors.iconTertiary,
+                color = colors.iconTertiary,
             )
         },
     ) {
@@ -104,8 +105,8 @@ fun SmashingBottomSheet(
                 Text(
                     text = title,
                     modifier = Modifier.align(alignment = Alignment.Center),
-                    color = SmashingTheme.colors.txtPrimary,
-                    style = SmashingTheme.typography.lg.semibold18,
+                    color = colors.txtPrimary,
+                    style = typography.lg.semibold18,
                 )
 
                 Icon(
@@ -116,7 +117,7 @@ fun SmashingBottomSheet(
                             onClick = onDismissRequest
                         )
                         .align(alignment = Alignment.CenterEnd),
-                    tint = SmashingTheme.colors.iconPrimary,
+                    tint = colors.iconPrimary,
                 )
             }
 
@@ -133,7 +134,7 @@ fun SmashingBottomSheet(
                         .background(
                             color = (
                                     if (isItemSelected)
-                                        SmashingTheme.colors.bgSurfacePressed
+                                        colors.bgSurfacePressed
                                      else Color.Unspecified
                                     ),
                         )
@@ -142,8 +143,8 @@ fun SmashingBottomSheet(
                             top = 17.dp,
                             bottom = 17.dp,
                         ),
-                    color = SmashingTheme.colors.txtSecondary,
-                    style = SmashingTheme.typography.sm.regular14,
+                    color = colors.txtSecondary,
+                    style = typography.sm.regular14,
                 )
 
             }
