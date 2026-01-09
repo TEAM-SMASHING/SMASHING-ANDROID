@@ -73,7 +73,8 @@ data class SmashingColors(
     val txtSecondary: Color,
     val txtTertiary: Color,
     val txtDisabled: Color,
-    val txtBlue: Color,
+    val txtEmphasis: Color,
+    val txtMuted: Color,
     val txtRed: Color,
 
     // Background
@@ -150,7 +151,8 @@ val defaultSmashingColors = SmashingColors(
     txtSecondary = gray200,
     txtTertiary = gray400,
     txtDisabled = gray500,
-    txtBlue = primary200,
+    txtEmphasis = primary200,
+    txtMuted = primary100,
     txtRed = redMain,
 
     // Background
