@@ -10,7 +10,6 @@ data class GetKakaoAddressSearchResponse(
     @Serializable
     data class Document(
         @SerialName("address_name") val addressName: String,
-        @SerialName("address_type") val addressType: String? = null,
         @SerialName("address") val address: Address? = null,
         @SerialName("road_address") val roadAddress: RoadAddress? = null,
     ) {
@@ -19,7 +18,6 @@ data class GetKakaoAddressSearchResponse(
             @SerialName("address_name") val addressName: String? = null,
             @SerialName("region_1depth_name") val region1depthName: String? = null,
             @SerialName("region_2depth_name") val region2depthName: String? = null,
-            @SerialName("region_3depth_name") val region3depthName: String? = null,
         )
 
         @Serializable
@@ -27,7 +25,6 @@ data class GetKakaoAddressSearchResponse(
             @SerialName("address_name") val addressName: String? = null,
             @SerialName("region_1depth_name") val region1depthName: String? = null,
             @SerialName("region_2depth_name") val region2depthName: String? = null,
-            @SerialName("region_3depth_name") val region3depthName: String? = null,
         )
     }
 }
