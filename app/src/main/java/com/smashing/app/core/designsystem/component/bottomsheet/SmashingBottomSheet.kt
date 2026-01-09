@@ -46,10 +46,10 @@ import kotlinx.collections.immutable.persistentListOf
  * 바텀 시트 공통 컴포넌트
  * 바텀 시트 구현시 사용하는 컴포넌트입니다.
  *
- * @param onDismissRequest 바텀 시트 사라짐.
  * @param title 바텀 시트 내부 타이틀
  * @param items 바텀 시트 내부 리스트
  * @param contentToBtnPadding 바텀 시트 내부 리스트와 버튼 사이 간격
+ * @param onDismissRequest 바텀 시트 사라짐
  * @param onBtnClick 하단 버튼 클릭 이벤트
  */
 
@@ -57,10 +57,10 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmashingBottomSheet(
-    onDismissRequest: () -> Unit,
     title: String,
     items: ImmutableList<String>,
     contentToBtnPadding: Dp,
+    onDismissRequest: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
