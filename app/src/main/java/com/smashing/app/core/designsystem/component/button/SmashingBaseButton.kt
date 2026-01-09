@@ -1,12 +1,12 @@
 package com.smashing.app.core.designsystem.component.button
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +31,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
  * @param buttonColor 버튼 색상
  * @param contentPadding 버튼 내부 패딩
  * @param isEnabled 버튼 활성화 여부
- * @param isRippleEnabled 리플 효과 여부
+ * @param isRippleEnabled 리플 효과 여부(기본값: false)
  */
 @Composable
 fun SmashingBaseButton(
@@ -43,27 +43,32 @@ fun SmashingBaseButton(
     shape: Shape,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    isRippleEnabled: Boolean = true,
+    isRippleEnabled: Boolean = false,
 ) {
+    val (backgroundColor, contentColor) =
+        if (isEnabled) buttonColor.backgroundColor to buttonColor.textColor
+        else buttonColor.disabledBackgroundColor to buttonColor.disabledTextColor
+
     val rippleConfig = if (isRippleEnabled) LocalRippleConfiguration.current else null
 
     CompositionLocalProvider(LocalRippleConfiguration provides rippleConfig) {
-        Button(
-            onClick = onClick,
-            modifier = modifier,
-            enabled = isEnabled,
-            shape = shape,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = buttonColor.backgroundColor,
-                contentColor = buttonColor.textColor,
-                disabledContainerColor = buttonColor.disabledBackgroundColor,
-                disabledContentColor = buttonColor.disabledTextColor,
-            ),
-            contentPadding = contentPadding,
+        Box(
+            modifier = modifier
+                .background(
+                    color = backgroundColor,
+                    shape = shape,
+                )
+                .clickable(
+                    enabled = isEnabled,
+                    onClick = onClick,
+                )
+                .padding(contentPadding),
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = text,
                 style = textStyle,
+                color = contentColor,
             )
         }
     }
