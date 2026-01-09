@@ -9,6 +9,9 @@ fun GetKakaoAddressSearchResponse.toRegionList(): List<Region> =
 private fun GetKakaoAddressSearchResponse.Document.toRegion(): Region {
     return Region(
         addressName = addressName,
+        cityName = roadAddress?.region1depthName
+            ?: address?.region1depthName
+            ?: "",
         districtName = roadAddress?.region2depthName
             ?: address?.region2depthName
             ?: "",
