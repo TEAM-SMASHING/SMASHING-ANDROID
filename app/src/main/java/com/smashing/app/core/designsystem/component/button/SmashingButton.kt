@@ -47,6 +47,7 @@ fun SmashingButton(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier,
         isEnabled = isEnabled,
+        isRippleEnabled = true,
     )
 }
 
