@@ -135,7 +135,7 @@ fun SmashingBottomSheet(
                         .padding(
                             start = 16.dp,
                             top = 17.dp,
-                            bottom = 17.dp
+                            bottom = 17.dp,
                         ),
                     color = SmashingTheme.colors.txtSecondary,
                     style = SmashingTheme.typography.sm.regular14,
