@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.core.common.type.ButtonType
-import com.smashing.app.core.common.type.SmashingBtnColor
+import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
@@ -88,7 +88,7 @@ private fun SmashingBaseButtonPreview() {
                 text = "중복확인",
                 textStyle = SmashingTheme.typography.sm.medium14,
                 onClick = {},
-                buttonColor = ButtonType.PRIMARY_WITH_DISABLED.getButtonColor(),
+                buttonColor = ButtonStyle.PRIMARY_WITH_DISABLED.getButtonColor(),
                 contentPadding = PaddingValues(
                     vertical = 13.dp,
                     horizontal = 12.dp,
