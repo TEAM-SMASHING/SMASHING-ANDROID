@@ -67,6 +67,7 @@ fun SmashingBasicTextField(
     inputTransformation: InputTransformation? = null,
     outputTransformation: OutputTransformation? = null,
     suffix: (@Composable (() -> Unit))? = null,
+    contentAlignment: Alignment = Alignment.TopStart,
 ) {
     BasicTextField(
         state = state,
@@ -88,7 +89,7 @@ fun SmashingBasicTextField(
             ) {
                 Box(
                     modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.TopStart,
+                    contentAlignment = contentAlignment,
                 ) {
                     if (state.text.isEmpty()) {
                         Text(
@@ -103,7 +104,6 @@ fun SmashingBasicTextField(
             }
         }
     )
-
 }
 
 @Preview
@@ -113,7 +113,7 @@ private fun SmashingBasicTextFieldInputPreview() {
         val state = rememberTextFieldState(initialText = "http://open.kakao.com/")
         Box(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(20.dp),
         ) {
             SmashingBasicTextField(
                 state = state,
