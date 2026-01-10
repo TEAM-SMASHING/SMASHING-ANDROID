@@ -6,7 +6,11 @@ enum class SseEventType(
     SYSTEM_CONNECTED("system.connected"),
     MATCHING_RECEIVED("matching.received"),
     MATCHING_UPDATED("matching.updated"),
-    NOTIFICATION_CREATED("notification.created");
+    NOTIFICATION_CREATED("notification.created"),
+
+    MATCHING_REQUESTED("matching.request.notification.created"),
+
+    MATCHING_ACCEPTED("matching.accept.notification.created");
 
     companion object {
         fun fromEventName(eventName: String?): SseEventType? {
