@@ -50,7 +50,7 @@ fun SmashingInputTextField(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
     val isFilled = state.text.isNotEmpty()
-    val isError = errorText.isNullOrEmpty()
+    val isError = !errorText.isNullOrEmpty()
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
@@ -97,7 +97,7 @@ fun SmashingInputTextField(
             )
         }
 
-        if (isError && !errorText.isNullOrBlank()) {
+        if (isError) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 5.dp),

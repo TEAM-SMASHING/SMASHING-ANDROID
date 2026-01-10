@@ -53,7 +53,7 @@ fun NicknameInputTextField(
     val focusManager = LocalFocusManager.current
     val currentLength by remember { derivedStateOf { state.text.length } }
     val isFilled = state.text.isNotEmpty()
-    val isError = errorText.isNullOrEmpty()
+    val isError = !errorText.isNullOrEmpty()
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
@@ -113,7 +113,7 @@ fun NicknameInputTextField(
                 )
             }
         }
-        if (isError && !errorText.isNullOrBlank()) {
+        if (isError) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 5.dp),
