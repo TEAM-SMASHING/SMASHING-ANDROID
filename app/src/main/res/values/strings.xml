@@ -1,7 +1,21 @@
 <resources>
     <string name="app_name">Smashing-Android</string>
     <!--Common  -->
-    <!-- TODO: 삭제 예정 --><string name="dummy">더미</string>
     <string name="home">홈</string>
+    <string name="matching_search">매칭 탐색</string>
+    <string name="matching_manage">매칭 관리</string>
+    <string name="profile">프로필</string>
+    <string name="count">%d</string>
+
+    <!--Card  -->
+    <string name="record">기록</string>
+    <string name="review">후기</string>
+    <string name="accept">수락</string>
+    <string name="skip">건너뛰기</string>
+    <string name="kakao_link">카카오톡 링크</string>
+    <string name="win_lose_count">%1$d승 %2$d패</string>
+
     <!--Home    -->
+    <!--Matching -->
+    <string name="matching_write">결과 작성하기</string>
 </resources>
