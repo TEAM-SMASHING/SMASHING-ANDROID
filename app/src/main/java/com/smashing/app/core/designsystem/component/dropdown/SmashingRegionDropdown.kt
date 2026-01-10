@@ -21,7 +21,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_arrow_down
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -32,6 +31,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.tooling.preview.Preview
+import com.smashing.app.R.drawable.ic_location
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 
 /**
@@ -81,7 +81,7 @@ fun RegionDropdown(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_location),
+                imageVector = ImageVector.vectorResource(ic_location),
                 contentDescription = "location",
                 tint = colors.iconPrimary,
             )
