@@ -73,9 +73,7 @@ fun SmashingAreaTextField(
             lineLimits = TextFieldLineLimits.MultiLine(),
             onKeyboardAction = {
                 focusManager.clearFocus()
-                onKeyboardAction()
-
-            },
+                onKeyboardAction() },
         )
     }
 }
