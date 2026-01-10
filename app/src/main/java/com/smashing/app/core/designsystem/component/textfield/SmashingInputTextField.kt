@@ -58,7 +58,8 @@ fun SmashingInputTextField(
         isConfirm = isConfirm,
     )
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier)
+    {
         Row(
             modifier = Modifier
                 .border(
