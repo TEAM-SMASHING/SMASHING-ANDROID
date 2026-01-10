@@ -135,7 +135,6 @@ fun SmashingBottomSheet(
             Spacer(modifier = Modifier.height(12.dp))
 
             items.forEach { item ->
-                val isItemSelected = selectedItem == item
 
                 Text(
                     text = item,
@@ -144,7 +143,7 @@ fun SmashingBottomSheet(
                         .noRippleClickable(onClick = { onItemClick(item) })
                         .background(
                             color = (
-                                    if (isItemSelected)
+                                    if (selectedItem == item)
                                         colors.bgSurfacePressed
                                     else Color.Unspecified
                                     ),
