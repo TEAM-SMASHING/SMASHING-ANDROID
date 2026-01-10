@@ -30,7 +30,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
+import com.smashing.app.R.drawable.*
 import com.smashing.app.core.common.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -86,7 +86,7 @@ fun SmashingInputTextField(
                 suffix = {
                     if (isFocused && isFilled) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_circle_x),
+                            imageVector = ImageVector.vectorResource(ic_circle_x),
                             contentDescription = "삭제",
                             tint = Color.Unspecified,
                             modifier = Modifier
@@ -103,7 +103,7 @@ fun SmashingInputTextField(
                 modifier = Modifier.padding(top = 5.dp),
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_warning),
+                    imageVector = ImageVector.vectorResource(ic_warning),
                     contentDescription = "Error",
                     tint = SmashingTheme.colors.iconError,
                 )

@@ -30,7 +30,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
+import com.smashing.app.R.drawable.*
 import com.smashing.app.core.common.style.BorderInputStyle
 import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -100,7 +100,7 @@ fun NicknameInputTextField(
                 modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 7.dp),
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_check),
+                    imageVector = ImageVector.vectorResource(ic_check),
                     contentDescription = "Success",
                     tint = SmashingTheme.colors.iconSuccess,
                 )
@@ -118,7 +118,7 @@ fun NicknameInputTextField(
                 modifier = Modifier.padding(top = 5.dp),
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_warning),
+                    imageVector = ImageVector.vectorResource(ic_warning),
                     contentDescription = "Error",
                     tint = SmashingTheme.colors.iconError,
                 )

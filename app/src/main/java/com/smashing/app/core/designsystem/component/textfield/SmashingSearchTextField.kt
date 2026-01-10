@@ -28,7 +28,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
+import com.smashing.app.R.drawable.*
 import com.smashing.app.core.common.style.ColoredBoxTextFieldStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -63,7 +63,7 @@ fun SearchTextField(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
+            imageVector = ImageVector.vectorResource(ic_arrow_left),
             contentDescription = "뒤로가기",
             tint = SmashingTheme.colors.iconPrimary,
             modifier = Modifier
@@ -84,7 +84,7 @@ fun SearchTextField(
 
             if (!isFilled) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_search_sm),
+                    imageVector = ImageVector.vectorResource(ic_search_sm),
                     contentDescription = "돋보기",
                     tint = SmashingTheme.colors.iconSecondary,
                 )
@@ -108,7 +108,7 @@ fun SearchTextField(
                 suffix = {
                     if (isFocused && isFilled) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_circle_x),
+                            imageVector = ImageVector.vectorResource(ic_circle_x),
                             contentDescription = "삭제",
                             tint = Color.Unspecified,
                             modifier = Modifier
