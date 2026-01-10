@@ -169,7 +169,7 @@ fun SmashingBottomSheet(
                     .fillMaxWidth()
                     .align(alignment = Alignment.CenterHorizontally)
                     .padding(horizontal = 16.dp),
-                isEnabled = selectedItem != "",
+                isEnabled = selectedItem.isNotEmpty(),
             )
         }
     }
