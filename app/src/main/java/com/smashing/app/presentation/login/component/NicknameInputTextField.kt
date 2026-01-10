@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_check
 import com.smashing.app.R.drawable.ic_warning
-import com.smashing.app.core.common.style.BorderInputStyle
+import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -69,12 +69,11 @@ fun NicknameInputTextField(
                     color = inputState.getBorderColor(),
                     shape = RoundedCornerShape(8.dp),
                 )
-                .padding(horizontal = 13.dp, vertical = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 13.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SmashingBasicTextField(
                 state = state,
-                modifier = Modifier.weight(1f),
                 placeholder = placeholder,
                 placeholderColor = inputState.getContentColor(),
                 placeholderStyle = inputState.getTextStyle(),

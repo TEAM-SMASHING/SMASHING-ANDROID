@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_circle_x
 import com.smashing.app.R.drawable.ic_warning
-import com.smashing.app.core.common.style.BorderInputStyle
+import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable

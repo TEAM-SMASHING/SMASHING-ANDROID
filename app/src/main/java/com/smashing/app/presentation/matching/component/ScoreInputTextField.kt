@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
@@ -28,18 +29,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import com.smashing.app.core.common.style.ColoredBoxTextFieldStyle
+import com.smashing.app.core.designsystem.style.ColoredBoxTextFieldStyle
 import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
+
+private const val AREA_RATIO = 45f / 41f
+
 @Composable
 fun ScoreInputTextField(
     state: TextFieldState,
+    placeholder: String,
     modifier: Modifier = Modifier,
-    placeholder: String = "0",
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
-    onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -60,6 +63,8 @@ fun ScoreInputTextField(
 
     Box(
         modifier = modifier
+            .width(45.dp)
+            .aspectRatio(AREA_RATIO)
             .background(
                 color = inputState.getBackgroundColor(),
                 shape = RoundedCornerShape(8.dp),
@@ -68,8 +73,7 @@ fun ScoreInputTextField(
                 width = 1.dp,
                 color = inputState.getBorderColor(),
                 shape = RoundedCornerShape(8.dp),
-            )
-            .size(width = 45.dp, height = 41.dp),
+            ),
         contentAlignment = Alignment.Center,
     ) {
         SmashingBasicTextField(
@@ -83,7 +87,6 @@ fun ScoreInputTextField(
             keyboardOptions = keyboardOptions,
             onKeyboardAction = {
                 focusManager.clearFocus()
-                onKeyboardAction()
             },
             inputTransformation = digitOnlyFilter,
             placeholder = if (isFocused) "" else placeholder,
@@ -106,9 +109,11 @@ private fun ScoreInputTextFieldPreview() {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 ScoreInputTextField(
                     state = rememberTextFieldState(),
+                    placeholder = "0",
                 )
                 ScoreInputTextField(
                     state = rememberTextFieldState(),
+                    placeholder = "0",
                 )
             }
         }

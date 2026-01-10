@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.core.common.style.BorderInputStyle
+import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
@@ -70,8 +70,9 @@ fun SmashingAreaTextField(
             interactionSource = interactionSource,
             keyboardOptions = keyboardOptions,
             lineLimits = TextFieldLineLimits.MultiLine(),
-            onKeyboardAction = {
-                focusManager.clearFocus()},
+            modifier = Modifier
+                .matchParentSize(),
+            onKeyboardAction = {focusManager.clearFocus()},
         )
     }
 }

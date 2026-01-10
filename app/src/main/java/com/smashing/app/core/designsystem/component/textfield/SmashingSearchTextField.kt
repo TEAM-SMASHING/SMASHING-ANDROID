@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
@@ -27,10 +26,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.ic_arrow_left
 import com.smashing.app.R.drawable.ic_circle_x
 import com.smashing.app.R.drawable.ic_search_sm
-import com.smashing.app.core.common.style.ColoredBoxTextFieldStyle
+import com.smashing.app.core.designsystem.style.ColoredBoxTextFieldStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -46,10 +44,9 @@ import com.smashing.app.core.extension.noRippleClickable
 @Composable
 fun SearchTextField(
     state: TextFieldState,
-    onBackClick: () -> Unit,
     onSearch: (String) -> Unit,
+    placeholder: String,
     modifier: Modifier = Modifier,
-    placeholder: String = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -61,64 +58,48 @@ fun SearchTextField(
         isFilled,
     )
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .background(
+                color = inputState.getBackgroundColor(),
+                shape = RoundedCornerShape(8.dp),
+            )
+            .padding(vertical = 13.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(ic_arrow_left),
-            contentDescription = "뒤로가기",
-            tint = SmashingTheme.colors.iconPrimary,
-            modifier = Modifier
-                .padding(start = 6.dp, top = 4.dp, bottom = 4.dp, end = 10.dp)
-                .noRippleClickable(onClick = onBackClick),
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Row(
-            modifier = Modifier
-                .background(
-                    color = inputState.getBackgroundColor(),
-                    shape = RoundedCornerShape(8.dp),
-                )
-                .padding(vertical = 13.dp, horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (!isFilled) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(ic_search_sm),
-                    contentDescription = "돋보기",
-                    tint = SmashingTheme.colors.iconSecondary,
-                )
-                Spacer(modifier = Modifier.padding(start = 4.dp))
-            }
-
-            SmashingBasicTextField(
-                state = state,
-                modifier = Modifier.weight(1f),
-                placeholder = placeholder,
-                placeholderColor = inputState.getContentColor(),
-                placeholderStyle = inputState.getTextStyle(),
-                textColor = inputState.getContentColor(),
-                textStyle = inputState.getTextStyle(),
-                interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
-                onKeyboardAction = {
-                    focusManager.clearFocus()
-                    onSearch(state.text.toString())
-                },
-                suffix = {
-                    if (isFocused && isFilled) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(ic_circle_x),
-                            contentDescription = "삭제",
-                            tint = Color.Unspecified,
-                            modifier = Modifier
-                                .noRippleClickable(onClick = state::clearText),
-                        )
-                    }
-                }
+        if (!isFilled) {
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_search_sm),
+                contentDescription = null,
+                tint = SmashingTheme.colors.iconSecondary,
             )
+            Spacer(modifier = Modifier.padding(start = 4.dp))
         }
+
+        SmashingBasicTextField(
+            state = state,
+            modifier = Modifier.weight(1f),
+            placeholder = placeholder,
+            placeholderColor = inputState.getContentColor(),
+            placeholderStyle = inputState.getTextStyle(),
+            textColor = inputState.getContentColor(),
+            textStyle = inputState.getTextStyle(),
+            interactionSource = interactionSource,
+            keyboardOptions = keyboardOptions,
+            onKeyboardAction = {
+                focusManager.clearFocus()
+            },
+            suffix = {
+                if (isFocused && isFilled) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_circle_x),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier
+                            .noRippleClickable(onClick = state::clearText),
+                    )
+                }
+            }
+        )
     }
 }
 
@@ -133,8 +114,6 @@ private fun SearchTextFieldStatesPreview() {
                 state = remember { TextFieldState() },
                 placeholder = "닉네임을 입력해주세요",
                 modifier = Modifier.fillMaxWidth(),
-                onBackClick = {//실제 뒤로가기 로직 수행
-                },
                 onSearch = { query ->
                     // 실제 검색 로직 수행 (예: ViewModel 호출)
                     println("검색어: $query")
