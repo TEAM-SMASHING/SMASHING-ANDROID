@@ -29,8 +29,8 @@ enum class BorderInputStyle {
             return when {
                 isError -> ERROR
                 isConfirm -> CONFIRM
-                isFocused && isFilled -> ACTIVE
-                isFocused && !isFilled -> TYPING
+                !isFocused && isFilled -> ACTIVE
+                isFocused -> TYPING
                 else -> INACTIVE
             }
         }

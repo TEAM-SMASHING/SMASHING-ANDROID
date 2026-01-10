@@ -21,7 +21,7 @@ enum class ColoredBoxTextFieldStyle {
         fun from(isFocused: Boolean, isFilled: Boolean): ColoredBoxTextFieldStyle {
             return when {
                 isFilled -> ACTIVE
-                isFocused && !isFilled -> TYPING
+                isFocused-> TYPING
                 else -> INACTIVE
             }
         }
