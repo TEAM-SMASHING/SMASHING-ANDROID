@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
@@ -69,7 +70,7 @@ fun SearchTextField(
                 .noRippleClickable(onClick = onBackClick),
 
             )
-        Spacer(modifier = Modifier.padding(start = 8.dp))
+        Spacer(modifier = Modifier.width(8.dp))
 
         Row(
             modifier = Modifier
