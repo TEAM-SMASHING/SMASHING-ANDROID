@@ -40,7 +40,8 @@ fun ScoreInputTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     placeholder: String = "0",
-) {
+    onKeyboardAction: () -> Unit = {},
+    ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val isFilled = state.text.isNotEmpty()
@@ -87,6 +88,7 @@ fun ScoreInputTextField(
             ),
             onKeyboardAction = {
                 focusManager.clearFocus()
+                onKeyboardAction()
             },
             inputTransformation = digitOnlyFilter,
             placeholder = if (isFocused) "" else placeholder,

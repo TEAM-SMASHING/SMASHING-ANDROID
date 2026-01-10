@@ -43,7 +43,6 @@ fun SmashingInputTextField(
     modifier: Modifier = Modifier,
     isConfirm: Boolean = false,
     errorText: String? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -79,7 +78,9 @@ fun SmashingInputTextField(
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
                 interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                ),
                 onKeyboardAction = {
                     focusManager.clearFocus()
                     onKeyboardAction()

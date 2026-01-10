@@ -50,6 +50,7 @@ fun SearchTextField(
     onSearch: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "",
+    onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -89,8 +90,8 @@ fun SearchTextField(
                     contentDescription = "돋보기",
                     tint = SmashingTheme.colors.iconSecondary,
                 )
+                Spacer(modifier = Modifier.padding(start = 4.dp))
             }
-            Spacer(modifier = Modifier.padding(start = 4.dp))
 
             SmashingBasicTextField(
                 state = state,
@@ -101,10 +102,13 @@ fun SearchTextField(
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
                 interactionSource = interactionSource,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                ),
                 onKeyboardAction = {
                     focusManager.clearFocus()
                     onSearch(state.text.toString())
+                    onKeyboardAction()
                 },
                 suffix = {
                     if (isFocused && isFilled) {

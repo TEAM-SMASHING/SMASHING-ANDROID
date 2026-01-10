@@ -45,7 +45,6 @@ fun NicknameInputTextField(
     isConfirm: Boolean = false,
     errorText: String? = null,
     maxLength: Int = 10,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -80,7 +79,9 @@ fun NicknameInputTextField(
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
                 interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                ),
                 onKeyboardAction = {
                     focusManager.clearFocus()
                     onKeyboardAction()
@@ -88,7 +89,7 @@ fun NicknameInputTextField(
                 inputTransformation = InputTransformation.maxLength(maxLength),
                 suffix = {
                     Text(
-                        text = "$currentLength/$maxLength",
+                        text = "$currentLength / $maxLength",
                         style = SmashingTheme.typography.xs.regular12,
                         color = inputState.getContentColor(),
                     )
