@@ -14,33 +14,47 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
-import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+
+sealed class DropdownItem(
+    val label: String,
+) {
+    class Normal(
+        label: String,
+    ) : DropdownItem(label)
+    class Additional(
+        label: String,
+        val onClick: () -> Unit,
+    ) : DropdownItem(label)
+}
 
 @Composable
-fun DropdownMenuPopup(
+fun SmashingDropdownMenu(
     items: List<DropdownItem>,
     isExpanded: Boolean,
     triggerWidth: Dp,
     triggerHeight: Dp,
     density: Density,
+    onItemClick: (String) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     itemAlignment: Alignment = Alignment.TopEnd,
@@ -67,7 +81,7 @@ fun DropdownMenuPopup(
         Column(
             modifier = modifier
                 .background(
-                    color = SmashingTheme.colors.bgSurface,
+                    color = colors.bgSurface,
                     shape = RoundedCornerShape(8.dp),
                 )
                 .wrapContentSize()
@@ -77,43 +91,16 @@ fun DropdownMenuPopup(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             items.forEachIndexed { index, item ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 10.dp,
-                        )
-                        .then(
-                            if (item.isEnabled) {
-                                Modifier.noRippleClickable {
-                                    item.onClick(item)
-                                    onDismiss()
-                                }
-                            } else {
-                                Modifier
-                            }
-                        ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = item.label,
-                        style = SmashingTheme.typography.sm.medium14,
-                        color = if (item.isEnabled) {
-                            SmashingTheme.colors.txtSecondary
-                        } else {
-                            SmashingTheme.colors.txtDisabled
-                        },
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
+                SmashingDropdownMenuItem(
+                    item = item,
+                    onNormalClick = onItemClick,
+                    onDismiss = onDismiss,
+                )
 
                 if (index < items.size - 1 && isDivided) {
                     HorizontalDivider(
                         modifier = Modifier.fillMaxWidth(),
-                        color = SmashingTheme.colors.borderPrimary,
+                        color = colors.borderPrimary,
                         thickness = 1.dp,
                     )
                 }
@@ -122,9 +109,45 @@ fun DropdownMenuPopup(
     }
 }
 
+@Composable
+private fun SmashingDropdownMenuItem(
+    item: DropdownItem,
+    onNormalClick: (String) -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 16.dp,
+                vertical = 10.dp,
+            )
+            .noRippleClickable(
+                onClick = {
+                    when(item){
+                        is DropdownItem.Normal -> onNormalClick(item.label)
+                        is DropdownItem.Additional -> item.onClick()
+                    }
+                    onDismiss()
+                }
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = item.label,
+            style = typography.sm.medium14,
+            color = colors.txtSecondary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun DropdownMenuPopupPreview() {
+private fun SmashingDropdownMenuPreview() {
     SmashingAndroidTheme {
         val density = LocalDensity.current
         var isExpanded by remember { mutableStateOf(false) }
@@ -133,22 +156,12 @@ private fun DropdownMenuPopupPreview() {
 
         val items = remember {
             listOf(
-                DropdownItem(
-                    label = "열글자열글자열글자열",
-                    onClick = { println("옵션 1 선택") },
-                ),
-                DropdownItem(
-                    label = "옵션 2",
-                    onClick = { println("옵션 2 선택") },
-                ),
-                DropdownItem(
-                    label = "옵션 3",
-                    onClick = { println("옵션 3 선택") },
-                    isEnabled = false,
-                ),
-                DropdownItem(
-                    label = "옵션 4",
-                    onClick = { println("옵션 4 선택") },
+                DropdownItem.Normal("서울"),
+                DropdownItem.Normal("부산"),
+                DropdownItem.Normal("인천"),
+                DropdownItem.Additional(
+                    label = "지역 선택",
+                    onClick = { println("지역 선택 화면으로 이동") },
                 ),
             )
         }
@@ -156,10 +169,7 @@ private fun DropdownMenuPopupPreview() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-                .noRippleClickable(
-                    onClick = { isExpanded = !isExpanded },
-                ),
+                .padding(16.dp),
             contentAlignment = Alignment.TopEnd,
         ) {
             // 트리거 버튼 시뮬레이션
@@ -170,24 +180,30 @@ private fun DropdownMenuPopupPreview() {
                         triggerHeight = with(density) { coordinates.size.height.toDp() }
                     }
                     .background(
-                        color = SmashingTheme.colors.bgSurface,
+                        color = colors.bgSurface,
                         shape = RoundedCornerShape(8.dp),
                     )
-                    .padding(16.dp)
+                    .noRippleClickable(
+                        onClick = { isExpanded = !isExpanded },
+                    )
+                    .padding(16.dp),
             ) {
                 Text(
                     text = "드롭다운 열기",
-                    style = SmashingTheme.typography.sm.medium14,
-                    color = SmashingTheme.colors.txtPrimary
+                    style = typography.sm.medium14,
+                    color = colors.txtPrimary,
                 )
             }
 
-            DropdownMenuPopup(
+            SmashingDropdownMenu(
                 items = items,
                 isExpanded = isExpanded,
                 triggerWidth = triggerWidth,
                 triggerHeight = triggerHeight,
                 density = density,
+                onItemClick = { label ->
+                    println("$label 선택됨")
+                },
                 onDismiss = { isExpanded = false },
                 isDivided = true,
             )
