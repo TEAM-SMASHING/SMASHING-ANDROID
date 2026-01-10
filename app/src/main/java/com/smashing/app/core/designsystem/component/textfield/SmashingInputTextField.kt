@@ -42,7 +42,6 @@ fun SmashingInputTextField(
     state: TextFieldState,
     placeholder: String,
     modifier: Modifier = Modifier,
-    isConfirm: Boolean = false,
     errorText: String? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -54,7 +53,7 @@ fun SmashingInputTextField(
         isFocused = isFocused,
         isFilled = isFilled,
         isError = isError,
-        isConfirm = isConfirm,
+        isConfirm = false,
     )
 
     Column(
@@ -88,10 +87,11 @@ fun SmashingInputTextField(
                     focusManager.clearFocus()
                 },
             )
+
             if (isFocused && isFilled) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_circle_x),
-                    contentDescription = "삭제",
+                    contentDescription = "null",
                     tint = Color.Unspecified,
                     modifier = Modifier
                         .noRippleClickable(onClick = state::clearText),
@@ -106,7 +106,7 @@ fun SmashingInputTextField(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_warning),
-                    contentDescription = "Error",
+                    contentDescription = "null",
                     tint = SmashingTheme.colors.iconError,
                 )
                 Spacer(modifier = Modifier.width(4.dp))
