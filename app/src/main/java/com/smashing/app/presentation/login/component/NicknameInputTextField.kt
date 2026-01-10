@@ -42,8 +42,8 @@ fun NicknameInputTextField(
     state: TextFieldState,
     placeholder: String,
     modifier: Modifier = Modifier,
-    isConfirm: Boolean = false,
     errorText: String? = null,
+    confirmText: String? = null,
     maxLength: Int = 10,
     onKeyboardAction: () -> Unit = {},
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -54,6 +54,7 @@ fun NicknameInputTextField(
     val currentLength by remember { derivedStateOf { state.text.length } }
     val isFilled = state.text.isNotEmpty()
     val isError = !errorText.isNullOrEmpty()
+    val isConfirm = !confirmText.isNullOrEmpty()
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
@@ -125,7 +126,7 @@ fun NicknameInputTextField(
                 )
                 Spacer(modifier = Modifier.padding(start = 7.dp))
                 Text(
-                    text = "사용 가능한 닉네임 입니다.",
+                    text = confirmText,
                     color = SmashingTheme.colors.txtMuted,
                     style = SmashingTheme.typography.xs.regular12,
                 )
@@ -156,6 +157,11 @@ private fun NicknameInputTextFieldPreview(
                 state = rememberTextFieldState("text"),
                 placeholder = "text",
                 errorText = "이미 존재하는 닉네임이에요.",
+            )
+            NicknameInputTextField(
+                state = rememberTextFieldState("text"),
+                placeholder = "text",
+                confirmText = "사용 가능한 닉네임 입니다.",
             )
         }
     }
