@@ -102,7 +102,8 @@ fun ScoreInputTextField(
 
 @Preview(showBackground = true)
 @Composable
-private fun ScoreInputTextFieldPreview() {
+private fun ScoreInputTextFieldPreview()
+{
     SmashingAndroidTheme {
         Column(
             modifier = Modifier.padding(24.dp),

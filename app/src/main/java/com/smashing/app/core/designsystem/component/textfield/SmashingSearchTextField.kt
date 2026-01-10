@@ -83,8 +83,8 @@ fun SearchTextField(
                 .padding(vertical = 13.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-
-            if (!isFilled) {
+            if (!isFilled)
+            {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_search_sm),
                     contentDescription = "돋보기",
@@ -111,7 +111,8 @@ fun SearchTextField(
                     onKeyboardAction()
                 },
                 suffix = {
-                    if (isFocused && isFilled) {
+                    if (isFocused && isFilled)
+                    {
                         Icon(
                             imageVector = ImageVector.vectorResource(ic_circle_x),
                             contentDescription = "삭제",
@@ -128,9 +129,11 @@ fun SearchTextField(
 
 @Preview
 @Composable
-private fun SearchTextFieldStatesPreview() {
+private fun SearchTextFieldStatesPreview()
+{
     SmashingAndroidTheme {
-        Box(modifier = Modifier.padding(20.dp)) {
+        Box(modifier = Modifier.padding(20.dp))
+        {
 
             SearchTextField(
                 state = remember { TextFieldState() },

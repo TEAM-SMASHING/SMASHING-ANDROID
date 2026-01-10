@@ -59,7 +59,8 @@ fun NicknameInputTextField(
         isError = isError,
         isConfirm = isConfirm,
     )
-    Column(modifier = modifier) {
+    Column(modifier = modifier)
+    {
         Row(
             modifier = Modifier
                 .border(
@@ -96,7 +97,8 @@ fun NicknameInputTextField(
                 }
             )
         }
-        if (isConfirm) {
+        if (isConfirm)
+        {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 7.dp),
@@ -114,7 +116,8 @@ fun NicknameInputTextField(
                 )
             }
         }
-        if (isError) {
+        if (isError)
+        {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 5.dp),

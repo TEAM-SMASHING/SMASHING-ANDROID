@@ -85,7 +85,8 @@ fun SmashingAreaTextField(
 
 @Preview
 @Composable
-private fun SmashingAreaTextFieldPreview() {
+private fun SmashingAreaTextFieldPreview()
+{
     SmashingAndroidTheme {
         Column(
             modifier = Modifier
