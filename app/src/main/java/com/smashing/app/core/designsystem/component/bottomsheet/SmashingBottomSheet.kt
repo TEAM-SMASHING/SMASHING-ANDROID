@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 
 /**
  * 바텀 시트 공통 컴포넌트입니다.
@@ -71,6 +73,15 @@ fun SmashingBottomSheet(
         skipPartiallyExpanded = true,
     )
 ) {
+    val scope = rememberCoroutineScope()
+
+    fun onCloseBottomSheet(onClosed: () -> Unit = {}) = scope.launch {
+        if (!bottomSheetState.isVisible) return@launch
+        bottomSheetState.hide()
+        onDismissRequest()
+        onClosed()
+    }
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
@@ -97,7 +108,6 @@ fun SmashingBottomSheet(
                     bottom = 47.dp,
                 ),
         ) {
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,7 +125,7 @@ fun SmashingBottomSheet(
                     contentDescription = null,
                     modifier = Modifier
                         .noRippleClickable(
-                            onClick = onDismissRequest
+                            onClick = { onCloseBottomSheet() },
                         )
                         .align(alignment = Alignment.CenterEnd),
                     tint = colors.iconPrimary,
@@ -136,7 +146,7 @@ fun SmashingBottomSheet(
                             color = (
                                     if (isItemSelected)
                                         colors.bgSurfacePressed
-                                     else Color.Unspecified
+                                    else Color.Unspecified
                                     ),
                         )
                         .padding(
@@ -155,7 +165,7 @@ fun SmashingBottomSheet(
             SmashingButton(
                 buttonType = ButtonType.PRIMARY_WITH_DISABLED,
                 text = btnText,
-                onClick = onBtnClick,
+                onClick = { onCloseBottomSheet(onClosed = onBtnClick) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(alignment = Alignment.CenterHorizontally)
@@ -165,6 +175,7 @@ fun SmashingBottomSheet(
         }
     }
 }
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -221,9 +232,7 @@ private fun SmashingBottomSheetPreview() {
                     contentToBtnPadding = 20.dp,
                     btnText = "완료",
                     onItemClick = { selectedItem1 = it },
-                    onBtnClick = {
-                        isBottomSheetShow1 = false
-                    },
+                    onBtnClick = { },
                 )
             }
 
@@ -246,9 +255,7 @@ private fun SmashingBottomSheetPreview() {
                     contentToBtnPadding = 4.dp,
                     btnText = "적용하기",
                     onItemClick = { selectedItem2 = it },
-                    onBtnClick = {
-                        isBottomSheetShow2 = false
-                    },
+                    onBtnClick = { },
                 )
             }
         }
