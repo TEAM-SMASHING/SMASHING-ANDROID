@@ -76,7 +76,11 @@ fun RegionDropdown(
                     color = Color.Transparent,
                 )
                 .noRippleClickable(
-                    onClick = { isExpanded = !isExpanded }
+                    onClick = {
+                        if (items.isNotEmpty()) {
+                            isExpanded = !isExpanded
+                        }
+                    }
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -98,24 +102,23 @@ fun RegionDropdown(
                 tint = colors.iconPrimary,
             )
         }
-        if (items.isNotEmpty()) {
-            SmashingDropdownMenu(
-                items = items.map {
-                    DropdownItem.Normal(it)
-                } + DropdownItem.Additional(
-                    label = "지역 선택",
-                    onClick = onRegionChange,
-                ),
-                onItemClick = onClick,
-                isExpanded = isExpanded,
-                triggerWidth = triggerWidth,
-                triggerHeight = triggerHeight,
-                density = density,
-                onDismiss = { isExpanded = false },
-                itemAlignment = Alignment.TopStart,
-                isDivided = isDivide,
-            )
-        }
+        SmashingDropdownMenu(
+            items = items.map {
+                DropdownItem.Normal(it)
+            } + DropdownItem.Additional(
+                label = "지역 선택",
+                onClick = onRegionChange,
+            ),
+            onItemClick = onClick,
+            isExpanded = isExpanded,
+            triggerWidth = triggerWidth,
+            triggerHeight = triggerHeight,
+            density = density,
+            onDismiss = { isExpanded = false },
+            itemAlignment = Alignment.TopStart,
+            isDivided = isDivide,
+        )
+
     }
 }
 

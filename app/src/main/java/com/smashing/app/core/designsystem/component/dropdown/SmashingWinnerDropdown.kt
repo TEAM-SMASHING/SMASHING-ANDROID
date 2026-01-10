@@ -75,7 +75,11 @@ fun SmashingWinnerDropdown(
                     shape = RoundedCornerShape(8.dp)
                 )
                 .noRippleClickable(
-                    onClick = { isExpanded = !isExpanded }
+                    onClick = {
+                        if (items.isNotEmpty()) {
+                            isExpanded = !isExpanded
+                        }
+                    }
                 )
                 .padding(vertical = 8.dp)
                 .padding(start = 16.dp, end = 8.dp),
