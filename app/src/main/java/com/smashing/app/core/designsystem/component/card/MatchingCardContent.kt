@@ -26,14 +26,14 @@ import com.smashing.app.R.string.count
 import com.smashing.app.R.string.record
 import com.smashing.app.R.string.review
 import com.smashing.app.R.string.win_lose_count
-import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.common.type.GenderType
+import com.smashing.app.core.common.type.TierType
+import com.smashing.app.core.designsystem.component.badge.TierBadge
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.style.MatchingCardStyle
 import com.smashing.app.core.designsystem.style.MatchingCardStyle.RECEIVE
 import com.smashing.app.core.designsystem.style.MatchingCardStyle.SEARCH
 import com.smashing.app.core.designsystem.style.MatchingCardStyle.SEND
-import com.smashing.app.core.common.type.TierType
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
@@ -45,9 +45,9 @@ fun MatchingCardContent(
     nickname: String,
     genderType: GenderType,
     tierType: TierType,
-    winCount: Long,
-    loseCount: Long,
-    reviewCount: Long,
+    winCount: Int,
+    loseCount: Int,
+    reviewCount: Int,
     onProfileClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
