@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.notice.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,68 +54,73 @@ fun NoticeItem(
         SportType.BADMINTON -> ic_badminton
     }
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .noRippleClickable(
-                onClick = onItemClick,
-            )
-            .background(backgroundColor)
-            .border(
-                width = 1.dp,
-                color = SmashingTheme.colors.borderPrimary,
-            )
-            .padding(
-                vertical = 12.dp,
-                horizontal = 16.dp,
-            ),
-        horizontalArrangement = Arrangement
-            .spacedBy(
-                space = 12.dp
-            )
+    Column(
+        modifier = modifier,
     ) {
-        UrlImage(
-            url = ProfileImageProvider.getTempUrl(userId),
+        Row(
             modifier = Modifier
-                .height(40.dp)
-                .aspectRatio(1f)
-                .clip(CircleShape),
-        )
-
-        Column {
-            Row {
-                Icon(
-                    imageVector = ImageVector.vectorResource(sportIcon),
-                    contentDescription = null,
-                    tint = SmashingTheme.colors.iconPrimary,
-                    modifier = Modifier.padding(end = 2.dp),
+                .fillMaxWidth()
+                .noRippleClickable(
+                    onClick = onItemClick,
                 )
+                .background(backgroundColor)
+                .padding(
+                    vertical = 12.dp,
+                    horizontal = 16.dp,
+                ),
+            horizontalArrangement = Arrangement
+                .spacedBy(
+                    space = 12.dp
+                )
+        ) {
+            UrlImage(
+                url = ProfileImageProvider.getTempUrl(userId),
+                modifier = Modifier
+                    .height(40.dp)
+                    .aspectRatio(1f)
+                    .clip(CircleShape),
+            )
+
+            Column {
+                Row {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(sportIcon),
+                        contentDescription = null,
+                        tint = SmashingTheme.colors.iconPrimary,
+                        modifier = Modifier.padding(end = 2.dp),
+                    )
+
+                    Text(
+                        text = title,
+                        style = SmashingTheme.typography.md.semibold16,
+                        color = SmashingTheme.colors.txtPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+
+                    Spacer(Modifier.weight(1f))
+
+                    Text(
+                        text = timeAgo,
+                        style = SmashingTheme.typography.xs.regular12,
+                        color = SmashingTheme.colors.txtTertiary,
+                    )
+                }
 
                 Text(
-                    text = title,
-                    style = SmashingTheme.typography.md.semibold16,
-                    color = SmashingTheme.colors.txtPrimary,
-                    maxLines = 1,
+                    text = description,
+                    style = SmashingTheme.typography.sm.medium14,
+                    color = SmashingTheme.colors.txtSecondary,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
-
-                Spacer(Modifier.weight(1f))
-
-                Text(
-                    text = timeAgo,
-                    style = SmashingTheme.typography.xs.regular12,
-                    color = SmashingTheme.colors.txtTertiary,
-                )
             }
-
-            Text(
-                text = description,
-                style = SmashingTheme.typography.sm.medium14,
-                color = SmashingTheme.colors.txtSecondary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
         }
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = SmashingTheme.colors.borderPrimary,
+        )
     }
 }
 
