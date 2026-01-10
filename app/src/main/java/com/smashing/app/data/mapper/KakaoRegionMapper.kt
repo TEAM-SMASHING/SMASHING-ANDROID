@@ -1,18 +1,18 @@
 package com.smashing.app.data.mapper
 
-import com.smashing.app.data.model.Region
+import com.smashing.app.data.model.KakaoRegion
 import com.smashing.app.data.remote.dto.region.kakaoRegion.GetKakaoAddressSearchResponse
 
-fun GetKakaoAddressSearchResponse.toRegionList(): List<Region> =
+fun GetKakaoAddressSearchResponse.toRegionList(): List<KakaoRegion> =
     documents.map { it.toRegion() }
 
-private fun GetKakaoAddressSearchResponse.Document.toRegion(): Region {
-    return Region(
+private fun GetKakaoAddressSearchResponse.Document.toRegion(): KakaoRegion {
+    return KakaoRegion(
         addressName = addressName,
-        cityName = roadAddress?.region1depthName
+        region1depthName = roadAddress?.region1depthName
             ?: address?.region1depthName
             ?: "",
-        districtName = roadAddress?.region2depthName
+        region2depthName = roadAddress?.region2depthName
             ?: address?.region2depthName
             ?: "",
     )
