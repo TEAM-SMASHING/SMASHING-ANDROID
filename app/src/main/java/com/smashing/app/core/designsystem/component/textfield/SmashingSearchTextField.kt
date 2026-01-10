@@ -50,7 +50,6 @@ fun SearchTextField(
     onSearch: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "",
-    onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -69,9 +68,9 @@ fun SearchTextField(
             contentDescription = "뒤로가기",
             tint = SmashingTheme.colors.iconPrimary,
             modifier = Modifier
+                .padding(start = 6.dp, top = 4.dp, bottom = 4.dp, end = 10.dp)
                 .noRippleClickable(onClick = onBackClick),
-
-            )
+        )
         Spacer(modifier = Modifier.width(8.dp))
 
         Row(
@@ -83,8 +82,7 @@ fun SearchTextField(
                 .padding(vertical = 13.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (!isFilled)
-            {
+            if (!isFilled) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_search_sm),
                     contentDescription = "돋보기",
@@ -108,11 +106,9 @@ fun SearchTextField(
                 onKeyboardAction = {
                     focusManager.clearFocus()
                     onSearch(state.text.toString())
-                    onKeyboardAction()
                 },
                 suffix = {
-                    if (isFocused && isFilled)
-                    {
+                    if (isFocused && isFilled) {
                         Icon(
                             imageVector = ImageVector.vectorResource(ic_circle_x),
                             contentDescription = "삭제",
@@ -129,8 +125,7 @@ fun SearchTextField(
 
 @Preview
 @Composable
-private fun SearchTextFieldStatesPreview()
-{
+private fun SearchTextFieldStatesPreview() {
     SmashingAndroidTheme {
         Box(modifier = Modifier.padding(20.dp))
         {

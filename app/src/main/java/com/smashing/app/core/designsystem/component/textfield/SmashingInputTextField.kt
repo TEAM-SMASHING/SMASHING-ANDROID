@@ -92,7 +92,8 @@ fun SmashingInputTextField(
                             contentDescription = "삭제",
                             tint = Color.Unspecified,
                             modifier = Modifier
-                                .noRippleClickable(onClick = state::clearText),
+                                .noRippleClickable(onClick = state::clearText)
+                                .padding(3.dp),
                         )
                     }
                 }

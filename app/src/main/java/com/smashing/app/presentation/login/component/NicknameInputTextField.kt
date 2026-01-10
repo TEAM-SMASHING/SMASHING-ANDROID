@@ -97,27 +97,7 @@ fun NicknameInputTextField(
                 }
             )
         }
-        if (isConfirm)
-        {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 7.dp),
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(ic_check),
-                    contentDescription = "Success",
-                    tint = SmashingTheme.colors.iconSuccess,
-                )
-                Spacer(modifier = Modifier.padding(start = 7.dp))
-                Text(
-                    text = "사용 가능한 닉네임 입니다.",
-                    color = SmashingTheme.colors.txtMuted,
-                    style = SmashingTheme.typography.xs.regular12,
-                )
-            }
-        }
-        if (isError)
-        {
+        if (isError) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 5.dp),
@@ -131,6 +111,23 @@ fun NicknameInputTextField(
                 Text(
                     text = errorText,
                     color = SmashingTheme.colors.txtRed,
+                    style = SmashingTheme.typography.xs.regular12,
+                )
+            }
+        } else if (isConfirm) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 7.dp),
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(ic_check),
+                    contentDescription = "Success",
+                    tint = SmashingTheme.colors.iconSuccess,
+                )
+                Spacer(modifier = Modifier.padding(start = 7.dp))
+                Text(
+                    text = "사용 가능한 닉네임 입니다.",
+                    color = SmashingTheme.colors.txtMuted,
                     style = SmashingTheme.typography.xs.regular12,
                 )
             }
