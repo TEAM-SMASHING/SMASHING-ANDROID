@@ -24,7 +24,7 @@ enum class BorderInputStyle {
             isFocused: Boolean,
             isFilled: Boolean,
             isError: Boolean,
-            isConfirm: Boolean
+            isConfirm: Boolean,
         ): BorderInputStyle {
             return when {
                 isError -> ERROR

@@ -18,10 +18,13 @@ enum class ColoredBoxTextFieldStyle {
     ACTIVE, TYPING, INACTIVE;
 
     companion object {
-        fun from(isFocused: Boolean, isFilled: Boolean): ColoredBoxTextFieldStyle {
+        fun from(
+            isFocused: Boolean,
+            isFilled: Boolean,
+        ): ColoredBoxTextFieldStyle {
             return when {
                 isFilled -> ACTIVE
-                isFocused-> TYPING
+                isFocused -> TYPING
                 else -> INACTIVE
             }
         }
@@ -45,5 +48,4 @@ enum class ColoredBoxTextFieldStyle {
 
     @Composable
     fun getTextStyle(): TextStyle = SmashingTheme.typography.sm.medium14
-
 }
