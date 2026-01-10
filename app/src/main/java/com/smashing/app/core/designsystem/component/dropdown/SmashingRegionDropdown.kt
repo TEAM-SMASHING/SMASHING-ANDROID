@@ -34,6 +34,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 
+/**
+ * 지역 선택 드롭다운 컴포넌트
+ * 지역을 선택하기 위한 드롭다운 컴포넌트입니다.
+ * 위치 아이콘과 함께 현재 선택된 지역을 표시하며, 드롭다운 메뉴에는 선택 가능한 지역 목록과
+ * "지역 선택" 추가 액션이 자동으로 포함됩니다.
+ * @param selectedItem 현재 선택된 지역 이름
+ * @param items 선택 가능한 지역 이름 리스트
+ * @param onClick 지역 항목이 클릭되었을 때 호출되는 콜백 (선택된 지역 이름을 전달)
+ * @param onRegionChange "지역 선택" 추가 항목이 클릭되었을 때 호출되는 콜백 (지역 선택 화면으로 이동하는 등의 동작)
+ * @param modifier 적용할 Modifier
+ * @param isDivide 항목 사이에 구분선을 표시할지 여부 (기본값: false)
+ */
 @Composable
 fun RegionDropdown(
     selectedItem: String,

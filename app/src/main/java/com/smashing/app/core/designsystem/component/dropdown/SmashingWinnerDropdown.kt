@@ -33,6 +33,17 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 
+/**
+ * 승자 선택 드롭다운 컴포넌트
+ * 승자를 선택하기 위한 드롭다운 컴포넌트입니다.
+ * 선택된 항목이 없을 때는 placeholder를 표시하며, 선택 후에는 선택된 항목의 이름을 표시합니다.
+ * @param selectedItem 현재 선택된 승자 이름 (null일 경우 placeholder 표시)
+ * @param items 선택 가능한 승자 이름 리스트
+ * @param onClick 항목이 클릭되었을 때 호출되는 콜백 (선택된 이름을 전달)
+ * @param modifier 적용할 Modifier
+ * @param placeholder 선택된 항목이 없을 때 표시할 안내 문구 (기본값: "승자 선택")
+ * @param isDivide 항목 사이에 구분선을 표시할지 여부 (기본값: true)
+ */
 @Composable
 fun SmashingWinnerDropdown(
     selectedItem: String?,

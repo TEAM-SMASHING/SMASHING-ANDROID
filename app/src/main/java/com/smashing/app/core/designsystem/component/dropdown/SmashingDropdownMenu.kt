@@ -35,6 +35,17 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 
+/**
+ * @param label 드롭다운 메뉴의 레이블
+ *
+ * Normal
+ * 일반 드롭다운 메뉴 항목
+ * 선택 시 onItemClick 콜백에 label을 전달합니다.
+ *
+ * Additional
+ * 추가 액션을 가진 드롭다운 메뉴 항목
+ * 선택 시 별도의 onClick 콜백을 실행합니다.
+ */
 sealed class DropdownItem(
     val label: String,
 ) {
@@ -47,6 +58,22 @@ sealed class DropdownItem(
     ) : DropdownItem(label)
 }
 
+/**
+ * 드롭다운 메뉴 컴포넌트
+ * Popup을 사용하여 트리거 요소 하단에 메뉴를 표시하는 드롭다운 메뉴입니다.
+ * Normal과 Additional 두 가지 타입의 항목을 지원하며, 각 항목은 클릭 시 다른 동작을 수행합니다.
+ * @param items 드롭다운에 표시할 항목 리스트 (Normal 또는 Additional 타입)
+ * @param isExpanded 드롭다운 메뉴가 열려있는지 여부
+ * @param triggerWidth 트리거 요소의 너비 (메뉴 최소 너비로 사용)
+ * @param triggerHeight 트리거 요소의 높이 (메뉴 위치 계산에 사용)
+ * @param density 화면 밀도 정보 (Dp를 픽셀로 변환하는데 사용)
+ * @param onItemClick Normal 타입 항목이 클릭되었을 때 호출되는 콜백 (선택된 label을 전달)
+ * @param onDismiss 드롭다운 메뉴가 닫힐 때 호출되는 콜백
+ * @param modifier 적용할 Modifier
+ * @param itemAlignment 드롭다운 메뉴의 정렬 위치 (기본값: TopEnd)
+ * @param offsetY 트리거 요소로부터의 수직 오프셋 (기본값: 10.dp)
+ * @param isDivided 항목 사이에 구분선을 표시할지 여부 (기본값: true)
+ */
 @Composable
 fun SmashingDropdownMenu(
     items: List<DropdownItem>,
