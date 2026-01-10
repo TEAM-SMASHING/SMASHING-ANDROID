@@ -33,8 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_close_lg
-import com.smashing.app.core.common.type.ButtonType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
+import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -162,7 +162,7 @@ fun SmashingBottomSheet(
             Spacer(modifier = Modifier.height(contentToBtnPadding))
 
             SmashingButton(
-                buttonType = ButtonType.PRIMARY_WITH_DISABLED,
+                buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = btnText,
                 onClick = { onCloseBottomSheet(onClosed = onBtnClick) },
                 modifier = Modifier
