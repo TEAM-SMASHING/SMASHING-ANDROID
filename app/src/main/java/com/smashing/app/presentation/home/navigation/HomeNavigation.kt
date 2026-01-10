@@ -17,13 +17,15 @@ fun NavController.navigateToHome(
 
 fun NavGraphBuilder.homeGraph(
     innerPadding: PaddingValues,
+    navigateToNotice: () -> Unit,
 ) {
     composable<Home> {
         HomeRoute(
             modifier = Modifier.padding(innerPadding),
+            navigateToNotice = navigateToNotice,
         )
     }
 }
 
 @Serializable
-data object Home: MainTabRoute
+data object Home : MainTabRoute

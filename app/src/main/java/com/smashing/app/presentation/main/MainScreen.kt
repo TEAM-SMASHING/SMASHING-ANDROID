@@ -15,13 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
-import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
+import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -69,6 +71,7 @@ private fun MainNavHost(
     ) {
         homeGraph(
             innerPadding = innerPadding,
+            navigateToNotice = appState.navController::navigateToNotice
         )
 
         searchGraph(
@@ -96,6 +99,11 @@ private fun MainNavHost(
                 )
             },
             innerPadding = innerPadding,
+        )
+
+        noticeGraph(
+            innerPadding = innerPadding,
+            navigateUp = appState.navController::navigateUp,
         )
     }
 }
