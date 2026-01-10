@@ -36,7 +36,6 @@ import com.smashing.app.core.extension.noRippleClickable
 /**
  *  검색 텍스트 필드 공통 컴포넌트입니다.
  * @param state 텍스트 필드의 상태 (입력값 및 커서 위치 관리)
- * @param onSearch 키보드의 검색(돋보기) 버튼 클릭 시 호출되는 콜백 (입력된 텍스트 반환)
  * @param placeholder 입력값이 없을 때 표시되는 힌트 텍스트
  *
  */
@@ -44,7 +43,6 @@ import com.smashing.app.core.extension.noRippleClickable
 @Composable
 fun SearchTextField(
     state: TextFieldState,
-    onSearch: (String) -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -114,10 +112,6 @@ private fun SearchTextFieldStatesPreview() {
                 state = remember { TextFieldState() },
                 placeholder = "닉네임을 입력해주세요",
                 modifier = Modifier.fillMaxWidth(),
-                onSearch = { query ->
-                    // 실제 검색 로직 수행 (예: ViewModel 호출)
-                    println("검색어: $query")
-                },
             )
         }
     }

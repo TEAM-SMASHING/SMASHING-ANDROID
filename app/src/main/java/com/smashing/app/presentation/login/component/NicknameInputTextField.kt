@@ -104,7 +104,9 @@ fun NicknameInputTextField(
                     contentDescription = "Error",
                     tint = SmashingTheme.colors.iconError,
                 )
+
                 Spacer(modifier = Modifier.padding(start = 5.dp))
+
                 Text(
                     text = errorText,
                     color = SmashingTheme.colors.txtRed,
@@ -121,7 +123,9 @@ fun NicknameInputTextField(
                     contentDescription = "Success",
                     tint = SmashingTheme.colors.iconSuccess,
                 )
+
                 Spacer(modifier = Modifier.padding(start = 7.dp))
+
                 Text(
                     text = confirmText,
                     color = SmashingTheme.colors.txtMuted,

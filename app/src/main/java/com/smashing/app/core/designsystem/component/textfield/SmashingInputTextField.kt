@@ -109,7 +109,9 @@ fun SmashingInputTextField(
                     contentDescription = "null",
                     tint = SmashingTheme.colors.iconError,
                 )
+
                 Spacer(modifier = Modifier.width(4.dp))
+
                 Text(
                     text = errorText,
                     color = SmashingTheme.colors.txtRed,
