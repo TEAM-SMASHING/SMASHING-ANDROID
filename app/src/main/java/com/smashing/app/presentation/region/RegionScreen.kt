@@ -84,34 +84,14 @@ private fun RegionScreen(
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        when (val loadState = uiState.regionLoadState) {
-            is UiState.Idle -> {
-
-            }
-
-            is UiState.Loading -> {
-                Text(
-                    text = "검색 중...",
-                    modifier = Modifier.padding(16.dp),
-                )
-            }
-
-            is UiState.Failure -> {
-                Text(
-                    text = "오류: ${loadState.msg}",
-                    modifier = Modifier.padding(16.dp),
-                )
-            }
-
-            is UiState.Success -> {
-                RegionList(
-                    regions = loadState.data,
-                    onRegionClick = onRegionSelected,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                )
-            }
+        if(uiState.regionLoadState is UiState.Success){
+            RegionList(
+                regions = uiState.regionLoadState.data,
+                onRegionClick = onRegionSelected,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            )
         }
     }
 }
