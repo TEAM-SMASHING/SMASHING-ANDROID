@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.core.common.state.UiState
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.data.model.Region
+import com.smashing.app.domain.model.Region
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable

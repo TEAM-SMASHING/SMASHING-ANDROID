@@ -2,7 +2,7 @@ package com.smashing.app.presentation.region
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.core.common.state.UiState
-import com.smashing.app.data.model.Region
+import com.smashing.app.domain.model.Region
 import kotlinx.collections.immutable.ImmutableList
 
 interface RegionContract {

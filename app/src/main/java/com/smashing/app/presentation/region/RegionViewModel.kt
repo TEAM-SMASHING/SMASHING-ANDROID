@@ -3,8 +3,8 @@ package com.smashing.app.presentation.region
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.common.state.UiState
-import com.smashing.app.data.model.Region
-import com.smashing.app.domain.usecase.FilterRegionUseCase
+import com.smashing.app.domain.model.Region
+import com.smashing.app.domain.usecase.GetSeoulFilterRegionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 @OptIn(FlowPreview::class)
 class RegionViewModel @Inject constructor(
-    private val filterRegionUseCase: FilterRegionUseCase,
+    private val getSeoulFilterRegionUseCase: GetSeoulFilterRegionUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RegionContract.State())
     val uiState = _uiState.asStateFlow()
@@ -55,7 +55,7 @@ class RegionViewModel @Inject constructor(
 
         updateRegionLoadState(UiState.Loading)
 
-        filterRegionUseCase(query)
+        getSeoulFilterRegionUseCase(query)
             .onSuccess { regions ->
                 updateRegionLoadState(
                     if (regions.isNotEmpty()) {
