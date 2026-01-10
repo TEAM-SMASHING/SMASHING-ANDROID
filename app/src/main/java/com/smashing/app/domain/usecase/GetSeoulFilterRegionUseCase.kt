@@ -14,8 +14,7 @@ class GetSeoulFilterRegionUseCase @Inject constructor(
         return regionRepository.searchAddress(query).map { kakaoRegions ->
             kakaoRegions
                 .map { it.toRegion() }
-                .filter { !it.isDistrictBlank }
-                .filter { it.isSeoul }
+                .filter { it.isSeoulDistrict }
         }
     }
 }
