@@ -1,10 +1,12 @@
-package com.smashing.app.core.common.type
+package com.smashing.app.core.designsystem.style
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 
-enum class ButtonType {
+enum class ButtonStyle {
     PRIMARY,
     PRIMARY_WITH_DISABLED,
     SECONDARY,
@@ -12,6 +14,7 @@ enum class ButtonType {
     REJECTED,
     TERTIARY;
 
+    @ReadOnlyComposable
     @Composable
     fun getButtonColor(): SmashingBtnColor = when (this) {
         PRIMARY -> SmashingBtnColor(
@@ -48,6 +51,7 @@ enum class ButtonType {
     }
 }
 
+@Immutable
 data class SmashingBtnColor(
     val backgroundColor: Color,
     val textColor: Color,

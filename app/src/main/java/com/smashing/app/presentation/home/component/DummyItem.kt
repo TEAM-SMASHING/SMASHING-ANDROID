@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.smashing.app.core.designsystem.component.UrlImage
+import com.smashing.app.core.designsystem.component.image.UrlImage
 
 @Composable
 fun DummyUserItem(
