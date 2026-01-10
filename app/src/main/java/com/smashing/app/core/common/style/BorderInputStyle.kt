@@ -38,20 +38,15 @@ enum class BorderInputStyle {
 
     @Composable
     fun getContentColor(): Color = when (this) {
-        ERROR -> SmashingTheme.colors.txtPrimary
-        CONFIRM -> SmashingTheme.colors.txtPrimary
-        ACTIVE -> SmashingTheme.colors.txtPrimary
-        TYPING -> SmashingTheme.colors.txtPrimary
+        ERROR, CONFIRM, ACTIVE, TYPING -> SmashingTheme.colors.txtPrimary
         INACTIVE -> SmashingTheme.colors.txtDisabled
     }
 
     @Composable
     fun getBorderColor(): Color = when (this) {
         ERROR -> SmashingTheme.colors.borderError
-        CONFIRM -> SmashingTheme.colors.borderSecondary
-        ACTIVE -> SmashingTheme.colors.borderSecondary
+        CONFIRM, ACTIVE, INACTIVE -> SmashingTheme.colors.borderSecondary
         TYPING -> SmashingTheme.colors.borderTyping
-        INACTIVE -> SmashingTheme.colors.borderSecondary
     }
 
     @Composable
