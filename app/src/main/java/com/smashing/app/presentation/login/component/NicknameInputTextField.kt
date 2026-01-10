@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.login.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -140,6 +141,7 @@ private fun NicknameInputTextFieldPreview(
     SmashingAndroidTheme {
         Column(
             modifier = Modifier
+                .background(color = SmashingTheme.colors.bgSurface)
                 .padding(24.dp)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(24.dp)

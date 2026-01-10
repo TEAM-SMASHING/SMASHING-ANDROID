@@ -1,5 +1,6 @@
 package com.smashing.app.core.designsystem.component.textfield
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.common.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 private const val AREA_RATIO = 296 / 128f
 
@@ -88,6 +90,7 @@ private fun SmashingAreaTextFieldPreview() {
     SmashingAndroidTheme {
         Column(
             modifier = Modifier
+                .background(color = SmashingTheme.colors.bgSurface)
                 .padding(24.dp)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
