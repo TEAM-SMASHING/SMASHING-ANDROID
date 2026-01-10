@@ -87,7 +87,6 @@ fun SmashingBottomSheet(
         modifier = modifier,
         sheetState = bottomSheetState,
         sheetMaxWidth = Dp.Unspecified,
-        sheetGesturesEnabled = false,
         shape = RoundedCornerShape(
             topStart = 20.dp,
             topEnd = 20.dp,
