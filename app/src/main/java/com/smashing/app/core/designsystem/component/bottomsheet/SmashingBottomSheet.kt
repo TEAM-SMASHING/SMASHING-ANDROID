@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -27,12 +26,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.ic_close_lg
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -69,7 +66,7 @@ fun SmashingBottomSheet(
     onDismissRequest: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
-    bottomSheetState: SheetState = rememberModalBottomSheetState (
+    bottomSheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     )
 ) {
@@ -107,29 +104,17 @@ fun SmashingBottomSheet(
                     bottom = 47.dp,
                 ),
         ) {
-            Box(
+
+            Text(
+                text = title,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .align(alignment = Alignment.CenterHorizontally)
                     .padding(horizontal = 16.dp),
-            ) {
-                Text(
-                    text = title,
-                    modifier = Modifier.align(alignment = Alignment.Center),
-                    color = colors.txtPrimary,
-                    style = typography.lg.semibold18,
-                )
-
-                Icon(
-                    imageVector = ImageVector.vectorResource(ic_close_lg),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .noRippleClickable(
-                            onClick = { onCloseBottomSheet() },
-                        )
-                        .align(alignment = Alignment.CenterEnd),
-                    tint = colors.iconPrimary,
-                )
-            }
+                color = colors.txtPrimary,
+                textAlign = TextAlign.Center,
+                style = typography.lg.semibold18,
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -173,7 +158,6 @@ fun SmashingBottomSheet(
         }
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
