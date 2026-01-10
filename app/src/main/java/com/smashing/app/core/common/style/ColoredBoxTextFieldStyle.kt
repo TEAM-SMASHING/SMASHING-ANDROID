@@ -32,8 +32,7 @@ enum class ColoredBoxTextFieldStyle {
 
     @Composable
     fun getContentColor(): Color = when (this) {
-        ACTIVE -> SmashingTheme.colors.txtPrimary
-        TYPING -> SmashingTheme.colors.txtPrimary
+        ACTIVE, TYPING -> SmashingTheme.colors.txtPrimary
         INACTIVE -> SmashingTheme.colors.txtDisabled
     }
 
