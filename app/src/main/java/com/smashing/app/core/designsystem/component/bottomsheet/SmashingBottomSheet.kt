@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -90,12 +90,7 @@ fun SmashingBottomSheet(
         ),
         containerColor = colors.bgSurface,
         scrimColor = colors.bgDimmed,
-        dragHandle = {
-            BottomSheetDefaults.DragHandle(
-                width = 40.dp,
-                color = colors.iconTertiary,
-            )
-        },
+        dragHandle = { CustomDragHandle() },
     ) {
         Column(
             modifier = Modifier
@@ -159,6 +154,21 @@ fun SmashingBottomSheet(
     }
 }
 
+@Composable
+private fun CustomDragHandle(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .padding(vertical = 8.dp)
+            .size(width = 40.dp, height = 4.dp)
+            .background(
+                color = colors.iconTertiary,
+                shape = RoundedCornerShape(28.0.dp)
+            ),
+    )
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -166,7 +176,7 @@ fun SmashingBottomSheet(
 private fun SmashingBottomSheetPreview() {
     SmashingAndroidTheme {
 
-        var isBottomSheetShow1 by remember { mutableStateOf(false) }
+        var isBottomSheetShow1 by remember { mutableStateOf(true) }
         var isBottomSheetShow2 by remember { mutableStateOf(false) }
 
         var selectedItem1 by remember { mutableStateOf("") }
