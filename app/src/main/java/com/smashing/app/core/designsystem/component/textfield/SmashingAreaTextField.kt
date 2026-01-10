@@ -37,7 +37,6 @@ fun SmashingAreaTextField(
     placeholder: String,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
-    isConfirm: Boolean = false,
     inputTransformation: InputTransformation? = null,
     onKeyboardAction: () -> Unit = {},
 ) {
@@ -49,7 +48,7 @@ fun SmashingAreaTextField(
         isFocused = isFocused,
         isFilled = isFilled,
         isError = isError,
-        isConfirm = isConfirm,
+        isConfirm = false,
     )
     Box(
         modifier = modifier
@@ -101,7 +100,6 @@ private fun SmashingAreaTextFieldPreview() {
             )
             SmashingAreaTextField(
                 state = rememberTextFieldState("입력 완료"),
-                isConfirm = true,
                 placeholder = "입력 완료",
             )
             SmashingAreaTextField(

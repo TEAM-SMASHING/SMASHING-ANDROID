@@ -42,7 +42,6 @@ fun NicknameInputTextField(
     state: TextFieldState,
     placeholder: String,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
     isConfirm: Boolean = false,
     errorText: String? = null,
     maxLength: Int = 10,
@@ -54,6 +53,7 @@ fun NicknameInputTextField(
     val focusManager = LocalFocusManager.current
     val currentLength by remember { derivedStateOf { state.text.length } }
     val isFilled = state.text.isNotEmpty()
+    val isError = errorText.isNullOrEmpty()
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
@@ -155,7 +155,6 @@ private fun NicknameInputTextFieldPreview(
             NicknameInputTextField(
                 state = rememberTextFieldState("text"),
                 placeholder = "text",
-                isError = true,
                 errorText = "이미 존재하는 닉네임이에요.",
             )
         }

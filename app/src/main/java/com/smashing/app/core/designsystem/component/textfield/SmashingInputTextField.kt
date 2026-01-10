@@ -41,7 +41,6 @@ fun SmashingInputTextField(
     state: TextFieldState,
     placeholder: String,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
     isConfirm: Boolean = false,
     errorText: String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -51,6 +50,7 @@ fun SmashingInputTextField(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
     val isFilled = state.text.isNotEmpty()
+    val isError = errorText.isNullOrEmpty()
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
@@ -136,7 +136,6 @@ private fun SmashingInputTextFieldPreview() {
             SmashingInputTextField(
                 state = rememberTextFieldState("text"),
                 placeholder = "text",
-                isError = true,
                 errorText = "error message",
             )
         }
