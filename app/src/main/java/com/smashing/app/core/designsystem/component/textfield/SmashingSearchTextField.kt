@@ -50,6 +50,7 @@ fun SearchTextField(
     onSearch: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "",
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -100,9 +101,7 @@ fun SearchTextField(
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
                 interactionSource = interactionSource,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                ),
+                keyboardOptions = keyboardOptions,
                 onKeyboardAction = {
                     focusManager.clearFocus()
                     onSearch(state.text.toString())

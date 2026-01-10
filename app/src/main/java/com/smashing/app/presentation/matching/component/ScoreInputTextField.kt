@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +38,7 @@ fun ScoreInputTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     placeholder: String = "0",
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
     onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -80,10 +80,7 @@ fun ScoreInputTextField(
             textStyle = inputState.getTextStyle().copy(
                 textAlign = TextAlign.Center,
             ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done,
-            ),
+            keyboardOptions = keyboardOptions,
             onKeyboardAction = {
                 focusManager.clearFocus()
                 onKeyboardAction()

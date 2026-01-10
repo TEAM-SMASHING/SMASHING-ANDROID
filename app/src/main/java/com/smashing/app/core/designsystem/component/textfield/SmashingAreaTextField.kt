@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
-import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -39,6 +38,7 @@ fun SmashingAreaTextField(
     isError: Boolean = false,
     inputTransformation: InputTransformation? = null,
     onKeyboardAction: () -> Unit = {},
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -69,15 +69,12 @@ fun SmashingAreaTextField(
             textStyle = inputState.getTextStyle(),
             inputTransformation = inputTransformation,
             interactionSource = interactionSource,
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done,
-            ),
+            keyboardOptions = keyboardOptions,
             lineLimits = TextFieldLineLimits.MultiLine(),
             onKeyboardAction = {
-                if (keyboardOptions?.imeAction == ImeAction.Done) {
-                    focusManager.clearFocus()
-                    onKeyboardAction()
-                }
+                focusManager.clearFocus()
+                onKeyboardAction()
+
             },
         )
     }

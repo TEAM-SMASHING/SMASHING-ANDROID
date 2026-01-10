@@ -46,6 +46,7 @@ fun NicknameInputTextField(
     errorText: String? = null,
     maxLength: Int = 10,
     onKeyboardAction: () -> Unit = {},
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -80,9 +81,7 @@ fun NicknameInputTextField(
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
                 interactionSource = interactionSource,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                ),
+                keyboardOptions = keyboardOptions,
                 onKeyboardAction = {
                     focusManager.clearFocus()
                     onKeyboardAction()
