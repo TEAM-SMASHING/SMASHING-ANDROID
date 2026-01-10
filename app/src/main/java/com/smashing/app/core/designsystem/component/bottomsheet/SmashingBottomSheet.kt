@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -66,13 +67,14 @@ fun SmashingBottomSheet(
     onDismissRequest: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
+    bottomSheetState: SheetState = rememberModalBottomSheetState (
+        skipPartiallyExpanded = true,
+    )
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
-        sheetState = rememberModalBottomSheetState(
-            skipPartiallyExpanded = true,
-        ),
+        sheetState = bottomSheetState,
         sheetMaxWidth = Dp.Unspecified,
         sheetGesturesEnabled = false,
         shape = RoundedCornerShape(
