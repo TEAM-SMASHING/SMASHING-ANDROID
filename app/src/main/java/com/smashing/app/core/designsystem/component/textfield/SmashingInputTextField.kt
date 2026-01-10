@@ -1,5 +1,6 @@
 package com.smashing.app.core.designsystem.component.textfield
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -7,7 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,8 +44,6 @@ fun SmashingInputTextField(
     modifier: Modifier = Modifier,
     isConfirm: Boolean = false,
     errorText: String? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-    onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -58,8 +57,9 @@ fun SmashingInputTextField(
         isConfirm = isConfirm,
     )
 
-    Column(modifier = modifier)
-    {
+    Column(
+        modifier = modifier,
+    ) {
         Row(
             modifier = Modifier
                 .border(
@@ -67,36 +67,36 @@ fun SmashingInputTextField(
                     color = inputState.getBorderColor(),
                     shape = RoundedCornerShape(8.dp),
                 )
-                .padding(horizontal = 10.dp, vertical = 16.dp),
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SmashingBasicTextField(
                 state = state,
-                modifier = Modifier.weight(1f),
                 placeholder = placeholder,
                 placeholderColor = inputState.getContentColor(),
                 placeholderStyle = inputState.getTextStyle(),
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
                 interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                ),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 13.dp),
                 onKeyboardAction = {
                     focusManager.clearFocus()
-                    onKeyboardAction()
                 },
-                suffix = {
-                    if (isFocused && isFilled) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(ic_circle_x),
-                            contentDescription = "삭제",
-                            tint = Color.Unspecified,
-                            modifier = Modifier
-                                .noRippleClickable(onClick = state::clearText)
-                                .padding(3.dp),
-                        )
-                    }
-                }
             )
+            if (isFocused && isFilled) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(ic_circle_x),
+                    contentDescription = "삭제",
+                    tint = Color.Unspecified,
+                    modifier = Modifier
+                        .noRippleClickable(onClick = state::clearText),
+                )
+            }
         }
 
         if (isError) {
@@ -126,8 +126,8 @@ private fun SmashingInputTextFieldPreview() {
     SmashingAndroidTheme {
         Column(
             modifier = Modifier
-                .padding(24.dp)
-                .fillMaxWidth(),
+                .fillMaxSize()
+                .background(Color.Black),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             SmashingInputTextField(
