@@ -15,7 +15,11 @@
     <string name="kakao_link">카카오톡 링크</string>
     <string name="win_lose_count">%1$d승 %2$d패</string>
 
-    <!--Home    -->
-    <!--Matching -->
+    <!--Home  -->
+    <!--Matching  -->
     <string name="matching_write">결과 작성하기</string>
+    <!--Search  -->
+    <!--Profile -->
+    <!--Notice  -->
+    <string name="notice">알림</string>
 </resources>
