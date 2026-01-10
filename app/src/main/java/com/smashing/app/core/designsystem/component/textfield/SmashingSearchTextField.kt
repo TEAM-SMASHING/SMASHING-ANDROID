@@ -16,7 +16,6 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,7 +27,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.*
+import com.smashing.app.R.drawable.ic_arrow_left
+import com.smashing.app.R.drawable.ic_circle_x
+import com.smashing.app.R.drawable.ic_search_sm
 import com.smashing.app.core.common.style.ColoredBoxTextFieldStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -52,7 +53,7 @@ fun SearchTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val isFilled by remember { derivedStateOf { state.text.isNotEmpty() } }
+    val isFilled = state.text.isNotEmpty()
     val focusManager = LocalFocusManager.current
     val inputState = ColoredBoxTextFieldStyle.from(
         isFocused,

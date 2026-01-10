@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.then
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,10 +30,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
+import com.smashing.app.core.common.style.ColoredBoxTextFieldStyle
 import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.common.style.ColoredBoxTextFieldStyle
 
 @Composable
 fun ScoreInputTextField(
@@ -44,7 +43,7 @@ fun ScoreInputTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val isFilled by remember { derivedStateOf { state.text.isNotEmpty() } }
+    val isFilled = state.text.isNotEmpty()
     val focusManager = LocalFocusManager.current
 
     val inputState = ColoredBoxTextFieldStyle.from(

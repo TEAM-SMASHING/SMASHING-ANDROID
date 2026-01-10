@@ -30,7 +30,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.*
+import com.smashing.app.R.drawable.ic_check
+import com.smashing.app.R.drawable.ic_warning
 import com.smashing.app.core.common.style.BorderInputStyle
 import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -52,7 +53,7 @@ fun NicknameInputTextField(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
     val currentLength by remember { derivedStateOf { state.text.length } }
-    val isFilled by remember { derivedStateOf { state.text.isNotEmpty() } }
+    val isFilled = state.text.isNotEmpty()
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
