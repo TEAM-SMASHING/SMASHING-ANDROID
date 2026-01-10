@@ -4,19 +4,19 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.core.common.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 
+private const val AREA_RATIO = 296 / 128f
+
 @Composable
 fun SmashingAreaTextField(
     state: TextFieldState,
@@ -35,53 +37,48 @@ fun SmashingAreaTextField(
     isError: Boolean = false,
     isConfirm: Boolean = false,
     inputTransformation: InputTransformation? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
     onKeyboardAction: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
-    val isFilled by remember { derivedStateOf { state.text.isNotEmpty() } }
+    val isFilled = state.text.isNotEmpty()
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
         isError = isError,
         isConfirm = isConfirm,
     )
-    Column(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = inputState.getBorderColor(),
-                    shape = RoundedCornerShape(12.dp),
-                )
-                .height(156.dp)
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-        ) {
-            SmashingBasicTextField(
-                state = state,
-                modifier = Modifier.weight(1f),
-                placeholder = placeholder,
-                placeholderColor = inputState.getContentColor(),
-                placeholderStyle = inputState.getTextStyle(),
-                textColor = inputState.getContentColor(),
-                textStyle = inputState.getTextStyle(),
-                inputTransformation = inputTransformation,
-                interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
-                lineLimits = TextFieldLineLimits.MultiLine(
-                    minHeightInLines = 1,
-                    maxHeightInLines = Int.MAX_VALUE
-                ),
-                onKeyboardAction = {
-                    if (keyboardOptions.imeAction == ImeAction.Done) {
-                        focusManager.clearFocus()
-                        onKeyboardAction()
-                    }
-                },
+    Box(
+        modifier = modifier
+            .border(
+                width = 1.dp,
+                color = inputState.getBorderColor(),
+                shape = RoundedCornerShape(12.dp),
             )
-        }
+            .aspectRatio(AREA_RATIO)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+    ) {
+        SmashingBasicTextField(
+            state = state,
+            placeholder = placeholder,
+            placeholderColor = inputState.getContentColor(),
+            placeholderStyle = inputState.getTextStyle(),
+            textColor = inputState.getContentColor(),
+            textStyle = inputState.getTextStyle(),
+            inputTransformation = inputTransformation,
+            interactionSource = interactionSource,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+            ),
+            lineLimits = TextFieldLineLimits.MultiLine(),
+            onKeyboardAction = {
+                if (keyboardOptions?.imeAction == ImeAction.Done) {
+                    focusManager.clearFocus()
+                    onKeyboardAction()
+                }
+            },
+        )
     }
 }
 
