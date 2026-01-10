@@ -14,7 +14,6 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -25,8 +24,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 /**
  *Basic Text Field
@@ -46,7 +45,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
  * @param suffix 텍스트 필드 우측 끝에 배치될 추가 요소 (아이콘, 버튼 등)
  *
  */
-//todo 디자인시스템 등록 이후 구글 기본 컬러로 되어있는 부분 변경
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SmashingBasicTextField(
@@ -62,11 +61,12 @@ fun SmashingBasicTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
-    cursorColor: Color = MaterialTheme.colorScheme.primary,
+    cursorColor: Color = textColor,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     inputTransformation: InputTransformation? = null,
     outputTransformation: OutputTransformation? = null,
     suffix: (@Composable (() -> Unit))? = null,
+    contentAlignment: Alignment = Alignment.TopStart,
 ) {
     BasicTextField(
         state = state,
@@ -88,7 +88,7 @@ fun SmashingBasicTextField(
             ) {
                 Box(
                     modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.TopStart,
+                    contentAlignment = contentAlignment,
                 ) {
                     if (state.text.isEmpty()) {
                         Text(
@@ -103,25 +103,24 @@ fun SmashingBasicTextField(
             }
         }
     )
-
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun SmashingBasicTextFieldInputPreview() {
     SmashingAndroidTheme {
         val state = rememberTextFieldState(initialText = "http://open.kakao.com/")
         Box(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(20.dp),
         ) {
             SmashingBasicTextField(
                 state = state,
-                placeholder = "placeholder",
-                placeholderColor = Color.Gray,
-                placeholderStyle = TextStyle(fontSize = 16.sp),
-                textColor = Color.Gray,
-                textStyle = TextStyle(fontSize = 16.sp)
+                placeholder = "텍스트를 입력하세요",
+                placeholderColor = SmashingTheme.colors.txtTertiary,
+                placeholderStyle = SmashingTheme.typography.sm.medium14,
+                textColor = SmashingTheme.colors.txtPrimary,
+                textStyle = SmashingTheme.typography.sm.medium14,
             )
         }
     }
