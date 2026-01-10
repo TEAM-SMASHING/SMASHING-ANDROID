@@ -45,7 +45,6 @@ fun NicknameInputTextField(
     errorText: String? = null,
     confirmText: String? = null,
     maxLength: Int = 10,
-    onKeyboardAction: () -> Unit = {},
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -85,7 +84,6 @@ fun NicknameInputTextField(
                 keyboardOptions = keyboardOptions,
                 onKeyboardAction = {
                     focusManager.clearFocus()
-                    onKeyboardAction()
                 },
                 inputTransformation = InputTransformation.maxLength(maxLength),
                 suffix = {

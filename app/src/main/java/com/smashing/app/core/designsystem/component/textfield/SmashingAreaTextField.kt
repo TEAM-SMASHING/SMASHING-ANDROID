@@ -37,7 +37,6 @@ fun SmashingAreaTextField(
     modifier: Modifier = Modifier,
     isError: Boolean = false,
     inputTransformation: InputTransformation? = null,
-    onKeyboardAction: () -> Unit = {},
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -72,8 +71,7 @@ fun SmashingAreaTextField(
             keyboardOptions = keyboardOptions,
             lineLimits = TextFieldLineLimits.MultiLine(),
             onKeyboardAction = {
-                focusManager.clearFocus()
-                onKeyboardAction() },
+                focusManager.clearFocus()},
         )
     }
 }
