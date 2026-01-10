@@ -14,7 +14,6 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -62,7 +61,7 @@ fun SmashingBasicTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
-    cursorColor: Color = MaterialTheme.colorScheme.primary,
+    cursorColor: Color = textColor,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     inputTransformation: InputTransformation? = null,
     outputTransformation: OutputTransformation? = null,
