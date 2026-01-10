@@ -107,7 +107,6 @@ private fun SearchTextFieldStatesPreview() {
     SmashingAndroidTheme {
         Box(modifier = Modifier.padding(20.dp))
         {
-
             SearchTextField(
                 state = remember { TextFieldState() },
                 placeholder = "닉네임을 입력해주세요",

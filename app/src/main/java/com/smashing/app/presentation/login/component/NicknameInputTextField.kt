@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -50,7 +49,7 @@ fun NicknameInputTextField(
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
-    val currentLength by remember { derivedStateOf { state.text.length } }
+    val currentLength = state.text.length
     val isFilled = state.text.isNotEmpty()
     val isError = !errorText.isNullOrEmpty()
     val isConfirm = !confirmText.isNullOrEmpty()
@@ -84,7 +83,9 @@ fun NicknameInputTextField(
                 onKeyboardAction = {
                     focusManager.clearFocus()
                 },
+
                 inputTransformation = InputTransformation.maxLength(maxLength),
+
                 suffix = {
                     Text(
                         text = "$currentLength / $maxLength",
@@ -94,6 +95,7 @@ fun NicknameInputTextField(
                 }
             )
         }
+
         if (isError) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
