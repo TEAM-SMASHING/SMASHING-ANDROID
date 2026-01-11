@@ -26,10 +26,8 @@ class AuthRepositoryImpl @Inject constructor(
 
             val token = response.toKakaoLoginToken()
 
-            tokenDataStore.setAccessToken(
+            tokenDataStore.setTokens(
                 accessToken = token.accessToken,
-            )
-            tokenDataStore.setRefreshToken(
                 refreshToken = token.refreshToken,
             )
 
