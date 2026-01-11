@@ -70,6 +70,7 @@ fun SmashingAreaTextField(
             placeholderStyle = inputState.getTextStyle(),
             textColor = inputState.getContentColor(),
             textStyle = inputState.getTextStyle(),
+            interactionSource = interactionSource,
             inputTransformation = InputTransformation.maxLength(maxLength),
             keyboardOptions = keyboardOptions,
             lineLimits = TextFieldLineLimits.MultiLine(),
