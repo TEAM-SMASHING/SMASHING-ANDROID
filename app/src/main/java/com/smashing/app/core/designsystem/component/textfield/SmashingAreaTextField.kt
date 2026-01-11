@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.checkLength
 
 private const val AREA_RATIO = 296 / 128f
 
@@ -47,7 +49,7 @@ fun SmashingAreaTextField(
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
-    val currentLength = state.text.length
+    val currentLength = state.text.toString().checkLength()
     val isFilled = state.text.isNotEmpty()
     val lengthLimitTransformation = InputTransformation.maxLength(maxLength)
     val combinedTransformation = inputTransformation?.then(lengthLimitTransformation)
@@ -68,30 +70,34 @@ fun SmashingAreaTextField(
             .aspectRatio(AREA_RATIO)
             .padding(horizontal = 16.dp, vertical = 14.dp),
     ) {
-        SmashingBasicTextField(
-            state = state,
-            placeholder = placeholder,
-            placeholderColor = inputState.getContentColor(),
-            placeholderStyle = inputState.getTextStyle(),
-            textColor = inputState.getContentColor(),
-            textStyle = inputState.getTextStyle(),
-            interactionSource = interactionSource,
-            inputTransformation = combinedTransformation,
-            keyboardOptions = keyboardOptions,
-            lineLimits = TextFieldLineLimits.MultiLine(),
-            modifier = Modifier
-                .matchParentSize(),
-            onKeyboardAction = { focusManager.clearFocus() },
-        )
-        Text(
-            text = "$currentLength / $maxLength",
-            style = SmashingTheme.typography.xs.regular12,
-            color = inputState.getContentColor(),
-            modifier = Modifier.align(Alignment.BottomEnd)
-        )
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            SmashingBasicTextField(
+                state = state,
+                placeholder = placeholder,
+                placeholderColor = inputState.getContentColor(),
+                placeholderStyle = inputState.getTextStyle(),
+                textColor = inputState.getContentColor(),
+                textStyle = inputState.getTextStyle(),
+                interactionSource = interactionSource,
+                inputTransformation = combinedTransformation.maxLength(maxLength),
+                keyboardOptions = keyboardOptions,
+                lineLimits = TextFieldLineLimits.MultiLine(),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                onKeyboardAction = { focusManager.clearFocus() },
+            )
+            Text(
+                text = "$currentLength / $maxLength",
+                style = SmashingTheme.typography.xs.regular12,
+                color = inputState.getContentColor(),
+                modifier = Modifier.align(Alignment.End)
+            )
+        }
     }
 }
-
 
 @Preview
 @Composable
