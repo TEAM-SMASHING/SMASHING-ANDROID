@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -34,6 +33,8 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * @param label 드롭다운 메뉴의 레이블
@@ -66,7 +67,6 @@ sealed class DropdownItem(
  * @param isExpanded 드롭다운 메뉴가 열려있는지 여부
  * @param triggerWidth 트리거 요소의 너비 (메뉴 최소 너비로 사용)
  * @param triggerHeight 트리거 요소의 높이 (메뉴 위치 계산에 사용)
- * @param density 화면 밀도 정보 (Dp를 픽셀로 변환하는데 사용)
  * @param onItemClick Normal 타입 항목이 클릭되었을 때 호출되는 콜백 (선택된 label을 전달)
  * @param onDismiss 드롭다운 메뉴가 닫힐 때 호출되는 콜백
  * @param modifier 적용할 Modifier
@@ -76,11 +76,10 @@ sealed class DropdownItem(
  */
 @Composable
 fun SmashingDropdownMenu(
-    items: List<DropdownItem>,
+    items: ImmutableList<DropdownItem>,
     isExpanded: Boolean,
     triggerWidth: Dp,
     triggerHeight: Dp,
-    density: Density,
     onItemClick: (String) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
@@ -92,12 +91,16 @@ fun SmashingDropdownMenu(
         return
     }
 
+    val density = LocalDensity.current
+
     Popup(
         alignment = itemAlignment,
-        offset = IntOffset(
-            x = 0,
-            y = with(density) { (triggerHeight + offsetY).toPx().toInt() }
-        ),
+        offset = remember(triggerHeight, offsetY, density) {
+            IntOffset(
+                x = 0,
+                y = with(density) { (triggerHeight + offsetY).toPx().toInt() }
+            )
+        },
         onDismissRequest = onDismiss,
         properties = PopupProperties(
             focusable = true,
@@ -152,7 +155,7 @@ private fun SmashingDropdownMenuItem(
             )
             .noRippleClickable(
                 onClick = {
-                    when(item){
+                    when (item) {
                         is DropdownItem.Normal -> onNormalClick(item.label)
                         is DropdownItem.Additional -> item.onClick()
                     }
@@ -223,11 +226,10 @@ private fun SmashingDropdownMenuPreview() {
             }
 
             SmashingDropdownMenu(
-                items = items,
+                items = items.toImmutableList(),
                 isExpanded = isExpanded,
                 triggerWidth = triggerWidth,
                 triggerHeight = triggerHeight,
-                density = density,
                 onItemClick = { label ->
                     println("$label 선택됨")
                 },
