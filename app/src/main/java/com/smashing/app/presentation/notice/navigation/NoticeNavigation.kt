@@ -1,6 +1,5 @@
 package com.smashing.app.presentation.notice.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -14,7 +13,6 @@ fun NavController.navigateToNotice(
 ) = navigate(Notice, navOptions)
 
 fun NavGraphBuilder.noticeGraph(
-    innerPadding: PaddingValues,
     navigateUp: () -> Unit,
 ) {
     composable<Notice> {

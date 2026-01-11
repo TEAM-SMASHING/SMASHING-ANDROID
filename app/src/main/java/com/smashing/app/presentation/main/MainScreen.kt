@@ -102,7 +102,6 @@ private fun MainNavHost(
         )
 
         noticeGraph(
-            innerPadding = innerPadding,
             navigateUp = appState.navController::navigateUp,
         )
     }
