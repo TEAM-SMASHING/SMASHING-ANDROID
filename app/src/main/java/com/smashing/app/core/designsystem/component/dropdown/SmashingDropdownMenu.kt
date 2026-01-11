@@ -37,29 +37,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 /**
- * @param label 드롭다운 메뉴의 레이블
- *
- * Normal
- * 일반 드롭다운 메뉴 항목
- * 선택 시 onItemClick 콜백에 label을 전달합니다.
- *
- * Additional
- * 추가 액션을 가진 드롭다운 메뉴 항목
- * 선택 시 별도의 onClick 콜백을 실행합니다.
- */
-sealed class DropdownItem(
-    val label: String,
-) {
-    class Normal(
-        label: String,
-    ) : DropdownItem(label)
-    class Additional(
-        label: String,
-        val onClick: () -> Unit,
-    ) : DropdownItem(label)
-}
-
-/**
  * 드롭다운 메뉴 컴포넌트
  * Popup을 사용하여 트리거 요소 하단에 메뉴를 표시하는 드롭다운 메뉴입니다.
  * Normal과 Additional 두 가지 타입의 항목을 지원하며, 각 항목은 클릭 시 다른 동작을 수행합니다.
