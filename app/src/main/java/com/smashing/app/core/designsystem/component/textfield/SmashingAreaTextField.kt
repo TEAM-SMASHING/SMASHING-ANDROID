@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.then
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +41,7 @@ fun SmashingAreaTextField(
     modifier: Modifier = Modifier,
     isError: Boolean = false,
     maxLength: Int = 100,
+    inputTransformation: InputTransformation? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -47,6 +49,9 @@ fun SmashingAreaTextField(
     val focusManager = LocalFocusManager.current
     val currentLength = state.text.length
     val isFilled = state.text.isNotEmpty()
+    val lengthLimitTransformation = InputTransformation.maxLength(maxLength)
+    val combinedTransformation = inputTransformation?.then(lengthLimitTransformation)
+        ?: lengthLimitTransformation
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
         isFilled = isFilled,
@@ -71,7 +76,7 @@ fun SmashingAreaTextField(
             textColor = inputState.getContentColor(),
             textStyle = inputState.getTextStyle(),
             interactionSource = interactionSource,
-            inputTransformation = InputTransformation.maxLength(maxLength),
+            inputTransformation = combinedTransformation,
             keyboardOptions = keyboardOptions,
             lineLimits = TextFieldLineLimits.MultiLine(),
             modifier = Modifier
