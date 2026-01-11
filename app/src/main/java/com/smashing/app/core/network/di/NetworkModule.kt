@@ -3,8 +3,10 @@ package com.smashing.app.core.network.di
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.smashing.app.BuildConfig
 import com.smashing.app.BuildConfig.BASE_URL
+import com.smashing.app.BuildConfig.KAKAO_BASE_URL
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
+import com.smashing.app.core.network.qualifier.Kakao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,6 +34,7 @@ object NetworkModule {
     fun provideJson(): Json = Json {
         encodeDefaults = true
         ignoreUnknownKeys = true
+        coerceInputValues = true
         prettyPrint = BuildConfig.DEBUG
     }
 
@@ -77,6 +80,18 @@ object NetworkModule {
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(client)
+        .addConverterFactory(factory)
+        .build()
+
+    @Provides
+    @Singleton
+    @Kakao
+    fun provideKakaoRetrofit(
+        client: OkHttpClient,
+        factory: Converter.Factory,
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(KAKAO_BASE_URL)
         .client(client)
         .addConverterFactory(factory)
         .build()

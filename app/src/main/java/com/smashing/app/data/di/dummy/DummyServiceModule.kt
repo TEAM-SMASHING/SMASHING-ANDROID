@@ -14,5 +14,7 @@ import javax.inject.Singleton
 object DummyServiceModule {
     @Provides
     @Singleton
-    fun provideDummyService(retrofit: Retrofit): DummyService = retrofit.create()
+    fun provideDummyService(
+        retrofit: Retrofit
+    ): DummyService = retrofit.create()
 }
