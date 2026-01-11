@@ -22,6 +22,7 @@ object AuthServiceModule {
 
     @Provides
     @Singleton
+    @NoAuth
     fun provideNoAuthService(
         @NoAuth retrofit: Retrofit
     ): AuthService = retrofit.create()

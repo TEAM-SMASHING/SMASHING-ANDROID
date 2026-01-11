@@ -13,13 +13,13 @@ class AuthInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-        val accessToken = runBlocking {
+        val accessToken =
             tokenDataSource.getAccessToken()
         }
 
         val newRequest = request.newBuilder()
             .apply {
-                if (accessToken.isNullOrBlank()) {
+                if (!accessToken.isNullOrBlank()) {
                     addHeader(AUTHORIZATION, "$BEARER_TOKEN $accessToken")
                 }
             }
