@@ -1,6 +1,5 @@
 package com.smashing.app.core.network
 
-import androidx.datastore.preferences.core.stringPreferencesKey
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
