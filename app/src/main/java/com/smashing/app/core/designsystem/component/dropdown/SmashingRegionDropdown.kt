@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.R.drawable.ic_location
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * 지역 선택 드롭다운 컴포넌트
@@ -89,31 +90,35 @@ fun RegionDropdown(
                 contentDescription = "location",
                 tint = colors.iconPrimary,
             )
+
             Spacer(modifier = Modifier.width(4.dp))
+
             Text(
                 text = selectedItem,
                 style = typography.lg.semibold18,
                 color = colors.txtPrimary,
             )
+
             Spacer(modifier = Modifier.width(2.dp))
+
             Icon(
                 imageVector = ImageVector.vectorResource(ic_arrow_down),
                 contentDescription = "Dropdown Arrow",
                 tint = colors.iconPrimary,
             )
         }
+
         SmashingDropdownMenu(
-            items = items.map {
+            items = (items.map {
                 DropdownItem.Normal(it)
             } + DropdownItem.Additional(
                 label = "지역 선택",
                 onClick = onRegionChange,
-            ),
+            )).toImmutableList(),
             onItemClick = onClick,
             isExpanded = isExpanded,
             triggerWidth = triggerWidth,
             triggerHeight = triggerHeight,
-            density = density,
             onDismiss = { isExpanded = false },
             itemAlignment = Alignment.TopStart,
             isDivided = isDivide,

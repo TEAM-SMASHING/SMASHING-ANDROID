@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * 승자 선택 드롭다운 컴포넌트
@@ -95,7 +96,9 @@ fun SmashingWinnerDropdown(
                     colors.txtSecondary
                 },
             )
+
             Spacer(modifier = Modifier.width(8.dp))
+
             if (selectedItem == null) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_down),
@@ -104,15 +107,15 @@ fun SmashingWinnerDropdown(
                 )
             }
         }
+
         if (items.isNotEmpty()) {
             SmashingDropdownMenu(
                 items = items.map {
                     DropdownItem.Normal(it)
-                },
+                }.toImmutableList(),
                 isExpanded = isExpanded,
                 triggerWidth = triggerWidth,
                 triggerHeight = triggerHeight,
-                density = density,
                 onItemClick = onClick,
                 onDismiss = { isExpanded = false },
                 isDivided = isDivide,
