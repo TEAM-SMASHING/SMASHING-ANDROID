@@ -14,6 +14,6 @@ interface AuthService {
 
     @POST("/api/v1/auth/signup")
     suspend fun postSignUp(
-        request: PostSignUpRequest,
+        @Body request: PostSignUpRequest,
     ): BaseResponse<PostSignUpResponse>
 }
