@@ -7,6 +7,9 @@
     <string name="profile">프로필</string>
     <string name="count">%d</string>
 
+    <!--Ranking -->
+    <string name="ranking_tier_with_lp">%1$s · %2$d</string>
+
     <!--Card  -->
     <string name="record">기록</string>
     <string name="review">후기</string>
@@ -14,6 +17,10 @@
     <string name="skip">건너뛰기</string>
     <string name="kakao_link">카카오톡 링크</string>
     <string name="win_lose_count">%1$d승 %2$d패</string>
+
+    <!--Dropdown -->
+    <string name="dropdown_region_select">지역 선택</string>
+    <string name="dropdown_winner_select">승자 선택</string>
 
     <!--Home    -->
     <!--Matching -->
