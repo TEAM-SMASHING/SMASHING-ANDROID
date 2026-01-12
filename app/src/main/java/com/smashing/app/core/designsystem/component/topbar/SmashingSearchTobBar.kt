@@ -32,6 +32,7 @@ fun SmashingSearchTobBar(
 ) {
     Row(
         modifier = modifier
+            .fillMaxWidth()
             .background(
                 color = Color.Transparent,
             )
