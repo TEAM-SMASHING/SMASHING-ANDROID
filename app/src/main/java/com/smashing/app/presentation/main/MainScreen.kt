@@ -3,11 +3,7 @@ package com.smashing.app.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,7 +41,6 @@ fun MainScreen(
             )
         },
         containerColor = SmashingTheme.colors.bgCanvas,
-        contentWindowInsets = WindowInsets.safeDrawing.exclude(WindowInsets.statusBars),
         modifier = Modifier
             .fillMaxSize(),
     ) { innerPadding ->
@@ -71,7 +66,7 @@ private fun MainNavHost(
     ) {
         homeGraph(
             innerPadding = innerPadding,
-            navigateToNotice = appState.navController::navigateToNotice
+            navigateToNotice = appState.navController::navigateToNotice,
         )
 
         searchGraph(
@@ -95,7 +90,7 @@ private fun MainNavHost(
                             inclusive = true
                         }
                         launchSingleTop = true
-                    }
+                    },
                 )
             },
             innerPadding = innerPadding,
@@ -103,6 +98,7 @@ private fun MainNavHost(
 
         noticeGraph(
             navigateUp = appState.navController::navigateUp,
+            innerPadding = innerPadding,
         )
     }
 }
