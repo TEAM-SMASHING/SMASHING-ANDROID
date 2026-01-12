@@ -18,4 +18,7 @@
     <!--Home    -->
     <!--Matching -->
     <string name="matching_write">결과 작성하기</string>
+    <string name="matching_receive">받은 요청</string>
+    <string name="matching_send">보낸 요청</string>
+    <string name="matching_confirm">매칭 확정</string>
 </resources>
