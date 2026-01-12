@@ -44,7 +44,7 @@ fun KakaoLoginButton (
                 shape = RoundedCornerShape(10.dp),
             )
             .noRippleClickable(
-                onClick = onLoginBtnClick
+                onClick = onLoginBtnClick,
             )
             .padding(vertical = 13.dp),
         contentAlignment = Alignment.Center,
@@ -56,7 +56,7 @@ fun KakaoLoginButton (
                 imageVector = ImageVector.vectorResource(ic_kakao_logo),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(18.dp),
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -64,7 +64,7 @@ fun KakaoLoginButton (
             Text(
                 text = stringResource(kakao_login),
                 color = colors.txtPrimaryReverse,
-                style = typography.md.medium16
+                style = typography.md.medium16,
             )
         }
     }
