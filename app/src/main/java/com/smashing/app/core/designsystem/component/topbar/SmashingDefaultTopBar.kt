@@ -29,10 +29,7 @@ fun SmashingDefaultTopBar(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = Color.Transparent,
-            ),
+            .fillMaxWidth(),
     ) {
         if(topBarType == TopBarType.BACK && onClick != null){
             Icon(

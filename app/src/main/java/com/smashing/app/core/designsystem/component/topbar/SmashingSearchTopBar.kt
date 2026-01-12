@@ -35,9 +35,6 @@ fun SmashingSearchTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = Color.Transparent,
-            )
             .padding(
                 vertical = 10.dp,
                 horizontal = 16.dp,
