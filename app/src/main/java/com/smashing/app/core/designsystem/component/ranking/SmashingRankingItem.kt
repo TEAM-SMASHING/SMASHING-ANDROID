@@ -32,6 +32,19 @@ import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.core.util.TierBadgeImageProvider
 
+/**
+ * 랭킹 아이템 컴포넌트
+ * 랭킹 목록에서 사용자 정보를 표시하는 컴포넌트입니다.
+ * 순위에 따라 금/은/동 메달 아이콘 또는 숫자를 표시하며, 사용자 프로필 이미지, 닉네임, 티어, LP를 표시합니다.
+ * @param userId 사용자 식별자
+ * @param nickname 사용자 닉네임
+ * @param rank 순위 (1위는 금메달, 2위는 은메달, 3위는 동메달, 그 외는 숫자로 표시)
+ * @param tier 사용자의 티어 타입
+ * @param lp 사용자의 LP (League Points)
+ * @param onClick 아이템 클릭 시 호출되는 콜백 (userId를 전달)
+ * @param modifier 적용할 Modifier
+ */
+
 @Composable
 fun SmashingRankingItem(
     userId: String,
