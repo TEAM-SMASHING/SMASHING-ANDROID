@@ -32,8 +32,8 @@ fun LoginRoute(
 
 @Composable
 private fun LoginScreen(
-    modifier: Modifier = Modifier,
     navigateToSignUp: (String) -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -64,5 +64,7 @@ private fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        navigateToSignUp = {}
+    )
 }
