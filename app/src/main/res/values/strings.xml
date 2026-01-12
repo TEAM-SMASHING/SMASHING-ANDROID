@@ -18,11 +18,18 @@
     <string name="kakao_link">카카오톡 링크</string>
     <string name="win_lose_count">%1$d승 %2$d패</string>
 
+    <!--Progress -->
+    <string name="progress_label">progress</string>
+
     <!--Dropdown -->
     <string name="dropdown_region_select">지역 선택</string>
     <string name="dropdown_winner_select">승자 선택</string>
+    <!--Home  -->
 
-    <!--Home    -->
     <!--Matching -->
     <string name="matching_write">결과 작성하기</string>
+    <!--Search  -->
+    <!--Profile -->
+    <!--Notice  -->
+    <string name="notice">알림</string>
 </resources>
