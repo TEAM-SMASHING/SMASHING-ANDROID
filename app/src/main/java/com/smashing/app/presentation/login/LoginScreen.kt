@@ -47,7 +47,7 @@ fun LoginRoute(
 private fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToHome: () -> Unit = {},
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
 
