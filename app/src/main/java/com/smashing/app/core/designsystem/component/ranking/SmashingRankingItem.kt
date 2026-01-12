@@ -1,5 +1,6 @@
 package com.smashing.app.core.designsystem.component.ranking
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_bronze
 import com.smashing.app.R.drawable.ic_gold
 import com.smashing.app.R.drawable.ic_silver
+import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -33,7 +36,6 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.core.util.TierBadgeImageProvider
 
 /**
  * 랭킹 아이템 컴포넌트
@@ -129,12 +131,13 @@ fun SmashingRankingItem(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        UrlImage(
-            url = TierBadgeImageProvider.getTierBadgeUrl(tier),
+        //TODO 티어 뱃지 TierType 사용해 이미지 수정 예정
+        Image(
+            painter = painterResource(id = img_tier_dummy),
+            contentDescription = null,
             modifier = Modifier
                 .height(40.dp)
                 .aspectRatio(1f)
-                .clip(CircleShape),
         )
     }
 }
