@@ -26,7 +26,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
-fun SmashingSearchTobBar(
+fun SmashingSearchTopBar(
     searchState: TextFieldState,
     placeholder: String,
     onBackClick: () -> Unit,
@@ -70,8 +70,13 @@ private fun SmashingSearchTobBarPreview() {
     SmashingAndroidTheme {
         val searchState = rememberTextFieldState()
 
-        Column {
-            SmashingSearchTobBar(
+        Column(
+            modifier = Modifier
+                .background(
+                    color = SmashingTheme.colors.bgDimmed
+                ),
+        ) {
+            SmashingSearchTopBar(
                 searchState = searchState,
                 placeholder = "닉네임을 입력해주세요",
                 onBackClick = {},
