@@ -123,7 +123,7 @@ object NetworkModule {
     @Singleton
     @Kakao
     fun provideKakaoRetrofit(
-        client: OkHttpClient,
+        @NoAuth client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(KAKAO_BASE_URL)

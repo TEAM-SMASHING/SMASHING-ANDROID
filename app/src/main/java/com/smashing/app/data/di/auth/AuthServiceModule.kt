@@ -14,15 +14,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthServiceModule {
-    @Provides
-    @Singleton
-    fun provideAuthService(
-        @Auth retrofit: Retrofit
-    ): AuthService = retrofit.create()
 
     @Provides
     @Singleton
-    @NoAuth
     fun provideNoAuthService(
         @NoAuth retrofit: Retrofit
     ): AuthService = retrofit.create()
