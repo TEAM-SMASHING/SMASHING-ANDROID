@@ -20,7 +20,7 @@ class AuthInterceptor @Inject constructor(
         val newRequest = request.newBuilder()
             .apply {
                 if (!accessToken.isNullOrBlank()) {
-                    addHeader(AUTHORIZATION, "$BEARER_TOKEN $accessToken")
+                    addHeader(AUTHORIZATION, "$BEARER_SUFFIX $accessToken")
                 }
             }
             .build()
@@ -30,7 +30,7 @@ class AuthInterceptor @Inject constructor(
 
     companion object {
         private const val AUTHORIZATION = "Authorization"
-        private const val BEARER_TOKEN = "Bearer"
+        private const val BEARER_SUFFIX = "Bearer"
     }
 
 }
