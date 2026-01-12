@@ -1,6 +1,5 @@
 package com.smashing.app.core.designsystem.component.ranking
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
