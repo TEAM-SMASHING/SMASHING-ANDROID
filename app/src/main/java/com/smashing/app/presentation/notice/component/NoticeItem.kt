@@ -70,7 +70,7 @@ fun NoticeItem(
                 ),
             horizontalArrangement = Arrangement
                 .spacedBy(
-                    space = 12.dp
+                    space = 12.dp,
                 )
         ) {
             UrlImage(
