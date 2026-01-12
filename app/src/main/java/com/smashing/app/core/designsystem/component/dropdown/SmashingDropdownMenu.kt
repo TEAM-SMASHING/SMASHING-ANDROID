@@ -70,14 +70,16 @@ fun SmashingDropdownMenu(
 
     val density = LocalDensity.current
 
+    val offset = remember(triggerHeight, offsetY, density) {
+        IntOffset(
+            x = 0,
+            y = with(density) { (triggerHeight + offsetY).toPx().toInt() }
+        )
+    }
+
     Popup(
         alignment = itemAlignment,
-        offset = remember(triggerHeight, offsetY, density) {
-            IntOffset(
-                x = 0,
-                y = with(density) { (triggerHeight + offsetY).toPx().toInt() }
-            )
-        },
+        offset = offset,
         onDismissRequest = onDismiss,
         properties = PopupProperties(
             focusable = true,
