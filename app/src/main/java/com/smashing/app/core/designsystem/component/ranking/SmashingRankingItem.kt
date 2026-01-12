@@ -1,5 +1,6 @@
 package com.smashing.app.core.designsystem.component.ranking
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +31,7 @@ import com.smashing.app.R.drawable.ic_bronze
 import com.smashing.app.R.drawable.ic_gold
 import com.smashing.app.R.drawable.ic_silver
 import com.smashing.app.R.drawable.img_tier_dummy
+import com.smashing.app.R.string.ranking_tier_with_lp
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -46,7 +49,7 @@ import com.smashing.app.core.util.ProfileImageProvider
  * @param rank 순위 (1위는 금메달, 2위는 은메달, 3위는 동메달, 그 외는 숫자로 표시)
  * @param tier 사용자의 티어 타입
  * @param lp 사용자의 LP (League Points)
- * @param onClick 아이템 클릭 시 호출되는 콜백 (userId를 전달)
+ * @param onClick 아이템 클릭 시 호출되는 콜백
  * @param modifier 적용할 Modifier
  */
 
@@ -57,7 +60,7 @@ fun SmashingRankingItem(
     rank: Int,
     tier: TierType,
     lp: Int,
-    onClick: (String) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -67,7 +70,7 @@ fun SmashingRankingItem(
                 shape = RoundedCornerShape(8.dp),
             )
             .noRippleClickable(
-                onClick = { onClick(userId) }
+                onClick = { onClick() },
             )
             .padding(vertical = 12.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -123,9 +126,9 @@ fun SmashingRankingItem(
                 color = colors.txtPrimary,
             )
             Text(
-                text = "${tier.tierName} · $lp",
+                text = stringResource(ranking_tier_with_lp),
                 style = typography.xs.regular12,
-                color = colors.txtTertiary
+                color = colors.txtTertiary,
             )
         }
 
@@ -157,7 +160,7 @@ private fun SmashingRankingItemPreview() {
                 rank = 1,
                 tier = TierType.CHALLENGER,
                 lp = 2450,
-                onClick = { userId -> println("User clicked: $userId") },
+                onClick = { },
             )
             SmashingRankingItem(
                 userId = "user2",
@@ -165,7 +168,7 @@ private fun SmashingRankingItemPreview() {
                 rank = 2,
                 tier = TierType.DIAMOND_1,
                 lp = 2350,
-                onClick = { userId -> println("User clicked: $userId") },
+                onClick = { },
             )
             SmashingRankingItem(
                 userId = "user3",
@@ -173,7 +176,7 @@ private fun SmashingRankingItemPreview() {
                 rank = 3,
                 tier = TierType.PLATINUM_2,
                 lp = 2250,
-                onClick = { userId -> println("User clicked: $userId") },
+                onClick = { },
             )
             SmashingRankingItem(
                 userId = "user4",
@@ -181,7 +184,7 @@ private fun SmashingRankingItemPreview() {
                 rank = 4,
                 tier = TierType.GOLD_1,
                 lp = 1850,
-                onClick = { userId -> println("User clicked: $userId") },
+                onClick = { },
             )
         }
     }
