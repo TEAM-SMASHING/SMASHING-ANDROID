@@ -21,7 +21,6 @@ import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun LoginRoute(
-    innerPadding: PaddingValues,
     navigateToSignUp: (String) -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
@@ -31,7 +30,6 @@ fun LoginRoute(
     val context = LocalContext.current
 
     LoginScreen(
-        innerPadding = innerPadding,
         onKakaoLoginClick = {
             viewModel.postKakaoLogin(
                 context = context,
@@ -44,7 +42,6 @@ fun LoginRoute(
 
 @Composable
 private fun LoginScreen(
-    innerPadding: PaddingValues,
     onKakaoLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -52,8 +49,7 @@ private fun LoginScreen(
     // TODO: 추후 수정 예정
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -73,7 +69,6 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        innerPadding = PaddingValues(),
         onKakaoLoginClick = {},
     )
 }

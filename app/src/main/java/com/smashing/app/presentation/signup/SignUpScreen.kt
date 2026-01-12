@@ -16,14 +16,12 @@ import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun SignUpRoute(
-    innerPadding: PaddingValues,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
 
     SignUpScreen(
-        innerPadding = innerPadding,
         onSignupClick = {
             viewModel.postSignUp(
                 onSignupSuccess = navigateToHome,
@@ -35,7 +33,6 @@ fun SignUpRoute(
 
 @Composable
 private fun SignUpScreen(
-    innerPadding: PaddingValues,
     onSignupClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -43,8 +40,7 @@ private fun SignUpScreen(
     // TODO: 추후 수정 예정
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -63,7 +59,6 @@ private fun SignUpScreen(
 @Composable
 private fun SignUpScreenPreview() {
     SignUpScreen(
-        innerPadding = PaddingValues(),
         onSignupClick = {},
     )
 }
