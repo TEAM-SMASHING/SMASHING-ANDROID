@@ -9,9 +9,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 @Composable
 fun SubmitRoute(
@@ -38,8 +41,15 @@ private fun SubmitScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "결과 작성",
-            color = Color.White,
+            text = stringResource(R.string.submit_title),
+            color = SmashingTheme.colors.txtPrimary,
+            style = SmashingTheme.typography.xl.semibold20,
+        )
+
+        Text(
+            text = stringResource(R.string.submit_description),
+            color = SmashingTheme.colors.txtTertiary,
+            style = SmashingTheme.typography.sm.medium14,
         )
     }
 }
