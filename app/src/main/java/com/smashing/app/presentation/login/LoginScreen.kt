@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,8 @@ import com.smashing.app.R.string.login_description_ing
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.presentation.login.component.KakaoLoginButton
+
+private const val LOGO_RATIO = 240/80f
 
 @Composable
 fun LoginRoute(
@@ -67,7 +70,7 @@ private fun LoginScreen(
             painter = painterResource(img_logo),
             contentDescription = null,
             modifier = Modifier
-                .size(240.dp, 80.dp),
+                .aspectRatio(LOGO_RATIO),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
