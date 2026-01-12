@@ -22,6 +22,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,7 +64,11 @@ fun SmashingProgressBar(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(animatedProgress)
+                .matchParentSize()
+                .graphicsLayer {
+                    transformOrigin = TransformOrigin(0f, 0.5f)
+                    scaleX = animatedProgress
+                }
                 .height(8.dp)
                 .background(
                     color = colors.stateProgressFill,
