@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun HomeRoute(
+    navigateToNotice: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -26,6 +28,7 @@ fun HomeRoute(
     }
     HomeScreen(
         uiState = uiState,
+        navigateToNotice = navigateToNotice,
         modifier = modifier,
     )
 }
@@ -33,6 +36,7 @@ fun HomeRoute(
 @Composable
 private fun HomeScreen(
     uiState: HomeContract.State,
+    navigateToNotice: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -44,6 +48,8 @@ private fun HomeScreen(
         Text(
             text = "홈",
             color = Color.White,
+            modifier = Modifier
+                .clickable(onClick = navigateToNotice)
         )
     }
 }
@@ -53,5 +59,6 @@ private fun HomeScreen(
 private fun HomeScreenPreview() {
     HomeScreen(
         uiState = HomeContract.State(),
+        navigateToNotice = {},
     )
 }
