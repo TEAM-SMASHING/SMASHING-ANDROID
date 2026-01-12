@@ -43,7 +43,7 @@ private fun SignUpScreen(
             modifier = Modifier
                 .noRippleClickable(
                     onClick = {
-                        viewModel.fetchSignUp (
+                        viewModel.postSignUp (
                             onSignupSuccess = navigateToHome
                         )
                     }

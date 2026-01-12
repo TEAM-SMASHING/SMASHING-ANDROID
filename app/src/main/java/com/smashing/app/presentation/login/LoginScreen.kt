@@ -49,7 +49,7 @@ private fun LoginScreen(
             contentDescription = null,
             modifier = Modifier.noRippleClickable(
                 onClick = {
-                    viewModel.fetchKakaoLogin(
+                    viewModel.postKakaoLogin(
                         context = context,
                         onKakaoLoginSuccess = navigateToSignUp,
                     )

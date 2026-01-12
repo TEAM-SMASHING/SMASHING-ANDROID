@@ -21,7 +21,7 @@ class SignUpViewModel @Inject constructor(
 
     private val authId = savedStateHandle.toRoute<SignUp>().authId
 
-    fun fetchSignUp(
+    fun postSignUp(
         onSignupSuccess: () -> Unit,
     ) = viewModelScope.launch {
         val request = PostSignUpRequest(

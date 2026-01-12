@@ -14,7 +14,7 @@ class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    fun fetchKakaoLogin(
+    fun postKakaoLogin(
         context: Context,
         onKakaoLoginSuccess: (String) -> Unit,
     ) = viewModelScope.launch {
