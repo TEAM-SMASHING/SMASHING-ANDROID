@@ -35,7 +35,6 @@ class SignUpViewModel @Inject constructor(
         )
         authRepository.postSignUp(request = request)
             .onSuccess {
-                authRepository.postSignUp(request = request)
                 onSignupSuccess()
                 Timber.tag("SignUp").d("회원가입 성공 ${SignUpModel(
                     accessToken = it.accessToken,
