@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -20,6 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_arrow_left
 import com.smashing.app.core.common.type.NotificationType
@@ -35,11 +38,14 @@ import kotlinx.collections.immutable.toPersistentList
 fun NoticeRoute(
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: NoticeViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     NoticeScreen(
         modifier = modifier,
         onBackBtnClick = navigateUp,
-        uiState = NoticeContract.State()
+        uiState = uiState,
     )
 }
 
