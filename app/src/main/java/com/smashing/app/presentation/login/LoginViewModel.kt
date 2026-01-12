@@ -14,15 +14,15 @@ class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    fun fetchKakaoLogin(
+    fun postKakaoLogin(
         context: Context,
-        onKakaoLoginSuccess: () -> Unit,
+        onKakaoLoginSuccess: (String) -> Unit,
     ) = viewModelScope.launch {
         authRepository.loginKakao(context = context)
             .onSuccess { token ->
-                authRepository.postKakaoLogin(authorization = token)
+                authRepository.postKakaoLogin(token)
                     .onSuccess {
-                        onKakaoLoginSuccess()
+                        onKakaoLoginSuccess(it.authId)
                         Timber.tag("KakaoLogin").d("로그인 성공 $token")
                     }
                     .onFailure { error ->

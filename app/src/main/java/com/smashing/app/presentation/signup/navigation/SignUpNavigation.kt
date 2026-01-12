@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.home.navigation
+package com.smashing.app.presentation.signup.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -7,25 +7,27 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.smashing.app.core.common.navigation.MainTabRoute
-import com.smashing.app.presentation.home.HomeRoute
+import com.smashing.app.presentation.signup.SignUpRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToHome(
-    navOptions: NavOptions? = null
-) = navigate(Home, navOptions)
+fun NavController.navigateToSignUp(
+    authId: String,
+    navOptions: NavOptions? = null,
+) = navigate(SignUp(authId), navOptions)
 
-fun NavGraphBuilder.homeGraph(
+fun NavGraphBuilder.signUpGraph(
+    navigateToHome: () -> Unit,
     innerPadding: PaddingValues,
-    navigateToNotice: () -> Unit,
 ) {
-    composable<Home> {
-        HomeRoute(
+    composable<SignUp> {
+        SignUpRoute(
+            navigateToHome = navigateToHome,
             modifier = Modifier.padding(innerPadding),
-            navigateToNotice = navigateToNotice,
         )
     }
 }
 
 @Serializable
-data object Home : MainTabRoute
+data class SignUp(
+    val authId: String,
+)

@@ -1,44 +1,43 @@
-package com.smashing.app.presentation.home
+package com.smashing.app.presentation.signup
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
-fun HomeRoute(
-    navigateToNotice: () -> Unit,
+fun SignUpRoute(
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchDummyUsers()
-    }
-    HomeScreen(
-        uiState = uiState,
-        navigateToNotice = navigateToNotice,
+    SignUpScreen(
+        onSignupClick = {
+            viewModel.postSignUp(
+                onSignupSuccess = navigateToHome,
+            )
+        },
         modifier = modifier,
     )
 }
 
 @Composable
-private fun HomeScreen(
-    uiState: HomeContract.State,
-    navigateToNotice: () -> Unit,
+private fun SignUpScreen(
+    onSignupClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    // TODO: 추후 수정 예정
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -46,19 +45,20 @@ private fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "홈",
-            color = Color.White,
+            text = "SignUp",
             modifier = Modifier
-                .clickable(onClick = navigateToNotice)
+                .noRippleClickable(
+                    onClick = onSignupClick,
+                ),
+            color = Color.White
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenPreview() {
-    HomeScreen(
-        uiState = HomeContract.State(),
-        navigateToNotice = {},
+private fun SignUpScreenPreview() {
+    SignUpScreen(
+        onSignupClick = {},
     )
 }

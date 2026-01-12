@@ -4,11 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostKakaoLoginResponse(
+data class PostSignUpResponse(
     @SerialName("accessToken")
-    val accessToken: String?,
+    val accessToken: String,
     @SerialName("refreshToken")
-    val refreshToken: String?,
+    val refreshToken: String,
     @SerialName("authId")
     val authId: String,
 )

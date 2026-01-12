@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,29 +30,37 @@ import com.smashing.app.R.string.login_description_athching
 import com.smashing.app.R.string.login_description_ing
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
+import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.presentation.login.component.KakaoLoginButton
 
 private const val LOGO_RATIO = 240/80f
 
 @Composable
 fun LoginRoute(
+    navigateToSignUp: (String) -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
 
+    val context = LocalContext.current
+
     LoginScreen(
+        onKakaoLoginClick = {
+            viewModel.postKakaoLogin(
+                context = context,
+                onKakaoLoginSuccess = navigateToSignUp,
+            )
+        },
         modifier = modifier,
-        navigateToHome = navigateToHome,
     )
 }
 
 @Composable
 private fun LoginScreen(
+    onKakaoLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
-    navigateToHome: () -> Unit = {},
-    viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -70,7 +78,11 @@ private fun LoginScreen(
             painter = painterResource(img_logo),
             contentDescription = null,
             modifier = Modifier
-                .aspectRatio(LOGO_RATIO),
+                .width(240.dp)
+                .aspectRatio(LOGO_RATIO)
+                .noRippleClickable(
+                    onClick = { onKakaoLoginClick }
+                ),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -100,12 +112,7 @@ private fun LoginScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         KakaoLoginButton(
-            onLoginBtnClick = {
-                viewModel.fetchKakaoLogin(
-                    context = context,
-                    onKakaoLoginSuccess = navigateToHome,
-                )
-            },
+            onLoginBtnClick = onKakaoLoginClick,
         )
     }
 }
@@ -113,5 +120,7 @@ private fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        onKakaoLoginClick = {},
+    )
 }
