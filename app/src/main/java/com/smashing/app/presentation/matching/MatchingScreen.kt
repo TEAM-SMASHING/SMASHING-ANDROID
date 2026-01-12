@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
+import com.smashing.app.R.string.matching_confirm_empty
+import com.smashing.app.R.string.matching_receive_empty
+import com.smashing.app.R.string.matching_send_empty
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -35,13 +38,11 @@ fun MatchingRoute(
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
-    val gridState = rememberLazyGridState()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MatchingScreen(
         uiState = uiState,
         onTabClick = viewModel::updateMatchingType,
-        gridState = gridState,
         modifier = modifier,
     )
 }
@@ -50,9 +51,17 @@ fun MatchingRoute(
 private fun MatchingScreen(
     uiState: MatchingContract.State,
     onTabClick: (MatchingType) -> Unit,
-    gridState: LazyGridState,
     modifier: Modifier = Modifier,
 ) {
+    val gridState = rememberLazyGridState()
+    val emptyTitle = stringResource(
+        when (uiState.selectedType) {
+            MatchingType.SEND -> matching_send_empty
+            MatchingType.RECEIVE -> matching_receive_empty
+            MatchingType.ACCEPTED -> matching_confirm_empty
+        }
+    )
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -77,61 +86,97 @@ private fun MatchingScreen(
             modifier = Modifier.padding(bottom = 12.dp),
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            state = gridState,
-            contentPadding = PaddingValues(bottom = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(space = 10.dp),
-        ) {
-            when (uiState.selectedType) {
-                MatchingType.SEND -> items(uiState.sendList) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Send(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.genderType,
-                            tierType = it.tierType,
-                            onProfileClick = {},
-                            onCloseClick = {},
-                            winCount = it.winCount,
-                            loseCount = it.loseCount,
-                            reviewCount = it.reviewCount,
-                        ),
-                    )
-                }
+        if (uiState.loadState is MatchingUiState.Empty) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = emptyTitle,
+                    style = SmashingTheme.typography.lg.semibold18,
+                    color = SmashingTheme.colors.txtSecondary,
+                )
 
-                MatchingType.RECEIVE -> items(uiState.receiveList) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Receive(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.genderType,
-                            tierType = it.tierType,
-                            winCount = it.winCount,
-                            loseCount = it.loseCount,
-                            reviewCount = it.reviewCount,
-                            onProfileClick = {},
-                            onSkipClick = {},
-                            onAcceptClick = {},
-                        ),
-                    )
-                }
+                Text(
+                    text = stringResource(R.string.matching_empty_description),
+                    style = SmashingTheme.typography.sm.medium14,
+                    color = SmashingTheme.colors.txtTertiary,
+                )
+            }
+        }
 
-                MatchingType.ACCEPTED -> items(uiState.acceptedList) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Confirm(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.genderType,
-                            tierType = it.tierType,
-                            onProfileClick = {},
-                            onConfirmClick = {},
-                            onKakaoLinkClick = {},
-                            onCloseClick = {},
-                        ),
-                    )
-                }
+        if (uiState.loadState is MatchingUiState.Success) {
+            MatchingList(
+                uiState = uiState,
+                gridState = gridState,
+            )
+        }
+    }
+}
+
+@Composable
+private fun MatchingList(
+    uiState: MatchingContract.State,
+    gridState: LazyGridState,
+    modifier: Modifier = Modifier,
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        state = gridState,
+        contentPadding = PaddingValues(bottom = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(space = 10.dp),
+        modifier = modifier,
+    ) {
+        when (uiState.selectedType) {
+            MatchingType.SEND -> items(uiState.sendList) {
+                MatchingCard(
+                    cardState = MatchingCardState.Send(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        onProfileClick = {},
+                        onCloseClick = {},
+                        winCount = it.winCount,
+                        loseCount = it.loseCount,
+                        reviewCount = it.reviewCount,
+                    ),
+                )
+            }
+
+            MatchingType.RECEIVE -> items(uiState.receiveList) {
+                MatchingCard(
+                    cardState = MatchingCardState.Receive(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        winCount = it.winCount,
+                        loseCount = it.loseCount,
+                        reviewCount = it.reviewCount,
+                        onProfileClick = {},
+                        onSkipClick = {},
+                        onAcceptClick = {},
+                    ),
+                )
+            }
+
+            MatchingType.ACCEPTED -> items(uiState.acceptedList) {
+                MatchingCard(
+                    cardState = MatchingCardState.Confirm(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        onProfileClick = {},
+                        onConfirmClick = {},
+                        onKakaoLinkClick = {},
+                        onCloseClick = {},
+                    ),
+                )
             }
         }
     }
@@ -143,7 +188,6 @@ private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
 
         MatchingScreen(
-            gridState = rememberLazyGridState(),
             uiState = MatchingContract.State(),
             onTabClick = {},
             modifier = Modifier

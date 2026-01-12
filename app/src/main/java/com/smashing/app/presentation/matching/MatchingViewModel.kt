@@ -27,7 +27,7 @@ class MatchingViewModel @Inject constructor(
     }
 
     // TODO 더미 데이터 삭제 예정
-    private fun getDummyState() : MatchingContract.State {
+    private fun getDummyState(): MatchingContract.State {
         val dummyAcceptedList = persistentListOf(
             AcceptedMatching(
                 matchingId = "matching_accepted_1",
@@ -187,6 +187,7 @@ class MatchingViewModel @Inject constructor(
         )
 
         return MatchingContract.State(
+            loadState = MatchingUiState.Success,
             selectedType = MatchingType.ACCEPTED,
             receiveList = dummyReceivedList,
             sendList = dummySentList,
