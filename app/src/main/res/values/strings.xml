@@ -23,6 +23,8 @@
     <string name="dropdown_winner_select">승자 선택</string>
 
     <!--Home    -->
+    <!-- Component -->
+    <string name="progress_label">progress</string>
     <!--Matching -->
     <string name="matching_write">결과 작성하기</string>
 </resources>
