@@ -38,7 +38,6 @@ fun KakaoLoginButton (
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp)
             .background(
                 color = Color(0XFFFEE500),
                 shape = RoundedCornerShape(10.dp),
