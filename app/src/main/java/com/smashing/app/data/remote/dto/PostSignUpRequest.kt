@@ -13,7 +13,7 @@ data class PostSignUpRequest(
     val gender: String,
     @SerialName("open_chat_url")
     val openChatUrl: String,
-    @SerialName("sportode")
+    @SerialName("sport_code")
     val sportCode: String,
     @SerialName("tier")
     val tier: String,
