@@ -1,6 +1,6 @@
 package com.smashing.app.data.model.auth
 
-data class SignUpModel(
+data class AuthModel(
     val accessToken: String,
     val refreshToken: String,
     val authId: String,

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.auth.SignUpModel
+import com.smashing.app.data.model.auth.AuthModel
 import com.smashing.app.data.remote.dto.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.signup.navigation.SignUp
@@ -36,11 +36,13 @@ class SignUpViewModel @Inject constructor(
         authRepository.postSignUp(request = request)
             .onSuccess {
                 onSignupSuccess()
-                Timber.tag("SignUp").d("회원가입 성공 ${SignUpModel(
-                    accessToken = it.accessToken,
-                    refreshToken = it.refreshToken,
-                    authId = it.authId,
-                )}")
+                Timber.tag("SignUp").d("회원가입 성공 ${
+                    AuthModel(
+                        accessToken = it.accessToken,
+                        refreshToken = it.refreshToken,
+                        authId = it.authId,
+                    )
+                }")
             }
             .onFailure { error ->
                 Timber.tag("SignUp").e("회원가입 실패")
