@@ -4,6 +4,7 @@ import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.PostKakaoLoginResponse
 import com.smashing.app.data.remote.dto.PostSignUpRequest
 import com.smashing.app.data.remote.dto.PostSignUpResponse
+import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthService {
