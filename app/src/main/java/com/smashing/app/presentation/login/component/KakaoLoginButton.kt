@@ -2,6 +2,7 @@ package com.smashing.app.presentation.login.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,11 +32,12 @@ import com.smashing.app.core.extension.noRippleClickable
 
 
 @Composable
-fun KakaoLoginButton (
+fun KakaoLoginButton(
     onLoginBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+
+    Row(
         modifier = modifier
             .fillMaxWidth()
             .background(
@@ -46,26 +48,24 @@ fun KakaoLoginButton (
                 onClick = onLoginBtnClick,
             )
             .padding(vertical = 13.dp),
-        contentAlignment = Alignment.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ){
-            Icon(
-                imageVector = ImageVector.vectorResource(ic_kakao_logo),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(18.dp),
-            )
+        Icon(
+            imageVector = ImageVector.vectorResource(ic_kakao_logo),
+            contentDescription = null,
+            modifier = Modifier
+                .size(18.dp),
+        )
 
-            Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(8.dp))
 
-            Text(
-                text = stringResource(kakao_login),
-                color = colors.txtPrimaryReverse,
-                style = typography.md.medium16,
-            )
-        }
+        Text(
+            text = stringResource(kakao_login),
+            color = colors.txtPrimaryReverse,
+            style = typography.md.medium16,
+        )
+
     }
 }
 
