@@ -2,13 +2,24 @@ package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.PostKakaoLoginResponse
+import com.smashing.app.data.remote.dto.PostSignUpResponse
 import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthService {
     @POST("/api/v1/auth/login/kakao")
     suspend fun postKakaoLogin(
-        @Header("Authorization")
         authorization: String,
     ): BaseResponse<PostKakaoLoginResponse>
+
+    @POST("/api/v1/auth/signup")
+    suspend fun postSignUp(
+        authId: String,
+        nickname: String,
+        gender: String,
+        openChatUrl: String,
+        sportCode: String,
+        tier: String,
+        region: String,
+    ): BaseResponse<PostSignUpResponse>
 }
