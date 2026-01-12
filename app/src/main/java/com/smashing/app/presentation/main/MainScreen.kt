@@ -14,6 +14,7 @@ import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.homeGraph
+import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
@@ -22,6 +23,9 @@ import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
+import com.smashing.app.presentation.signup.navigation.SignUp
+import com.smashing.app.presentation.signup.navigation.navigateToSignUp
+import com.smashing.app.presentation.signup.navigation.signUpGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -82,9 +86,33 @@ private fun MainNavHost(
         )
 
         loginGraph(
+            navigateToSignUp = { authId ->
+                appState.navController.navigateToSignUp(
+                    authId = authId,
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
             navigateToHome = {
-                appState.navController.navigate(
-                    route = Home,
+                appState.navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            innerPadding = innerPadding,
+        )
+
+        signUpGraph(
+            navigateToHome = {
+                appState.navController.navigateToHome(
                     navOptions = navOptions {
                         popUpTo<Login> {
                             inclusive = true
