@@ -40,6 +40,7 @@ fun MatchingRoute(
 
     MatchingScreen(
         uiState = uiState,
+        onTabClick = viewModel::updateMatchingType,
         gridState = gridState,
         modifier = modifier,
     )
@@ -48,6 +49,7 @@ fun MatchingRoute(
 @Composable
 private fun MatchingScreen(
     uiState: MatchingContract.State,
+    onTabClick: (MatchingType) -> Unit,
     gridState: LazyGridState,
     modifier: Modifier = Modifier,
 ) {
@@ -71,7 +73,7 @@ private fun MatchingScreen(
 
         MatchingTabBar(
             selectedType = uiState.selectedType,
-            onTabClick = { /*TODO 탭 클릭 추가*/ },
+            onTabClick = onTabClick,
         )
 
         LazyVerticalGrid(
@@ -142,6 +144,7 @@ private fun MatchingScreenPreview() {
         MatchingScreen(
             gridState = rememberLazyGridState(),
             uiState = MatchingContract.State(),
+            onTabClick = {},
             modifier = Modifier
                 .background(Color.Black),
         )

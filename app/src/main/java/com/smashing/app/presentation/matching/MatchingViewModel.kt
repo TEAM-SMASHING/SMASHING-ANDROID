@@ -22,6 +22,10 @@ class MatchingViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
 
+    fun updateMatchingType(type: MatchingType) {
+        _uiState.value = _uiState.value.copy(selectedType = type)
+    }
+
     // TODO 더미 데이터 삭제 예정
     private fun getDummyState() : MatchingContract.State {
         val dummyAcceptedList = persistentListOf(
