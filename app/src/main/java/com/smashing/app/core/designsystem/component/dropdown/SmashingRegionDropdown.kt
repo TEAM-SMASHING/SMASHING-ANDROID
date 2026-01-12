@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.R.drawable.ic_location
 import com.smashing.app.R.string.region_select
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 /**
@@ -52,7 +53,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun RegionDropdown(
     selectedItem: String,
-    items: List<String>,
+    items: ImmutableList<String>,
     onClick: (String) -> Unit,
     onRegionChange: () -> Unit,
     modifier: Modifier = Modifier,
@@ -146,7 +147,7 @@ private fun RegionDropdownPreview() {
             // 1. 기본 상태 (서울 선택)
             var selectedRegion1 by remember { mutableStateOf("강남구") }
             val regionItems1 = remember {
-                listOf("강남구", "강서구", "장신구")
+                listOf("강남구", "강서구", "장신구").toImmutableList()
             }
 
             RegionDropdown(
@@ -165,7 +166,7 @@ private fun RegionDropdownPreview() {
             // 2. 다른 지역 선택 (부산)
             var selectedRegion2 by remember { mutableStateOf("부산") }
             val regionItems2 = remember {
-                listOf("서울", "부산", "인천", "대구", "광주", "대전", "울산")
+                listOf("서울", "부산", "인천", "대구", "광주", "대전", "울산").toImmutableList()
             }
 
             RegionDropdown(
@@ -192,7 +193,7 @@ private fun RegionDropdownPreview() {
                     "경기도 수원시",
                     "경기도 성남시",
                     "경기도 고양시",
-                )
+                ).toImmutableList()
             }
             RegionDropdown(
                 selectedItem = selectedRegion3,

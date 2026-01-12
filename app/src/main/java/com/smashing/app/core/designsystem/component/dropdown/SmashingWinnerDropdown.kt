@@ -34,6 +34,7 @@ import com.smashing.app.R.string.winner_select
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 /**
@@ -50,7 +51,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun SmashingWinnerDropdown(
     selectedItem: String?,
-    items: List<String>,
+    items: ImmutableList<String>,
     onClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(winner_select),
@@ -141,7 +142,7 @@ private fun WinnerDropdownPreview() {
             //기본 상태
             var selectedWinner1 by remember { mutableStateOf<String?>(null) }
             val winnerItems1 = remember {
-                listOf("신형철", "공승준")
+                listOf("신형철", "공승준").toImmutableList()
             }
 
             SmashingWinnerDropdown(
@@ -166,7 +167,7 @@ private fun WinnerDropdownPreview() {
 
             SmashingWinnerDropdown(
                 selectedItem = selectedWinner2,
-                items = winnerItems2,
+                items = winnerItems2.toImmutableList(),
                 onClick = { winner ->
                     selectedWinner2 = winner
                     println("$winner 선택됨")
