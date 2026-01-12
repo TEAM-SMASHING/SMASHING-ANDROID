@@ -30,8 +30,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.R.drawable.ic_location
+import com.smashing.app.R.string.region_select
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import kotlinx.collections.immutable.toImmutableList
 
@@ -87,7 +89,7 @@ fun RegionDropdown(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(ic_location),
-                contentDescription = "location",
+                contentDescription = null,
                 tint = colors.iconPrimary,
             )
 
@@ -103,7 +105,7 @@ fun RegionDropdown(
 
             Icon(
                 imageVector = ImageVector.vectorResource(ic_arrow_down),
-                contentDescription = "Dropdown Arrow",
+                contentDescription = null,
                 tint = colors.iconPrimary,
             )
         }
@@ -112,7 +114,7 @@ fun RegionDropdown(
             items = (items.map {
                 DropdownItem.Normal(it)
             } + DropdownItem.Additional(
-                label = "지역 선택",
+                label = stringResource(region_select),
                 onClick = onRegionChange,
             )).toImmutableList(),
             onItemClick = onClick,

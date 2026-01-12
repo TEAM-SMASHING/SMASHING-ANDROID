@@ -28,7 +28,9 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.smashing.app.R.string.winner_select
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -51,7 +53,7 @@ fun SmashingWinnerDropdown(
     items: List<String>,
     onClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "승자 선택",
+    placeholder: String = stringResource(winner_select),
     isDivide: Boolean = true,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -102,7 +104,7 @@ fun SmashingWinnerDropdown(
             if (selectedItem == null) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_down),
-                    contentDescription = "Dropdown Arrow",
+                    contentDescription = null,
                     tint = colors.txtDisabled,
                 )
             }
