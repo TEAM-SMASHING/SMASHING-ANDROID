@@ -41,7 +41,7 @@ fun KakaoLoginButton(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = Color(0XFFFEE500),
+                color = colors.bgKakao,
                 shape = RoundedCornerShape(10.dp),
             )
             .noRippleClickable(
