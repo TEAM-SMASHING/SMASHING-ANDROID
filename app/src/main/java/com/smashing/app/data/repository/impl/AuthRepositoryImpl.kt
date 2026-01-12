@@ -39,8 +39,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postSignUp(request: PostSignUpRequest): Result<SignUpModel> =
         suspendRunCatching {
-            val response = authRemoteDataSource.postSignUp(request)
-            response.data?.toSignUpModel()
-                ?: throw IllegalArgumentException("response data is null")
+            val response = authRemoteDataSource.postSignUp(request).requireData()
+
+            response.toSignUpModel()
         }
 }
