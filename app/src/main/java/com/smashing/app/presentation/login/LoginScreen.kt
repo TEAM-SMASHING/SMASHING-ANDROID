@@ -33,7 +33,7 @@ fun LoginRoute(
 @Composable
 private fun LoginScreen(
     modifier: Modifier = Modifier,
-    navigateToSignUp: (String) -> Unit = {},
+    navigateToSignUp: (String) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -51,7 +51,7 @@ private fun LoginScreen(
                 onClick = {
                     viewModel.fetchKakaoLogin(
                         context = context,
-                        onKakaoLoginSuccess = navigateToSignUp
+                        onKakaoLoginSuccess = navigateToSignUp,
                     )
                 }
             ),

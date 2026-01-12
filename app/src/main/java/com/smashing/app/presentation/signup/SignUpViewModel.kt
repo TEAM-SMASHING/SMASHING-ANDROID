@@ -19,7 +19,7 @@ class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    val authId = savedStateHandle.toRoute<SignUp>().authId
+    private val authId = savedStateHandle.toRoute<SignUp>().authId
 
     fun fetchSignUp(
         onSignupSuccess: () -> Unit,

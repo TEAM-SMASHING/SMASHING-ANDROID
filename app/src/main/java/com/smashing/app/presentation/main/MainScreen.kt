@@ -18,6 +18,7 @@ import androidx.navigation.navOptions
 import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.home.navigation.homeGraph
+import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
@@ -99,8 +100,7 @@ private fun MainNavHost(
                 )
             },
             navigateToHome = {
-                appState.navController.navigate(
-                    route = Home,
+                appState.navController.navigateToHome(
                     navOptions = navOptions {
                         popUpTo<Login> {
                             inclusive = true
@@ -114,8 +114,7 @@ private fun MainNavHost(
 
         signUpGraph(
             navigateToHome = {
-                appState.navController.navigate(
-                    route = Home,
+                appState.navController.navigateToHome(
                     navOptions = navOptions {
                         popUpTo<Login> {
                             inclusive = true

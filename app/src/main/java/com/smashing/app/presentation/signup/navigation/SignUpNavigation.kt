@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToSignUp(
     authId: String,
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) = navigate(SignUp(authId), navOptions)
 
 fun NavGraphBuilder.signUpGraph(
