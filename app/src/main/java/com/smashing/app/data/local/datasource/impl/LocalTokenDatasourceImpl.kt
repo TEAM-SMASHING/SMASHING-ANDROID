@@ -24,14 +24,9 @@ class LocalTokenDataSourceImpl @Inject constructor(
             prefs[REFRESH_TOKEN]
         }.firstOrNull()
 
-    override suspend fun setAccessToken(accessToken: String) {
+    override suspend fun setTokens(accessToken: String, refreshToken: String) {
         dataStore.edit { prefs ->
             prefs[ACCESS_TOKEN] = accessToken
-        }
-    }
-
-    override suspend fun setRefreshToken(refreshToken: String) {
-        dataStore.edit { prefs ->
             prefs[REFRESH_TOKEN] = refreshToken
         }
     }

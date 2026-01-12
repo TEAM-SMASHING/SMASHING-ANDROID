@@ -4,9 +4,13 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.smashing.app.BuildConfig
 import com.smashing.app.BuildConfig.BASE_URL
 import com.smashing.app.BuildConfig.KAKAO_BASE_URL
+import com.smashing.app.core.network.AuthInterceptor
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
+import com.smashing.app.core.network.qualifier.Auth
 import com.smashing.app.core.network.qualifier.Kakao
+import com.smashing.app.core.network.qualifier.NoAuth
+import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -67,7 +71,26 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(
+    @Auth
+    fun provideAuthInterceptor(
+        tokenDataSource: LocalTokenDataSource,
+    ): AuthInterceptor = AuthInterceptor(tokenDataSource)
+
+    @Provides
+    @Singleton
+    @Auth
+    fun provideAuthOkHttpClient(
+        loggingInterceptor: Interceptor,
+        @Auth headerInterceptor: AuthInterceptor,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .addInterceptor(headerInterceptor)
+        .build()
+
+    @Provides
+    @Singleton
+    @NoAuth
+    fun provideNoAuthOkHttpClient(
         loggingInterceptor: Interceptor,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
@@ -76,7 +99,19 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        client: OkHttpClient,
+        @Auth client: OkHttpClient,
+        factory: Converter.Factory,
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(client)
+        .addConverterFactory(factory)
+        .build()
+
+    @Provides
+    @Singleton
+    @NoAuth
+    fun provideNoAuthRetrofit(
+        @NoAuth client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -88,7 +123,7 @@ object NetworkModule {
     @Singleton
     @Kakao
     fun provideKakaoRetrofit(
-        client: OkHttpClient,
+        @NoAuth client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(KAKAO_BASE_URL)
