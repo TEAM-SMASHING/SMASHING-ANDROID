@@ -33,7 +33,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.R.drawable.ic_location
-import com.smashing.app.R.string.region_select
+import com.smashing.app.R.string.dropdown_region_select
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -115,7 +115,7 @@ fun RegionDropdown(
             items = (items.map {
                 DropdownItem.Normal(it)
             } + DropdownItem.Additional(
-                label = stringResource(region_select),
+                label = stringResource(dropdown_region_select),
                 onClick = onRegionChange,
             )).toImmutableList(),
             onItemClick = onClick,

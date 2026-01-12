@@ -16,8 +16,8 @@
     <string name="win_lose_count">%1$d승 %2$d패</string>
 
     <!--Dropdown -->
-    <string name="region_select">지역 선택</string>
-    <string name="winner_select">승자 선택</string>
+    <string name="dropdown_region_select">지역 선택</string>
+    <string name="dropdown_winner_select">승자 선택</string>
 
     <!--Home    -->
     <!--Matching -->
