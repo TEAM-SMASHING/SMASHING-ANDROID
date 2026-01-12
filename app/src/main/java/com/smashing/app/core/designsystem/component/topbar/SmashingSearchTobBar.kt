@@ -1,6 +1,7 @@
 package com.smashing.app.core.designsystem.component.topbar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +50,7 @@ fun SmashingSearchTobBar(
             tint = SmashingTheme.colors.iconPrimary,
             modifier = Modifier
                 .noRippleClickable(
-                    onClick = onBackClick
+                    onClick = onBackClick,
                 ),
         )
 
@@ -57,7 +59,7 @@ fun SmashingSearchTobBar(
         SearchTextField(
             state = searchState,
             placeholder = placeholder,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -66,10 +68,23 @@ fun SmashingSearchTobBar(
 @Composable
 private fun SmashingSearchTobBarPreview() {
     SmashingAndroidTheme {
-        SmashingSearchTobBar(
-            searchState = rememberTextFieldState(),
-            placeholder = "닉네임을 입력해주세요",
-            onBackClick = {},
-        )
+        val searchState = rememberTextFieldState()
+
+        Column {
+            SmashingSearchTobBar(
+                searchState = searchState,
+                placeholder = "닉네임을 입력해주세요",
+                onBackClick = {},
+            )
+
+            // 입력된 텍스트 표시 (프리뷰 확인용)
+            if (searchState.text.isNotEmpty()) {
+                Text(
+                    text = "입력된 검색어: ${searchState.text}",
+                    color = SmashingTheme.colors.txtPrimary,
+                    modifier = Modifier.padding(16.dp),
+                )
+            }
+        }
     }
 }
