@@ -16,6 +16,8 @@
     <string name="win_lose_count">%1$d승 %2$d패</string>
 
     <!--Home    -->
+    <!-- Component -->
+    <string name="progress_label">progress</string>
     <!--Matching -->
     <string name="matching_write">결과 작성하기</string>
 </resources>
