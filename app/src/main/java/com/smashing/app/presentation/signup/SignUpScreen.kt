@@ -11,25 +11,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.presentation.login.LoginViewModel
 
 @Composable
 fun SignUpRoute(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
 
     SignUpScreen(
-        navigateToHome = navigateToHome,
+        onSignupClick = {
+            viewModel.postSignUp(
+                onSignupSuccess = navigateToHome,
+            )
+        },
         modifier = modifier,
     )
 }
 
 @Composable
 private fun SignUpScreen(
-    navigateToHome: () -> Unit,
+    onSignupClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
     // TODO: 추후 수정 예정
@@ -42,11 +45,7 @@ private fun SignUpScreen(
             text = "SignUp",
             modifier = Modifier
                 .noRippleClickable(
-                    onClick = {
-                        viewModel.postSignUp (
-                            onSignupSuccess = navigateToHome
-                        )
-                    }
+                    onClick = { onSignupClick },
                 ),
             color = Color.White
         )
