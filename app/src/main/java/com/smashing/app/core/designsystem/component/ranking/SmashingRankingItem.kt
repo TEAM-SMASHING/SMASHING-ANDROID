@@ -23,11 +23,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
+import com.smashing.app.R.drawable.ic_bronze
+import com.smashing.app.R.drawable.ic_gold
+import com.smashing.app.R.drawable.ic_silver
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.core.util.TierBadgeImageProvider
@@ -58,38 +61,38 @@ fun SmashingRankingItem(
     Row(
         modifier = modifier
             .background(
-                color = SmashingTheme.colors.bgSurface,
+                color = colors.bgSurface,
                 shape = RoundedCornerShape(8.dp),
             )
             .noRippleClickable(
                 onClick = { onClick(userId) }
             )
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(vertical = 12.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         when (rank) {
             1 -> Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_gold),
+                imageVector = ImageVector.vectorResource(ic_gold),
                 contentDescription = null,
                 tint = Color.Unspecified,
             )
 
             2 -> Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_silver),
+                imageVector = ImageVector.vectorResource(ic_silver),
                 contentDescription = null,
                 tint = Color.Unspecified,
             )
 
             3 -> Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_bronze),
+                imageVector = ImageVector.vectorResource(ic_bronze),
                 contentDescription = null,
                 tint = Color.Unspecified,
             )
 
             else -> Text(
                 text = rank.toString(),
-                style = SmashingTheme.typography.sm.medium14,
-                color = SmashingTheme.colors.txtPrimary,
+                style = typography.sm.medium14,
+                color = colors.txtPrimary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .width(24.dp),
@@ -114,13 +117,13 @@ fun SmashingRankingItem(
         ) {
             Text(
                 text = nickname,
-                style = SmashingTheme.typography.sm.medium14,
-                color = SmashingTheme.colors.txtPrimary,
+                style = typography.sm.medium14,
+                color = colors.txtPrimary,
             )
             Text(
                 text = "${tier.tierName} · $lp",
-                style = SmashingTheme.typography.xs.regular12,
-                color = SmashingTheme.colors.txtTertiary
+                style = typography.xs.regular12,
+                color = colors.txtTertiary
             )
         }
 
@@ -142,8 +145,7 @@ private fun SmashingRankingItemPreview() {
     SmashingAndroidTheme {
         Column(
             modifier = Modifier
-                .padding(16.dp)
-                .background(color = SmashingTheme.colors.bgDimmed),
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             SmashingRankingItem(
