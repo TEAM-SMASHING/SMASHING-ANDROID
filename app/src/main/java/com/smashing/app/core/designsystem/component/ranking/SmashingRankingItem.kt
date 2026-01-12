@@ -69,7 +69,7 @@ fun SmashingRankingItem(
                 shape = RoundedCornerShape(8.dp),
             )
             .noRippleClickable(
-                onClick = { onClick() },
+                onClick = onClick,
             )
             .padding(vertical = 12.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
