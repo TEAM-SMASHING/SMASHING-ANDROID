@@ -17,7 +17,8 @@ class AuthRemoteDataSourceImpl @Inject constructor(
             statusCode = 200,
             data = PostKakaoLoginResponse(
                 accessToken = "fake_access_token",
-                refreshToken = "fake_refresh_token"
+                refreshToken = "fake_refresh_token",
+                authId = "fake_authId"
             ),
             timestamp = "",
         )

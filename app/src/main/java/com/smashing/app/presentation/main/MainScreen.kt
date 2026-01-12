@@ -24,6 +24,9 @@ import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
+import com.smashing.app.presentation.signup.navigation.SignUp
+import com.smashing.app.presentation.signup.navigation.navigateToSignUp
+import com.smashing.app.presentation.signup.navigation.signUpGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -84,6 +87,32 @@ private fun MainNavHost(
         )
 
         loginGraph(
+            navigateToSignUp = { authId ->
+                appState.navController.navigateToSignUp(
+                    authId = authId,
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            navigateToHome = {
+                appState.navController.navigate(
+                    route = Home,
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            innerPadding = innerPadding,
+        )
+
+        signUpGraph(
             navigateToHome = {
                 appState.navController.navigate(
                     route = Home,

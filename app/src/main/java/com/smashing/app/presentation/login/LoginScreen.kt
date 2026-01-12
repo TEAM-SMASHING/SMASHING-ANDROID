@@ -19,20 +19,21 @@ import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun LoginRoute(
+    navigateToSignUp: (String) -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     LoginScreen(
         modifier = modifier,
-        navigateToHome = navigateToHome,
+        navigateToHome = navigateToSignUp,
     )
 }
 
 @Composable
 private fun LoginScreen(
     modifier: Modifier = Modifier,
-    navigateToHome: () -> Unit = {},
+    navigateToHome: (String) -> Unit = {},
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current

@@ -9,4 +9,6 @@ data class PostKakaoLoginResponse(
     val accessToken: String?,
     @SerialName("refresh_token")
     val refreshToken: String?,
+    @SerialName("auth_id")
+    val authId: String,
 )
