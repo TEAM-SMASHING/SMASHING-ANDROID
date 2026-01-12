@@ -61,7 +61,7 @@ fun SmashingDefaultTopBar(
                     .align(Alignment.CenterEnd)
                     .padding(end = 16.dp)
                     .noRippleClickable(
-                        onClick = onClick
+                        onClick = onClick,
                     ),
             )
         }
