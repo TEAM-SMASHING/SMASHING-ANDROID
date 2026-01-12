@@ -2,7 +2,9 @@ package com.smashing.app.presentation.signup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,12 +16,14 @@ import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun SignUpRoute(
+    innerPadding: PaddingValues,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
 
     SignUpScreen(
+        innerPadding = innerPadding,
         onSignupClick = {
             viewModel.postSignUp(
                 onSignupSuccess = navigateToHome,
@@ -31,13 +35,16 @@ fun SignUpRoute(
 
 @Composable
 private fun SignUpScreen(
+    innerPadding: PaddingValues,
     onSignupClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     // TODO: 추후 수정 예정
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(innerPadding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -56,6 +63,7 @@ private fun SignUpScreen(
 @Composable
 private fun SignUpScreenPreview() {
     SignUpScreen(
-        navigateToHome = {}
+        innerPadding = PaddingValues(),
+        onSignupClick = {},
     )
 }

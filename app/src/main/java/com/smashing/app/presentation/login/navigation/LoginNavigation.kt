@@ -22,9 +22,9 @@ fun NavGraphBuilder.loginGraph(
 ) {
     composable<Login> {
         LoginRoute(
+            innerPadding = innerPadding,
             navigateToSignUp = navigateToSignUp,
             navigateToHome = navigateToHome,
-            modifier = Modifier.padding(innerPadding),
         )
     }
 }

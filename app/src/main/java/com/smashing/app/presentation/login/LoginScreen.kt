@@ -3,9 +3,11 @@ package com.smashing.app.presentation.login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,28 +21,39 @@ import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun LoginRoute(
+    innerPadding: PaddingValues,
     navigateToSignUp: (String) -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
+
     LoginScreen(
+        innerPadding = innerPadding,
+        onKakaoLoginClick = {
+            viewModel.postKakaoLogin(
+                context = context,
+                onKakaoLoginSuccess = navigateToSignUp,
+            )
+        },
         modifier = modifier,
-        navigateToSignUp = navigateToSignUp,
     )
 }
 
 @Composable
 private fun LoginScreen(
-    navigateToSignUp: (String) -> Unit,
+    innerPadding: PaddingValues,
+    onKakaoLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
 
     // TODO: 추후 수정 예정
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(innerPadding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -48,12 +61,7 @@ private fun LoginScreen(
             painter = painterResource(id = img_kakao_login),
             contentDescription = null,
             modifier = Modifier.noRippleClickable(
-                onClick = {
-                    viewModel.postKakaoLogin(
-                        context = context,
-                        onKakaoLoginSuccess = navigateToSignUp,
-                    )
-                }
+                onClick = { onKakaoLoginClick },
             ),
         )
 
@@ -65,6 +73,7 @@ private fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        navigateToSignUp = {}
+        innerPadding = PaddingValues(),
+        onKakaoLoginClick = {},
     )
 }

@@ -21,8 +21,8 @@ fun NavGraphBuilder.signUpGraph(
 ) {
     composable<SignUp> {
         SignUpRoute(
+            innerPadding = innerPadding,
             navigateToHome = navigateToHome,
-            modifier = Modifier.padding(innerPadding),
         )
     }
 }
