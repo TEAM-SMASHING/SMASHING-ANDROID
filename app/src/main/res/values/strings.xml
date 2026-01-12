@@ -7,6 +7,9 @@
     <string name="profile">프로필</string>
     <string name="count">%d</string>
 
+    <!--Ranking -->
+    <string name="ranking_tier_with_lp">%1$s · %2$d</string>
+
     <!--Card  -->
     <string name="record">기록</string>
     <string name="review">후기</string>
