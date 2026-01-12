@@ -74,12 +74,13 @@ private fun MatchingScreen(
         MatchingTabBar(
             selectedType = uiState.selectedType,
             onTabClick = onTabClick,
+            modifier = Modifier.padding(bottom = 12.dp),
         )
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             state = gridState,
-            contentPadding = PaddingValues(vertical = 12.dp),
+            contentPadding = PaddingValues(bottom = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
             verticalArrangement = Arrangement.spacedBy(space = 10.dp),
         ) {
