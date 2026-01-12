@@ -126,7 +126,11 @@ fun SmashingRankingItem(
                 color = colors.txtPrimary,
             )
             Text(
-                text = stringResource(ranking_tier_with_lp),
+                text = stringResource(
+                    ranking_tier_with_lp,
+                    tier.tierName,
+                    lp,
+                ),
                 style = typography.xs.regular12,
                 color = colors.txtTertiary,
             )
