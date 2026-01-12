@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,21 +21,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.model.matching.AcceptedMatching
-import com.smashing.app.data.model.matching.ReceivedMatching
-import com.smashing.app.data.model.matching.SentMatching
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
-import kotlinx.collections.immutable.persistentListOf
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 @Composable
 fun MatchingRoute(
@@ -42,9 +36,10 @@ fun MatchingRoute(
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
     val gridState = rememberLazyGridState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MatchingScreen(
-        uiState = MatchingContract.State(),
+        uiState = uiState,
         gridState = gridState,
         modifier = modifier,
     )
@@ -143,175 +138,10 @@ private fun MatchingScreen(
 @Composable
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
-        // TODO 더미 데이터 삭제 예정
-        val dummyAcceptedList = persistentListOf(
-            AcceptedMatching(
-                matchingId = "matching_accepted_1",
-                gameId = "game_1",
-                userId = "user_101",
-                nickname = "스매셔김",
-                genderType = GenderType.MALE,
-                tierType = TierType.BRONZE_2,
-                openChatUrl = "https://open.kakao.com/o/example1",
-                isResultBannerBlocked = false,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusDays(1),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-        )
-
-        val dummyReceivedList = persistentListOf(
-            ReceivedMatching(
-                matchingId = "matching_received_1",
-                userId = "user_201",
-                nickname = "셔틀콕러버",
-                genderType = GenderType.MALE,
-                tierType = TierType.BRONZE_1,
-                reviewCount = 12,
-                winCount = 8,
-                loseCount = 3,
-            ),
-            ReceivedMatching(
-                matchingId = "matching_received_2",
-                userId = "user_202",
-                nickname = "코트지배자",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_2,
-                reviewCount = 27,
-                winCount = 21,
-                loseCount = 10,
-            ),
-        )
-
-        val dummySentList = persistentListOf(
-            SentMatching(
-                matchingId = "matching_sent_1",
-                userId = "user_301",
-                nickname = "드롭샷마스터",
-                genderType = GenderType.MALE,
-                tierType = TierType.BRONZE_3,
-                reviewCount = 5,
-                winCount = 3,
-                loseCount = 1,
-            ),
-            SentMatching(
-                matchingId = "matching_sent_2",
-                userId = "user_302",
-                nickname = "백핸드요정",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                reviewCount = 18,
-                winCount = 14,
-                loseCount = 6,
-            ),
-            SentMatching(
-                matchingId = "matching_sent_2",
-                userId = "user_302",
-                nickname = "백핸드요정",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                reviewCount = 18,
-                winCount = 14,
-                loseCount = 6,
-            ),
-        )
-
-        val dummyMatchingState = MatchingContract.State(
-            selectedType = MatchingType.RECEIVE,
-            receiveList = dummyReceivedList,
-            sendList = dummySentList,
-            acceptedList = dummyAcceptedList,
-        )
 
         MatchingScreen(
             gridState = rememberLazyGridState(),
-            uiState = dummyMatchingState,
+            uiState = MatchingContract.State(),
             modifier = Modifier
                 .background(Color.Black),
         )
