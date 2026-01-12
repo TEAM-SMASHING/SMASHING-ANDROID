@@ -11,9 +11,22 @@ import kotlinx.collections.immutable.persistentListOf
 interface MatchingContract {
     @Immutable
     data class State(
+        val loadState: MatchingUiState = MatchingUiState.Idle,
         val selectedType: MatchingType = MatchingType.SEND,
         val receiveList: ImmutableList<ReceivedMatching> = persistentListOf(),
         val sendList: ImmutableList<SentMatching> = persistentListOf(),
         val acceptedList: ImmutableList<AcceptedMatching> = persistentListOf(),
     )
+}
+
+sealed interface MatchingUiState {
+    data object Idle : MatchingUiState
+
+    data object Empty : MatchingUiState
+
+    data object Success : MatchingUiState
+
+    data class Failure(
+        val msg: String,
+    ) : MatchingUiState
 }
