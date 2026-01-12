@@ -3,11 +3,7 @@ package com.smashing.app.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
-import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
@@ -43,7 +39,6 @@ fun MainScreen(
             )
         },
         containerColor = SmashingTheme.colors.bgCanvas,
-        contentWindowInsets = WindowInsets.safeDrawing.exclude(WindowInsets.statusBars),
         modifier = Modifier
             .fillMaxSize(),
     ) { innerPadding ->
