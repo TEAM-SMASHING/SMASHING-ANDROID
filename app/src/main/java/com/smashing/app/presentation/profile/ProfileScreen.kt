@@ -12,30 +12,26 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.R.string.profile
+import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.model.ProfileReview
-import com.smashing.app.data.model.UserProfileInfo
 import com.smashing.app.presentation.profile.component.ProfileReviewCard
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
-import kotlinx.collections.immutable.toImmutableList
+import com.smashing.app.presentation.profile.component.UserProfileCard
 
 
 @Composable
@@ -54,7 +50,7 @@ fun ProfileRoute(
         onSportClick = {},
         onAddSportClick = navigateToSportAdd,
         onTierGuideClick = navigateToTierGuide,
-        onReviewsClick =navigateToReviews,
+        onReviewsClick = navigateToReviews,
     )
 }
 
@@ -70,14 +66,7 @@ private fun ProfileScreen(
 ) {
     val navigationBarBottomPadding =
         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    val info = uiState.profileInfo
 
-    if (info == null) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("loading")
-        }
-        return
-    }
 
     LazyColumn(
         state = lazyListState,
@@ -86,13 +75,25 @@ private fun ProfileScreen(
             .background(color = SmashingTheme.colors.bgCanvas)
             .statusBarsPadding()
             .padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(bottom = 20.dp + navigationBarBottomPadding),
+        contentPadding = PaddingValues(bottom = 16.dp + navigationBarBottomPadding),
     ) {
+
         item {
             SmashingDefaultTopBar(
                 title = stringResource(profile),
                 topBarType = TopBarType.DEFAULT,
                 onClick = null,
+            )
+        }
+        //TODO 하드코딩된 값 변경 필요
+        item {
+            UserProfileCard(
+                nickname = "하나둘셋넷다여칠팔구",
+                gender = GenderType.FEMALE,
+                tierType = TierType.GOLD_1,
+                winCount = 254,
+                loseCount = 38,
+                reviewCount = 32
             )
         }
         item {
@@ -122,9 +123,9 @@ private fun ProfileScreen(
                 ProfileReviewCard(
                     reviews = uiState.reviews,
                     onViewAllClick = onReviewsClick,
-                    excellentCount = 12,
-                    goodCount = 5,
-                    badCount = 3,
+                    excellentCount = uiState.reviewRate.best,
+                    goodCount = uiState.reviewRate.good,
+                    badCount = uiState.reviewRate.bad,
                 )
             }
         }
@@ -135,31 +136,9 @@ private fun ProfileScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ProfileScreenPreview() {
-    val dummyReviews = listOf(
-        ProfileReview(1, "닝우닝", "2일 전", "매너도 좋고, 너무 잘하세요!"),
-        ProfileReview(2, "닝우닝닝이", "4일 전", "매너도 좋고, 너무 잘하세요!"),
-        ProfileReview(3, "닝우", "5일 전", "매너도 좋고, 너무 잘하세요! 매너도 좋고, 너무 잘하세요! 매너도 좋고, 너무 잘하세요!")
-    ).toImmutableList()
-
-    val dummyState = ProfileContract.State(
-        profileInfo = UserProfileInfo(
-            tierType = TierType.GOLD_1,
-            tierIconResId = ic_fake_red,
-            mySports = listOf(SportType.PING_PONG, SportType.BADMINTON),
-            selectedSport = SportType.PING_PONG,
-            lpProgress = 0.1f,
-            minLp = 100,
-            maxLp = 500,
-            winCount = 4,
-            loseCount = 5,
-        ),
-        reviews = dummyReviews
-    )
-
-
     SmashingAndroidTheme {
         ProfileScreen(
-            uiState = dummyState,
+            uiState = ProfileContract.State(),
             onAddSportClick = {},
             onTierGuideClick = {},
             onReviewsClick = {},
@@ -167,4 +146,3 @@ private fun ProfileScreenPreview() {
         )
     }
 }
-

@@ -3,9 +3,9 @@ package com.smashing.app.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.R
+import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
-import com.smashing.app.data.model.ProfileReview
 import com.smashing.app.data.model.UserProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -50,17 +50,24 @@ class ProfileViewModel @Inject constructor(
                 )
 
                 val dummyReviews = persistentListOf(
-                    ProfileReview(1, "닝우닝", "2일 전", "매너 굿!"),
-                    ProfileReview(2, "스매싱", "4일 전", "너무 잘해요"),
+                    _uiState.update {
+                        it.copy(
+                            loadState = ProfileUiState.Success,
+                            profileInfo = UserProfileInfo(
+                                tierType = TierType.GOLD_1,
+                                tierIconResId = ic_fake_red,
+                                mySports = listOf(SportType.PING_PONG, SportType.BADMINTON),
+                                selectedSport = SportType.PING_PONG,
+                                lpProgress = 0.1f,
+                                minLp = 100,
+                                maxLp = 500,
+                                winCount = 4,
+                                loseCount = 5,
+                            ),
+                            reviews = persistentListOf(),
+                        )
+                    }
                 )
-
-                _uiState.update {
-                    it.copy(
-                        loadState = ProfileUiState.Success,
-                        profileInfo = dummyProfile,
-                        reviews = dummyReviews,
-                    )
-                }
 
             } catch (e: Exception) {
                 _uiState.update {

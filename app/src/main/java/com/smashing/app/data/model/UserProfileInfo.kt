@@ -2,6 +2,7 @@ package com.smashing.app.data.model
 
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
+import java.time.LocalDateTime
 
 data class UserProfileInfo(
     val tierType: TierType,
@@ -16,4 +17,19 @@ data class UserProfileInfo(
 
     val winCount: Int,
     val loseCount: Int,
+)
+
+data class Rating(
+    val best: Int,
+    val good: Int,
+    val bad: Int,
+)
+
+
+data class Review(
+    val gameId: String,
+    val reviewId: String,
+    val opponentNickname: String,
+    val confirmedAt: LocalDateTime,
+    val content: String?,
 )
