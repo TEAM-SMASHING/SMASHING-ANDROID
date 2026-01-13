@@ -56,9 +56,10 @@ fun UserProfileCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .padding(16.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(16.dp)
+            .padding(20.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -93,7 +94,6 @@ fun UserProfileCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd,
                 ) {
                     TierBadge(tierType)
                 }
