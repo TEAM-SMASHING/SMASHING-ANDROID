@@ -11,37 +11,38 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
+import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.data.model.ProfileReview
+import com.smashing.app.data.model.Review
+import com.smashing.app.presentation.profile.ProfileContract
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 
 @Composable
 fun ProfileReviewCard(
     modifier: Modifier = Modifier,
-    reviews: ImmutableList<ProfileReview>,
+    reviews: ImmutableList<Review>,
     excellentCount: Int,
     goodCount: Int,
     badCount: Int,
@@ -77,12 +78,23 @@ fun ProfileReviewCard(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ReviewFilterBox(
-                iconRes = ic_thumbs_up_double_lg,
-                count = excellentCount,
+            SmashingChip(
+                text = excellentCount.toString(),
+                style = DISABLED,
+                icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
             )
-            ReviewFilterBox(iconRes = ic_thumbs_up_lg, goodCount)
-            ReviewFilterBox(iconRes = ic_thumbs_down_lg, badCount)
+
+            SmashingChip(
+                text = goodCount.toString(),
+                style = DISABLED,
+                icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
+            )
+
+            SmashingChip(
+                text = badCount.toString(),
+                style = DISABLED,
+                icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
+            )
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -104,35 +116,8 @@ fun ProfileReviewCard(
 }
 
 @Composable
-private fun ReviewFilterBox(
-    iconRes: Int,
-    count: Int,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(SmashingTheme.colors.bgOverlay)
-            .padding(horizontal = 12.dp, vertical = 6.dp),
-    ) {
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = null,
-            tint = SmashingTheme.colors.iconPrimary,
-            modifier = Modifier.size(16.dp),
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = "$count",
-            style = SmashingTheme.typography.xs.medium12,
-            color = SmashingTheme.colors.txtSecondary,
-        )
-    }
-}
-
-@Composable
 private fun ReviewItem(
-    review: ProfileReview,
+    review: Review,
     userId: String,
 ) {
     Row(
@@ -152,20 +137,20 @@ private fun ReviewItem(
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = review.reviewerName,
+                    text = review.opponentNickname,
                     style = SmashingTheme.typography.sm.semibold14,
                     color = SmashingTheme.colors.txtPrimary,
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = review.period,
+                    text = review.confirmedAt.toString(),
                     style = SmashingTheme.typography.xs.medium12,
                     color = SmashingTheme.colors.txtTertiary,
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = review.content,
+                text = review.content ?: "",
                 style = SmashingTheme.typography.sm.medium14,
                 color = SmashingTheme.colors.txtSecondary,
             )
@@ -176,20 +161,13 @@ private fun ReviewItem(
 @Preview
 @Composable
 private fun ProfileReviewCardPreview() {
-    val dummyReviews = listOf(
-        ProfileReview(1, "닝우닝", "2일 전", "매너도 좋고, 너무 잘하세요!"),
-        ProfileReview(2, "닝우닝닝이", "4일 전", "매너도 좋고, 너무 잘하세요!"),
-        ProfileReview(3, "닝우", "5일 전", "매너도 좋고, 너무 잘하세요! 매너도 좋고, 너무 잘하세요! 매너도 좋고, 너무 잘하세요!")
-    ).toImmutableList()
-
-
     SmashingAndroidTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             ProfileReviewCard(
-                reviews = dummyReviews,
-                excellentCount = 12,
-                goodCount = 5,
-                badCount = 3,
+                reviews = ProfileContract.State().reviews,
+                excellentCount = ProfileContract.State().reviewRate.best,
+                goodCount = ProfileContract.State().reviewRate.good,
+                badCount = ProfileContract.State().reviewRate.bad,
             )
         }
     }

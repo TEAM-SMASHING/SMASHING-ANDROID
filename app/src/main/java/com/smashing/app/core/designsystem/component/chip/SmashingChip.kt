@@ -47,8 +47,8 @@ import com.smashing.app.core.extension.noRippleClickable
 fun SmashingChip(
     text: String,
     style: ChipStyle,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = { },
     icon: ImageVector? = null,
 ) {
     Row(
