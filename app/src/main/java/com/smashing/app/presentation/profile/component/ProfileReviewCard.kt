@@ -42,6 +42,9 @@ import kotlinx.collections.immutable.toImmutableList
 fun ProfileReviewCard(
     modifier: Modifier = Modifier,
     reviews: ImmutableList<ProfileReview>,
+    excellentCount: Int,
+    goodCount: Int,
+    badCount: Int,
     onViewAllClick: () -> Unit = {}
 ) {
     Column(
@@ -76,10 +79,10 @@ fun ProfileReviewCard(
         ) {
             ReviewFilterBox(
                 iconRes = ic_thumbs_up_double_lg,
-                count = 5,
+                count = excellentCount,
             )
-            ReviewFilterBox(iconRes = ic_thumbs_up_lg, count = 4)
-            ReviewFilterBox(iconRes = ic_thumbs_down_lg, count = 10)
+            ReviewFilterBox(iconRes = ic_thumbs_up_lg, goodCount)
+            ReviewFilterBox(iconRes = ic_thumbs_down_lg, badCount)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -184,6 +187,9 @@ private fun ProfileReviewCardPreview() {
         Box(modifier = Modifier.padding(16.dp)) {
             ProfileReviewCard(
                 reviews = dummyReviews,
+                excellentCount = 12,
+                goodCount = 5,
+                badCount = 3,
             )
         }
     }
