@@ -39,6 +39,8 @@
     <string name="tier_description">티어 설명</string>
     <string name="lp_remaining_text">LP 남았어요!</string>
     <string name="lp_status">LP</string>
+    <string name="record_label">전적</string>
+
 
 </resources>
 

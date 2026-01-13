@@ -90,7 +90,7 @@ fun ProfileTierBox(
 
             Icon(
                 imageVector = ImageVector.vectorResource(id = tierIconResId),
-                contentDescription = "Tier Icon",
+                contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier.size(100.dp),
             )
