@@ -43,6 +43,7 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.intValue
 import com.smashing.app.presentation.submit.component.SubmitScoreCard
+import com.smashing.app.presentation.submit.model.MatchPlayer
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -59,7 +60,7 @@ fun SubmitRoute(
         onBackClick = navigateUp,
         onLeftDoneClick = viewModel::updateSubmitterScore,
         onRightDoneClick = viewModel::updateReceiverScore,
-        onDropdownItemClick = viewModel::updateSelectedDropdownItem,
+        onWinnerSelected = viewModel::updateSelectedWinner,
     )
 }
 
@@ -67,15 +68,15 @@ fun SubmitRoute(
 private fun SubmitScreen(
     uiState: SubmitContract.State,
     onBackClick: () -> Unit,
-    onDropdownItemClick: (String) -> Unit,
+    onWinnerSelected: (String) -> Unit,
     onLeftDoneClick: (Int) -> Unit,
     onRightDoneClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val dropDownList = persistentListOf(
-        uiState.submitterName,
-        uiState.receiverName,
+        uiState.submitter.name,
+        uiState.receiver.name,
     )
 
     Column(
@@ -107,12 +108,12 @@ private fun SubmitScreen(
             )
 
             SubmitScoreCard(
-                submitterUserId = uiState.submitterUserId,
-                submitterName = uiState.submitterName,
+                submitter = uiState.submitter,
                 submitterScore = uiState.submitterScore,
-                receiverUserId = uiState.receiverUserId,
-                receiverName = uiState.receiverName,
+                receiver = uiState.receiver,
                 receiverScore = uiState.receiverScore,
+                winner = uiState.winner,
+                modifier = Modifier.padding(top = 28.dp),
             )
 
             ConstraintLayout(
@@ -123,9 +124,9 @@ private fun SubmitScreen(
                 val (winnerLabel, scoreLabel, winnerDropdown, scoreRow) = createRefs()
 
                 SmashingWinnerDropdown(
-                    selectedItem = uiState.selectedDropdownItem,
+                    selectedItem = uiState.winner?.name,
                     items = dropDownList,
-                    onClick = onDropdownItemClick,
+                    onClick = onWinnerSelected,
                     modifier = Modifier.constrainAs(winnerDropdown) {
                         end.linkTo(parent.end)
                         top.linkTo(parent.top)
@@ -232,15 +233,15 @@ private fun AccentAsteriskLabel(
 private fun SubmitScreenPreview() {
     SubmitScreen(
         uiState = SubmitContract.State(
-            submitterName = "밤이달이",
+            submitter = MatchPlayer(userId = "1", name = "밤이달이"),
             submitterScore = 10,
-            receiverName = "와쿠와쿠",
+            receiver = MatchPlayer(userId = "2", name = "와쿠와쿠"),
             receiverScore = 5,
         ),
         onBackClick = {},
         onLeftDoneClick = {},
         onRightDoneClick = {},
-        onDropdownItemClick = {},
+        onWinnerSelected = {},
         modifier = Modifier
             .background(
                 color = Color.Black,

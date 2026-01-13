@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.submit
 
 import androidx.lifecycle.ViewModel
+import com.smashing.app.presentation.submit.model.MatchPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,12 +14,13 @@ class SubmitViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
 
-    fun updateSelectedDropdownItem(dropdownItem: String) = _uiState.update { state ->
-        val isSubmitterWinner = dropdownItem == state.submitterName
+    fun updateSelectedWinner(winnerName: String) = _uiState.update { state ->
+        val isSubmitterWinner = winnerName == state.submitter.name
+        val winner = if (isSubmitterWinner) state.submitter else state.receiver
+        val loser = if (isSubmitterWinner) state.receiver else state.submitter
         state.copy(
-            selectedDropdownItem = dropdownItem,
-            winnerUserId = if (isSubmitterWinner) state.submitterUserId else state.receiverUserId,
-            loserUserId = if (isSubmitterWinner) state.receiverUserId else state.submitterUserId,
+            winner = winner,
+            loser = loser,
             isButtonEnabled = isScoreMatchingWinner(
                 isSubmitterWinner = isSubmitterWinner,
                 submitterScore = state.submitterScore,
@@ -28,10 +30,10 @@ class SubmitViewModel @Inject constructor(
     }
 
     fun updateSubmitterScore(score: Int) = _uiState.update { state ->
-        val isSubmitterWinner = state.selectedDropdownItem == state.submitterName
+        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
         state.copy(
             submitterScore = score,
-            isButtonEnabled = state.selectedDropdownItem != null && isScoreMatchingWinner(
+            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
                 isSubmitterWinner = isSubmitterWinner,
                 submitterScore = score,
                 receiverScore = state.receiverScore,
@@ -40,10 +42,10 @@ class SubmitViewModel @Inject constructor(
     }
 
     fun updateReceiverScore(score: Int) = _uiState.update { state ->
-        val isSubmitterWinner = state.selectedDropdownItem == state.submitterName
+        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
         state.copy(
             receiverScore = score,
-            isButtonEnabled = state.selectedDropdownItem != null && isScoreMatchingWinner(
+            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
                 isSubmitterWinner = isSubmitterWinner,
                 submitterScore = state.submitterScore,
                 receiverScore = score,
@@ -55,25 +57,17 @@ class SubmitViewModel @Inject constructor(
         isSubmitterWinner: Boolean,
         submitterScore: Int,
         receiverScore: Int,
-    ): Boolean {
-        return if (isSubmitterWinner) {
-            submitterScore > receiverScore
-        } else {
-            receiverScore > submitterScore
-        }
-    }
+    ): Boolean = if (isSubmitterWinner) submitterScore > receiverScore
+    else receiverScore > submitterScore
 
     private fun getDummyState(): SubmitContract.State {
         return SubmitContract.State(
-            selectedDropdownItem = null,
-            submitterName = "밤이달이",
-            receiverName = "와쿠와쿠",
+            submitter = MatchPlayer(userId = "1", name = "밤이달이"),
+            receiver = MatchPlayer(userId = "2", name = "와쿠와쿠"),
             submitterScore = 0,
             receiverScore = 0,
-            submitterUserId = "",
-            receiverUserId = "",
-            winnerUserId = null,
-            loserUserId = null,
+            winner = null,
+            loser = null,
             isButtonEnabled = false,
         )
     }
