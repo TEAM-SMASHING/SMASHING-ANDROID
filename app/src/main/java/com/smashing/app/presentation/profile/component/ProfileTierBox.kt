@@ -34,6 +34,7 @@ import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
+import com.smashing.app.core.designsystem.component.progressbar.SmashingProgressBar
 import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -105,7 +106,8 @@ fun ProfileTierBox(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            //TODO 프로그래스바 컴포넌트로 대체
+
+            SmashingProgressBar(progress = progress)
 
             Spacer(modifier = Modifier.height(8.dp))
 
