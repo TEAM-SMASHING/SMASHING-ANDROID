@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
@@ -18,6 +19,10 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.signup.component.SignUpTitle
+import com.smashing.app.R.string.sign_up_nickname_title
+import com.smashing.app.R.string.sign_up_nickname_subtitle
+import com.smashing.app.R.string.sign_up_nickname_duplicate
+
 
 @Composable
 fun SignUpNickName (
@@ -28,8 +33,8 @@ fun SignUpNickName (
         modifier = modifier,
     ){
         SignUpTitle(
-            title = "닉네임을 입력해주세요",
-            subTitle = "한글, 영어, 숫자만 가능해요"
+            title = stringResource(sign_up_nickname_title),
+            subTitle = stringResource(sign_up_nickname_subtitle),
         )
 
         Row (
@@ -37,14 +42,14 @@ fun SignUpNickName (
         ){
             NicknameInputTextField(
                 state = rememberTextFieldState(),
-                placeholder = "닉네임을 입력해주세요.",
+                placeholder = stringResource(sign_up_nickname_title),
                 modifier = Modifier.weight(1f),
             )
 
             Spacer(modifier = Modifier.width(10.dp))
 
             SmashingBaseButton(
-                text = "중복확인",
+                text = stringResource(sign_up_nickname_duplicate),
                 textStyle = SmashingTheme.typography.sm.medium14,
                 onClick = onDuplicateBtnClick,
                 buttonColor = ButtonStyle.PRIMARY_WITH_DISABLED.getButtonColor(),
@@ -54,10 +59,8 @@ fun SignUpNickName (
                 ),
                 shape = RoundedCornerShape(8.dp),
             )
-
         }
     }
-
 }
 
 @Preview(showBackground = true)

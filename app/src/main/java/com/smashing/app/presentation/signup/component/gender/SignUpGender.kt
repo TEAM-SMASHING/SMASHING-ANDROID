@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_man_32
@@ -19,7 +20,8 @@ import com.smashing.app.R.drawable.ic_woman_32
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.signup.component.SignUpTitle
-import com.smashing.app.presentation.signup.type.SelectedCardType
+import com.smashing.app.R.string.sign_up_gender_title
+import com.smashing.app.core.common.type.GenderType
 
 
 @Composable
@@ -27,13 +29,13 @@ fun SignUpGender (
     modifier: Modifier = Modifier,
 ) {
 
-    var selectedCard by rememberSaveable { mutableStateOf<SelectedCardType?>(null)}
+    var selectedCard by rememberSaveable { mutableStateOf<GenderType?>(null)}
 
     Column (
         modifier = modifier,
     ){
         SignUpTitle(
-            title = "성별을 선택해주세요",
+            title = stringResource(sign_up_gender_title),
             subTitle = "",
         )
 
@@ -43,21 +45,20 @@ fun SignUpGender (
         ){
             GenderCard(
                 genderIcon = ic_man_32,
-                genderText = "남성",
-                onCardClick = { selectedCard = SelectedCardType.MALE },
+                genderText = GenderType.MALE.gender,
+                onCardClick = { selectedCard = GenderType.MALE },
                 modifier = Modifier.weight(1f),
-                isCardEnabled = selectedCard == SelectedCardType.MALE,
-
+                isCardEnabled = selectedCard == GenderType.MALE,
             )
 
             Spacer(modifier = Modifier.width(10.dp))
 
             GenderCard(
                 genderIcon = ic_woman_32,
-                genderText = "여성",
-                onCardClick = { selectedCard = SelectedCardType.FEMALE },
+                genderText = GenderType.FEMALE.gender,
+                onCardClick = { selectedCard = GenderType.FEMALE },
                 modifier = Modifier.weight(1f),
-                isCardEnabled = selectedCard == SelectedCardType.FEMALE,
+                isCardEnabled = selectedCard == GenderType.FEMALE,
             )
         }
     }

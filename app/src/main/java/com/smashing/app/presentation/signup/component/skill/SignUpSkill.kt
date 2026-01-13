@@ -18,11 +18,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_radio_fill
 import com.smashing.app.R.drawable.ic_radio_empty
+import com.smashing.app.R.string.sign_up_skill_title
+import com.smashing.app.R.string.sign_up_skill_subtitle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -50,8 +53,8 @@ fun SignUpSkill(
         modifier = modifier.selectableGroup(),
     ) {
         SignUpTitle(
-            title = "구력을 선택해주세요",
-            subTitle = "구력을 통해 임시 티어가 결정돼요"
+            title = stringResource(sign_up_skill_title),
+            subTitle = stringResource(sign_up_skill_subtitle),
         )
         radioList.forEach { item ->
             Row(
