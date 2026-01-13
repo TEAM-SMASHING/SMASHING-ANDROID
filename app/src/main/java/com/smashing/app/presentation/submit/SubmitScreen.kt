@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.R.string.asterisk_label
 import com.smashing.app.R.string.score_separator
+import com.smashing.app.R.string.submit_matching_result
 import com.smashing.app.R.string.submit_score
 import com.smashing.app.R.string.submit_winner
 import com.smashing.app.R.string.zero_label
@@ -41,6 +41,7 @@ import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.intValue
 import com.smashing.app.presentation.submit.component.SubmitScoreCard
 import kotlinx.collections.immutable.persistentListOf
 
@@ -56,6 +57,8 @@ fun SubmitRoute(
         uiState = uiState,
         modifier = modifier,
         onBackClick = navigateUp,
+        onLeftDoneClick = viewModel::updateSubmitterScore,
+        onRightDoneClick = viewModel::updateReceiverScore,
         onDropdownItemClick = viewModel::updateSelectedDropdownItem,
     )
 }
@@ -65,6 +68,8 @@ private fun SubmitScreen(
     uiState: SubmitContract.State,
     onBackClick: () -> Unit,
     onDropdownItemClick: (String) -> Unit,
+    onLeftDoneClick: (Int) -> Unit,
+    onRightDoneClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -73,16 +78,13 @@ private fun SubmitScreen(
         uiState.receiverName,
     )
 
-    val leftTextFieldState = rememberTextFieldState()
-    val rightTextFieldState = rememberTextFieldState()
-
     Column(
         modifier = modifier
             .fillMaxSize()
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
-            title = stringResource(R.string.submit_matching_result),
+            title = stringResource(submit_matching_result),
             topBarType = TopBarType.BACK,
             onClick = onBackClick,
         )
@@ -142,18 +144,22 @@ private fun SubmitScreen(
                 )
 
                 Row(
-                    modifier = Modifier.constrainAs(scoreRow) {
-                        end.linkTo(winnerDropdown.end)
-                        start.linkTo(winnerDropdown.start)
-                        top.linkTo(winnerDropdown.bottom, 20.dp)
-                        width = Dimension.fillToConstraints
-                    },
+                    modifier = Modifier
+                        .constrainAs(scoreRow) {
+                            end.linkTo(winnerDropdown.end)
+                            start.linkTo(winnerDropdown.start)
+                            top.linkTo(winnerDropdown.bottom, 20.dp)
+                            width = Dimension.fillToConstraints
+                        },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     ScoreInputTextField(
-                        state = leftTextFieldState,
+                        state = uiState.leftTextFieldState,
                         placeholder = stringResource(zero_label),
                         modifier = Modifier.weight(1f),
+                        onDoneClick = {
+                            onLeftDoneClick(uiState.leftTextFieldState.intValue)
+                        },
                     )
 
                     Text(
@@ -164,9 +170,12 @@ private fun SubmitScreen(
                     )
 
                     ScoreInputTextField(
-                        state = rightTextFieldState,
+                        state = uiState.rightTextFieldState,
                         placeholder = stringResource(zero_label),
                         modifier = Modifier.weight(1f),
+                        onDoneClick = {
+                            onRightDoneClick(uiState.rightTextFieldState.intValue)
+                        },
                     )
                 }
 
@@ -229,6 +238,8 @@ private fun SubmitScreenPreview() {
             receiverScore = 5,
         ),
         onBackClick = {},
+        onLeftDoneClick = {},
+        onRightDoneClick = {},
         onDropdownItemClick = {},
         modifier = Modifier
             .background(

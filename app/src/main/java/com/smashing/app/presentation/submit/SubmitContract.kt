@@ -1,8 +1,12 @@
 package com.smashing.app.presentation.submit
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Immutable
 
 interface SubmitContract {
+    val TextFieldState.intValue: Int
+        get() = text.toString().toIntOrNull() ?: 0
+
     @Immutable
     data class State(
         val submitterName: String = "",
@@ -15,6 +19,8 @@ interface SubmitContract {
         val loserUserId: String? = null,
         val selectedDropdownItem: String? = null,
         val isButtonEnabled: Boolean = false,
+        val leftTextFieldState: TextFieldState = TextFieldState(),
+        val rightTextFieldState: TextFieldState = TextFieldState(),
     )
 
 }
