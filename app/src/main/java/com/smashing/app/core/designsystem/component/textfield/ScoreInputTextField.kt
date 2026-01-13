@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.matching.component
+package com.smashing.app.core.designsystem.component.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,19 +30,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import com.smashing.app.core.designsystem.style.ColoredBoxTextFieldStyle
-import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 
-private const val AREA_RATIO = 45f / 41f
+private const val SCORE_INPUT_RATIO = 45f / 41f
 
 @Composable
 fun ScoreInputTextField(
     state: TextFieldState,
     placeholder: String,
     modifier: Modifier = Modifier,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -64,7 +63,7 @@ fun ScoreInputTextField(
     Box(
         modifier = modifier
             .width(45.dp)
-            .aspectRatio(AREA_RATIO)
+            .aspectRatio(SCORE_INPUT_RATIO)
             .background(
                 color = inputState.getBackgroundColor(),
                 shape = RoundedCornerShape(8.dp),
@@ -119,4 +118,3 @@ private fun ScoreInputTextFieldPreview() {
         }
     }
 }
-
