@@ -2,13 +2,9 @@ package com.smashing.app.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.R
-import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
-import com.smashing.app.data.model.UserProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +24,6 @@ class ProfileViewModel @Inject constructor(
         fetchProfileData()
     }
 
-    // TODO 더미 데이터 삭제 예정
     private fun fetchProfileData() {
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = ProfileUiState.Loading) }
@@ -36,38 +31,6 @@ class ProfileViewModel @Inject constructor(
             try {
                 // TODO: 실제 API 호출 (delay로 시뮬레이션)
                 delay(1000)
-
-                val dummyProfile = UserProfileInfo(
-                    tierType = TierType.GOLD_1,
-                    tierIconResId = R.drawable.ic_fake_red,
-                    mySports = listOf(),
-                    selectedSport = SportType.BADMINTON,
-                    lpProgress = 0.2f,
-                    minLp = 100,
-                    maxLp = 500,
-                    winCount = 12,
-                    loseCount = 5,
-                )
-
-                val dummyReviews = persistentListOf(
-                    _uiState.update {
-                        it.copy(
-                            loadState = ProfileUiState.Success,
-                            profileInfo = UserProfileInfo(
-                                tierType = TierType.GOLD_1,
-                                tierIconResId = ic_fake_red,
-                                mySports = listOf(SportType.PING_PONG, SportType.BADMINTON),
-                                selectedSport = SportType.PING_PONG,
-                                lpProgress = 0.1f,
-                                minLp = 100,
-                                maxLp = 500,
-                                winCount = 4,
-                                loseCount = 5,
-                            ),
-                            reviews = persistentListOf(),
-                        )
-                    }
-                )
 
             } catch (e: Exception) {
                 _uiState.update {
@@ -78,7 +41,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun updateSelectedSport(sport: SportType) {
-        val currentInfo = _uiState.value.profileInfo ?: return
+        val currentInfo = _uiState.value.profileInfo
 
         if (currentInfo.selectedSport == sport) return
 
