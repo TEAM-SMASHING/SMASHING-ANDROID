@@ -23,10 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
+import com.smashing.app.R.string.profile
 import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
+import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.model.ProfileReview
@@ -85,18 +87,11 @@ private fun ProfileScreen(
         contentPadding = PaddingValues(bottom = 20.dp + navigationBarBottomPadding),
     ) {
         item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 21.dp, horizontal = 16.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.profile),
-                    color = SmashingTheme.colors.txtPrimary,
-                    style = SmashingTheme.typography.md.semibold16,
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            }
+            SmashingDefaultTopBar(
+                title = stringResource(profile),
+                topBarType = TopBarType.DEFAULT,
+                onClick = null,
+            )
         }
         item {
             ProfileTierBox(
@@ -148,12 +143,12 @@ private fun ProfileScreenPreview() {
             mySports = listOf(SportType.PING_PONG, SportType.BADMINTON),
             selectedSport = SportType.PING_PONG,
             lpProgress = 0.1f,
-            minLp  = 100,
+            minLp = 100,
             maxLp = 500,
             winCount = 4,
             loseCount = 5,
         ),
-        reviews= dummyReviews
+        reviews = dummyReviews
     )
 
 
