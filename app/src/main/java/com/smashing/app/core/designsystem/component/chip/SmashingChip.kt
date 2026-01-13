@@ -48,8 +48,8 @@ fun SmashingChip(
     text: String,
     style: ChipStyle,
     onClick: () -> Unit,
-    icon: ImageVector,
     modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
 ) {
     Row(
         modifier = modifier
@@ -65,13 +65,15 @@ fun SmashingChip(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = style.contentColor(),
-            modifier = Modifier.size(24.dp),
-        )
-        Spacer(modifier = Modifier.width(10.dp))
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = style.contentColor(),
+                modifier = Modifier.size(24.dp),
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+        }
 
         Text(
             text = text,
@@ -139,7 +141,6 @@ private fun PreviewSmashingChips() {
         SmashingChip(
             text = "text",
             style = PRESSED,
-            icon = ImageVector.vectorResource(id = ic_fake_red),
             onClick = {},
         )
     }
