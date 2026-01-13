@@ -4,12 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 private const val HTTP_OK = 200
+private const val HTTP_ACCEPTED = 202
 
 @Serializable
 data class BaseResponse<T>(
     @SerialName("status")
     val status: String,
-    @SerialName("status_code")
+    @SerialName("statusCode")
     val statusCode: Int,
     @SerialName("data")
     val data: T?,
@@ -18,6 +19,6 @@ data class BaseResponse<T>(
 )
 
 fun <T> BaseResponse<T>.requireData(): T {
-    if (statusCode != HTTP_OK) throw IllegalStateException("API request failed.")
+    if (statusCode != HTTP_OK || statusCode != HTTP_ACCEPTED) throw IllegalStateException("API request failed.")
     return data ?: throw IllegalStateException("Successful response but data was null.")
 }
