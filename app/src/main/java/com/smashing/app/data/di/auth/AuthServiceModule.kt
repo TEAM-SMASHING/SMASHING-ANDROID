@@ -1,5 +1,7 @@
 package com.smashing.app.data.di.auth
 
+import com.smashing.app.core.network.qualifier.Auth
+import com.smashing.app.core.network.qualifier.NoAuth
 import com.smashing.app.data.remote.service.AuthService
 import dagger.Module
 import dagger.Provides
@@ -12,7 +14,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthServiceModule {
+
     @Provides
     @Singleton
-    fun provideAuthService(retrofit: Retrofit): AuthService = retrofit.create()
+    fun provideNoAuthService(
+        @NoAuth retrofit: Retrofit
+    ): AuthService = retrofit.create()
 }

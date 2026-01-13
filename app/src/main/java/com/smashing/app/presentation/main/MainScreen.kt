@@ -3,11 +3,7 @@ package com.smashing.app.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,15 +11,21 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
-import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.homeGraph
+import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
+import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
+import com.smashing.app.presentation.signup.navigation.SignUp
+import com.smashing.app.presentation.signup.navigation.navigateToSignUp
+import com.smashing.app.presentation.signup.navigation.signUpGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -43,7 +45,6 @@ fun MainScreen(
             )
         },
         containerColor = SmashingTheme.colors.bgCanvas,
-        contentWindowInsets = WindowInsets.safeDrawing.exclude(WindowInsets.statusBars),
         modifier = Modifier
             .fillMaxSize(),
     ) { innerPadding ->
@@ -69,6 +70,7 @@ private fun MainNavHost(
     ) {
         homeGraph(
             innerPadding = innerPadding,
+            navigateToNotice = appState.navController::navigateToNotice,
         )
 
         searchGraph(
@@ -84,9 +86,9 @@ private fun MainNavHost(
         )
 
         loginGraph(
-            navigateToHome = {
-                appState.navController.navigate(
-                    route = Home,
+            navigateToSignUp = { authId ->
+                appState.navController.navigateToSignUp(
+                    authId = authId,
                     navOptions = navOptions {
                         popUpTo<Login> {
                             inclusive = true
@@ -95,6 +97,35 @@ private fun MainNavHost(
                     }
                 )
             },
+            navigateToHome = {
+                appState.navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            innerPadding = innerPadding,
+        )
+
+        signUpGraph(
+            navigateToHome = {
+                appState.navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    },
+                )
+            },
+            innerPadding = innerPadding,
+        )
+
+        noticeGraph(
+            navigateUp = appState.navController::navigateUp,
             innerPadding = innerPadding,
         )
     }
