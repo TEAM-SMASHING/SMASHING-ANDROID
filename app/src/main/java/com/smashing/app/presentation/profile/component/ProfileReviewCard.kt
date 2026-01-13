@@ -37,6 +37,7 @@ import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.Review
 import com.smashing.app.presentation.profile.ProfileContract
 import kotlinx.collections.immutable.ImmutableList
+import toFriendlyString
 
 
 @Composable
@@ -143,7 +144,7 @@ private fun ReviewItem(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = review.confirmedAt.toString(),
+                    text = review.confirmedAt.toFriendlyString(),
                     style = SmashingTheme.typography.xs.medium12,
                     color = SmashingTheme.colors.txtTertiary,
                 )
