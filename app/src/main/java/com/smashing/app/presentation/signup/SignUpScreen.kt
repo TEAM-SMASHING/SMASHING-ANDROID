@@ -24,6 +24,7 @@ import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.presentation.signup.component.chatlink.SignUpChatLink
 import com.smashing.app.presentation.signup.component.gender.SignUpGender
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 
@@ -93,9 +94,7 @@ private fun SignUpScreen(
                     onDuplicateBtnClick = { }
                 )
                 2 -> SignUpGender()
-                3 -> SignUpNickName(
-                    onDuplicateBtnClick = { }
-                )//Todo 링크
+                3 -> SignUpChatLink()
                 4 -> SignUpNickName(
                     onDuplicateBtnClick = { }
                 )//Todo 종목
