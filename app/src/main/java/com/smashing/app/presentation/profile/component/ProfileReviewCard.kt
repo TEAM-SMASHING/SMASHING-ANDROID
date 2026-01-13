@@ -47,7 +47,7 @@ fun ProfileReviewCard(
     excellentCount: Int,
     goodCount: Int,
     badCount: Int,
-    onViewAllClick: () -> Unit = {}
+    onViewAllReviewClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -70,7 +70,7 @@ fun ProfileReviewCard(
                 text = "모두 보기",
                 style = SmashingTheme.typography.sm.medium14,
                 color = SmashingTheme.colors.txtSecondary,
-                modifier = Modifier.noRippleClickable(onViewAllClick),
+                modifier = Modifier.noRippleClickable(onViewAllReviewClick),
             )
         }
 
@@ -108,7 +108,7 @@ fun ProfileReviewCard(
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 12.dp),
                         thickness = 1.dp,
-                        color = SmashingTheme.colors.txtTertiary,
+                        color = SmashingTheme.colors.borderPrimary,
                     )
                 }
             }

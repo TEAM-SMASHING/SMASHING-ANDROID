@@ -108,9 +108,9 @@ private fun ProfileScreen(
                 progress = uiState.profileInfo.lpProgress,
                 lpStatus = uiState.profileInfo.minLp,
                 totalLp = uiState.profileInfo.maxLp,
-                onTierInfoClick = onTierGuideClick,
                 onAddSportClick = onAddSportClick,
-            )
+                onTierInfoClick = onTierGuideClick,
+                )
         }
         item {
             ProfileStatsBar(
@@ -122,7 +122,7 @@ private fun ProfileScreen(
             Box(modifier = Modifier.padding(16.dp)) {
                 ProfileReviewCard(
                     reviews = uiState.reviews,
-                    onViewAllClick = onReviewsClick,
+                    onViewAllReviewClick = onReviewsClick,
                     excellentCount = uiState.reviewRate.best,
                     goodCount = uiState.reviewRate.good,
                     badCount = uiState.reviewRate.bad,
