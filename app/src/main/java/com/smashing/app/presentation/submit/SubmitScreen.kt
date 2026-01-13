@@ -157,7 +157,9 @@ private fun SubmitScreen(
                     ScoreInputTextField(
                         state = uiState.leftTextFieldState,
                         placeholder = stringResource(zero_label),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(bottom = 10.dp),
                         onDoneClick = {
                             onLeftDoneClick(uiState.leftTextFieldState.intValue)
                         },
@@ -173,7 +175,9 @@ private fun SubmitScreen(
                     ScoreInputTextField(
                         state = uiState.rightTextFieldState,
                         placeholder = stringResource(zero_label),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(bottom = 10.dp),
                         onDoneClick = {
                             onRightDoneClick(uiState.rightTextFieldState.intValue)
                         },

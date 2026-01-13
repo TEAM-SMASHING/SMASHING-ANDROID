@@ -34,6 +34,7 @@ import androidx.core.text.isDigitsOnly
 import com.smashing.app.core.designsystem.style.ColoredBoxTextFieldStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.bringIntoViewOnFocus
 
 private const val SCORE_INPUT_RATIO = 45f / 41f
 
@@ -78,6 +79,9 @@ fun ScoreInputTextField(
                 width = 1.dp,
                 color = inputState.getBorderColor(),
                 shape = RoundedCornerShape(8.dp),
+            )
+            .bringIntoViewOnFocus(
+                isFocused = isFocused,
             ),
         contentAlignment = Alignment.Center,
     ) {
