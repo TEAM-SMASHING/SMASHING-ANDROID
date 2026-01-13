@@ -1,3 +1,5 @@
+package com.smashing.app.core.extension
+
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 

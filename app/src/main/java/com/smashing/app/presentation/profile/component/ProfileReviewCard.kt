@@ -33,11 +33,11 @@ import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.core.extension.toFriendlyString
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.Review
 import com.smashing.app.presentation.profile.ProfileContract
 import kotlinx.collections.immutable.ImmutableList
-import toFriendlyString
 
 
 @Composable
