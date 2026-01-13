@@ -55,7 +55,10 @@ fun SignUpRoute(
         onBtnClick = {
             if (viewModel.currentStep < 6)
                 viewModel::updateCurrentStep
-            else navigateToHome
+            else {
+                viewModel::postSignUp
+                navigateToHome
+            }
         },
     )
 }

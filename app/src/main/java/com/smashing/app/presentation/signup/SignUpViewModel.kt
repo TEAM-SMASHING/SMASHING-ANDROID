@@ -32,7 +32,7 @@ class SignUpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
 
-    var currentStep by mutableStateOf(1)
+    var currentStep by mutableIntStateOf(1)
         private set
 
     val progress: Float
