@@ -28,6 +28,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.signup.component.chatlink.SignUpChatLink
 import com.smashing.app.presentation.signup.component.gender.SignUpGender
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
+import com.smashing.app.presentation.signup.component.skill.SignUpSkill
 import com.smashing.app.presentation.signup.component.sport.SignUpSport
 import kotlinx.collections.immutable.persistentListOf
 
@@ -106,9 +107,7 @@ private fun SignUpScreen(
                         SportType.TENNIS,
                     ),
                 )
-                5 -> SignUpNickName(
-                    onDuplicateBtnClick = { }
-                )//Todo 구력
+                5 -> SignUpSkill()
                 6 -> SignUpNickName(
                     onDuplicateBtnClick = { }
                 )//Todo 지역

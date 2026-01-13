@@ -1,0 +1,95 @@
+package com.smashing.app.presentation.signup.component.skill
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.smashing.app.R.drawable.ic_radio_fill
+import com.smashing.app.R.drawable.ic_radio_empty
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
+import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.presentation.signup.component.SignUpTitle
+import com.smashing.app.presentation.signup.type.SkillType
+import kotlinx.collections.immutable.toImmutableList
+
+@Composable
+fun SignUpSkill(
+    modifier: Modifier = Modifier,
+) {
+
+    val radioList = listOf(
+        SkillType.THREE,
+        SkillType.THREETOSIX,
+        SkillType.SIXTOYEAR,
+        SkillType.YEARTOYEARSIX,
+        SkillType.YEARSIX,
+    ).toImmutableList()
+
+    var selectedList by rememberSaveable { mutableStateOf<SkillType?>(null)}
+
+    Column(
+        modifier = modifier.selectableGroup(),
+    ) {
+        SignUpTitle(
+            title = "구력을 선택해주세요",
+            subTitle = "구력을 통해 임시 티어가 결정돼요"
+        )
+        radioList.forEach { item ->
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .noRippleClickable(
+                        onClick = { selectedList = item }
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(
+                        if(selectedList == item) ic_radio_fill else ic_radio_empty
+                    ),
+                    contentDescription = null,
+                    tint = colors.iconPrimary,
+                )
+
+                Spacer(modifier = Modifier.width(15.dp))
+
+                Text(
+                    text = item.skillText,
+                    color = colors.txtSecondary,
+                    style = typography.md.medium16,
+                )
+            }
+            Spacer(modifier = Modifier.height(28.dp))
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun SignUpSkillPreview() {
+    SmashingAndroidTheme {
+        SignUpSkill(
+            modifier = Modifier.background(color = colors.bgCanvas),
+        )
+    }
+}
