@@ -20,11 +20,14 @@
     <string name="kakao_link">카카오톡 링크</string>
     <string name="win_lose_count">%1$d승 %2$d패</string>
 
+    <!--Progress -->
+    <string name="progress_label">progress</string>
+
     <!--Dropdown -->
     <string name="dropdown_region_select">지역 선택</string>
     <string name="dropdown_winner_select">승자 선택</string>
+    <!--Home  -->
 
-    <!--Home    -->
     <!--Matching -->
     <string name="matching_write">결과 작성하기</string>
     <string name="matching_receive">받은 요청</string>
@@ -38,4 +41,8 @@
     <string name="matching_send_dialog_description">요청 취소 시 24시간 후 재요청할 수 있습니다.</string>
     <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠어요?</string>
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료돼요.</string>
+    <!--Search  -->
+    <!--Profile -->
+    <!--Notice  -->
+    <string name="notice">알림</string>
 </resources>

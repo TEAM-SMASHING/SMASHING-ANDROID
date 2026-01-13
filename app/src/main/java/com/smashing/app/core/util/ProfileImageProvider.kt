@@ -5,10 +5,10 @@ import kotlin.math.absoluteValue
 object ProfileImageProvider {
     // TODO 추후 프로필 이미지 변경 예정
     private val TEMP_PROFILE_IMAGE_URLS = listOf(
-        "https://picsum.photos/100",
-        "https://picsum.photos/100",
-        "https://picsum.photos/100",
-        "https://picsum.photos/100",
+        "https://picsum.photos/seed/1/100",
+        "https://picsum.photos/seed/2/100",
+        "https://picsum.photos/seed/3/100",
+        "https://picsum.photos/seed/4/100",
     )
 
     /**
