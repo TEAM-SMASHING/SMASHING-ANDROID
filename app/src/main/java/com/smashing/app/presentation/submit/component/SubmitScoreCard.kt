@@ -2,12 +2,14 @@ package com.smashing.app.presentation.submit.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -84,28 +86,31 @@ private fun ProfileInfo(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .padding(top = 36.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (isWinner) {
-            Icon(
-                imageVector = ImageVector.vectorResource(ic_crown),
-                contentDescription = null,
-                tint = SmashingTheme.colors.iconCrown,
+        Box(
+            contentAlignment = Alignment.TopCenter,
+        ) {
+            UrlImage(
+                url = ProfileImageProvider.getTempUrl(player.userId),
                 modifier = Modifier
-                    .padding(top = 12.dp),
+                    .height(64.dp)
+                    .aspectRatio(1f)
+                    .clip(CircleShape),
             )
-        } else {
-            Spacer(Modifier.height(36.dp))
-        }
 
-        UrlImage(
-            url = ProfileImageProvider.getTempUrl(player.userId),
-            modifier = Modifier
-                .height(52.dp)
-                .aspectRatio(1f)
-                .clip(CircleShape),
-        )
+            if (isWinner) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(ic_crown),
+                    contentDescription = null,
+                    tint = SmashingTheme.colors.iconCrown,
+                    modifier = Modifier
+                        .offset(y = (-24).dp),
+                )
+            }
+        }
 
         Spacer(Modifier.height(5.dp))
 
