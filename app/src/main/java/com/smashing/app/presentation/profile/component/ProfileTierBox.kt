@@ -101,7 +101,7 @@ fun ProfileTierBox(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.CenterEnd,
             ) {
-                TierBadge(tierType)
+                TierBadge(tierType.getNextTier())
             }
 
             Spacer(modifier = Modifier.height(8.dp))
