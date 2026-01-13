@@ -39,7 +39,7 @@ import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.presentation.matching.component.ScoreInputTextField
+import com.smashing.app.core.designsystem.component.textfield.ScoreInputTextField
 import com.smashing.app.presentation.submit.component.SubmitScoreCard
 import kotlinx.collections.immutable.persistentListOf
 
