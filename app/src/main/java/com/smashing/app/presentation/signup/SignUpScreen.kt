@@ -24,6 +24,7 @@ import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.presentation.signup.component.gender.SignUpGender
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 
 @Composable
@@ -90,10 +91,8 @@ private fun SignUpScreen(
             when(currentStep) {
                 1 -> SignUpNickName(
                     onDuplicateBtnClick = { }
-                )//Todo 닉네임
-                2 -> SignUpNickName(
-                    onDuplicateBtnClick = { }
-                )//Todo 성별
+                )
+                2 -> SignUpGender()
                 3 -> SignUpNickName(
                     onDuplicateBtnClick = { }
                 )//Todo 링크

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -32,8 +31,6 @@ fun SignUpNickName (
             title = "닉네임을 입력해주세요",
             subTitle = "한글, 영어, 숫자만 가능해요"
         )
-
-        Spacer(modifier = Modifier.height(28.dp))
 
         Row (
             modifier = modifier,
