@@ -16,11 +16,11 @@ fun NavController.navigateToSubmit(
 ) = navigate(Submit, navOptions)
 
 fun NavGraphBuilder.submitGraph(
-    innerPadding: PaddingValues,
+    navigateUp: () -> Unit,
 ) {
     composable<Submit> {
         SubmitRoute(
-            modifier = Modifier.padding(innerPadding),
+            navigateUp = navigateUp,
         )
     }
 }

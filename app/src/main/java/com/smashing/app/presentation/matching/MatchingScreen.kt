@@ -11,31 +11,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun MatchingRoute(
+    navigateToSubmit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
 
     MatchingScreen(
+        navigateToSubmit = navigateToSubmit,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun MatchingScreen(
+    navigateToSubmit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "매칭 관리",
             color = Color.White,
+            modifier = Modifier.noRippleClickable(navigateToSubmit),
         )
     }
 }
@@ -44,6 +48,8 @@ private fun MatchingScreen(
 @Composable
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
-        MatchingScreen()
+        MatchingScreen(
+            navigateToSubmit = {},
+        )
     }
 }

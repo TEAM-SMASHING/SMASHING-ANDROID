@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
@@ -35,16 +36,17 @@ import com.smashing.app.R.string.submit_winner
 import com.smashing.app.R.string.zero_label
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dropdown.SmashingWinnerDropdown
+import com.smashing.app.core.designsystem.component.textfield.ScoreInputTextField
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.designsystem.component.textfield.ScoreInputTextField
 import com.smashing.app.presentation.submit.component.SubmitScoreCard
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SubmitRoute(
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SubmitViewModel = hiltViewModel(),
 ) {
@@ -53,7 +55,7 @@ fun SubmitRoute(
     SubmitScreen(
         uiState = uiState,
         modifier = modifier,
-        onBackClick = {},
+        onBackClick = navigateUp,
         onDropdownItemClick = viewModel::updateSelectedDropdownItem,
     )
 }
@@ -77,7 +79,7 @@ private fun SubmitScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-
+            .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
             title = stringResource(R.string.submit_matching_result),
