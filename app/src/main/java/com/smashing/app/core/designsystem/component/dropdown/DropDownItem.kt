@@ -1,5 +1,7 @@
 package com.smashing.app.core.designsystem.component.dropdown
 
+import androidx.compose.runtime.Stable
+
 /**
  * @param label 드롭다운 메뉴의 레이블
  *
@@ -11,6 +13,7 @@ package com.smashing.app.core.designsystem.component.dropdown
  * 추가 액션을 가진 드롭다운 메뉴 항목
  * 선택 시 별도의 onClick 콜백을 실행합니다.
  */
+@Stable
 sealed interface DropdownItem {
     val label: String
     data class Normal(override val label: String) : DropdownItem
