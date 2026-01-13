@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -90,7 +88,7 @@ private fun SignUpScreen(
                 .padding(horizontal = 16.dp),
         ) {
 
-            if(currentStep < 7){
+            if (currentStep < 7){
                 SmashingProgressBar(
                     progress = progress,
                 )
@@ -100,7 +98,7 @@ private fun SignUpScreen(
                 when (currentStep) {
                     1 -> SignUpNickName(
                         nickNameState = uiState.nicknameInput,
-                        onDuplicateBtnClick = { }
+                        onDuplicateBtnClick = { },
                     )
                     2 -> SignUpGender()
                     3 -> SignUpChatLink()
@@ -135,8 +133,7 @@ private fun SignUpScreen(
                     stringResource(sign_up_end_btn)
                 },
                 onClick = onBtnClick,
-                modifier = Modifier.fillMaxWidth()
-
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }

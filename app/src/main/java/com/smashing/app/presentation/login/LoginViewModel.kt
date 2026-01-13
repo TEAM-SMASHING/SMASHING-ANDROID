@@ -20,7 +20,7 @@ class LoginViewModel @Inject constructor(
     ) = viewModelScope.launch {
         authRepository.loginKakao(context = context)
             .onSuccess { token ->
-                authRepository.postKakaoLogin(authorization = token)
+                authRepository.postKakaoLogin(token)
                     .onSuccess {
                         onKakaoLoginSuccess(it.authId)
                         Timber.tag("KakaoLogin").d("로그인 성공 $token")
