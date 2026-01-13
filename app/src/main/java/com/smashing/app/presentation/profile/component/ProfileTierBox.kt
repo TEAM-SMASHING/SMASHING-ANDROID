@@ -117,25 +117,25 @@ fun ProfileTierBox(
                 Text(
                     text = lpStatus.toString(),
                     color = SmashingTheme.colors.txtPrimary,
-                    style = SmashingTheme.typography.md.semibold16
+                    style = SmashingTheme.typography.md.semibold16,
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                 Text(
                     text = stringResource(lp_remaining_text),
                     color = SmashingTheme.colors.txtTertiary,
-                    style = SmashingTheme.typography.md.medium16
+                    style = SmashingTheme.typography.md.medium16,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = stringResource(lp_status),
                     color = SmashingTheme.colors.txtTertiary,
-                    style = SmashingTheme.typography.md.medium16
+                    style = SmashingTheme.typography.md.medium16,
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                 Text(
                     text = totalLp.toString(),
                     color = SmashingTheme.colors.txtTertiary,
-                    style = SmashingTheme.typography.md.medium16
+                    style = SmashingTheme.typography.md.medium16,
                 )
             }
 
@@ -150,11 +150,11 @@ fun ProfileTierBox(
                     backgroundColor = SmashingTheme.colors.tierDiamondBg,
                     textColor = SmashingTheme.colors.txtEmphasis,
                     disabledBackgroundColor = SmashingTheme.colors.tierDiamondBg,
-                    disabledTextColor = SmashingTheme.colors.txtEmphasis
+                    disabledTextColor = SmashingTheme.colors.txtEmphasis,
                 ),
-                contentPadding = PaddingValues(vertical = 9.5.dp),
+                contentPadding = PaddingValues(vertical = 10.dp),
                 shape = RoundedCornerShape(8.dp),
-                isRippleEnabled = false
+                isRippleEnabled = false,
             )
         }
     }
@@ -174,7 +174,7 @@ private fun ProfileTierBoxPreview() {
             onTierInfoClick = {},
             onAddSportClick = {},
             onSportClick = {},
-            selectedSport = SportType.PING_PONG
+            selectedSport = SportType.PING_PONG,
         )
     }
 }
