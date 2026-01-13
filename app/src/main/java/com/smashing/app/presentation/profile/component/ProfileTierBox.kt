@@ -46,8 +46,8 @@ fun ProfileTierBox(
     sports: List<SportType>,
     tierIconResId: Int,
     progress: Float,
-    lpStatusText: String,
-    totalLpText: String,
+    lpStatus: Int,
+    totalLp: Int,
     onTierInfoClick: () -> Unit,
     selectedSport: SportType,
     onSportClick: (SportType) -> Unit,
@@ -113,7 +113,7 @@ fun ProfileTierBox(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
-                    text = lpStatusText,
+                    text = lpStatus.toString(),
                     color = SmashingTheme.colors.txtPrimary,
                     style = SmashingTheme.typography.md.semibold16
                 )
@@ -131,7 +131,7 @@ fun ProfileTierBox(
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                 Text(
-                    text = totalLpText,
+                    text = totalLp.toString(),
                     color = SmashingTheme.colors.txtTertiary,
                     style = SmashingTheme.typography.md.medium16
                 )
@@ -167,8 +167,8 @@ private fun ProfileTierBoxPreview() {
             sports = listOf(SportType.PING_PONG, SportType.TENNIS),
             tierIconResId = ic_fake_red,
             progress = 0.2f,
-            lpStatusText = "100",
-            totalLpText = "500",
+            lpStatus = 100,
+            totalLp = 500,
             onTierInfoClick = {},
             onAddSportClick = {},
             onSportClick = {},

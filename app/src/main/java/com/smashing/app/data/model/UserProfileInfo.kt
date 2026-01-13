@@ -10,10 +10,10 @@ data class UserProfileInfo(
     val selectedSport: SportType,
 
     val lpProgress: Float,
-    val lpStatusText: String,
-    val totalLpText: String,
+    val minLp: Int,
+    val maxLp: Int,
+    val lp: Int = maxLp - minLp,
 
     val winCount: Int,
     val loseCount: Int,
-    val winRate: String,
 )

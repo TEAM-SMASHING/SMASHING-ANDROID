@@ -31,44 +31,49 @@ import com.smashing.app.R.string.rate_label
 fun ProfileStatsBar(
     winCount: Int,
     loseCount: Int,
-    winRate: String,
     modifier: Modifier = Modifier
 ) {
+    val totalCount = winCount + loseCount
+    val winRate = if (totalCount == 0) {
+        0
+    } else {
+        ((winCount.toFloat() / totalCount) * 100).toInt()
+    }
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(vertical = 12.dp)
+            .padding(vertical = 12.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             ProfileStatItem(
-                count = winCount.toString(),
+                count = "$winCount",
                 label = stringResource(id = win_label),
                 countColor = SmashingTheme.colors.txtEmphasis,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
 
             StatDivider()
 
             ProfileStatItem(
-                count = loseCount.toString(),
+                count = "$loseCount",
                 label = stringResource(id = lose_label),
                 countColor = SmashingTheme.colors.txtRed,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
 
             StatDivider()
 
             ProfileStatItem(
-                count = winRate,
+                count = "$winRate%",
                 label = stringResource(id = rate_label),
                 countColor = SmashingTheme.colors.txtPrimary,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         }
     }
@@ -84,17 +89,17 @@ private fun ProfileStatItem(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             text = count,
             color = countColor,
-            style = SmashingTheme.typography.xl.semibold20
+            style = SmashingTheme.typography.xl.semibold20,
         )
         Text(
             text = label,
             color = SmashingTheme.colors.txtSecondary,
-            style = SmashingTheme.typography.xs.medium12
+            style = SmashingTheme.typography.xs.medium12,
         )
     }
 }
@@ -105,7 +110,7 @@ private fun StatDivider() {
         modifier = Modifier
             .height(40.dp)
             .width(1.dp),
-        color = SmashingTheme.colors.borderSecondary
+        color = SmashingTheme.colors.borderSecondary,
     )
 }
 
@@ -117,7 +122,6 @@ private fun ProfileStatsBarPreview() {
             ProfileStatsBar(
                 winCount = 12,
                 loseCount = 5,
-                winRate = "70%"
             )
         }
     }
