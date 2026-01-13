@@ -13,18 +13,54 @@ class SubmitViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
 
-    fun updateSelectedDropdownItem(dropdownItem: String) = _uiState.update {
-        it.copy(
+    fun updateSelectedDropdownItem(dropdownItem: String) = _uiState.update { state ->
+        val isSubmitterWinner = dropdownItem == state.submitterName
+        state.copy(
             selectedDropdownItem = dropdownItem,
+            winnerUserId = if (isSubmitterWinner) state.submitterUserId else state.receiverUserId,
+            loserUserId = if (isSubmitterWinner) state.receiverUserId else state.submitterUserId,
+            isButtonEnabled = isScoreMatchingWinner(
+                isSubmitterWinner = isSubmitterWinner,
+                submitterScore = state.submitterScore,
+                receiverScore = state.receiverScore,
+            ),
         )
     }
 
-    fun updateSubmitterScore(score: Int) = _uiState.update {
-        it.copy(submitterScore = score)
+    fun updateSubmitterScore(score: Int) = _uiState.update { state ->
+        val isSubmitterWinner = state.selectedDropdownItem == state.submitterName
+        state.copy(
+            submitterScore = score,
+            isButtonEnabled = state.selectedDropdownItem != null && isScoreMatchingWinner(
+                isSubmitterWinner = isSubmitterWinner,
+                submitterScore = score,
+                receiverScore = state.receiverScore,
+            ),
+        )
     }
 
-    fun updateReceiverScore(score: Int) = _uiState.update {
-        it.copy(receiverScore = score)
+    fun updateReceiverScore(score: Int) = _uiState.update { state ->
+        val isSubmitterWinner = state.selectedDropdownItem == state.submitterName
+        state.copy(
+            receiverScore = score,
+            isButtonEnabled = state.selectedDropdownItem != null && isScoreMatchingWinner(
+                isSubmitterWinner = isSubmitterWinner,
+                submitterScore = state.submitterScore,
+                receiverScore = score,
+            ),
+        )
+    }
+
+    private fun isScoreMatchingWinner(
+        isSubmitterWinner: Boolean,
+        submitterScore: Int,
+        receiverScore: Int,
+    ): Boolean {
+        return if (isSubmitterWinner) {
+            submitterScore > receiverScore
+        } else {
+            receiverScore > submitterScore
+        }
     }
 
     private fun getDummyState(): SubmitContract.State {
