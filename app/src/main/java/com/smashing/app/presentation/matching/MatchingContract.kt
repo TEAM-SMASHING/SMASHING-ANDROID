@@ -16,6 +16,7 @@ interface MatchingContract {
         val receiveList: ImmutableList<ReceivedMatching> = persistentListOf(),
         val sendList: ImmutableList<SentMatching> = persistentListOf(),
         val acceptedList: ImmutableList<AcceptedMatching> = persistentListOf(),
+        val isDialogVisible: Boolean = false,
     )
 }
 

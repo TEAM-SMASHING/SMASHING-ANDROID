@@ -29,11 +29,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.R.drawable.img_app_icon
+import com.smashing.app.R.string.cancel
+import com.smashing.app.R.string.matching_accepted_dialog_description
+import com.smashing.app.R.string.matching_accepted_dialog_title
 import com.smashing.app.R.string.matching_confirm_empty
 import com.smashing.app.R.string.matching_receive_empty
+import com.smashing.app.R.string.matching_send_dialog_description
+import com.smashing.app.R.string.matching_send_dialog_title
 import com.smashing.app.R.string.matching_send_empty
+import com.smashing.app.R.string.no
 import com.smashing.app.core.designsystem.component.card.MatchingCard
+import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.state.MatchingCardState
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.matching.component.MatchingTabBar
@@ -49,6 +57,8 @@ fun MatchingRoute(
     MatchingScreen(
         uiState = uiState,
         onTabClick = viewModel::updateMatchingType,
+        onCardCloseClick = viewModel::showDialogVisible,
+        onDialogDismissClick = viewModel::hideDialogVisible,
         modifier = modifier,
     )
 }
@@ -57,6 +67,8 @@ fun MatchingRoute(
 private fun MatchingScreen(
     uiState: MatchingContract.State,
     onTabClick: (MatchingType) -> Unit,
+    onCardCloseClick: () -> Unit,
+    onDialogDismissClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val gridState = rememberLazyGridState()
@@ -130,7 +142,44 @@ private fun MatchingScreen(
             MatchingList(
                 uiState = uiState,
                 gridState = gridState,
+                onCloseClick = onCardCloseClick,
             )
+        }
+
+        if (uiState.isDialogVisible) {
+            when (uiState.selectedType) {
+                MatchingType.SEND -> {
+                    SmashingDialog(
+                        title = stringResource(matching_send_dialog_title),
+                        subtitle = stringResource(matching_send_dialog_description),
+                        type = DialogStyle.ALERT,
+                        confirmText = stringResource(cancel),
+                        dismissText = stringResource(no),
+                        onConfirmClick = {
+                            // TODO 취소하기 로직
+                        },
+                        onDismissClick = onDialogDismissClick,
+                        onDismissRequest = onDialogDismissClick,
+                    )
+                }
+
+                MatchingType.ACCEPTED -> {
+                    SmashingDialog(
+                        title = stringResource(matching_accepted_dialog_title),
+                        subtitle = stringResource(matching_accepted_dialog_description),
+                        type = DialogStyle.ALERT,
+                        confirmText = stringResource(cancel),
+                        dismissText = stringResource(no),
+                        onConfirmClick = {
+                            // TODO 취소하기 로직
+                        },
+                        onDismissClick = onDialogDismissClick,
+                        onDismissRequest = onDialogDismissClick,
+                    )
+                }
+
+                else -> Unit
+            }
         }
     }
 }
@@ -139,6 +188,7 @@ private fun MatchingScreen(
 private fun MatchingList(
     uiState: MatchingContract.State,
     gridState: LazyGridState,
+    onCloseClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -158,7 +208,7 @@ private fun MatchingList(
                         genderType = it.genderType,
                         tierType = it.tierType,
                         onProfileClick = {},
-                        onCloseClick = {},
+                        onCloseClick = onCloseClick,
                         winCount = it.winCount,
                         loseCount = it.loseCount,
                         reviewCount = it.reviewCount,
@@ -193,7 +243,7 @@ private fun MatchingList(
                         onProfileClick = {},
                         onConfirmClick = {},
                         onKakaoLinkClick = {},
-                        onCloseClick = {},
+                        onCloseClick = onCloseClick,
                     ),
                 )
             }
@@ -209,6 +259,8 @@ private fun MatchingScreenPreview() {
         MatchingScreen(
             uiState = MatchingContract.State(),
             onTabClick = {},
+            onCardCloseClick = {},
+            onDialogDismissClick = {},
             modifier = Modifier
                 .background(Color.Black),
         )

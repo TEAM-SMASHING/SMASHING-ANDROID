@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import javax.inject.Inject
@@ -22,8 +23,16 @@ class MatchingViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
 
-    fun updateMatchingType(type: MatchingType) {
-        _uiState.value = _uiState.value.copy(selectedType = type)
+    fun updateMatchingType(type: MatchingType) = _uiState.update {
+        it.copy(selectedType = type)
+    }
+
+    fun showDialogVisible() = _uiState.update {
+        it.copy(isDialogVisible = true)
+    }
+
+    fun hideDialogVisible() = _uiState.update {
+        it.copy(isDialogVisible = false)
     }
 
     // TODO 더미 데이터 삭제 예정
