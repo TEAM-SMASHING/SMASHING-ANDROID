@@ -64,7 +64,6 @@ fun SmashingDialog(
     }
 }
 
-
 @Composable
 private fun SmashingDialogContent(
     title: String,
@@ -84,7 +83,10 @@ private fun SmashingDialogContent(
                 color = SmashingTheme.colors.bgOverlay,
                 shape = RoundedCornerShape(12.dp),
             )
-            .padding(horizontal = 24.dp, vertical = 16.dp),
+            .padding(
+                horizontal = 16.dp,
+                vertical = 24.dp,
+            ),
     ) {
         Text(
             text = title,
