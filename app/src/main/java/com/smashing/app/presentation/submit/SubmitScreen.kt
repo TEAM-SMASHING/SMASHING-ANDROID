@@ -182,7 +182,7 @@ private fun SubmitScreen(
         Spacer(Modifier.weight(1f))
 
         SmashingButton(
-            buttonStyle = ButtonStyle.PRIMARY,
+            buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
             text = stringResource(R.string.next),
             onClick = {},
             modifier = Modifier
@@ -195,7 +195,7 @@ private fun SubmitScreen(
 }
 
 @Composable
-fun AccentAsteriskLabel(
+private fun AccentAsteriskLabel(
     text: String,
     modifier: Modifier = Modifier,
 ) {
