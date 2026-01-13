@@ -23,8 +23,8 @@ enum class ColoredBoxTextFieldStyle {
             isFilled: Boolean,
         ): ColoredBoxTextFieldStyle {
             return when {
-                isFilled -> ACTIVE
                 isFocused -> TYPING
+                isFilled -> ACTIVE
                 else -> INACTIVE
             }
         }
