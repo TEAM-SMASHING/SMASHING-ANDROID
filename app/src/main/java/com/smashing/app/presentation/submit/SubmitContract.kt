@@ -5,9 +5,6 @@ import androidx.compose.runtime.Immutable
 import com.smashing.app.presentation.submit.model.MatchPlayer
 
 interface SubmitContract {
-    val TextFieldState.intValue: Int
-        get() = text.toString().toIntOrNull() ?: 0
-
     @Immutable
     data class State(
         val submitter: MatchPlayer = MatchPlayer("", ""),
