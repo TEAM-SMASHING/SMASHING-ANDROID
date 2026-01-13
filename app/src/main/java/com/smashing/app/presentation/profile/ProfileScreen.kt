@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -23,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R.string.profile
 import com.smashing.app.R.drawable.ic_fake_red
+import com.smashing.app.R.string.profile
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -43,6 +42,9 @@ import kotlinx.collections.immutable.toImmutableList
 fun ProfileRoute(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
+    navigateToSportAdd: () -> Unit,
+    navigateToTierGuide: () -> Unit,
+    navigateToReviews: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -50,9 +52,9 @@ fun ProfileRoute(
         modifier = modifier,
         uiState = uiState,
         onSportClick = {},
-        onAddSportClick = { },
-        onTierGuideClick = {},
-        onReviewsClick = {},
+        onAddSportClick = navigateToSportAdd,
+        onTierGuideClick = navigateToTierGuide,
+        onReviewsClick =navigateToReviews,
     )
 }
 

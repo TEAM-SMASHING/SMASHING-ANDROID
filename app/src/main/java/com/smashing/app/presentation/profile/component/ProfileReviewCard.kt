@@ -49,23 +49,23 @@ fun ProfileReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "받은 후기",
                 style = SmashingTheme.typography.md.semibold16,
-                color = SmashingTheme.colors.txtPrimary
+                color = SmashingTheme.colors.txtPrimary,
             )
             Text(
                 text = "모두 보기",
                 style = SmashingTheme.typography.sm.medium14,
                 color = SmashingTheme.colors.txtSecondary,
-                modifier = Modifier.noRippleClickable(onViewAllClick)
+                modifier = Modifier.noRippleClickable(onViewAllClick),
             )
         }
 
@@ -76,7 +76,7 @@ fun ProfileReviewCard(
         ) {
             ReviewFilterBox(
                 iconRes = ic_thumbs_up_double_lg,
-                count = 5
+                count = 5,
             )
             ReviewFilterBox(iconRes = ic_thumbs_up_lg, count = 4)
             ReviewFilterBox(iconRes = ic_thumbs_down_lg, count = 10)
@@ -92,7 +92,7 @@ fun ProfileReviewCard(
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 12.dp),
                         thickness = 1.dp,
-                        color = SmashingTheme.colors.txtTertiary
+                        color = SmashingTheme.colors.txtTertiary,
                     )
                 }
             }
@@ -110,19 +110,19 @@ private fun ReviewFilterBox(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
             .background(SmashingTheme.colors.bgOverlay)
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .padding(horizontal = 12.dp, vertical = 6.dp),
     ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = null,
             tint = SmashingTheme.colors.iconPrimary,
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(16.dp),
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "$count",
             style = SmashingTheme.typography.xs.medium12,
-            color = SmashingTheme.colors.txtSecondary
+            color = SmashingTheme.colors.txtSecondary,
         )
     }
 }
@@ -151,13 +151,13 @@ private fun ReviewItem(
                 Text(
                     text = review.reviewerName,
                     style = SmashingTheme.typography.sm.semibold14,
-                    color = SmashingTheme.colors.txtPrimary
+                    color = SmashingTheme.colors.txtPrimary,
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = review.period,
                     style = SmashingTheme.typography.xs.medium12,
-                    color = SmashingTheme.colors.txtTertiary
+                    color = SmashingTheme.colors.txtTertiary,
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
