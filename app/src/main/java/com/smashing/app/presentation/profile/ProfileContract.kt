@@ -11,7 +11,7 @@ interface ProfileContract {
     data class State(
         val loadState: ProfileUiState = ProfileUiState.Idle,
         val profileInfo: UserProfileInfo? = null,
-        val reviews: ImmutableList<ProfileReview> = persistentListOf()
+        val reviews: ImmutableList<ProfileReview> = persistentListOf(),
     )
 }
 
