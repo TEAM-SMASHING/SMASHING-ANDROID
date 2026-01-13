@@ -27,12 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
 import com.smashing.app.R.drawable.img_app_icon
 import com.smashing.app.R.string.cancel
 import com.smashing.app.R.string.matching_accepted_dialog_description
 import com.smashing.app.R.string.matching_accepted_dialog_title
 import com.smashing.app.R.string.matching_confirm_empty
+import com.smashing.app.R.string.matching_empty_description
+import com.smashing.app.R.string.matching_manage
 import com.smashing.app.R.string.matching_receive_empty
 import com.smashing.app.R.string.matching_send_dialog_description
 import com.smashing.app.R.string.matching_send_dialog_title
@@ -89,7 +90,7 @@ private fun MatchingScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = stringResource(R.string.matching_manage),
+            text = stringResource(matching_manage),
             style = SmashingTheme.typography.md.semibold16,
             color = SmashingTheme.colors.txtPrimary,
             modifier = Modifier
@@ -129,7 +130,7 @@ private fun MatchingScreen(
                 )
 
                 Text(
-                    text = stringResource(R.string.matching_empty_description),
+                    text = stringResource(matching_empty_description),
                     style = SmashingTheme.typography.sm.medium14,
                     color = SmashingTheme.colors.txtTertiary,
                 )
