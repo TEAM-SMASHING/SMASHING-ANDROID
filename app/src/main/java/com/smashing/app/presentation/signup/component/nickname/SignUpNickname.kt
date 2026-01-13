@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import com.smashing.app.R.string.sign_up_nickname_duplicate
 
 @Composable
 fun SignUpNickName (
+    nickNameState: TextFieldState,
     onDuplicateBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -41,7 +43,7 @@ fun SignUpNickName (
             modifier = modifier,
         ){
             NicknameInputTextField(
-                state = rememberTextFieldState(),
+                state = nickNameState,
                 placeholder = stringResource(sign_up_nickname_title),
                 modifier = Modifier.weight(1f),
             )
@@ -58,6 +60,8 @@ fun SignUpNickName (
                     horizontal = 12.dp,
                 ),
                 shape = RoundedCornerShape(8.dp),
+                isEnabled = true,
+                isRippleEnabled = true,
             )
         }
     }
@@ -68,6 +72,7 @@ fun SignUpNickName (
 private fun SignUpNickNamePreview() {
     SmashingAndroidTheme {
         SignUpNickName(
+            nickNameState = rememberTextFieldState(""),
             onDuplicateBtnClick = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )

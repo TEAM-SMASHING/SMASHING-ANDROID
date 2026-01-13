@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -18,7 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.sign_up_next_btn
+import com.smashing.app.R.string.sign_up_end_btn
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.progressbar.SmashingProgressBar
@@ -27,6 +31,7 @@ import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.presentation.signup.component.SignUpFinish
 import com.smashing.app.presentation.signup.component.chatlink.SignUpChatLink
 import com.smashing.app.presentation.signup.component.gender.SignUpGender
 import com.smashing.app.presentation.signup.component.location.SignUpLocation
@@ -41,35 +46,31 @@ fun SignUpRoute(
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SignUpScreen(
-        onSignupClick = {
-            viewModel.postSignUp(
-                onSignupSuccess = navigateToHome,
-            )
-        },
+        uiState = uiState,
+        currentStep = viewModel.currentStep,
+        progress = viewModel.progress,
         onBackClick = {},
         modifier = modifier,
+        onBtnClick = {
+            if (viewModel.currentStep < 6)
+                viewModel::updateCurrentStep
+            else navigateToHome
+        },
     )
 }
 
 @Composable
 private fun SignUpScreen(
-    onSignupClick: () -> Unit,
+    uiState: SignUpContract.State,
+    currentStep: Int,
+    progress: Float,
     onBackClick: () -> Unit,
+    onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    var currentStep by rememberSaveable { mutableIntStateOf(1) }
-    val progress = when (currentStep) {
-        1 -> 0.17f
-        2 -> 0.34f
-        3 -> 0.51f
-        4 -> 0.64f
-        5 -> 0.81f
-        else -> 1f
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -89,28 +90,38 @@ private fun SignUpScreen(
                 .padding(horizontal = 16.dp),
         ) {
 
-            SmashingProgressBar(
-                progress = progress,
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            when (currentStep) {
-                1 -> SignUpNickName(
-                    onDuplicateBtnClick = { }
+            if(currentStep < 7){
+                SmashingProgressBar(
+                    progress = progress,
                 )
-                2 -> SignUpGender()
-                3 -> SignUpChatLink()
-                4 -> SignUpSport(
-                    items = persistentListOf(
-                        SportType.BADMINTON,
-                        SportType.PING_PONG,
-                        SportType.TENNIS,
-                    ),
-                )
-                5 -> SignUpSkill()
-                6 -> SignUpLocation(
-                    onAddressClick = {},
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                when (currentStep) {
+                    1 -> SignUpNickName(
+                        nickNameState = uiState.nicknameInput,
+                        onDuplicateBtnClick = { }
+                    )
+                    2 -> SignUpGender()
+                    3 -> SignUpChatLink()
+                    4 -> SignUpSport(
+                        items = persistentListOf(
+                            SportType.BADMINTON,
+                            SportType.PING_PONG,
+                            SportType.TENNIS,
+                        ),
+                    )
+                    5 -> SignUpSkill()
+                    else -> SignUpLocation(
+                        onAddressClick = {},
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.weight(1f))
+
+                SignUpFinish(
+                    modifier = Modifier
+                        .align(alignment = Alignment.CenterHorizontally),
                 )
             }
 
@@ -118,11 +129,12 @@ private fun SignUpScreen(
 
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
-                text = stringResource(sign_up_next_btn),
-                onClick = {
-                    onSignupClick
-                    currentStep = currentStep + 1
+                text = if (currentStep < 6) {
+                    stringResource(sign_up_next_btn)
+                } else {
+                    stringResource(sign_up_end_btn)
                 },
+                onClick = onBtnClick,
                 modifier = Modifier.fillMaxWidth()
 
             )
@@ -134,9 +146,21 @@ private fun SignUpScreen(
 @Composable
 private fun SignUpScreenPreview() {
     SmashingAndroidTheme {
+        var currentStep by rememberSaveable { mutableIntStateOf(1) }
+        val progress = when (currentStep) {
+            1 -> 0.17f
+            2 -> 0.34f
+            3 -> 0.51f
+            4 -> 0.64f
+            5 -> 0.81f
+            else -> 1f
+        }
         SignUpScreen(
-            onSignupClick = {},
+            uiState = SignUpContract.State(),
+            currentStep = currentStep,
+            progress = progress,
             onBackClick = {},
+            onBtnClick = {currentStep = currentStep + 1},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

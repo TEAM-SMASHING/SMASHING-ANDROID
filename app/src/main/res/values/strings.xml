@@ -26,6 +26,7 @@
     <string name="dropdown_winner_select">승자 선택</string>
     <!--SignUp  -->
     <string name="sign_up_next_btn">다음</string>
+    <string name="sign_up_end_btn">완료</string>
     <string name="sign_up_nickname_title">닉네임을 입력해주세요</string>
     <string name="sign_up_nickname_subtitle">한글, 영어, 숫자만 가능해요</string>
     <string name="sign_up_nickname_duplicate">중복확인</string>
@@ -41,6 +42,8 @@
     <string name="sign_up_location_title">활동 지역을 설정해주세요</string>
     <string name="sign_up_location_subtitle">서울 소재 주소만 입력 가능해요</string>
     <string name="sign_up_location_placeholder">주소를 검색해주세요</string>
+    <string name="sign_up_finish_title">환영합니다!</string>
+    <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
 
 
     <!--Home  -->
