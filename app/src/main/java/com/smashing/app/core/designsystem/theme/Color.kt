@@ -44,6 +44,7 @@ val orangeSub = Color(0xFF4E2F0B)
 
 val yellowMain = Color(0xFFD1CC44)
 val yellowSub = Color(0xFF4E460B)
+val yellowKakao = Color(0xFFFEE500)
 
 val greenMain = Color(0xFF0DD74D)
 val greenSub = Color(0xFF0B4E2F)
@@ -86,6 +87,7 @@ data class SmashingColors(
     val bgOverlay: Color,
     val bgSelected: Color,
     val bgDimmed: Color,
+    val bgKakao: Color,
 
     // Button
     val btnTxtPrimaryActive: Color,
@@ -165,6 +167,7 @@ val defaultSmashingColors = SmashingColors(
     bgOverlay = gray700,
     bgSelected = white,
     bgDimmed = alpha,
+    bgKakao = yellowKakao,
 
     // Button
     btnTxtPrimaryActive = black,

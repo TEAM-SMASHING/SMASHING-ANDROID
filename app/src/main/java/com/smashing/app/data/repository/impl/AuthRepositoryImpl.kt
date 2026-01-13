@@ -8,6 +8,7 @@ import com.smashing.app.data.mapper.toSignUpModel
 import com.smashing.app.data.model.auth.AuthModel
 import com.smashing.app.data.remote.datasource.api.AuthRemoteDataSource
 import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
+import com.smashing.app.data.remote.dto.PostKakaoLoginRequest
 import com.smashing.app.data.remote.dto.PostSignUpRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.AuthRepository
@@ -24,14 +25,18 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postKakaoLogin(authorization: String): Result<AuthModel> =
         suspendRunCatching {
-            val response = authRemoteDataSource.postKakaoLogin(authorization).requireData()
+            val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization)).requireData()
 
             val token = response.toKakaoLoginToken()
 
-            tokenDataStore.setTokens(
-                accessToken = token.accessToken,
-                refreshToken = token.refreshToken,
-            )
+            when(!token.accessToken.isNullOrEmpty() && !token.refreshToken.isNullOrEmpty()) {
+                true -> tokenDataStore.setTokens(
+                    accessToken = token.accessToken,
+                    refreshToken = token.refreshToken,
+                )
+
+                false -> {}
+            }
 
             token
         }

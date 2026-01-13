@@ -48,7 +48,7 @@ private fun SignUpScreen(
             text = "SignUp",
             modifier = Modifier
                 .noRippleClickable(
-                    onClick = { onSignupClick },
+                    onClick = onSignupClick,
                 ),
             color = Color.White
         )
