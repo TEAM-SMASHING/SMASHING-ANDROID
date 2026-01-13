@@ -27,6 +27,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.signup.component.chatlink.SignUpChatLink
 import com.smashing.app.presentation.signup.component.gender.SignUpGender
+import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 import com.smashing.app.presentation.signup.component.skill.SignUpSkill
 import com.smashing.app.presentation.signup.component.sport.SignUpSport
@@ -108,9 +109,9 @@ private fun SignUpScreen(
                     ),
                 )
                 5 -> SignUpSkill()
-                6 -> SignUpNickName(
-                    onDuplicateBtnClick = { }
-                )//Todo 지역
+                6 -> SignUpLocation(
+                    onAddressClick = {},
+                )
             }
 
             Spacer(modifier = Modifier.weight(1f))
