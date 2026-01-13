@@ -74,7 +74,7 @@ private fun ProfileScreen(
 
     if (info == null) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("loding")
+            Text("loading")
         }
         return
     }
@@ -122,6 +122,9 @@ private fun ProfileScreen(
                 ProfileReviewCard(
                     reviews = uiState.reviews,
                     onViewAllClick = onReviewsClick,
+                    excellentCount = 12,
+                    goodCount = 5,
+                    badCount = 3,
                 )
             }
         }

@@ -32,13 +32,13 @@
     <!--Notice  -->
     <string name="notice">알림</string>
     <!--Profile-->
-    <string name= "win_label">승리</string>
-    <string name= "lose_label">패배</string>
-    <string name= "rate_label">승률</string>
-    <string name= "add_sports_label">+</string>
-    <string name= "tier_description">티어 설명</string>
-    <string name= "lp_remaining_text">LP 남았어요!</string>
-    <string name= "lp_status">LP</string>
+    <string name="win_label">승리</string>
+    <string name="lose_label">패배</string>
+    <string name="rate_label">승률</string>
+    <string name="add_sports_label">+</string>
+    <string name="tier_description">티어 설명</string>
+    <string name="lp_remaining_text">LP 남았어요!</string>
+    <string name="lp_status">LP</string>
 
 </resources>
 

@@ -119,7 +119,7 @@ fun ProfileTierBox(
                     color = SmashingTheme.colors.txtPrimary,
                     style = SmashingTheme.typography.md.semibold16,
                 )
-                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = stringResource(lp_remaining_text),
                     color = SmashingTheme.colors.txtTertiary,
@@ -131,7 +131,7 @@ fun ProfileTierBox(
                     color = SmashingTheme.colors.txtTertiary,
                     style = SmashingTheme.typography.md.medium16,
                 )
-                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = totalLp.toString(),
                     color = SmashingTheme.colors.txtTertiary,
