@@ -27,13 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R
 import com.smashing.app.R.drawable.img_app_icon
 import com.smashing.app.R.string.cancel
 import com.smashing.app.R.string.matching_accepted_dialog_description
 import com.smashing.app.R.string.matching_accepted_dialog_title
 import com.smashing.app.R.string.matching_confirm_empty
 import com.smashing.app.R.string.matching_empty_description
-import com.smashing.app.R.string.matching_manage
 import com.smashing.app.R.string.matching_receive_empty
 import com.smashing.app.R.string.matching_send_dialog_description
 import com.smashing.app.R.string.matching_send_dialog_title
@@ -41,12 +41,12 @@ import com.smashing.app.R.string.matching_send_empty
 import com.smashing.app.R.string.no
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
+import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.DialogStyle
+import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
 
 @Composable
@@ -55,6 +55,8 @@ fun MatchingRoute(
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MatchingScreen(
         navigateToSubmit = navigateToSubmit,
@@ -89,26 +91,11 @@ private fun MatchingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = "매칭 관리",
-            color = Color.White,
-            modifier = Modifier.noRippleClickable(navigateToSubmit),
-        )
-        modifier = modifier
-            .fillMaxSize()
-            .padding(
-                horizontal = 16.dp,
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-        Text(
-            text = stringResource(matching_manage),
-            style = SmashingTheme.typography.md.semibold16,
-            color = SmashingTheme.colors.txtPrimary,
-            modifier = Modifier
-                .padding(
-                    vertical = 21.dp,
-                ),
+
+        SmashingDefaultTopBar(
+            title = stringResource(R.string.submit_matching_result),
+            topBarType = TopBarType.DEFAULT,
+            onClick = null,
         )
 
         MatchingTabBar(
@@ -195,71 +182,70 @@ private fun MatchingScreen(
             }
         }
     }
-    }
+}
 
-    @Composable
-    private fun MatchingList(
-        uiState: MatchingContract.State,
-        gridState: LazyGridState,
-        onCloseClick: () -> Unit,
-        modifier: Modifier = Modifier,
+@Composable
+private fun MatchingList(
+    uiState: MatchingContract.State,
+    gridState: LazyGridState,
+    onCloseClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        state = gridState,
+        contentPadding = PaddingValues(bottom = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(space = 10.dp),
+        modifier = modifier,
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            state = gridState,
-            contentPadding = PaddingValues(bottom = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(space = 10.dp),
-            modifier = modifier,
-        ) {
-            when (uiState.selectedType) {
-                MatchingType.SEND -> items(uiState.sendList) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Send(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.genderType,
-                            tierType = it.tierType,
-                            onProfileClick = {},
-                            onCloseClick = onCloseClick,
-                            winCount = it.winCount,
-                            loseCount = it.loseCount,
-                            reviewCount = it.reviewCount,
-                        ),
-                    )
-                }
+        when (uiState.selectedType) {
+            MatchingType.SEND -> items(uiState.sendList) {
+                MatchingCard(
+                    cardState = MatchingCardState.Send(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        onProfileClick = {},
+                        onCloseClick = onCloseClick,
+                        winCount = it.winCount,
+                        loseCount = it.loseCount,
+                        reviewCount = it.reviewCount,
+                    ),
+                )
+            }
 
-                MatchingType.RECEIVE -> items(uiState.receiveList) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Receive(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.genderType,
-                            tierType = it.tierType,
-                            winCount = it.winCount,
-                            loseCount = it.loseCount,
-                            reviewCount = it.reviewCount,
-                            onProfileClick = {},
-                            onSkipClick = {},
-                            onAcceptClick = {},
-                        ),
-                    )
-                }
+            MatchingType.RECEIVE -> items(uiState.receiveList) {
+                MatchingCard(
+                    cardState = MatchingCardState.Receive(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        winCount = it.winCount,
+                        loseCount = it.loseCount,
+                        reviewCount = it.reviewCount,
+                        onProfileClick = {},
+                        onSkipClick = {},
+                        onAcceptClick = {},
+                    ),
+                )
+            }
 
-                MatchingType.ACCEPTED -> items(uiState.acceptedList) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Confirm(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.genderType,
-                            tierType = it.tierType,
-                            onProfileClick = {},
-                            onConfirmClick = {},
-                            onKakaoLinkClick = {},
-                            onCloseClick = onCloseClick,
-                        ),
-                    )
-                }
+            MatchingType.ACCEPTED -> items(uiState.acceptedList) {
+                MatchingCard(
+                    cardState = MatchingCardState.Confirm(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        onProfileClick = {},
+                        onConfirmClick = {},
+                        onKakaoLinkClick = {},
+                        onCloseClick = onCloseClick,
+                    ),
+                )
             }
         }
     }
