@@ -101,10 +101,10 @@ fun ProfileReviewCard(
         Spacer(modifier = Modifier.height(12.dp))
 
         Column {
-            reviews.forEachIndexed { index, review ->
+            reviews.take(3).forEachIndexed { index, review ->
                 ReviewItem(review = review, userId = "userId$index")
 
-                if (index < reviews.lastIndex) {
+                if (index < reviews.take(3).lastIndex) {
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 12.dp),
                         thickness = 1.dp,
