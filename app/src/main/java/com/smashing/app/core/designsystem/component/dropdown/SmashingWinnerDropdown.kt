@@ -3,8 +3,11 @@ package com.smashing.app.core.designsystem.component.dropdown
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,25 +18,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_arrow_down
-import com.smashing.app.core.extension.noRippleClickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.R.string.dropdown_winner_select
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
+import com.smashing.app.core.extension.noRippleClickable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -48,6 +48,7 @@ import kotlinx.collections.immutable.toImmutableList
  * @param placeholder 선택된 항목이 없을 때 표시할 안내 문구 (기본값: "승자 선택")
  * @param isDivide 항목 사이에 구분선을 표시할지 여부 (기본값: true)
  */
+
 @Composable
 fun SmashingWinnerDropdown(
     selectedItem: String?,
@@ -63,20 +64,21 @@ fun SmashingWinnerDropdown(
     var triggerHeight by remember { mutableStateOf(0.dp) }
 
     val density = LocalDensity.current
+    val menuTextColor = if (selectedItem == null) colors.txtDisabled else colors.txtSecondary
 
     Box(
         modifier = modifier,
     ) {
         Row(
             modifier = Modifier
+                .width(140.dp)
                 .onGloballyPositioned { coordinates ->
                     triggerWidth = with(density) { coordinates.size.width.toDp() }
                     triggerHeight = with(density) { coordinates.size.height.toDp() }
                 }
-                .defaultMinSize(minWidth = 123.dp)
                 .background(
                     color = colors.bgSurface,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
                 )
                 .noRippleClickable(
                     onClick = {
@@ -85,28 +87,28 @@ fun SmashingWinnerDropdown(
                         }
                     }
                 )
-                .padding(vertical = 8.dp)
-                .padding(start = 16.dp, end = 8.dp),
+                .padding(
+                    start = if (selectedItem == null) 30.dp else 0.dp,
+                    end = if (selectedItem == null) 22.dp else 0.dp,
+                ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = if (selectedItem == null) Arrangement.Start else Arrangement.Center,
         ) {
             Text(
                 text = selectedItem ?: placeholder,
                 style = typography.sm.medium14,
-                color = if (selectedItem == null) {
-                    colors.txtDisabled
-                } else {
-                    colors.txtSecondary
-                },
+                color = menuTextColor,
+                modifier = Modifier.padding(vertical = 12.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-
-            Spacer(modifier = Modifier.width(8.dp))
 
             if (selectedItem == null) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_down),
                     contentDescription = null,
                     tint = colors.txtDisabled,
+                    modifier = Modifier.padding(start = 12.dp),
                 )
             }
         }
@@ -160,8 +162,7 @@ private fun WinnerDropdownPreview() {
             var selectedWinner2 by remember { mutableStateOf<String?>(null) }
             val winnerItems2 = remember {
                 listOf(
-                    "열글자열글자열글자열",
-                    "세글자"
+                    "열글자열글자열글자열", "세글자"
                 )
             }
 
