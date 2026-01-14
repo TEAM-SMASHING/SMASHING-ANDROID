@@ -1,7 +1,7 @@
 package com.smashing.app.presentation.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,6 +76,8 @@ private fun ProfileScreen(
             .background(color = SmashingTheme.colors.bgCanvas)
             .statusBarsPadding()
             .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+
         contentPadding = PaddingValues(bottom = 16.dp + navigationBarBottomPadding),
     ) {
 
@@ -110,7 +113,7 @@ private fun ProfileScreen(
                 totalLp = uiState.profileInfo.maxLp,
                 onAddSportClick = onAddSportClick,
                 onTierInfoClick = onTierGuideClick,
-                )
+            )
         }
         item {
             ProfileStatsBar(
@@ -119,15 +122,13 @@ private fun ProfileScreen(
             )
         }
         item {
-            Box(modifier = Modifier.padding(16.dp)) {
-                ProfileReviewCard(
-                    reviews = uiState.reviews,
-                    onViewAllReviewClick = onReviewsClick,
-                    excellentCount = uiState.reviewRate.best,
-                    goodCount = uiState.reviewRate.good,
-                    badCount = uiState.reviewRate.bad,
-                )
-            }
+            ProfileReviewCard(
+                reviews = uiState.reviews,
+                onViewAllReviewClick = onReviewsClick,
+                excellentCount = uiState.reviewRate.best,
+                goodCount = uiState.reviewRate.good,
+                badCount = uiState.reviewRate.bad,
+            )
         }
     }
 }
