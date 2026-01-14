@@ -39,9 +39,7 @@ fun SignUpNickName (
             subTitle = stringResource(sign_up_nickname_subtitle),
         )
 
-        Row (
-            modifier = Modifier,
-        ){
+        Row {
             NicknameInputTextField(
                 state = nickNameState,
                 placeholder = stringResource(sign_up_nickname_title),
