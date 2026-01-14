@@ -82,6 +82,7 @@ fun UserProfileCard(
                         style = SmashingTheme.typography.lg.semibold18,
                         color = SmashingTheme.colors.txtPrimary,
                     )
+
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Icon(
@@ -93,13 +94,10 @@ fun UserProfileCard(
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    TierBadge(
-                        tierType=tierType,
-                    )
-                }
+
+                TierBadge(
+                    tierType = tierType,
+                )
             }
         }
 
@@ -112,6 +110,7 @@ fun UserProfileCard(
                 label = stringResource(id = record_label),
                 value = "${winCount}승 ${loseCount}패",
             )
+
             ProfileStatRow(
                 label = stringResource(review),
                 value = "$reviewCount",
