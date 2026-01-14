@@ -27,13 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R
 import com.smashing.app.R.drawable.img_app_icon
 import com.smashing.app.R.string.cancel
 import com.smashing.app.R.string.matching_accepted_dialog_description
 import com.smashing.app.R.string.matching_accepted_dialog_title
 import com.smashing.app.R.string.matching_confirm_empty
 import com.smashing.app.R.string.matching_empty_description
-import com.smashing.app.R.string.matching_manage
 import com.smashing.app.R.string.matching_receive_empty
 import com.smashing.app.R.string.matching_send_dialog_description
 import com.smashing.app.R.string.matching_send_dialog_title
@@ -41,8 +41,10 @@ import com.smashing.app.R.string.matching_send_empty
 import com.smashing.app.R.string.no
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
+import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.DialogStyle
+import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.matching.component.MatchingTabBar
@@ -50,12 +52,15 @@ import com.smashing.app.presentation.matching.type.MatchingType
 
 @Composable
 fun MatchingRoute(
+    navigateToSubmit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MatchingScreen(
+        navigateToSubmit = navigateToSubmit,
         uiState = uiState,
         onTabClick = viewModel::updateMatchingType,
         onCardCloseClick = viewModel::showDialogVisible,
@@ -67,6 +72,7 @@ fun MatchingRoute(
 @Composable
 private fun MatchingScreen(
     uiState: MatchingContract.State,
+    navigateToSubmit: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
@@ -84,19 +90,14 @@ private fun MatchingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(
-                horizontal = 16.dp,
-            ),
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = stringResource(matching_manage),
-            style = SmashingTheme.typography.md.semibold16,
-            color = SmashingTheme.colors.txtPrimary,
-            modifier = Modifier
-                .padding(
-                    vertical = 21.dp,
-                ),
+
+        SmashingDefaultTopBar(
+            title = stringResource(R.string.submit_matching_result),
+            topBarType = TopBarType.DEFAULT,
+            onClick = null,
         )
 
         MatchingTabBar(
@@ -144,6 +145,7 @@ private fun MatchingScreen(
                 uiState = uiState,
                 gridState = gridState,
                 onCloseClick = onCardCloseClick,
+                onConfirmClick = navigateToSubmit,
             )
         }
 
@@ -190,6 +192,7 @@ private fun MatchingList(
     uiState: MatchingContract.State,
     gridState: LazyGridState,
     onCloseClick: () -> Unit,
+    onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -242,7 +245,7 @@ private fun MatchingList(
                         genderType = it.genderType,
                         tierType = it.tierType,
                         onProfileClick = {},
-                        onConfirmClick = {},
+                        onConfirmClick = onConfirmClick,
                         onKakaoLinkClick = {},
                         onCloseClick = onCloseClick,
                     ),
@@ -256,8 +259,8 @@ private fun MatchingList(
 @Composable
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
-
         MatchingScreen(
+            navigateToSubmit = {},
             uiState = MatchingContract.State(),
             onTabClick = {},
             onCardCloseClick = {},
