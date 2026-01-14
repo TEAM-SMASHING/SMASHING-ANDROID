@@ -68,13 +68,13 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
-        isBtnEnabled = viewModel.isBtnEnabled,
-        selectedGender = uiState.selectedGender,
-        onGenderSelected = viewModel::updateSelectedGender,
         openChatLinkState = viewModel.openChatLinkState,
+        selectedGender = uiState.selectedGender,
         selectedSport = uiState.selectedSport,
-        onSportSelected = viewModel::updateSelectedSport,
         selectedSkill = uiState.selectedSkill,
+        isBtnEnabled = viewModel.isBtnEnabled,
+        onGenderSelected = viewModel::updateSelectedGender,
+        onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
         onBackClick = {},
         modifier = modifier,
@@ -91,13 +91,13 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
-    isBtnEnabled: Boolean,
-    selectedGender: GenderType?,
-    onGenderSelected: (GenderType) -> Unit,
     openChatLinkState: TextFieldState,
+    selectedGender: GenderType?,
     selectedSport: SportType?,
-    onSportSelected: (SportType) -> Unit,
     selectedSkill: SkillType?,
+    isBtnEnabled: Boolean,
+    onGenderSelected: (GenderType) -> Unit,
+    onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
@@ -197,6 +197,7 @@ private fun SignUpScreenPreview() {
 
         SignUpScreen(
             uiState = SignUpContract.State(),
+            isBtnEnabled = true,
             selectedGender = null,
             onGenderSelected = {},
             openChatLinkState = rememberTextFieldState(),
