@@ -82,8 +82,8 @@ fun RankingScreen(
                     color = primary300,
                     spread = 100.dp,
                     blur = 100.dp,
-                    offsetX = -50.dp,
-                    offsetY = 170.dp,
+                    offsetX = 50.dp,
+                    offsetY = 160.dp,
                 )
                 .size(200.dp)
         )
