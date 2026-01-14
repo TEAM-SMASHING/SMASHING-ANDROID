@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.MainTabRoute
+import com.smashing.app.presentation.profile.AllReviewRoute
 import com.smashing.app.presentation.profile.ProfileRoute
 import kotlinx.serialization.Serializable
 
@@ -24,6 +25,10 @@ fun NavGraphBuilder.profileGraph(
             navigateToSportAdd = {},
             navigateToTierGuide = {},
             navigateToReviews = {},
+        )
+        AllReviewRoute(
+            modifier = Modifier.padding(innerPadding),
+            navigateToBack = {}
         )
     }
 }

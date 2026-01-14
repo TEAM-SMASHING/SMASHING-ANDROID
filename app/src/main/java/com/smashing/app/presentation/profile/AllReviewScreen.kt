@@ -14,12 +14,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
@@ -36,16 +39,31 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.model.profile.Review
 import com.smashing.app.presentation.profile.component.ReviewItem
+import com.smashing.app.presentation.profile.navigation.AllReviewViewModel
 import kotlinx.collections.immutable.ImmutableList
+
+@Composable
+fun AllReviewRoute(
+    modifier: Modifier = Modifier,
+    viewModel: AllReviewViewModel = hiltViewModel(),
+    navigateToBack: () -> Unit,
+
+    ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    AllReviewScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onBackClick = navigateToBack,
+        reviews = uiState.reviews,
+        )
+}
 
 
 @Composable
 private fun AllReviewScreen(
     uiState: ProfileContract.State,
     reviews: ImmutableList<Review>,
-    excellentCount: Int,
-    goodCount: Int,
-    badCount: Int,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
@@ -80,21 +98,21 @@ private fun AllReviewScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     SmashingChip(
-                        text = excellentCount.toString(),
+                        text = uiState.reviewRate.best.toString(),
                         style = DISABLED,
                         icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                     )
 
                     SmashingChip(
-                        text = goodCount.toString(),
+                        text = uiState.reviewRate.good.toString(),
                         style = DISABLED,
                         icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                     )
 
                     SmashingChip(
-                        text = badCount.toString(),
+                        text = uiState.reviewRate.bad.toString(),
                         style = DISABLED,
                         icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
@@ -178,9 +196,6 @@ private fun AllReviewScreenPreview() {
     SmashingAndroidTheme {
         AllReviewScreen(
             uiState = ProfileContract.State(),
-            excellentCount = ProfileContract.State().reviewRate.best,
-            goodCount = ProfileContract.State().reviewRate.good,
-            badCount = ProfileContract.State().reviewRate.bad,
             onBackClick = {},
             reviews = ProfileContract.State().reviews,
         )
