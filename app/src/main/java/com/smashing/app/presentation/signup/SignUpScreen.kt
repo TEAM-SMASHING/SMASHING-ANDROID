@@ -79,7 +79,7 @@ fun SignUpRoute(
         onBackClick = {},
         modifier = modifier,
         onBtnClick = {
-            if (uiState.currentStep < MAX_STEP)
+            if (uiState.currentStep < MAX_STEP + 1)
                 viewModel.updateCurrentStep()
             else {
                 viewModel.postSignUp()

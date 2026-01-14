@@ -42,8 +42,17 @@ class SignUpViewModel @Inject constructor(
     private val _openChatLinkState = TextFieldState("")
     val openChatLinkState: TextFieldState get() = _openChatLinkState
 
-    var isBtnEnabled: Boolean = false
-        private set
+    val isBtnEnabled: Boolean
+        get() = when(_uiState.value.currentStep) {
+        1 -> true
+        2 -> _uiState.value.selectedGender != null
+        3 -> true
+        4 -> _uiState.value.selectedSport != null
+        5 -> _uiState.value.selectedSkill != null
+        6 -> true
+            else -> true
+    }
+
 
     fun updateCurrentStep() {
         _uiState.update {
@@ -81,38 +90,37 @@ class SignUpViewModel @Inject constructor(
     ) {
     }
 
-    fun isBtnEnabled() {
-        isBtnEnabled = when(_uiState.value.currentStep) {
-            2 -> _uiState.value.selectedGender != null
-            4 -> _uiState.value.selectedSport != null
-            5 -> _uiState.value.selectedSkill != null
-            else -> false
-        }
-    }
 
     fun postSignUp() = viewModelScope.launch {
-        val request = PostSignUpRequest(
-            kakaoId = kakaoId,
-            nickname = "이지민",
-            gender = requireNotNull(_uiState.value.selectedGender?.gender),
-            openChatUrl = "https://open.kakao.com/o/xxxx",
-            sportCode = requireNotNull(_uiState.value.selectedSport?.code),
-            tier = "IRON",
-            region = "양천구",
-        )
-        authRepository.postSignUp(request = request)
-            .onSuccess {
-                _sideEffect.emit(NavigateToHome)
-                Timber.tag("SignUp").d("회원가입 성공 ${
-                    SignUpModel(
-                        accessToken = it.accessToken,
-                        refreshToken = it.refreshToken,
-                        userId = it.userId,
+        val selectedGender = _uiState.value.selectedGender
+        val selectedSport = _uiState.value.selectedSport
+        val selectedSkill = _uiState.value.selectedSkill
+        if(selectedGender != null && selectedSport != null && selectedSkill != null){
+            val request = PostSignUpRequest(
+                kakaoId = kakaoId,
+                nickname = "이지민",
+                gender = selectedGender.name,
+                openChatUrl = "https://open.kakao.com/o/xxxx",
+                sportCode = selectedSport.code,
+                tier = selectedSkill.skillCode,
+                region = "양천구",
+            )
+            authRepository.postSignUp(request = request)
+                .onSuccess {
+                    _sideEffect.emit(NavigateToHome)
+                    Timber.tag("SignUp").d(
+                        "회원가입 성공 ${
+                            SignUpModel(
+                                accessToken = it.accessToken,
+                                refreshToken = it.refreshToken,
+                                userId = it.userId,
+                            )
+                        }"
                     )
-                }")
-            }
-            .onFailure { error ->
-                Timber.tag("SignUp").e("회원가입 실패 $error")
-            }
+                }
+                .onFailure { error ->
+                    Timber.tag("SignUp").e("회원가입 실패 $error")
+                }
+        }
     }
 }
