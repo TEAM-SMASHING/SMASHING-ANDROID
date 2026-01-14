@@ -40,7 +40,7 @@ fun SignUpNickName (
         )
 
         Row (
-            modifier = modifier,
+            modifier = Modifier,
         ){
             NicknameInputTextField(
                 state = nickNameState,

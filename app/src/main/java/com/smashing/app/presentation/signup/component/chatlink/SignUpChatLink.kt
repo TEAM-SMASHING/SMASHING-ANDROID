@@ -36,7 +36,7 @@ fun SignUpChatLink(
 
 @Preview(showBackground = true)
 @Composable
-private fun SignUpNickNamePreview() {
+private fun SignUpChatLinkPreview() {
     SmashingAndroidTheme {
         SignUpChatLink(
             modifier = Modifier.background(color = colors.bgCanvas),
