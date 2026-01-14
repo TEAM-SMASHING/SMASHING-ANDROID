@@ -9,7 +9,6 @@ interface SignUpContract {
     @Immutable
     data class State(
         val currentStep: Int = 1,
-        val nicknameInput: TextFieldState = TextFieldState(""),
         val selectedGender: String = "",
         val selectedSport: SportType? = null,
         val selectedSkill: SkillType?= null,
