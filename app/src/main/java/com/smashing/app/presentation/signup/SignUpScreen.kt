@@ -68,6 +68,7 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
+        isBtnEnabled = viewModel.isBtnEnabled,
         selectedGender = uiState.selectedGender,
         onGenderSelected = viewModel::updateSelectedGender,
         openChatLinkState = viewModel.openChatLinkState,
@@ -90,6 +91,7 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    isBtnEnabled: Boolean,
     selectedGender: GenderType?,
     onGenderSelected: (GenderType) -> Unit,
     openChatLinkState: TextFieldState,
@@ -181,6 +183,7 @@ private fun SignUpScreen(
                 },
                 onClick = onBtnClick,
                 modifier = Modifier.fillMaxWidth(),
+                isEnabled = isBtnEnabled,
             )
         }
     }

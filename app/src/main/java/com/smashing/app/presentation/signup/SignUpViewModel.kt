@@ -1,10 +1,6 @@
 package com.smashing.app.presentation.signup
 
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -21,7 +17,6 @@ import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -46,6 +41,9 @@ class SignUpViewModel @Inject constructor(
 
     private val _openChatLinkState = TextFieldState("")
     val openChatLinkState: TextFieldState get() = _openChatLinkState
+
+    var isBtnEnabled: Boolean = false
+        private set
 
     fun updateCurrentStep() {
         _uiState.update {
@@ -83,13 +81,22 @@ class SignUpViewModel @Inject constructor(
     ) {
     }
 
+    fun isBtnEnabled() {
+        isBtnEnabled = when(_uiState.value.currentStep) {
+            2 -> _uiState.value.selectedGender != null
+            4 -> _uiState.value.selectedSport != null
+            5 -> _uiState.value.selectedSkill != null
+            else -> false
+        }
+    }
+
     fun postSignUp() = viewModelScope.launch {
         val request = PostSignUpRequest(
             kakaoId = kakaoId,
             nickname = "이지민",
-            gender = "FEMALE",
+            gender = requireNotNull(_uiState.value.selectedGender?.gender),
             openChatUrl = "https://open.kakao.com/o/xxxx",
-            sportCode = "TT",
+            sportCode = requireNotNull(_uiState.value.selectedSport?.code),
             tier = "IRON",
             region = "양천구",
         )
