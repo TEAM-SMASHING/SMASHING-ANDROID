@@ -1,19 +1,62 @@
 package com.smashing.app.presentation.home
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R
+import com.smashing.app.R.drawable.ic_bell
+import com.smashing.app.R.drawable.ic_bell_notification
+import com.smashing.app.R.drawable.img_dummy_versus
+import com.smashing.app.core.common.type.GenderType
+import com.smashing.app.core.common.type.SportType
+import com.smashing.app.core.common.type.TierType
+import com.smashing.app.core.designsystem.component.button.SmashingButton
+import com.smashing.app.core.designsystem.component.card.MatchingCard
+import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
+import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
+import com.smashing.app.core.designsystem.state.MatchingCardState
+import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.core.util.ProfileImageProvider
+import com.smashing.app.data.model.profile.ActiveUserProfile
+import com.smashing.app.data.model.rank.TopUserInfo
+import com.smashing.app.presentation.home.component.SportsTierChip
+import com.smashing.app.presentation.home.type.DummyMatchedUser
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
@@ -23,9 +66,6 @@ fun HomeRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchDummyUsers()
-    }
     HomeScreen(
         uiState = uiState,
         navigateToNotice = navigateToNotice,
@@ -41,7 +81,200 @@ private fun HomeScreen(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(
+                color = SmashingTheme.colors.bgCanvas,
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        HomeTopBar(
+            userRegion = uiState.activeUserProfile.region,
+            userSport = uiState.activeUserProfile.sportType,
+            userTier = TierType.GOLD_1,
+            onClickRegion = {},
+            onChangeRegion = {},
+            onClickSportChip = {},
+            onClickNotice = navigateToNotice,
+            isNotice = uiState.isNotice
+        )
+
+        LazyColumn(
+            modifier = Modifier
+                .padding(
+                    horizontal = 16.dp,
+                )
+                .padding(top = 12.dp),
+            contentPadding = PaddingValues(
+                bottom = 22.dp,
+            )
+        ) {
+            item {
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Bottom,
+                    ) {
+                        Column(
+                            modifier = Modifier,
+                        ) {
+                            Text(
+                                text = "${uiState.activeUserProfile.nickname}님,",
+                                style = SmashingTheme.typography.xxl.semibold24,
+                                color = SmashingTheme.colors.txtPrimary,
+                            )
+                            Text(
+                                text = "곧 다가오는 매칭이 있어요.",
+                                style = SmashingTheme.typography.xl.semibold20,
+                                color = SmashingTheme.colors.txtPrimary,
+                            )
+                        }
+
+                        Text(
+                            text = "모두 보기",
+                            style = SmashingTheme.typography.sm.medium14,
+                            color = SmashingTheme.colors.txtTertiary,
+                            modifier = Modifier
+                                .noRippleClickable(
+                                    onClick = {}
+                                ),
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    //TODO 아래 유저 ID에 profileId를 임시로 넣었어요. 받는 값에 유저ID가 없어...
+                    CloseMatching(
+                        matchedMyData = DummyMatchedUser(
+                            userId = uiState.activeUserProfile.profileId,
+                            nickname = uiState.activeUserProfile.nickname,
+                        ),
+                        matchedUserData = uiState.matchedUser,
+                        onClick = {},
+                    )
+                }
+            }
+            //TODO 매칭
+
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+
+            item {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "${uiState.activeUserProfile.nickname}님을 위한 추천",
+                            style = SmashingTheme.typography.lg.semibold18,
+                            color = SmashingTheme.colors.txtPrimary,
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_info),
+                            contentDescription = null,
+                            tint = SmashingTheme.colors.iconTertiary,
+                            modifier = Modifier
+                                .noRippleClickable(
+                                    //TODO 알림 창 확인 후 구현
+                                    onClick = {}
+                                ),
+                        )
+                    }
+                    if (uiState.matchingCardList.isNotEmpty()) {
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        ) {
+                            items(
+                                items = uiState.matchingCardList,
+                                key = { it.userId }
+                            ) { cardState ->
+                                MatchingCard(
+                                    cardState = cardState,
+                                )
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = "아직 동네 유저가 없습니다.",
+                            style = SmashingTheme.typography.md.medium16,
+                            color = SmashingTheme.colors.txtTertiary,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = SmashingTheme.colors.bgSurface,
+                                    shape = RoundedCornerShape(8.dp),
+                                )
+                                .padding(
+                                    vertical = 31.dp
+                                )
+                        )
+                    }
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+
+            item {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.Bottom,
+                    ) {
+                        Text(
+                            text = "우리 동네 랭커",
+                            style = SmashingTheme.typography.lg.semibold18,
+                            color = SmashingTheme.colors.txtPrimary,
+                        )
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Text(
+                            text = "모두 보기",
+                            style = SmashingTheme.typography.sm.medium14,
+                            color = SmashingTheme.colors.txtTertiary,
+                            modifier = Modifier
+                                .noRippleClickable(
+                                    onClick = {}
+                                )
+                        )
+                    }
+                    uiState.topRankerList.forEach { ranker ->
+                        SmashingRankingItem(
+                            rank = ranker.rank,
+                            nickname = ranker.nickname,
+                            tier = ranker.tier,
+                            lp = ranker.lp,
+                            userId = ranker.userId,
+                            onClick = {},
+                        )
+
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun HomeTopBar(
     userRegion: String,
@@ -185,14 +418,38 @@ private fun CloseMatching(
     }
 }
 
+@Composable
+private fun MatchedUserItem(
+    matchedUser: DummyMatchedUser,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .width(IntrinsicSize.Max),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = "홈",
-            color = Color.White,
+        Box(
             modifier = Modifier
-                .clickable(onClick = navigateToNotice)
+                .padding(
+                    horizontal = 28.dp,
+                )
+        ){
+            UrlImage(
+                url = ProfileImageProvider.getTempUrl(matchedUser.userId),
+                modifier = Modifier
+                    .height(64.dp)
+                    .aspectRatio(1f)
+                    .clip(CircleShape),
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = matchedUser.nickname,
+            style = SmashingTheme.typography.sm.medium14,
+            color = SmashingTheme.colors.txtMuted,
         )
     }
 }
