@@ -36,6 +36,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.bringIntoViewOnFocus
 
+
 private const val SCORE_INPUT_RATIO = 45f / 41f
 
 @Composable
@@ -79,8 +80,7 @@ fun ScoreInputTextField(
                 width = 1.dp,
                 color = inputState.getBorderColor(),
                 shape = RoundedCornerShape(8.dp),
-            )
-            .bringIntoViewOnFocus(
+            ).bringIntoViewOnFocus(
                 isFocused = isFocused,
             ),
         contentAlignment = Alignment.Center,

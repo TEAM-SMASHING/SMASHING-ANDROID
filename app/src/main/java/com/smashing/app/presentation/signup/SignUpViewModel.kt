@@ -26,12 +26,12 @@ class SignUpViewModel @Inject constructor(
     ) = viewModelScope.launch {
         val request = PostSignUpRequest(
             authId = authId,
-            nickname = "닉네임",
-            gender = "여자",
-            openChatUrl = "오픈채팅링크",
-            sportCode = "스포츠코드",
-            tier = "티어",
-            region = "지역",
+            nickname = "이지민",
+            gender = "FEMALE",
+            openChatUrl = "https://open.kakao.com/o/xxxx",
+            sportCode = "TT",
+            tier = "IRON",
+            region = "양천구",
         )
         authRepository.postSignUp(request = request)
             .onSuccess {
@@ -45,7 +45,7 @@ class SignUpViewModel @Inject constructor(
                 }")
             }
             .onFailure { error ->
-                Timber.tag("SignUp").e("회원가입 실패")
+                Timber.tag("SignUp").e("회원가입 실패 $error")
             }
     }
 }
