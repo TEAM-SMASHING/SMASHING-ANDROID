@@ -90,7 +90,7 @@ private fun HomeScreen(
         HomeTopBar(
             userRegion = uiState.activeUserProfile.region,
             userSport = uiState.activeUserProfile.sportType,
-            userTier = TierType.GOLD_1,
+            userTier = uiState.activeUserProfile.tierType,
             onClickRegion = {},
             onChangeRegion = {},
             onClickSportChip = {},
