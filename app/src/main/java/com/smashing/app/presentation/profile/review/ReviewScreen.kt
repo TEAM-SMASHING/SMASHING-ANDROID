@@ -92,7 +92,7 @@ private fun ReviewScreen(
                 .navigationBarsPadding()
                 .background(color = SmashingTheme.colors.bgCanvas),
             verticalArrangement = Arrangement.spacedBy(32.dp),
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
             item {
                 Column(
@@ -116,13 +116,15 @@ private fun ReviewScreen(
 
                         if (uiState.reviewRate.good > 0)
                             SmashingChip(
-                                text = uiState.reviewRate.good.formatCount(), style = DISABLED,
+                                text = uiState.reviewRate.good.formatCount(),
+                                style = DISABLED,
                                 icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
                             )
 
                         if (uiState.reviewRate.bad > 0) {
                             SmashingChip(
-                                text = uiState.reviewRate.bad.formatCount(), style = DISABLED,
+                                text = uiState.reviewRate.bad.formatCount(),
+                                style = DISABLED,
                                 icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
                             )
                         }
@@ -185,7 +187,9 @@ private fun ReviewScreen(
                     )
                     Column {
                         reviews.forEachIndexed { index, review ->
-                            ReviewItem(review = review, userId = "userId$index")
+                            ReviewItem(
+                                review = review,
+                            )
 
                             if (index < reviews.lastIndex) {
                                 HorizontalDivider(
