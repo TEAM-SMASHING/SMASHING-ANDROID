@@ -35,11 +35,10 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun SportSelector (
     items: ImmutableList<SportType>,
+    selectedSport: SportType?,
+    onSportSelected: (SportType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    var selectedCard by rememberSaveable { mutableStateOf<SportType?>(null)}
-
     Column (
         modifier = modifier,
     ){
@@ -55,8 +54,8 @@ fun SportSelector (
             items.forEachIndexed { index, item ->
                 SmashingChip(
                     text = item.sportName,
-                    style = if(selectedCard == item) ChipStyle.ACTIVE else ChipStyle.INACTIVE,
-                    onClick = { selectedCard = item },
+                    style = if(selectedSport == item) ChipStyle.ACTIVE else ChipStyle.INACTIVE,
+                    onClick = { onSportSelected(item) },
                     icon = when(item) {
                         SportType.BADMINTON -> ImageVector.vectorResource(ic_badminton)
                         SportType.PING_PONG -> ImageVector.vectorResource(ic_pingpong)
@@ -82,6 +81,8 @@ private fun SportSelectorPreview() {
                 SportType.PING_PONG,
                 SportType.TENNIS,
             ),
+            selectedSport = null,
+            onSportSelected = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

@@ -50,6 +50,8 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
+        selectedSport = uiState.selectedSport,
+        onSportSelected = viewModel::updateSelectedSport,
         onBackClick = {},
         modifier = modifier,
         onBtnClick = {
@@ -65,6 +67,8 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    selectedSport: SportType?,
+    onSportSelected: (SportType) -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -108,6 +112,8 @@ private fun SignUpScreen(
                             SportType.PING_PONG,
                             SportType.TENNIS,
                         ),
+                        selectedSport = selectedSport,
+                        onSportSelected = onSportSelected,
                     )
                     5 -> SportSkillSelector()
                     else -> SignUpLocation(
@@ -144,16 +150,11 @@ private fun SignUpScreen(
 private fun SignUpScreenPreview() {
     SmashingAndroidTheme {
         var currentStep by rememberSaveable { mutableIntStateOf(1) }
-        val progress = when (currentStep) {
-            1 -> 0.17f
-            2 -> 0.34f
-            3 -> 0.51f
-            4 -> 0.64f
-            5 -> 0.81f
-            else -> 1f
-        }
+        
         SignUpScreen(
             uiState = SignUpContract.State(),
+            selectedSport = null,
+            onSportSelected = {},
             onBackClick = {},
             onBtnClick = {currentStep = currentStep + 1},
             modifier = Modifier.background(color = colors.bgCanvas),

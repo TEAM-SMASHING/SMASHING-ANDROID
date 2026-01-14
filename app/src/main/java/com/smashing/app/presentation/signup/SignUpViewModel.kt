@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.core.common.type.SportType
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
@@ -30,6 +31,12 @@ class SignUpViewModel @Inject constructor(
     fun updateCurrentStep() {
         _uiState.update {
             it.copy(currentStep = it.currentStep + 1)
+        }
+    }
+
+    fun updateSelectedSport(sportType: SportType) {
+        _uiState.update {
+            it.copy(selectedSport = sportType)
         }
     }
 
