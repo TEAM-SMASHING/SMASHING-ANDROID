@@ -1,5 +1,4 @@
-package com.smashing.app.presentation.signup.type
-
+package com.smashing.app.core.common.type
 
 enum class SkillType(
     val skillText: String,
