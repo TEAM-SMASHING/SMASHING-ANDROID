@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.submit
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import com.smashing.app.presentation.submit.model.MatchPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,9 @@ class SubmitViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
+
+    val leftTextFieldState: TextFieldState = TextFieldState()
+    val rightTextFieldState: TextFieldState = TextFieldState()
 
     fun updateSelectedWinner(winnerName: String) = _uiState.update { state ->
         val isSubmitterWinner = winnerName == state.submitter.name

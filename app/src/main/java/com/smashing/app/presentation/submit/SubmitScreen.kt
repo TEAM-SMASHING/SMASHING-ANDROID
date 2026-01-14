@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,12 +62,16 @@ fun SubmitRoute(
         onLeftDoneClick = viewModel::updateSubmitterScore,
         onRightDoneClick = viewModel::updateReceiverScore,
         onWinnerSelected = viewModel::updateSelectedWinner,
+        leftTextFieldState = viewModel.leftTextFieldState,
+        rightTextFieldState = viewModel.rightTextFieldState,
     )
 }
 
 @Composable
 private fun SubmitScreen(
     uiState: SubmitContract.State,
+    leftTextFieldState: TextFieldState,
+    rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
     onWinnerSelected: (String) -> Unit,
     onLeftDoneClick: (Int) -> Unit,
@@ -155,13 +160,13 @@ private fun SubmitScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     ScoreInputTextField(
-                        state = uiState.leftTextFieldState,
+                        state = leftTextFieldState,
                         placeholder = stringResource(zero_label),
                         modifier = Modifier
                             .weight(1f)
                             .padding(bottom = 10.dp),
                         onDoneClick = {
-                            onLeftDoneClick(uiState.leftTextFieldState.intValue)
+                            onLeftDoneClick(leftTextFieldState.intValue)
                         },
                     )
 
@@ -173,13 +178,13 @@ private fun SubmitScreen(
                     )
 
                     ScoreInputTextField(
-                        state = uiState.rightTextFieldState,
+                        state = rightTextFieldState,
                         placeholder = stringResource(zero_label),
                         modifier = Modifier
                             .weight(1f)
                             .padding(bottom = 10.dp),
                         onDoneClick = {
-                            onRightDoneClick(uiState.rightTextFieldState.intValue)
+                            onRightDoneClick(rightTextFieldState.intValue)
                         },
                     )
                 }
@@ -242,6 +247,8 @@ private fun SubmitScreenPreview() {
             receiver = MatchPlayer(userId = "2", name = "와쿠와쿠"),
             receiverScore = 5,
         ),
+        leftTextFieldState = TextFieldState(),
+        rightTextFieldState = TextFieldState(),
         onBackClick = {},
         onLeftDoneClick = {},
         onRightDoneClick = {},
