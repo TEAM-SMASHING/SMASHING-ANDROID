@@ -3,6 +3,7 @@ package com.smashing.app.core.designsystem.component.progressbar
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -29,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.string.progress_label
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 
 /**
@@ -53,27 +60,27 @@ fun SmashingProgressBar(
         label = stringResource(progress_label),
     )
 
-    Box(
+    val cornerRadius = 12.dp
+    val colors = colors
+
+    Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(8.dp)
-            .background(
-                color = colors.stateProgressTrack,
-                shape = RoundedCornerShape(12.dp),
-            ),
+            .height(8.dp),
     ) {
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .graphicsLayer {
-                    transformOrigin = TransformOrigin(0f, 0.5f)
-                    scaleX = animatedProgress
-                }
-                .height(8.dp)
-                .background(
-                    color = colors.stateProgressFill,
-                    shape = RoundedCornerShape(12.dp),
-                ),
+        val barWidth = size.width
+        val barHeight = size.height
+
+        drawRoundRect(
+            color = colors.stateProgressTrack,
+            size = Size(barWidth, barHeight),
+            cornerRadius = CornerRadius(cornerRadius.toPx(), cornerRadius.toPx()),
+        )
+
+        drawRoundRect(
+            brush = SolidColor(colors.stateProgressFill),
+            size = Size(barWidth * animatedProgress.coerceIn(0f, 1f), barHeight),
+            cornerRadius = CornerRadius(cornerRadius.toPx(), cornerRadius.toPx()),
         )
     }
 }
