@@ -1,4 +1,4 @@
-package com.smashing.app.core.designsystem.component.onboarding.sport
+package com.smashing.app.core.designsystem.component.sport
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -33,7 +33,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
-fun SignUpSport (
+fun SportSelector (
     items: ImmutableList<SportType>,
     modifier: Modifier = Modifier,
 ) {
@@ -74,9 +74,9 @@ fun SignUpSport (
 
 @Preview(showBackground = true)
 @Composable
-private fun SignUpSportPreview() {
+private fun SportSelectorPreview() {
     SmashingAndroidTheme {
-        SignUpSport(
+        SportSelector(
             items = persistentListOf(
                 SportType.BADMINTON,
                 SportType.PING_PONG,

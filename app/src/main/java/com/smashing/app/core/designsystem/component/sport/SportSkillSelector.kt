@@ -1,4 +1,4 @@
-package com.smashing.app.core.designsystem.component.onboarding.skill
+package com.smashing.app.core.designsystem.component.sport
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -35,7 +35,7 @@ import com.smashing.app.core.common.type.SkillType
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun SignUpSkill(
+fun SportSkillSelector(
     modifier: Modifier = Modifier,
 ) {
 
@@ -82,9 +82,9 @@ fun SignUpSkill(
 
 @Preview(showBackground = true)
 @Composable
-private fun SignUpSkillPreview() {
+private fun SportSkillSelectorPreview() {
     SmashingAndroidTheme {
-        SignUpSkill(
+        SportSkillSelector(
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

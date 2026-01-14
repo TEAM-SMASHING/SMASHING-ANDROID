@@ -34,8 +34,8 @@ import com.smashing.app.presentation.signup.component.chatlink.SignUpChatLink
 import com.smashing.app.presentation.signup.component.gender.SignUpGender
 import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
-import com.smashing.app.core.designsystem.component.onboarding.skill.SignUpSkill
-import com.smashing.app.core.designsystem.component.onboarding.sport.SignUpSport
+import com.smashing.app.core.designsystem.component.sport.SportSelector
+import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
 import kotlinx.collections.immutable.persistentListOf
 
 private const val MAX_STEP = 6
@@ -102,14 +102,14 @@ private fun SignUpScreen(
                     )
                     2 -> SignUpGender()
                     3 -> SignUpChatLink()
-                    4 -> SignUpSport(
+                    4 -> SportSelector(
                         items = persistentListOf(
                             SportType.BADMINTON,
                             SportType.PING_PONG,
                             SportType.TENNIS,
                         ),
                     )
-                    5 -> SignUpSkill()
+                    5 -> SportSkillSelector()
                     else -> SignUpLocation(
                         onAddressClick = {},
                     )
