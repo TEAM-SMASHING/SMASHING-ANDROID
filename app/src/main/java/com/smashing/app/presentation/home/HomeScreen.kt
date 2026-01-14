@@ -42,6 +42,72 @@ private fun HomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize(),
+@Composable
+private fun HomeTopBar(
+    userRegion: String,
+    userSport: SportType,
+    userTier: TierType,
+    onClickRegion: (String) -> Unit,
+    onChangeRegion: () -> Unit,
+    onClickSportChip: () -> Unit,
+    onClickNotice: () -> Unit,
+    modifier: Modifier = Modifier,
+    isNotice: Boolean = false,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 16.dp,
+                vertical = 8.dp,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        RegionDropdown(
+            selectedItem = userRegion,
+            //items 현재는 지역이 1개라 userRegion만 넣었습니다.
+            items = listOf(
+                userRegion
+            ).toImmutableList(),
+            onClick = onClickRegion,
+            onRegionChange = onChangeRegion,
+            isDivide = true
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        SportsTierChip(
+            sportType = userSport,
+            tierType = userTier,
+            onClick = onClickSportChip,
+        )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        if (!isNotice) {
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_bell),
+                contentDescription = null,
+                tint = SmashingTheme.colors.iconPrimary,
+                modifier = Modifier
+                    .noRippleClickable(
+                        onClick = onClickNotice,
+                    )
+            )
+        } else {
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_bell_notification),
+                contentDescription = null,
+                tint = SmashingTheme.colors.iconPrimary,
+                modifier = Modifier
+                    .noRippleClickable(
+                        onClick = onClickNotice,
+                    )
+            )
+        }
+    }
+}
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
