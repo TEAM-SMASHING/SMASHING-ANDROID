@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.sign_up_next_btn
 import com.smashing.app.R.string.sign_up_end_btn
+import com.smashing.app.core.common.type.SkillType
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.progressbar.SmashingProgressBar
@@ -52,6 +53,8 @@ fun SignUpRoute(
         uiState = uiState,
         selectedSport = uiState.selectedSport,
         onSportSelected = viewModel::updateSelectedSport,
+        selectedSkill = uiState.selectedSkill,
+        onSkillSelected = viewModel::updateSelectedSkill,
         onBackClick = {},
         modifier = modifier,
         onBtnClick = {
@@ -69,6 +72,8 @@ private fun SignUpScreen(
     uiState: SignUpContract.State,
     selectedSport: SportType?,
     onSportSelected: (SportType) -> Unit,
+    selectedSkill: SkillType?,
+    onSkillSelected: (SkillType) -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -115,7 +120,10 @@ private fun SignUpScreen(
                         selectedSport = selectedSport,
                         onSportSelected = onSportSelected,
                     )
-                    5 -> SportSkillSelector()
+                    5 -> SportSkillSelector(
+                        selectedSkill = selectedSkill,
+                        onSkillSelected = onSkillSelected,
+                    )
                     else -> SignUpLocation(
                         onAddressClick = {},
                     )
@@ -150,11 +158,13 @@ private fun SignUpScreen(
 private fun SignUpScreenPreview() {
     SmashingAndroidTheme {
         var currentStep by rememberSaveable { mutableIntStateOf(1) }
-        
+
         SignUpScreen(
             uiState = SignUpContract.State(),
             selectedSport = null,
             onSportSelected = {},
+            selectedSkill = null,
+            onSkillSelected = {},
             onBackClick = {},
             onBtnClick = {currentStep = currentStep + 1},
             modifier = Modifier.background(color = colors.bgCanvas),

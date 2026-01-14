@@ -36,11 +36,12 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SportSkillSelector(
+    selectedSkill: SkillType?,
+    onSkillSelected: (SkillType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     val radioList = SkillType.entries.toImmutableList()
-    var selectedList by rememberSaveable { mutableStateOf<SkillType?>(null)}
 
     Column(
         modifier = modifier.selectableGroup(),
@@ -54,13 +55,13 @@ fun SportSkillSelector(
                 Modifier
                     .fillMaxWidth()
                     .noRippleClickable(
-                        onClick = { selectedList = item }
+                        onClick = { onSkillSelected(item) }
                     ),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(
-                        if(selectedList == item) ic_radio_fill else ic_radio_empty
+                        if(selectedSkill == item) ic_radio_fill else ic_radio_empty
                     ),
                     contentDescription = null,
                     tint = colors.iconPrimary,
@@ -85,6 +86,8 @@ fun SportSkillSelector(
 private fun SportSkillSelectorPreview() {
     SmashingAndroidTheme {
         SportSkillSelector(
+            selectedSkill = null,
+            onSkillSelected = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }
