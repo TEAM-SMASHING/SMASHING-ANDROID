@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -91,7 +92,9 @@ fun ProfileTierBox(
                 imageVector = ImageVector.vectorResource(id = tierIconResId),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.size(100.dp),
+                modifier = Modifier
+                    .size(100.dp)
+                    .aspectRatio(1f),
             )
 
             Spacer(modifier = Modifier.height(12.dp))

@@ -6,7 +6,6 @@ import java.time.LocalDateTime
 
 data class UserProfileInfo(
     val tierType: TierType,
-    val tierIconResId: Int,
     val mySports: List<SportType>,
     val selectedSport: SportType,
 
@@ -25,8 +24,8 @@ data class RatingCount(
     val bad: Int,
 )
 
-
 data class Review(
+    val userId: String,
     val gameId: String,
     val reviewId: String,
     val opponentNickname: String,
@@ -35,8 +34,8 @@ data class Review(
 )
 
 data class TagCount(
-    val onTime:Int,
-    val goodManner:Int,
-    val fairPlay:Int,
-    val fastResponse:Int,
+    val onTime: Int,
+    val goodManner: Int,
+    val fairPlay: Int,
+    val fastResponse: Int,
 )

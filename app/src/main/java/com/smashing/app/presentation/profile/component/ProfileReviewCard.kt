@@ -94,7 +94,6 @@ fun ProfileReviewCard(
                 )
             }
 
-
             if (badCount > 0) {
                 SmashingChip(
                     text = badCount.formatCount(),
@@ -108,9 +107,12 @@ fun ProfileReviewCard(
 
         Column {
             reviews.take(3).forEachIndexed { index, review ->
-                ReviewItem(review = review, userId = "userId$index")
+                ReviewItem(
+                    review = review,
+                )
 
-                if (index < REVIEW_ITEM_COUNT - 1) {                    HorizontalDivider(
+                if (index < REVIEW_ITEM_COUNT - 1) {
+                    HorizontalDivider(
                         modifier = Modifier.padding(vertical = 12.dp),
                         thickness = 1.dp,
                         color = SmashingTheme.colors.borderPrimary,

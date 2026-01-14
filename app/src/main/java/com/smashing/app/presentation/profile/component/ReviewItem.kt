@@ -23,14 +23,13 @@ import com.smashing.app.data.model.profile.Review
 @Composable
 fun ReviewItem(
     review: Review,
-    userId: String,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
 
         UrlImage(
-            url = ProfileImageProvider.getTempUrl(userId),
+            url = ProfileImageProvider.getTempUrl(review.opponentNickname),
             modifier = Modifier
                 .height(32.dp)
                 .aspectRatio(1f)

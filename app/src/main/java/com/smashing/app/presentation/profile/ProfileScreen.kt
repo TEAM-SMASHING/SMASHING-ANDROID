@@ -71,6 +71,8 @@ private fun ProfileScreen(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
+    if (uiState.loadState !is ProfileUiState.Success) return@ProfileScreen
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -117,15 +119,14 @@ private fun ProfileScreen(
                     reviewCount = 32,
                 )
             }
+
             item {
                 ProfileTierBox(
                     tierType = uiState.profileInfo.tierType,
                     sports = uiState.profileInfo.mySports,
-
                     selectedSport = uiState.profileInfo.selectedSport,
                     onSportClick = onSportClick,
-
-                    tierIconResId = uiState.profileInfo.tierIconResId,
+                    tierIconResId = 0, // TODO 수정 예정
                     progress = uiState.profileInfo.lpProgress,
                     lpStatus = uiState.profileInfo.minLp,
                     totalLp = uiState.profileInfo.maxLp,
@@ -150,8 +151,6 @@ private fun ProfileScreen(
             }
         }
     }
-
-
 }
 
 
