@@ -1,5 +1,11 @@
 package com.smashing.app.presentation.signup
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +18,9 @@ import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -29,10 +37,26 @@ class SignUpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
 
+    private val _openChatLinkState = MutableStateFlow(TextFieldState(""))
+    val openChatLinkState: StateFlow<TextFieldState> get() = _openChatLinkState
+
+    val isLinkValid by derivedStateOf {
+        openChatLinkState
+    }
+
+
     fun updateCurrentStep() {
         _uiState.update {
             it.copy(currentStep = it.currentStep + 1)
         }
+    }
+
+    suspend fun updateOpenChatLink() {
+        snapshotFlow { openChatLinkState }
+            .collectLatest { linkText ->
+                //Todo 링크 유효성 판단 api (성공시 updateCurrentStep, 실패시 errorText 반환 및 이동 X
+                postValidateChatLink()
+            }
     }
 
     fun updateSelectedSport(sportType: SportType) {
@@ -45,6 +69,10 @@ class SignUpViewModel @Inject constructor(
         _uiState.update {
             it.copy(selectedSkill = skillType)
         }
+    }
+
+    fun postValidateChatLink(
+    ) {
     }
 
     fun postSignUp(

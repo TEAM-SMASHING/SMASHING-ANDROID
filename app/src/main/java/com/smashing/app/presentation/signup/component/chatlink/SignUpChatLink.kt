@@ -2,6 +2,7 @@ package com.smashing.app.presentation.signup.component.chatlink
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,9 @@ import com.smashing.app.presentation.signup.component.SignUpTitle
 
 @Composable
 fun SignUpChatLink(
+    openChatLinkState: TextFieldState,
     modifier: Modifier = Modifier,
+    errorText: String? = null,
 ) {
     Column(
         modifier = modifier,
@@ -28,8 +31,9 @@ fun SignUpChatLink(
         )
 
         SmashingInputTextField(
-            state = rememberTextFieldState(),
+            state = openChatLinkState,
             placeholder = stringResource(sign_up_chat_link_placeholder),
+            errorText = errorText,
         )
     }
 }
@@ -39,6 +43,7 @@ fun SignUpChatLink(
 private fun SignUpChatLinkPreview() {
     SmashingAndroidTheme {
         SignUpChatLink(
+            openChatLinkState = rememberTextFieldState(),
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

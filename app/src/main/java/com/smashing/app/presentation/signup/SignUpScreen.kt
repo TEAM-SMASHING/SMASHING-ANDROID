@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,9 +49,11 @@ fun SignUpRoute(
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val openChatLinkState by viewModel.openChatLinkState.collectAsStateWithLifecycle()
 
     SignUpScreen(
         uiState = uiState,
+        openChatLinkState = openChatLinkState,
         selectedSport = uiState.selectedSport,
         onSportSelected = viewModel::updateSelectedSport,
         selectedSkill = uiState.selectedSkill,
@@ -70,6 +73,7 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    openChatLinkState: TextFieldState,
     selectedSport: SportType?,
     onSportSelected: (SportType) -> Unit,
     selectedSkill: SkillType?,
@@ -110,7 +114,9 @@ private fun SignUpScreen(
                         onDuplicateBtnClick = { },
                     )
                     2 -> SignUpGender()
-                    3 -> SignUpChatLink()
+                    3 -> SignUpChatLink(
+                        openChatLinkState = openChatLinkState,
+                    )
                     4 -> SportSelector(
                         items = persistentListOf(
                             SportType.BADMINTON,

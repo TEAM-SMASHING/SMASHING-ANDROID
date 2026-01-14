@@ -11,7 +11,6 @@ interface SignUpContract {
         val currentStep: Int = 1,
         val nicknameInput: TextFieldState = TextFieldState(""),
         val selectedGender: String = "",
-        val chatLinkInput: String = "",
         val selectedSport: SportType? = null,
         val selectedSkill: SkillType?= null,
         val locationInput: String = "",
