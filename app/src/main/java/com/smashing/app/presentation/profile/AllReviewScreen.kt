@@ -1,0 +1,188 @@
+package com.smashing.app.presentation.profile
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.smashing.app.R.drawable.ic_thumbs_down_lg
+import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
+import com.smashing.app.R.drawable.ic_thumbs_up_lg
+import com.smashing.app.R.string.receive_review
+import com.smashing.app.R.string.good_manner_review
+import com.smashing.app.R.string.on_time_review
+import com.smashing.app.R.string.fair_play_review
+import com.smashing.app.R.string.fast_response_review
+import com.smashing.app.core.designsystem.component.chip.SmashingChip
+import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
+import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.model.profile.Review
+import com.smashing.app.presentation.profile.component.ReviewItem
+import kotlinx.collections.immutable.ImmutableList
+
+
+@Composable
+private fun AllReviewScreen(
+    uiState: ProfileContract.State,
+    reviews: ImmutableList<Review>,
+    excellentCount: Int,
+    goodCount: Int,
+    badCount: Int,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    lazyListState: LazyListState = rememberLazyListState(),
+) {
+
+    LazyColumn(
+        state = lazyListState,
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = SmashingTheme.colors.bgCanvas)
+            .statusBarsPadding(),
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+        contentPadding = PaddingValues(16.dp),
+    ) {
+        item {
+            SmashingDefaultTopBar(
+                title = stringResource(receive_review),
+                topBarType = TopBarType.BACK,
+                onClick = onBackClick,
+            )
+        }
+        item {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    "만족도",
+                    style = SmashingTheme.typography.md.semibold16,
+                    color = SmashingTheme.colors.txtPrimary
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    SmashingChip(
+                        text = excellentCount.toString(),
+                        style = DISABLED,
+                        icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                    )
+
+                    SmashingChip(
+                        text = goodCount.toString(),
+                        style = DISABLED,
+                        icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                    )
+
+                    SmashingChip(
+                        text = badCount.toString(),
+                        style = DISABLED,
+                        icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                    )
+                }
+            }
+        }
+
+        item {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    "빠른 후기",
+                    style = SmashingTheme.typography.md.semibold16,
+                    color = SmashingTheme.colors.txtPrimary,
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    SmashingChip(
+                        text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime}",
+                        style = DISABLED,
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                    )
+                    SmashingChip(
+                        text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner}",
+                        style = DISABLED,
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    SmashingChip(
+                        text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay}",
+                        style = DISABLED,
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                    )
+                    SmashingChip(
+                        text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse}",
+                        style = DISABLED,
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                    )
+                }
+            }
+        }
+
+        item {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(
+                    "후기",
+                    style = SmashingTheme.typography.md.semibold16,
+                    color = SmashingTheme.colors.txtPrimary
+                )
+                Column {
+                    reviews.forEachIndexed { index, review ->
+                        ReviewItem(review = review, userId = "userId$index")
+
+                        if (index < reviews.lastIndex) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                thickness = 1.dp,
+                                color = SmashingTheme.colors.borderPrimary,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Preview
+@Composable
+private fun AllReviewScreenPreview() {
+    SmashingAndroidTheme {
+        AllReviewScreen(
+            uiState = ProfileContract.State(),
+            excellentCount = ProfileContract.State().reviewRate.best,
+            goodCount = ProfileContract.State().reviewRate.good,
+            badCount = ProfileContract.State().reviewRate.bad,
+            onBackClick = {},
+            reviews = ProfileContract.State().reviews,
+        )
+    }
+}

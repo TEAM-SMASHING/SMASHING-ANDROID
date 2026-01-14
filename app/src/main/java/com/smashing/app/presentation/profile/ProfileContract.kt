@@ -4,9 +4,10 @@ import androidx.compose.runtime.Immutable
 import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
-import com.smashing.app.data.model.Rating
-import com.smashing.app.data.model.Review
-import com.smashing.app.data.model.UserProfileInfo
+import com.smashing.app.data.model.profile.Rating
+import com.smashing.app.data.model.profile.Review
+import com.smashing.app.data.model.profile.TagCount
+import com.smashing.app.data.model.profile.UserProfileInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDateTime
@@ -49,8 +50,23 @@ interface ProfileContract {
                 confirmedAt = LocalDateTime.now().minusDays(2),
                 content = "매너도 좋고, 너무 잘하세요!"
             ),
+            Review(
+                gameId = "1",
+                reviewId = "r1",
+                opponentNickname = "닝우닝",
+                confirmedAt = LocalDateTime.now().minusDays(2),
+                content = "매너도 좋고, 너무 잘하세요!"
+            ),
+            Review(
+                gameId = "1",
+                reviewId = "r1",
+                opponentNickname = "닝우닝",
+                confirmedAt = LocalDateTime.now().minusDays(2),
+                content = "매너도 좋고, 너무 잘하세요!"
+            ),
         ),
-        val reviewRate: Rating = Rating(5, 3, 1)
+        val reviewRate: Rating = Rating(5, 4, 10),
+        val tagCount: TagCount= TagCount(5,56,10,2),
     )
 }
 

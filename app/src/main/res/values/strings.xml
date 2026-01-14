@@ -61,8 +61,11 @@
     <string name="lp_remaining_text">LP 남았어요!</string>
     <string name="lp_status">LP</string>
     <string name="record_label">전적</string>
-
-
+    <string name="receive_review">받은 후기</string>
+    <string name="on_time_review">시간 약속을 잘 지켜요</string>
+    <string name="good_manner_review">경기 매너가 좋아요</string>
+    <string name="fair_play_review">승패를 깔끔하게 인정해요</string>
+    <string name="fast_response_review">응답이 빨라요</string>
 </resources>
 
 

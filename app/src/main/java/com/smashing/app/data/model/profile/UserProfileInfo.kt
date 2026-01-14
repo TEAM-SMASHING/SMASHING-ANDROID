@@ -1,4 +1,4 @@
-package com.smashing.app.data.model
+package com.smashing.app.data.model.profile
 
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
@@ -32,4 +32,11 @@ data class Review(
     val opponentNickname: String,
     val confirmedAt: LocalDateTime,
     val content: String?,
+)
+
+data class TagCount(
+    val onTime:Int,
+    val goodManner:Int,
+    val fairPlay:Int,
+    val fastResponse:Int,
 )
