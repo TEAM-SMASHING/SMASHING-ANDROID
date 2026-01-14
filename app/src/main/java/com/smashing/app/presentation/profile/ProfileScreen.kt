@@ -114,7 +114,7 @@ private fun ProfileScreen(
                     tierType = TierType.GOLD_1,
                     winCount = 254,
                     loseCount = 38,
-                    reviewCount = 32
+                    reviewCount = 32,
                 )
             }
             item {

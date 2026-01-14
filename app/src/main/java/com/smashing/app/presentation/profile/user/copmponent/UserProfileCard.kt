@@ -44,7 +44,7 @@ fun UserProfileCard(
     winCount: Int,
     loseCount: Int,
     reviewCount: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val genderIconRes = when (gender) {
         GenderType.MALE -> ic_man_20
@@ -61,7 +61,7 @@ fun UserProfileCard(
             .padding(vertical = 20.dp, horizontal = 16.dp),
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             UrlImage(
                 url = ProfileImageProvider.getTempUrl(nickname),
@@ -74,7 +74,9 @@ fun UserProfileCard(
             Spacer(modifier = Modifier.width(12.dp))
 
             Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Text(
                         text = nickname,
                         style = SmashingTheme.typography.lg.semibold18,
@@ -94,15 +96,20 @@ fun UserProfileCard(
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    TierBadge(tierType)
+                    TierBadge(
+                        tierType=tierType,
+                    )
                 }
             }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             ProfileStatRow(
-                label = stringResource(id=record_label),
+                label = stringResource(id = record_label),
                 value = "${winCount}승 ${loseCount}패",
             )
             ProfileStatRow(
@@ -116,12 +123,12 @@ fun UserProfileCard(
 @Composable
 private fun ProfileStatRow(
     label: String,
-    value: String
+    value: String,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = label,

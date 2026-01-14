@@ -46,7 +46,7 @@ fun ProfileReviewCard(
     goodCount: Int,
     badCount: Int,
     modifier: Modifier = Modifier,
-    onViewAllReviewClick: () -> Unit = {}
+    onViewAllReviewClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -76,7 +76,7 @@ fun ProfileReviewCard(
         Spacer(modifier = Modifier.height(12.dp))
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             if (excellentCount > 0) {
                 SmashingChip(

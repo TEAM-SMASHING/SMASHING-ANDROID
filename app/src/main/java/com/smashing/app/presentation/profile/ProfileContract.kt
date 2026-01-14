@@ -34,35 +34,35 @@ interface ProfileContract {
                 reviewId = "r1",
                 opponentNickname = "닝우닝",
                 confirmedAt = LocalDateTime.now().minusDays(2),
-                content = "매너도 좋고, 너무 잘하세요!"
+                content = "매너도 좋고, 너무 잘하세요!",
             ),
             Review(
                 gameId = "1",
                 reviewId = "r1",
                 opponentNickname = "닝우닝",
                 confirmedAt = LocalDateTime.now().minusDays(2),
-                content = "매너도 좋고, 너무 잘하세요!"
+                content = "매너도 좋고, 너무 잘하세요!",
             ),
             Review(
                 gameId = "1",
                 reviewId = "r1",
                 opponentNickname = "닝우닝",
                 confirmedAt = LocalDateTime.now().minusDays(2),
-                content = "매너도 좋고, 너무 잘하세요!"
+                content = "매너도 좋고, 너무 잘하세요!",
             ),
             Review(
                 gameId = "1",
                 reviewId = "r1",
                 opponentNickname = "닝우닝",
                 confirmedAt = LocalDateTime.now().minusDays(2),
-                content = "매너도 좋고, 너무 잘하세요!"
+                content = "매너도 좋고, 너무 잘하세요!",
             ),
             Review(
                 gameId = "1",
                 reviewId = "r1",
                 opponentNickname = "닝우닝",
                 confirmedAt = LocalDateTime.now().minusDays(2),
-                content = "매너도 좋고, 너무 잘하세요!"
+                content = "매너도 좋고, 너무 잘하세요!",
             ),
         ),
         val reviewRate: RatingCount = RatingCount(0, 100, 3),
