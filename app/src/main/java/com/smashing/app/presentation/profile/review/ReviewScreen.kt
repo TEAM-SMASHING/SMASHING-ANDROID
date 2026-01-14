@@ -1,0 +1,217 @@
+package com.smashing.app.presentation.profile.review
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R.drawable.ic_thumbs_down_lg
+import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
+import com.smashing.app.R.drawable.ic_thumbs_up_lg
+import com.smashing.app.R.string.fair_play_review
+import com.smashing.app.R.string.fast_response_review
+import com.smashing.app.R.string.good_manner_review
+import com.smashing.app.R.string.on_time_review
+import com.smashing.app.R.string.receive_review
+import com.smashing.app.R.string.review
+import com.smashing.app.R.string.satisfaction_review
+import com.smashing.app.R.string.short_review
+import com.smashing.app.core.designsystem.component.chip.SmashingChip
+import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
+import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.formatCount
+import com.smashing.app.data.model.profile.Review
+import com.smashing.app.presentation.profile.ProfileContract
+import com.smashing.app.presentation.profile.component.ReviewItem
+import kotlinx.collections.immutable.ImmutableList
+
+@Composable
+fun ReviewRoute(
+    navigateUp: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ReviewViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ReviewScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onBackClick = navigateUp,
+        reviews = uiState.reviews,
+    )
+}
+
+
+@Composable
+private fun ReviewScreen(
+    uiState: ProfileContract.State,
+    reviews: ImmutableList<Review>,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    lazyListState: LazyListState = rememberLazyListState(),
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = SmashingTheme.colors.bgCanvas),
+    ) {
+        SmashingDefaultTopBar(
+            modifier = Modifier.statusBarsPadding(),
+            title = stringResource(receive_review),
+            topBarType = TopBarType.BACK,
+            onClick = onBackClick,
+        )
+        LazyColumn(
+            state = lazyListState,
+            modifier = modifier
+                .fillMaxSize()
+                .navigationBarsPadding()
+                .background(color = SmashingTheme.colors.bgCanvas),
+            verticalArrangement = Arrangement.spacedBy(32.dp),
+            contentPadding = PaddingValues(16.dp),
+        ) {
+            item {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = satisfaction_review),
+                        style = SmashingTheme.typography.md.semibold16,
+                        color = SmashingTheme.colors.txtPrimary,
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        if (uiState.reviewRate.best > 0) {
+                            SmashingChip(
+                                text = uiState.reviewRate.best.formatCount(),
+                                style = DISABLED,
+                                icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
+                            )
+                        }
+
+                        if (uiState.reviewRate.good > 0)
+                            SmashingChip(
+                                text = uiState.reviewRate.good.formatCount(), style = DISABLED,
+                                icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
+                            )
+
+                        if (uiState.reviewRate.bad > 0) {
+                            SmashingChip(
+                                text = uiState.reviewRate.bad.formatCount(), style = DISABLED,
+                                icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
+                            )
+                        }
+                    }
+                }
+            }
+
+            item {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = stringResource(id = short_review),
+                        style = SmashingTheme.typography.md.semibold16,
+                        color = SmashingTheme.colors.txtPrimary,
+                    )
+
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        if (uiState.tagCount.onTime > 0) {
+                            SmashingChip(
+                                text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime.formatCount()}",
+                                style = DISABLED,
+                            )
+                        }
+
+                        if (uiState.tagCount.goodManner > 0) {
+                            SmashingChip(
+                                text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner.formatCount()}",
+                                style = DISABLED,
+                            )
+                        }
+                        if (uiState.tagCount.fairPlay > 0) {
+                            SmashingChip(
+                                text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay.formatCount()}",
+                                style = DISABLED,
+                            )
+                        }
+                        if (uiState.tagCount.fastResponse > 0) {
+                            SmashingChip(
+                                text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse.formatCount()}",
+                                style = DISABLED,
+                            )
+                        }
+                    }
+                }
+            }
+
+            item {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    Text(
+                        text = stringResource(id = review),
+                        style = SmashingTheme.typography.md.semibold16,
+                        color = SmashingTheme.colors.txtPrimary,
+                    )
+                    Column {
+                        reviews.forEachIndexed { index, review ->
+                            ReviewItem(review = review, userId = "userId$index")
+
+                            if (index < reviews.lastIndex) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(vertical = 12.dp),
+                                    thickness = 1.dp,
+                                    color = SmashingTheme.colors.borderPrimary,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Preview
+@Composable
+private fun ReviewScreenPreview() {
+    SmashingAndroidTheme {
+        ReviewScreen(
+            uiState = ProfileContract.State(),
+            onBackClick = {},
+            reviews = ProfileContract.State().reviews,
+        )
+    }
+}

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.common.type.SportType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,8 +48,7 @@ class ProfileViewModel @Inject constructor(
             currentState.copy(
                 profileInfo = currentInfo.copy(
                     selectedSport = sport,
-                    mySports = currentState.profileInfo.mySports.sortedByDescending { it == sport }
-                        .toImmutableList()
+                    mySports = currentState.profileInfo.mySports
                 )
             )
             currentState.copy(profileInfo = currentState.profileInfo)

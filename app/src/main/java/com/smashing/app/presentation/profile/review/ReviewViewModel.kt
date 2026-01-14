@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.navigation
+package com.smashing.app.presentation.profile.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AllReviewViewModel @Inject constructor(
+class ReviewViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileContract.State())
