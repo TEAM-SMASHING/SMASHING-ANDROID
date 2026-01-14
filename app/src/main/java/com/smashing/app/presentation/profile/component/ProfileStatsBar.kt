@@ -42,10 +42,9 @@ fun ProfileStatsBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(vertical = 12.dp),
+            .padding(vertical = 20.dp, horizontal = 16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

@@ -58,10 +58,9 @@ fun ProfileTierBox(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(all = 16.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(20.dp),
+            .padding(vertical = 20.dp, horizontal = 16.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

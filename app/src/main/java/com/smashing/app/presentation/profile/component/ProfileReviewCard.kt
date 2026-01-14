@@ -35,7 +35,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.extension.toFriendlyString
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.data.model.Review
+import com.smashing.app.data.model.profile.Review
 import com.smashing.app.presentation.profile.ProfileContract
 import kotlinx.collections.immutable.ImmutableList
 
@@ -54,7 +54,7 @@ fun ProfileReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(16.dp),
+            .padding(vertical = 20.dp, horizontal = 16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -117,7 +117,7 @@ fun ProfileReviewCard(
 }
 
 @Composable
-private fun ReviewItem(
+fun ReviewItem(
     review: Review,
     userId: String,
 ) {

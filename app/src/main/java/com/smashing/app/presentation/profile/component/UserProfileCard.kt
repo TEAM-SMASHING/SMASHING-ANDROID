@@ -56,10 +56,9 @@ fun UserProfileCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(20.dp),
+            .padding(vertical = 20.dp, horizontal = 16.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -148,7 +147,7 @@ private fun UserProfileCardPreview() {
             tierType = TierType.GOLD_1,
             winCount = 254,
             loseCount = 38,
-            reviewCount = 32
+            reviewCount = 32,
         )
     }
 }
