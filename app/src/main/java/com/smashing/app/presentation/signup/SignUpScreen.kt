@@ -111,7 +111,7 @@ private fun SignUpScreen(
 
                 when (uiState.currentStep) {
                     1 -> SignUpNickName(
-                        nickNameState = uiState.nicknameInput,
+                        nickNameState = openChatLinkState, //Todo 수정 필요
                         onDuplicateBtnClick = { },
                     )
                     2 -> SignUpGender()
