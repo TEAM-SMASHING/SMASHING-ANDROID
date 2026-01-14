@@ -33,7 +33,6 @@ fun NavGraphBuilder.profileGraph(
     ) {
         composable<ProfileUser> {
             ProfileRoute(
-                modifier = Modifier.padding(innerPadding),
                 navigateToSportAdd = {},
                 navigateToTierGuide = {},
                 navigateToReviews = navigateToReview,

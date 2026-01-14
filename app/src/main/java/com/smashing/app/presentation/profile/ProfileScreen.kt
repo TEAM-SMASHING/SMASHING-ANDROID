@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -85,11 +85,12 @@ private fun ProfileScreen(
     }
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color = SmashingTheme.colors.bgCanvas)
+            .systemBarsPadding(),
     ) {
 
         SmashingDefaultTopBar(
-            modifier = Modifier.statusBarsPadding(),
             title = stringResource(profile),
             topBarType = TopBarType.DEFAULT,
             onClick = null,
@@ -100,11 +101,8 @@ private fun ProfileScreen(
             modifier = modifier
                 .fillMaxSize()
                 .nestedScroll(nestedScrollConnection)
-                .background(color = SmashingTheme.colors.bgCanvas)
-                .statusBarsPadding()
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
-
             contentPadding = PaddingValues(bottom = 16.dp),
         ) {
 

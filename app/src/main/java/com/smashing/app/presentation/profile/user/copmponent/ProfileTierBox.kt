@@ -82,7 +82,7 @@ fun ProfileTierBox(
                 SmashingChip(
                     style = ChipStyle.DISABLED,
                     onClick = onAddSportClick,
-                    icon = ImageVector.vectorResource(id =ic_plus),
+                    icon = ImageVector.vectorResource(id = ic_plus),
                 )
             }
             Spacer(modifier = Modifier.height(30.dp))
