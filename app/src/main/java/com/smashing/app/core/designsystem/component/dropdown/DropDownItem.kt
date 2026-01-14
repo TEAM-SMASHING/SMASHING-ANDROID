@@ -16,8 +16,14 @@ import androidx.compose.runtime.Stable
 @Stable
 sealed interface DropdownItem {
     val label: String
-    data class Normal(override val label: String) : DropdownItem
-    class Additional(
+
+    @Stable
+    data class Normal(
+        override val label: String,
+    ) : DropdownItem
+
+    @Stable
+    data class Additional(
         override val label: String,
         val onClick: () -> Unit,
     ) : DropdownItem
