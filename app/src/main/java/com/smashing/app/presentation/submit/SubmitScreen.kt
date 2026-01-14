@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -78,6 +79,8 @@ private fun SubmitScreen(
         uiState.submitter.name,
         uiState.receiver.name,
     )
+    val leftTextFieldState = rememberTextFieldState()
+    val rightTextFieldState = rememberTextFieldState()
 
     Column(
         modifier = modifier
@@ -155,13 +158,13 @@ private fun SubmitScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     ScoreInputTextField(
-                        state = uiState.leftTextFieldState,
+                        state = leftTextFieldState,
                         placeholder = stringResource(zero_label),
                         modifier = Modifier
                             .weight(1f)
                             .padding(bottom = 10.dp),
                         onDoneClick = {
-                            onLeftDoneClick(uiState.leftTextFieldState.intValue)
+                            onLeftDoneClick(leftTextFieldState.intValue)
                         },
                     )
 
@@ -173,13 +176,13 @@ private fun SubmitScreen(
                     )
 
                     ScoreInputTextField(
-                        state = uiState.rightTextFieldState,
+                        state = rightTextFieldState,
                         placeholder = stringResource(zero_label),
                         modifier = Modifier
                             .weight(1f)
                             .padding(bottom = 10.dp),
                         onDoneClick = {
-                            onRightDoneClick(uiState.rightTextFieldState.intValue)
+                            onRightDoneClick(rightTextFieldState.intValue)
                         },
                     )
                 }

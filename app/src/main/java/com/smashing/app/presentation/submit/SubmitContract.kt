@@ -14,7 +14,5 @@ interface SubmitContract {
         val winner: MatchPlayer? = null,
         val loser: MatchPlayer? = null,
         val isButtonEnabled: Boolean = false,
-        val leftTextFieldState: TextFieldState = TextFieldState(),
-        val rightTextFieldState: TextFieldState = TextFieldState(),
     )
 }
