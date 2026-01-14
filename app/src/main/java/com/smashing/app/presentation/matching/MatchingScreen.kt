@@ -47,6 +47,7 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
 
 @Composable
@@ -70,8 +71,8 @@ fun MatchingRoute(
 
 @Composable
 private fun MatchingScreen(
-    navigateToSubmit: () -> Unit,
     uiState: MatchingContract.State,
+    navigateToSubmit: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
@@ -87,8 +88,9 @@ private fun MatchingScreen(
     )
 
     Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
@@ -143,6 +145,7 @@ private fun MatchingScreen(
                 uiState = uiState,
                 gridState = gridState,
                 onCloseClick = onCardCloseClick,
+                onConfirmClick = navigateToSubmit,
             )
         }
 
@@ -189,6 +192,7 @@ private fun MatchingList(
     uiState: MatchingContract.State,
     gridState: LazyGridState,
     onCloseClick: () -> Unit,
+    onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -241,7 +245,7 @@ private fun MatchingList(
                         genderType = it.genderType,
                         tierType = it.tierType,
                         onProfileClick = {},
-                        onConfirmClick = {},
+                        onConfirmClick = onConfirmClick,
                         onKakaoLinkClick = {},
                         onCloseClick = onCloseClick,
                     ),
