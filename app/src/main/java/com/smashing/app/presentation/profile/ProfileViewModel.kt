@@ -66,7 +66,7 @@ class ProfileViewModel @Inject constructor(
 
     // TODO: 추후 제거 예정
     private fun getDummyState(): ProfileContract.State {
-        val loadState: ProfileUiState = ProfileUiState.Idle
+        val loadState: ProfileUiState = ProfileUiState.Success
         val profileInfo = UserProfileInfo(
             tierType = TierType.GOLD_1,
             mySports = listOf(SportType.PING_PONG, SportType.BADMINTON),

@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.SportType
@@ -71,7 +72,6 @@ private fun ProfileScreen(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    if (uiState.loadState !is ProfileUiState.Success) return@ProfileScreen
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -126,7 +126,7 @@ private fun ProfileScreen(
                     sports = uiState.profileInfo.mySports,
                     selectedSport = uiState.profileInfo.selectedSport,
                     onSportClick = onSportClick,
-                    tierIconResId = 0, // TODO 수정 예정
+                    tierIconResId = R.drawable.ic_check, // TODO 수정 예정
                     progress = uiState.profileInfo.lpProgress,
                     lpStatus = uiState.profileInfo.minLp,
                     totalLp = uiState.profileInfo.maxLp,
