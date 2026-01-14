@@ -48,7 +48,7 @@ fun ProfileRoute(
     ProfileScreen(
         modifier = modifier,
         uiState = uiState,
-        onSportClick = {},
+        onSportClick = viewModel::updateSelectedSport,
         onAddSportClick = navigateToSportAdd,
         onTierGuideClick = navigateToTierGuide,
         onReviewsClick = navigateToReviews,
