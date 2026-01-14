@@ -27,31 +27,19 @@ import com.smashing.app.R.string.record
 import com.smashing.app.R.string.review
 import com.smashing.app.R.string.win_lose_count
 import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.image.UrlImage
-import com.smashing.app.core.designsystem.style.MatchingCardStyle
-import com.smashing.app.core.designsystem.style.MatchingCardStyle.RECEIVE
-import com.smashing.app.core.designsystem.style.MatchingCardStyle.SEARCH
-import com.smashing.app.core.designsystem.style.MatchingCardStyle.SEND
+import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 
 @Composable
 fun MatchingCardContent(
-    cardType: MatchingCardStyle,
-    userId: String,
-    nickname: String,
-    genderType: GenderType,
-    tierType: TierType,
-    winCount: Int,
-    loseCount: Int,
-    reviewCount: Int,
-    onProfileClick: () -> Unit,
+    cardState: MatchingCardState,
     modifier: Modifier = Modifier,
 ) {
-    val genderIcon = when (genderType) {
+    val genderIcon = when (cardState.genderType) {
         GenderType.MALE -> ic_man_20
         GenderType.FEMALE -> ic_woman_20
     }
@@ -61,16 +49,16 @@ fun MatchingCardContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         UrlImage(
-            url = ProfileImageProvider.getTempUrl(userId),
+            url = ProfileImageProvider.getTempUrl(cardState.userId),
             modifier = Modifier
                 .height(52.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape)
-                .noRippleClickable(onClick = onProfileClick),
+                .noRippleClickable(onClick = cardState.onProfileClick),
         )
 
         UserInfo(
-            nickname = nickname,
+            nickname = cardState.nickname,
             genderIcon = genderIcon,
             modifier = Modifier.padding(
                 vertical = 4.dp,
@@ -78,30 +66,39 @@ fun MatchingCardContent(
         )
 
         TierBadge(
-            tierType = tierType,
+            tierType = cardState.tierType,
             modifier = Modifier
                 .padding(horizontal = 46.dp),
         )
 
-        when (cardType) {
-            SEARCH, SEND, RECEIVE -> {
-                CardDescription(
-                    prefixText = stringResource(record),
-                    suffixText = stringResource(win_lose_count, winCount, loseCount),
-                    modifier = Modifier
-                        .padding(top = 8.dp),
-                )
-
-                CardDescription(
-                    prefixText = stringResource(review),
-                    suffixText = stringResource(count, reviewCount),
-                )
-            }
-
-            else -> Unit
+        (cardState as? MatchingCardState.HasRecord)?.let { record ->
+            RecordSection(
+                winCount = record.winCount,
+                loseCount = record.loseCount,
+                reviewCount = record.reviewCount,
+            )
         }
     }
 }
+
+@Composable
+private fun RecordSection(
+    winCount: Int,
+    loseCount: Int,
+    reviewCount: Long,
+) {
+    CardDescription(
+        prefixText = stringResource(record),
+        suffixText = stringResource(win_lose_count, winCount, loseCount),
+        modifier = Modifier.padding(top = 8.dp),
+    )
+
+    CardDescription(
+        prefixText = stringResource(review),
+        suffixText = stringResource(count, reviewCount),
+    )
+}
+
 
 @Composable
 private fun UserInfo(
