@@ -108,6 +108,83 @@ private fun HomeTopBar(
     }
 }
 
+@Composable
+private fun CloseMatching(
+    matchedMyData: DummyMatchedUser,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    matchedUserData: DummyMatchedUser? = null,
+    buttonState: String = "dummy",
+) {
+    //TODO 매칭 상대에서 받는 데이터 확인 후에 nickName + userId 묶는 데이터 타입 추가
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                color = SmashingTheme.colors.bgSurface,
+                shape = RoundedCornerShape(8.dp),
+            )
+            .padding(
+                horizontal = 16.dp,
+            )
+            .padding(
+                top = 22.dp,
+                bottom = 24.dp,
+            ),
+    ) {
+        if (matchedUserData != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(id = img_dummy_versus),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                )
+
+                MatchedUserItem(
+                    matchedUser= matchedMyData,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                )
+
+                MatchedUserItem(
+                    matchedUser = matchedUserData,
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                )
+            }
+
+        } else {
+            Text(
+                text = "아직 확정된 매칭이 없어.\n지금 바로 매칭을 신청해보세요!",
+                style = SmashingTheme.typography.md.medium16,
+                color = SmashingTheme.colors.txtTertiary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 37.dp,
+                        bottom = 23.dp,
+                    )
+            )
+        }
+
+        Spacer(modifier = Modifier.height(22.dp))
+
+        //TODO buttonState 타입 수정 후 실제 사용시에 수정 예정
+        SmashingButton(
+            buttonStyle = ButtonStyle.PRIMARY,
+            text = "결과 작성하기",
+            onClick = onClick,
+            modifier = Modifier
+                .fillMaxWidth(),
+        )
+    }
+}
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
