@@ -39,14 +39,7 @@ fun SignUpSkill(
     modifier: Modifier = Modifier,
 ) {
 
-    val radioList = listOf(
-        SkillType.THREE,
-        SkillType.THREETOSIX,
-        SkillType.SIXTOYEAR,
-        SkillType.YEARTOYEARSIX,
-        SkillType.YEARSIX,
-    ).toImmutableList()
-
+    val radioList = SkillType.entries.toImmutableList()
     var selectedList by rememberSaveable { mutableStateOf<SkillType?>(null)}
 
     Column(
