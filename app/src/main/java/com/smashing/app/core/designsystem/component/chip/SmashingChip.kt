@@ -65,11 +65,8 @@ fun SmashingChip(
             )
             .noRippleClickable(onClick = onClick, isEnabled = style != DISABLED)
             .padding(
-                if (icon != null) {
-                    PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-                } else {
-                    PaddingValues(horizontal = 16.dp, vertical = 10.dp)
-                }
+                horizontal = 16.dp,
+                vertical = if (icon != null) 8.dp else 10.dp,
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
