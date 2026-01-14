@@ -33,6 +33,7 @@ import com.smashing.app.R.string.asterisk_label
 import com.smashing.app.R.string.score_separator
 import com.smashing.app.R.string.submit_matching_result
 import com.smashing.app.R.string.submit_score
+import com.smashing.app.R.string.submit_title
 import com.smashing.app.R.string.submit_winner
 import com.smashing.app.R.string.zero_label
 import com.smashing.app.core.designsystem.component.button.SmashingButton
@@ -101,7 +102,7 @@ private fun SubmitScreen(
                 .verticalScroll(scrollState),
         ) {
             Text(
-                text = stringResource(R.string.submit_title),
+                text = stringResource(submit_title),
                 color = SmashingTheme.colors.txtPrimary,
                 style = SmashingTheme.typography.xl.semibold20,
             )
