@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.sign_up_next_btn
 import com.smashing.app.R.string.sign_up_end_btn
+import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.SkillType
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
@@ -53,6 +54,8 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
+        selectedGender = uiState.selectedGender,
+        onGenderSelected = viewModel::updateSelectedGender,
         openChatLinkState = viewModel.openChatLinkState,
         selectedSport = uiState.selectedSport,
         onSportSelected = viewModel::updateSelectedSport,
@@ -73,6 +76,8 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    selectedGender: GenderType?,
+    onGenderSelected: (GenderType) -> Unit,
     openChatLinkState: TextFieldState,
     selectedSport: SportType?,
     onSportSelected: (SportType) -> Unit,
@@ -113,7 +118,10 @@ private fun SignUpScreen(
                         nickNameState = openChatLinkState, //Todo 수정 필요
                         onDuplicateBtnClick = { },
                     )
-                    2 -> SignUpGender()
+                    2 -> SignUpGender(
+                        selectedGender = selectedGender,
+                        onGenderSelected = onGenderSelected,
+                    )
                     3 -> SignUpChatLink(
                         openChatLinkState = openChatLinkState,
                     )
@@ -167,6 +175,8 @@ private fun SignUpScreenPreview() {
 
         SignUpScreen(
             uiState = SignUpContract.State(),
+            selectedGender = null,
+            onGenderSelected = {},
             openChatLinkState = rememberTextFieldState(),
             selectedSport = null,
             onSportSelected = {},

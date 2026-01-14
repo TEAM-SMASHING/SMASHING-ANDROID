@@ -26,10 +26,10 @@ import com.smashing.app.core.common.type.GenderType
 
 @Composable
 fun SignUpGender (
+    selectedGender: GenderType?,
+    onGenderSelected: (GenderType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedCard by rememberSaveable { mutableStateOf<GenderType?>(null)}
-
     Column (
         modifier = modifier,
     ){
@@ -45,9 +45,9 @@ fun SignUpGender (
             GenderCard(
                 genderIcon = ic_man_32,
                 genderText = GenderType.MALE.gender,
-                onCardClick = { selectedCard = GenderType.MALE },
+                onCardClick = { onGenderSelected(GenderType.MALE) },
                 modifier = Modifier.weight(1f),
-                isCardEnabled = selectedCard == GenderType.MALE,
+                isCardEnabled = selectedGender == GenderType.MALE,
             )
 
             Spacer(modifier = Modifier.width(10.dp))
@@ -55,9 +55,9 @@ fun SignUpGender (
             GenderCard(
                 genderIcon = ic_woman_32,
                 genderText = GenderType.FEMALE.gender,
-                onCardClick = { selectedCard = GenderType.FEMALE },
+                onCardClick = { onGenderSelected(GenderType.FEMALE)},
                 modifier = Modifier.weight(1f),
-                isCardEnabled = selectedCard == GenderType.FEMALE,
+                isCardEnabled = selectedGender == GenderType.FEMALE,
             )
         }
     }

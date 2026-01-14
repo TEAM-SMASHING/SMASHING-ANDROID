@@ -10,6 +10,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.SkillType
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.data.model.auth.SignUpModel
@@ -57,6 +58,12 @@ class SignUpViewModel @Inject constructor(
                 //Todo 링크 유효성 판단 api (성공시 updateCurrentStep, 실패시 errorText 반환 및 이동 X
                 postValidateChatLink()
             }
+    }
+
+    fun updateSelectedGender(genderType: GenderType) {
+        _uiState.update {
+            it.copy(selectedGender = genderType)
+        }
     }
 
     fun updateSelectedSport(sportType: SportType) {
