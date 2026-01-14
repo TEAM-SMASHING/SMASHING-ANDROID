@@ -68,6 +68,8 @@ fun SignUpGender (
 private fun SignUpGenderPreview() {
     SmashingAndroidTheme {
         SignUpGender(
+            selectedGender = null,
+            onGenderSelected = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

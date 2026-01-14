@@ -16,10 +16,13 @@ import com.smashing.app.core.common.type.SportType
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -38,13 +41,11 @@ class SignUpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
 
+    private val _sideEffect = MutableSharedFlow<SignUpContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
+
     private val _openChatLinkState = TextFieldState("")
     val openChatLinkState: TextFieldState get() = _openChatLinkState
-
-    val isLinkValid by derivedStateOf {
-        openChatLinkState
-    }
-
 
     fun updateCurrentStep() {
         _uiState.update {
@@ -82,9 +83,7 @@ class SignUpViewModel @Inject constructor(
     ) {
     }
 
-    fun postSignUp(
-        onSignupSuccess: () -> Unit,
-    ) = viewModelScope.launch {
+    fun postSignUp() = viewModelScope.launch {
         val request = PostSignUpRequest(
             kakaoId = kakaoId,
             nickname = "이지민",
@@ -96,7 +95,7 @@ class SignUpViewModel @Inject constructor(
         )
         authRepository.postSignUp(request = request)
             .onSuccess {
-                onSignupSuccess()
+                _sideEffect.emit(NavigateToHome)
                 Timber.tag("SignUp").d("회원가입 성공 ${
                     SignUpModel(
                         accessToken = it.accessToken,

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,7 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.sign_up_next_btn
 import com.smashing.app.R.string.sign_up_end_btn
 import com.smashing.app.core.common.type.GenderType
@@ -40,6 +43,7 @@ import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 import com.smashing.app.core.designsystem.component.sport.SportSelector
 import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
+import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import kotlinx.collections.immutable.persistentListOf
 
 private const val MAX_STEP = 6
@@ -50,7 +54,17 @@ fun SignUpRoute(
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToHome -> navigateToHome
+                }
+            }
+    }
 
     SignUpScreen(
         uiState = uiState,
@@ -67,7 +81,7 @@ fun SignUpRoute(
             if (uiState.currentStep < MAX_STEP)
                 viewModel.updateCurrentStep()
             else {
-                viewModel.postSignUp(navigateToHome)
+                viewModel.postSignUp()
             }
         },
     )
@@ -106,7 +120,7 @@ private fun SignUpScreen(
                 .padding(horizontal = 16.dp),
         ) {
 
-            if (uiState.currentStep < MAX_STEP+1){
+            if (uiState.currentStep < MAX_STEP + 1) {
                 SmashingProgressBar(
                     progress = uiState.currentStep / MAX_STEP.toFloat(),
                 )
@@ -118,13 +132,16 @@ private fun SignUpScreen(
                         nickNameState = openChatLinkState, //Todo 수정 필요
                         onDuplicateBtnClick = { },
                     )
+
                     2 -> SignUpGender(
                         selectedGender = selectedGender,
                         onGenderSelected = onGenderSelected,
                     )
+
                     3 -> SignUpChatLink(
                         openChatLinkState = openChatLinkState,
                     )
+
                     4 -> SportSelector(
                         items = persistentListOf(
                             SportType.BADMINTON,
@@ -134,10 +151,12 @@ private fun SignUpScreen(
                         selectedSport = selectedSport,
                         onSportSelected = onSportSelected,
                     )
+
                     5 -> SportSkillSelector(
                         selectedSkill = selectedSkill,
                         onSkillSelected = onSkillSelected,
                     )
+
                     else -> SignUpLocation(
                         onAddressClick = {},
                     )
@@ -183,7 +202,7 @@ private fun SignUpScreenPreview() {
             selectedSkill = null,
             onSkillSelected = {},
             onBackClick = {},
-            onBtnClick = {currentStep = currentStep + 1},
+            onBtnClick = { currentStep = currentStep + 1 },
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

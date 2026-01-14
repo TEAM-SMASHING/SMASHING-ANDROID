@@ -14,4 +14,8 @@ interface SignUpContract {
         val selectedSkill: SkillType?= null,
         val locationInput: String = "",
     )
+
+    sealed interface SideEffect {
+        data object NavigateToHome: SideEffect
+    }
 }
