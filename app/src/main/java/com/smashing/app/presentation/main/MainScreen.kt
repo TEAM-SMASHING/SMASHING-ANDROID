@@ -24,8 +24,8 @@ import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
-import com.smashing.app.presentation.submit.navigation.navigateToSubmit
-import com.smashing.app.presentation.submit.navigation.submitGraph
+import com.smashing.app.presentation.write.navigation.navigateToSubmit
+import com.smashing.app.presentation.write.navigation.submitGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

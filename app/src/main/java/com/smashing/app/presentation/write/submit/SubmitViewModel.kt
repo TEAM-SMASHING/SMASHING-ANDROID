@@ -1,8 +1,8 @@
-package com.smashing.app.presentation.submit
+package com.smashing.app.presentation.write.submit
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
-import com.smashing.app.presentation.submit.model.MatchPlayer
+import com.smashing.app.presentation.write.model.MatchPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

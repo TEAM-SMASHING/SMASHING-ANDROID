@@ -130,7 +130,7 @@ fun MatchingCard(
                 }
 
                 SmashingBaseButton(
-                    text = stringResource(R.string.matching_write),
+                    text = "매칭 작성하기",
                     textStyle = SmashingTheme.typography.sm.medium14,
                     onClick = cardState.onConfirmClick,
                     buttonColor = ButtonStyle.SECONDARY.getButtonColor(),

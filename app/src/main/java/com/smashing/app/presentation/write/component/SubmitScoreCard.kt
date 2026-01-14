@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.submit.component
+package com.smashing.app.presentation.write.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,7 @@ import com.smashing.app.R.string.score_format
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.presentation.submit.model.MatchPlayer
+import com.smashing.app.presentation.write.model.MatchPlayer
 
 @Composable
 fun SubmitScoreCard(

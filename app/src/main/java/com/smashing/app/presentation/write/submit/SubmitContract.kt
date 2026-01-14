@@ -1,8 +1,7 @@
-package com.smashing.app.presentation.submit
+package com.smashing.app.presentation.write.submit
 
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Immutable
-import com.smashing.app.presentation.submit.model.MatchPlayer
+import com.smashing.app.presentation.write.model.MatchPlayer
 
 interface SubmitContract {
     @Immutable
