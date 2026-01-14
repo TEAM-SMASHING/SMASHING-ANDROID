@@ -50,11 +50,10 @@ fun SignUpRoute(
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val openChatLinkState by viewModel.openChatLinkState.collectAsStateWithLifecycle()
 
     SignUpScreen(
         uiState = uiState,
-        openChatLinkState = openChatLinkState,
+        openChatLinkState = viewModel.openChatLinkState,
         selectedSport = uiState.selectedSport,
         onSportSelected = viewModel::updateSelectedSport,
         selectedSkill = uiState.selectedSkill,

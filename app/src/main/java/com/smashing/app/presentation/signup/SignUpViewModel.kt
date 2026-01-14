@@ -37,8 +37,8 @@ class SignUpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
 
-    private val _openChatLinkState = MutableStateFlow(TextFieldState(""))
-    val openChatLinkState: StateFlow<TextFieldState> get() = _openChatLinkState
+    private val _openChatLinkState = TextFieldState("")
+    val openChatLinkState: TextFieldState get() = _openChatLinkState
 
     val isLinkValid by derivedStateOf {
         openChatLinkState
