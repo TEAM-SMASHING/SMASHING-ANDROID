@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_arrow_down
@@ -98,6 +99,8 @@ fun SmashingWinnerDropdown(
                 style = typography.sm.medium14,
                 color = menuTextColor,
                 modifier = Modifier.padding(vertical = 12.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
 
             if (selectedItem == null) {
