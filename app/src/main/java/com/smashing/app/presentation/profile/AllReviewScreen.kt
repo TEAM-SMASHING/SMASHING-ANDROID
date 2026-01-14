@@ -41,6 +41,7 @@ import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.formatCount
 import com.smashing.app.data.model.profile.Review
 import com.smashing.app.presentation.profile.component.ReviewItem
 import com.smashing.app.presentation.profile.navigation.AllReviewViewModel
@@ -103,7 +104,7 @@ private fun AllReviewScreen(
                 ) {
                     if (uiState.reviewRate.best > 0) {
                         SmashingChip(
-                            text = uiState.reviewRate.best.toString(),
+                            text = uiState.reviewRate.best.formatCount(),
                             style = DISABLED,
                             icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
@@ -112,16 +113,14 @@ private fun AllReviewScreen(
 
                     if (uiState.reviewRate.good > 0)
                         SmashingChip(
-                            text = uiState.reviewRate.good.toString(),
-                            style = DISABLED,
+                            text = uiState.reviewRate.good.formatCount(), style = DISABLED,
                             icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         )
 
                     if (uiState.reviewRate.bad > 0) {
                         SmashingChip(
-                            text = uiState.reviewRate.bad.toString(),
-                            style = DISABLED,
+                            text = uiState.reviewRate.bad.formatCount(), style = DISABLED,
                             icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         )
@@ -147,7 +146,7 @@ private fun AllReviewScreen(
                 ) {
                     if (uiState.tagCount.onTime > 0) {
                         SmashingChip(
-                            text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime}",
+                            text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime.formatCount()}",
                             style = DISABLED,
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         )
@@ -155,21 +154,21 @@ private fun AllReviewScreen(
 
                     if (uiState.tagCount.goodManner > 0) {
                         SmashingChip(
-                            text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner}",
+                            text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner.formatCount()}",
                             style = DISABLED,
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         )
                     }
                     if (uiState.tagCount.fairPlay > 0) {
                         SmashingChip(
-                            text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay}",
+                            text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay.formatCount()}",
                             style = DISABLED,
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         )
                     }
                     if (uiState.tagCount.fastResponse > 0) {
                         SmashingChip(
-                            text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse}",
+                            text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse.formatCount()}",
                             style = DISABLED,
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         )

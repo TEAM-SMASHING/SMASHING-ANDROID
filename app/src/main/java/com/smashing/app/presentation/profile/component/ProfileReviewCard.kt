@@ -35,6 +35,7 @@ import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.formatCount
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.extension.toFriendlyString
 import com.smashing.app.core.util.ProfileImageProvider
@@ -84,7 +85,7 @@ fun ProfileReviewCard(
         ) {
             if (excellentCount > 0) {
                 SmashingChip(
-                    text = excellentCount.toString(),
+                    text = excellentCount.formatCount(),
                     style = DISABLED,
                     icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
                 )
@@ -92,15 +93,16 @@ fun ProfileReviewCard(
 
             if (goodCount > 0) {
                 SmashingChip(
-                    text = goodCount.toString(),
+                    text = goodCount.formatCount(),
                     style = DISABLED,
                     icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
                 )
             }
 
+
             if (badCount > 0) {
                 SmashingChip(
-                    text = badCount.toString(),
+                    text = badCount.formatCount(),
                     style = DISABLED,
                     icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
                 )

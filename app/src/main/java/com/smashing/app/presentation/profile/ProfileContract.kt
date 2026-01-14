@@ -65,8 +65,8 @@ interface ProfileContract {
                 content = "매너도 좋고, 너무 잘하세요!"
             ),
         ),
-        val reviewRate: Rating = Rating(0, 4, 10),
-        val tagCount: TagCount= TagCount(5,56,10,2),
+        val reviewRate: Rating = Rating(0, 100, 3),
+        val tagCount: TagCount= TagCount(5,56,100,2),
     )
 }
 
