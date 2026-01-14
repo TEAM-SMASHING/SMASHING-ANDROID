@@ -33,11 +33,6 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-
-    /*fun updateNickNameText(text: String) = _uiState.update {
-        it.copy(nicknameInput = text)
-    }*/
-
     fun postSignUp(
         onSignupSuccess: () -> Unit,
     ) = viewModelScope.launch {

@@ -28,7 +28,6 @@ import com.smashing.app.core.common.type.GenderType
 fun SignUpGender (
     modifier: Modifier = Modifier,
 ) {
-
     var selectedCard by rememberSaveable { mutableStateOf<GenderType?>(null)}
 
     Column (
@@ -62,12 +61,6 @@ fun SignUpGender (
             )
         }
     }
-
-
-
-
-
-
 }
 
 @Preview(showBackground = true)

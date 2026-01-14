@@ -31,9 +31,7 @@ fun SignUpChatLink(
             state = rememberTextFieldState(),
             placeholder = stringResource(sign_up_chat_link_placeholder),
         )
-
     }
-
 }
 
 @Preview(showBackground = true)

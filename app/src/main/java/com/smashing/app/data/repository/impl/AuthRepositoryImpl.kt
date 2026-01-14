@@ -37,10 +37,8 @@ class AuthRepositoryImpl @Inject constructor(
                         refreshToken = loginModel.refreshToken,
                     )
                 }
-
                 false -> {}
             }
-
             loginModel
         }
 

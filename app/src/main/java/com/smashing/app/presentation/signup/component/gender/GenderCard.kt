@@ -28,7 +28,6 @@ fun GenderCard (
     modifier: Modifier = Modifier,
     isCardEnabled: Boolean = false,
 ){
-
     Column(
         modifier = modifier
             .aspectRatio(1f)

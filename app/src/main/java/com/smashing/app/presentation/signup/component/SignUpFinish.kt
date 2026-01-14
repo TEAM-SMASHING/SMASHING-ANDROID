@@ -60,4 +60,3 @@ private fun SignUpFinishPreview() {
         SignUpFinish()
     }
 }
-

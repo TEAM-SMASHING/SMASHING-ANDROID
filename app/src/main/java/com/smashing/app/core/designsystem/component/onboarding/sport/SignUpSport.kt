@@ -70,12 +70,6 @@ fun SignUpSport (
             }
         }
     }
-
-
-
-
-
-
 }
 
 @Preview(showBackground = true)
