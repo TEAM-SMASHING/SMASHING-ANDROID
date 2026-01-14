@@ -1,7 +1,10 @@
 package com.smashing.app.presentation.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -12,7 +15,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
@@ -21,9 +23,9 @@ import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
+import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
-import com.smashing.app.presentation.signup.navigation.SignUp
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -37,12 +39,18 @@ fun MainScreen(
 
     Scaffold(
         bottomBar = {
+            AnimatedVisibility(
+                visible = isBottomBarVisible,
+                enter = slideInVertically (initialOffsetY={it}),
+                exit = slideOutVertically(targetOffsetY = { it })
+            ) {
             MainBottomBar(
                 isVisible = isBottomBarVisible,
                 tabs = MainTab.entries.toImmutableList(),
                 currentTab = currentTab,
                 onTabSelected = appState::navigate,
             )
+            }
         },
         containerColor = SmashingTheme.colors.bgCanvas,
         modifier = Modifier
@@ -83,6 +91,9 @@ private fun MainNavHost(
 
         profileGraph(
             innerPadding = innerPadding,
+            navigateUp = appState.navController::navigateUp,
+            navigateToReview = appState.navController::navigateToReview,
+            updateBottomBar= appState::updateBottomBarVisible,
         )
 
         loginGraph(
