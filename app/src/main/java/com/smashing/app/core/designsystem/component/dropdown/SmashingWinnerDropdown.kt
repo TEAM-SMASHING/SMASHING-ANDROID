@@ -47,7 +47,6 @@ import kotlinx.collections.immutable.toImmutableList
  * @param placeholder 선택된 항목이 없을 때 표시할 안내 문구 (기본값: "승자 선택")
  * @param isDivide 항목 사이에 구분선을 표시할지 여부 (기본값: true)
  */
-private const val MENU_WEIGHT = 30 / 22f
 
 @Composable
 fun SmashingWinnerDropdown(
@@ -86,18 +85,19 @@ fun SmashingWinnerDropdown(
                             isExpanded = !isExpanded
                         }
                     }
+                )
+                .padding(
+                    start = if (selectedItem == null) 30.dp else 0.dp,
+                    end = if (selectedItem == null) 22.dp else 0.dp,
                 ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = if (selectedItem == null) Arrangement.Start else Arrangement.Center,
         ) {
-            if (selectedItem == null) Spacer(Modifier.weight(MENU_WEIGHT))
-
             Text(
                 text = selectedItem ?: placeholder,
                 style = typography.sm.medium14,
                 color = menuTextColor,
-                modifier = Modifier
-                    .padding(vertical = 12.dp),
+                modifier = Modifier.padding(vertical = 12.dp),
             )
 
             if (selectedItem == null) {
@@ -105,11 +105,8 @@ fun SmashingWinnerDropdown(
                     imageVector = ImageVector.vectorResource(ic_arrow_down),
                     contentDescription = null,
                     tint = colors.txtDisabled,
-                    modifier = Modifier
-                        .padding(start = 12.dp),
+                    modifier = Modifier.padding(start = 12.dp),
                 )
-
-                Spacer(Modifier.weight(1f))
             }
         }
 
@@ -162,8 +159,7 @@ private fun WinnerDropdownPreview() {
             var selectedWinner2 by remember { mutableStateOf<String?>(null) }
             val winnerItems2 = remember {
                 listOf(
-                    "열글자열글자열글자열",
-                    "세글자"
+                    "열글자열글자열글자열", "세글자"
                 )
             }
 
