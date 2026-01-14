@@ -34,13 +34,17 @@ fun SignUpLocation(
 ) {
     Column(
         modifier = modifier,
+        horizontalAlignment = Alignment.Start
     ) {
         SignUpTitle(
             title = stringResource(sign_up_location_title),
             subTitle = stringResource(sign_up_location_subtitle),
         )
 
-        Box(
+        Text(
+            text = addressText,
+            color = if (isAddressExist) colors.txtPrimary else colors.txtDisabled,
+            style = typography.sm.medium14,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -57,16 +61,10 @@ fun SignUpLocation(
                 )
                 .padding(vertical = 13.dp)
                 .padding(start = 16.dp),
-            contentAlignment = Alignment.CenterStart,
-        ) {
-            Text(
-                text = addressText,
-                color = if (isAddressExist) colors.txtPrimary else colors.txtDisabled,
-                style = typography.sm.medium14,
-            )
-        }
+        )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
