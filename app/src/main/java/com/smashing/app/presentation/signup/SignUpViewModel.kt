@@ -1,15 +1,10 @@
 package com.smashing.app.presentation.signup
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.auth.AuthModel
+import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.signup.navigation.SignUp
@@ -27,26 +22,15 @@ class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val authId = savedStateHandle.toRoute<SignUp>().authId
+    private val kakaoId = savedStateHandle.toRoute<SignUp>().kakaoId
 
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
 
-    var currentStep by mutableIntStateOf(1)
-        private set
-
-    val progress: Float
-        get() = when (currentStep) {
-        1 -> 1f/6f
-        2 -> 2f/6f
-        3 -> 3f/6f
-        4 -> 4f/6f
-        5 -> 5f/6f
-        else -> 1f
-    }
-
     fun updateCurrentStep() {
-        currentStep = currentStep + 1
+        _uiState.update {
+            it.copy(currentStep = it.currentStep + 1)
+        }
     }
 
 
@@ -58,7 +42,7 @@ class SignUpViewModel @Inject constructor(
         onSignupSuccess: () -> Unit,
     ) = viewModelScope.launch {
         val request = PostSignUpRequest(
-            authId = authId,
+            kakaoId = kakaoId,
             nickname = "이지민",
             gender = "FEMALE",
             openChatUrl = "https://open.kakao.com/o/xxxx",
@@ -70,10 +54,10 @@ class SignUpViewModel @Inject constructor(
             .onSuccess {
                 onSignupSuccess()
                 Timber.tag("SignUp").d("회원가입 성공 ${
-                    AuthModel(
+                    SignUpModel(
                         accessToken = it.accessToken,
                         refreshToken = it.refreshToken,
-                        authId = it.authId,
+                        userId = it.userId,
                     )
                 }")
             }

@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.signup.component.sport
+package com.smashing.app.core.designsystem.component.onboarding.sport
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

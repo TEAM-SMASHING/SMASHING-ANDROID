@@ -34,9 +34,11 @@ import com.smashing.app.presentation.signup.component.chatlink.SignUpChatLink
 import com.smashing.app.presentation.signup.component.gender.SignUpGender
 import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
-import com.smashing.app.presentation.signup.component.skill.SignUpSkill
-import com.smashing.app.presentation.signup.component.sport.SignUpSport
+import com.smashing.app.core.designsystem.component.onboarding.skill.SignUpSkill
+import com.smashing.app.core.designsystem.component.onboarding.sport.SignUpSport
 import kotlinx.collections.immutable.persistentListOf
+
+private const val MAX_STEP = 6
 
 @Composable
 fun SignUpRoute(
@@ -48,12 +50,10 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
-        currentStep = viewModel.currentStep,
-        progress = viewModel.progress,
         onBackClick = {},
         modifier = modifier,
         onBtnClick = {
-            if (viewModel.currentStep < 6)
+            if (uiState.currentStep < MAX_STEP)
                 viewModel.updateCurrentStep()
             else {
                 viewModel.postSignUp(navigateToHome)
@@ -65,8 +65,6 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
-    currentStep: Int,
-    progress: Float,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -90,14 +88,14 @@ private fun SignUpScreen(
                 .padding(horizontal = 16.dp),
         ) {
 
-            if (currentStep < 7){
+            if (uiState.currentStep < MAX_STEP+1){
                 SmashingProgressBar(
-                    progress = progress,
+                    progress = uiState.currentStep / MAX_STEP.toFloat(),
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                when (currentStep) {
+                when (uiState.currentStep) {
                     1 -> SignUpNickName(
                         nickNameState = uiState.nicknameInput,
                         onDuplicateBtnClick = { },
@@ -129,7 +127,7 @@ private fun SignUpScreen(
 
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
-                text = if (currentStep < 6) {
+                text = if (uiState.currentStep < MAX_STEP) {
                     stringResource(sign_up_next_btn)
                 } else {
                     stringResource(sign_up_end_btn)
@@ -156,8 +154,6 @@ private fun SignUpScreenPreview() {
         }
         SignUpScreen(
             uiState = SignUpContract.State(),
-            currentStep = currentStep,
-            progress = progress,
             onBackClick = {},
             onBtnClick = {currentStep = currentStep + 1},
             modifier = Modifier.background(color = colors.bgCanvas),

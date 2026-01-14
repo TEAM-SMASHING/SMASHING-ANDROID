@@ -5,7 +5,8 @@ import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import com.smashing.app.data.mapper.toKakaoLoginToken
 import com.smashing.app.data.mapper.toSignUpModel
-import com.smashing.app.data.model.auth.AuthModel
+import com.smashing.app.data.model.auth.KakaoLoginModel
+import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.datasource.api.AuthRemoteDataSource
 import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
 import com.smashing.app.data.remote.dto.PostKakaoLoginRequest
@@ -23,25 +24,27 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun loginKakao(context: Context): Result<String> =
         kakaoAuthDataSource.loginKakao(context)
 
-    override suspend fun postKakaoLogin(authorization: String): Result<AuthModel> =
+    override suspend fun postKakaoLogin(authorization: String): Result<KakaoLoginModel> =
         suspendRunCatching {
             val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization)).requireData()
 
-            val token = response.toKakaoLoginToken()
+            val loginModel = response.toKakaoLoginToken()
 
-            when(!token.accessToken.isNullOrEmpty() && !token.refreshToken.isNullOrEmpty()) {
-                true -> tokenDataStore.setTokens(
-                    accessToken = token.accessToken,
-                    refreshToken = token.refreshToken,
-                )
+            when(!loginModel.accessToken.isNullOrEmpty() && !loginModel.refreshToken.isNullOrEmpty()) {
+                true -> {
+                    tokenDataStore.setTokens(
+                        accessToken = loginModel.accessToken,
+                        refreshToken = loginModel.refreshToken,
+                    )
+                }
 
                 false -> {}
             }
 
-            token
+            loginModel
         }
 
-    override suspend fun postSignUp(request: PostSignUpRequest): Result<AuthModel> =
+    override suspend fun postSignUp(request: PostSignUpRequest): Result<SignUpModel> =
         suspendRunCatching {
             val response = authRemoteDataSource.postSignUp(request).requireData()
 

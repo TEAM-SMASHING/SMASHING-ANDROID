@@ -16,13 +16,18 @@ class LoginViewModel @Inject constructor(
 
     fun postKakaoLogin(
         context: Context,
-        onKakaoLoginSuccess: (String) -> Unit,
+        onSignedUpUserLoginSuccess: () -> Unit,
+        onNewUserLoginSuccess: (String) -> Unit,
     ) = viewModelScope.launch {
         authRepository.loginKakao(context = context)
             .onSuccess { token ->
                 authRepository.postKakaoLogin(token)
                     .onSuccess {
-                        onKakaoLoginSuccess(it.authId)
+                        if (it.isCompletedSignUp) {
+                            onSignedUpUserLoginSuccess()
+                        } else {
+                            onNewUserLoginSuccess(it.kakaoId)
+                        }
                         Timber.tag("KakaoLogin").d("로그인 성공 $token")
                     }
                     .onFailure { error ->

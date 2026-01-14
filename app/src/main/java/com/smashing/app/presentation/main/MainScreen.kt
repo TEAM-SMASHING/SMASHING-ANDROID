@@ -86,9 +86,9 @@ private fun MainNavHost(
         )
 
         loginGraph(
-            navigateToSignUp = { authId ->
+            navigateToSignUp = { kakaoId ->
                 appState.navController.navigateToSignUp(
-                    authId = authId,
+                    kakaoId = kakaoId,
                     navOptions = navOptions {
                         popUpTo<Login> {
                             inclusive = true
