@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.component
+package com.smashing.app.presentation.profile.user.copmponent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,26 +25,21 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.R.string.win_label
 import com.smashing.app.R.string.lose_label
 import com.smashing.app.R.string.rate_label
+import com.smashing.app.R.string.profile_rate_percent
 
 
 @Composable
 fun ProfileStatsBar(
     winCount: Int,
     loseCount: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val totalCount = winCount + loseCount
-    val winRate = if (totalCount == 0) {
-        0
-    } else {
-        ((winCount.toFloat() / totalCount) * 100).toInt()
-    }
     Box(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(vertical = 20.dp, horizontal = 16.dp),
+            .padding(top = 12.dp, bottom = 12.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -69,7 +64,7 @@ fun ProfileStatsBar(
             StatDivider()
 
             ProfileStatItem(
-                count = "$winRate%",
+                count = stringResource(profile_rate_percent, winRate(winCount, loseCount)),
                 label = stringResource(id = rate_label),
                 countColor = SmashingTheme.colors.txtPrimary,
                 modifier = Modifier.weight(1f),
@@ -83,7 +78,7 @@ private fun ProfileStatItem(
     count: String,
     label: String,
     countColor: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
@@ -111,6 +106,16 @@ private fun StatDivider() {
             .width(1.dp),
         color = SmashingTheme.colors.borderSecondary,
     )
+}
+
+private fun winRate(winCount: Int, loseCount: Int): Int {
+    val totalCount = winCount + loseCount
+    val winRate = if (totalCount == 0) {
+        0
+    } else {
+        ((winCount.toFloat() / totalCount) * 100).toInt()
+    }
+    return winRate
 }
 
 @Preview

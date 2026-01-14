@@ -19,7 +19,7 @@ data class UserProfileInfo(
     val loseCount: Int,
 )
 
-data class Rating(
+data class RatingCount(
     val best: Int,
     val good: Int,
     val bad: Int,

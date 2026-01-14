@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
-import com.smashing.app.data.model.profile.Rating
+import com.smashing.app.data.model.profile.RatingCount
 import com.smashing.app.data.model.profile.Review
 import com.smashing.app.data.model.profile.TagCount
 import com.smashing.app.data.model.profile.UserProfileInfo
@@ -65,7 +65,7 @@ interface ProfileContract {
                 content = "매너도 좋고, 너무 잘하세요!"
             ),
         ),
-        val reviewRate: Rating = Rating(0, 100, 3),
+        val reviewRate: RatingCount = RatingCount(0, 100, 3),
         val tagCount: TagCount= TagCount(5,56,100,2),
     )
 }

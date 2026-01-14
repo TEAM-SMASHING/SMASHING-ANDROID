@@ -69,6 +69,8 @@
     <string name="fair_play_review">승패를 깔끔하게 인정해요</string>
     <string name="fast_response_review">응답이 빨라요</string>
     <string name="satisfaction_review">만족도</string>
+    <string name="profile_rate_percent">%d%%</string>
+
 </resources>
 
 

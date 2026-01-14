@@ -7,12 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -28,29 +25,27 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
-import com.smashing.app.R.string.receive_review
 import com.smashing.app.R.string.all_review
+import com.smashing.app.R.string.receive_review
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.formatCount
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.extension.toFriendlyString
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.profile.Review
 import com.smashing.app.presentation.profile.ProfileContract
 import kotlinx.collections.immutable.ImmutableList
 
+private const val REVIEW_ITEM_COUNT = 3
 
 @Composable
 fun ProfileReviewCard(
-    modifier: Modifier = Modifier,
     reviews: ImmutableList<Review>,
     excellentCount: Int,
     goodCount: Int,
     badCount: Int,
+    modifier: Modifier = Modifier,
     onViewAllReviewClick: () -> Unit = {}
 ) {
     Column(
@@ -73,7 +68,7 @@ fun ProfileReviewCard(
             Text(
                 text = stringResource(id = all_review),
                 style = SmashingTheme.typography.sm.medium14,
-                color = SmashingTheme.colors.txtSecondary,
+                color = SmashingTheme.colors.txtTertiary,
                 modifier = Modifier.noRippleClickable(onViewAllReviewClick),
             )
         }
@@ -115,57 +110,13 @@ fun ProfileReviewCard(
             reviews.take(3).forEachIndexed { index, review ->
                 ReviewItem(review = review, userId = "userId$index")
 
-                if (index < reviews.take(3).lastIndex) {
-                    HorizontalDivider(
+                if (index < REVIEW_ITEM_COUNT - 1) {                    HorizontalDivider(
                         modifier = Modifier.padding(vertical = 12.dp),
                         thickness = 1.dp,
                         color = SmashingTheme.colors.borderPrimary,
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun ReviewItem(
-    review: Review,
-    userId: String,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-
-        UrlImage(
-            url = ProfileImageProvider.getTempUrl(userId),
-            modifier = Modifier
-                .height(40.dp)
-                .aspectRatio(1f)
-                .clip(CircleShape),
-        )
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = review.opponentNickname,
-                    style = SmashingTheme.typography.sm.semibold14,
-                    color = SmashingTheme.colors.txtPrimary,
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = review.confirmedAt.toFriendlyString(),
-                    style = SmashingTheme.typography.xs.medium12,
-                    color = SmashingTheme.colors.txtTertiary,
-                )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = review.content ?: "",
-                style = SmashingTheme.typography.sm.medium14,
-                color = SmashingTheme.colors.txtSecondary,
-            )
         }
     }
 }

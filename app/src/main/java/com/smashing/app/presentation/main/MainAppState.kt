@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.smashing.app.core.extension.stateInWhileSubscribed
 import com.smashing.app.presentation.home.navigation.navigateToHome
-import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.profile.navigation.navigateToProfile
@@ -26,7 +25,7 @@ class MainAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope,
 ) {
-    val startDestination = Login
+    val startDestination = Home
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }
@@ -99,4 +98,5 @@ fun rememberMainAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): MainAppState = remember(navController, coroutineScope) {
     MainAppState(navController, coroutineScope)
+
 }

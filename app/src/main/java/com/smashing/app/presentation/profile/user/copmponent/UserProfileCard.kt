@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.component
+package com.smashing.app.presentation.profile.user.copmponent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.string.record
+import com.smashing.app.R.string.record_label
 import com.smashing.app.R.string.review
 import com.smashing.app.R.drawable.ic_man_20
 import com.smashing.app.R.drawable.ic_woman_20
@@ -102,7 +102,7 @@ fun UserProfileCard(
 
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             ProfileStatRow(
-                label = stringResource(record),
+                label = stringResource(id=record_label),
                 value = "${winCount}승 ${loseCount}패",
             )
             ProfileStatRow(

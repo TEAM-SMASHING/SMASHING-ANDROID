@@ -7,31 +7,54 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
-import com.smashing.app.presentation.profile.AllReviewRoute
+import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.profile.ProfileRoute
+import com.smashing.app.presentation.profile.review.ReviewRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToProfile(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) = navigate(Profile, navOptions)
 
+fun NavController.navigateToReview(
+    navOptions: NavOptions? = null,
+) = navigate(Review, navOptions)
+
 fun NavGraphBuilder.profileGraph(
+    navigateUp: () -> Unit,
+    navigateToReview: () -> Unit,
     innerPadding: PaddingValues,
+    updateBottomBar: (Boolean) -> Unit,
 ) {
-    composable<Profile> {
-        ProfileRoute(
-            modifier = Modifier.padding(innerPadding),
-            navigateToSportAdd = {},
-            navigateToTierGuide = {},
-            navigateToReviews = {},
-        )
-        AllReviewRoute(
-            modifier = Modifier.padding(innerPadding),
-            navigateToBack = {}
-        )
+    navigation<Profile>(
+        startDestination = ProfileUser,
+    ) {
+        composable<ProfileUser> {
+            ProfileRoute(
+                modifier = Modifier.padding(innerPadding),
+                navigateToSportAdd = {},
+                navigateToTierGuide = {},
+                navigateToReviews = navigateToReview,
+                updateBottomBar = updateBottomBar
+            )
+        }
+        composable<Review> {
+            ReviewRoute(
+                modifier = Modifier.padding(innerPadding),
+                navigateUp = navigateUp,
+            )
+        }
     }
+
 }
 
 @Serializable
 data object Profile : MainTabRoute
+
+@Serializable
+data object ProfileUser : MainTabRoute
+
+@Serializable
+data object Review : Route

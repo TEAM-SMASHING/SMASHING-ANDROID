@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.component
+package com.smashing.app.presentation.profile.user.copmponent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,7 +25,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_fake_red
-import com.smashing.app.R.string.add_sports_label
+import com.smashing.app.R.drawable.ic_plus
 import com.smashing.app.R.string.lp_remaining_text
 import com.smashing.app.R.string.lp_status
 import com.smashing.app.R.string.tier_description
@@ -53,7 +53,7 @@ fun ProfileTierBox(
     selectedSport: SportType,
     onSportClick: (SportType) -> Unit,
     onAddSportClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -73,16 +73,16 @@ fun ProfileTierBox(
                     val isSelected = sport == selectedSport
                     SmashingChip(
                         text = sport.sportName,
-                        style = if (isSelected) ChipStyle.ACTIVE else ChipStyle.INACTIVE,
+                        style = if (isSelected) ChipStyle.ACTIVE else ChipStyle.DISABLED,
                         onClick = { onSportClick(sport) },
                     )
                     Spacer(modifier = Modifier.width(7.dp))
                 }
 
                 SmashingChip(
-                    text = stringResource(id = add_sports_label),
-                    style = ChipStyle.INACTIVE,
+                    style = ChipStyle.DISABLED,
                     onClick = onAddSportClick,
+                    icon = ImageVector.vectorResource(id =ic_plus),
                 )
             }
             Spacer(modifier = Modifier.height(30.dp))
@@ -133,7 +133,7 @@ fun ProfileTierBox(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = totalLp.toString(),
-                    color = SmashingTheme.colors.txtTertiary,
+                    color = SmashingTheme.colors.txtPrimary,
                     style = SmashingTheme.typography.md.medium16,
                 )
             }
@@ -167,7 +167,7 @@ private fun ProfileTierBoxPreview() {
             tierType = TierType.GOLD_1,
             sports = listOf(SportType.PING_PONG, SportType.TENNIS),
             tierIconResId = ic_fake_red,
-            progress = 0.2f,
+            progress = 0.4f,
             lpStatus = 100,
             totalLp = 500,
             onTierInfoClick = {},
