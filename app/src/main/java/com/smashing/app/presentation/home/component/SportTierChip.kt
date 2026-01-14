@@ -24,7 +24,6 @@ import com.smashing.app.R.drawable.ic_tennis
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.designsystem.theme.primary100
 import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
@@ -67,15 +66,15 @@ fun SportsTierChip(
                 )
             },
             contentDescription = null,
-            tint = primary100,
+            tint = SmashingTheme.colors.iconSuccess,
         )
 
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(5.dp))
 
         Text(
             text = tierType.tierName,
             style = SmashingTheme.typography.sm.medium14,
-            color = primary100,
+            color = SmashingTheme.colors.txtMuted,
         )
     }
 }
