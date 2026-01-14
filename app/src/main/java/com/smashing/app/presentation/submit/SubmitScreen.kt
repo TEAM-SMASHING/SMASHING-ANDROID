@@ -217,7 +217,7 @@ private fun AccentAsteriskLabel(
 ) {
     Text(
         text = buildAnnotatedString {
-            append(text.substringBefore("%1\$s"))
+            append(text)
 
             withStyle(
                 style = SpanStyle(color = SmashingTheme.colors.txtRed),
