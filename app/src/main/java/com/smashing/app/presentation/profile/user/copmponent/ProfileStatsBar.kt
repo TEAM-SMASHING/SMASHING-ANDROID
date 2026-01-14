@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,42 +35,43 @@ fun ProfileStatsBar(
     loseCount: Int,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Row(
         modifier = modifier
             .fillMaxWidth()
+            .height(
+                intrinsicSize = IntrinsicSize.Max,
+            )
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(top = 12.dp, bottom = 12.dp)
+            .padding(
+                vertical = 12.dp,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            ProfileStatItem(
-                count = "$winCount",
-                label = stringResource(id = win_label),
-                countColor = SmashingTheme.colors.txtEmphasis,
-                modifier = Modifier.weight(1f),
-            )
+        ProfileStatItem(
+            count = "$winCount",
+            label = stringResource(id = win_label),
+            countColor = SmashingTheme.colors.txtEmphasis,
+            modifier = Modifier.weight(1f),
+        )
 
-            StatDivider()
+        StatDivider()
 
-            ProfileStatItem(
-                count = "$loseCount",
-                label = stringResource(id = lose_label),
-                countColor = SmashingTheme.colors.txtRed,
-                modifier = Modifier.weight(1f),
-            )
+        ProfileStatItem(
+            count = "$loseCount",
+            label = stringResource(id = lose_label),
+            countColor = SmashingTheme.colors.txtRed,
+            modifier = Modifier.weight(1f),
+        )
 
-            StatDivider()
+        StatDivider()
 
-            ProfileStatItem(
-                count = stringResource(profile_rate_percent, winRate(winCount, loseCount)),
-                label = stringResource(id = rate_label),
-                countColor = SmashingTheme.colors.txtPrimary,
-                modifier = Modifier.weight(1f),
-            )
-        }
+        ProfileStatItem(
+            count = stringResource(profile_rate_percent, winRate(winCount, loseCount)),
+            label = stringResource(id = rate_label),
+            countColor = SmashingTheme.colors.txtPrimary,
+            modifier = Modifier.weight(1f),
+        )
     }
 }
 
@@ -99,11 +101,11 @@ private fun ProfileStatItem(
 }
 
 @Composable
-private fun StatDivider() {
+private fun StatDivider(
+    modifier: Modifier = Modifier,
+) {
     VerticalDivider(
-        modifier = Modifier
-            .height(40.dp)
-            .width(1.dp),
+        modifier = modifier.width(1.dp),
         color = SmashingTheme.colors.borderSecondary,
     )
 }
