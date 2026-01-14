@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -50,6 +51,7 @@ fun SmashingChip(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
     icon: ImageVector? = null,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
 ) {
     Row(
         modifier = modifier
@@ -61,7 +63,7 @@ fun SmashingChip(
                 shape = RoundedCornerShape(999.dp),
             )
             .noRippleClickable(onClick = onClick, isEnabled = style != DISABLED)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
