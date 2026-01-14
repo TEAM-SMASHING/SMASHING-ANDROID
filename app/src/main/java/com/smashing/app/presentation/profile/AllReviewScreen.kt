@@ -3,9 +3,10 @@ package com.smashing.app.presentation.profile
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,6 +32,9 @@ import com.smashing.app.R.string.good_manner_review
 import com.smashing.app.R.string.on_time_review
 import com.smashing.app.R.string.fair_play_review
 import com.smashing.app.R.string.fast_response_review
+import com.smashing.app.R.string.review
+import com.smashing.app.R.string.satisfaction_review
+import com.smashing.app.R.string.short_review
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
@@ -56,7 +60,7 @@ fun AllReviewRoute(
         uiState = uiState,
         onBackClick = navigateToBack,
         reviews = uiState.reviews,
-        )
+    )
 }
 
 
@@ -90,33 +94,38 @@ private fun AllReviewScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    "만족도",
+                    text = stringResource(id = satisfaction_review),
                     style = SmashingTheme.typography.md.semibold16,
                     color = SmashingTheme.colors.txtPrimary
                 )
-                Row(
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    SmashingChip(
-                        text = uiState.reviewRate.best.toString(),
-                        style = DISABLED,
-                        icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                    )
+                    if (uiState.reviewRate.best > 0) {
+                        SmashingChip(
+                            text = uiState.reviewRate.best.toString(),
+                            style = DISABLED,
+                            icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                        )
+                    }
 
-                    SmashingChip(
-                        text = uiState.reviewRate.good.toString(),
-                        style = DISABLED,
-                        icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                    )
+                    if (uiState.reviewRate.good > 0)
+                        SmashingChip(
+                            text = uiState.reviewRate.good.toString(),
+                            style = DISABLED,
+                            icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                        )
 
-                    SmashingChip(
-                        text = uiState.reviewRate.bad.toString(),
-                        style = DISABLED,
-                        icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                    )
+                    if (uiState.reviewRate.bad > 0) {
+                        SmashingChip(
+                            text = uiState.reviewRate.bad.toString(),
+                            style = DISABLED,
+                            icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                        )
+                    }
                 }
             }
         }
@@ -126,38 +135,45 @@ private fun AllReviewScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
-                    "빠른 후기",
+                    text = stringResource(id = short_review),
                     style = SmashingTheme.typography.md.semibold16,
                     color = SmashingTheme.colors.txtPrimary,
                 )
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    SmashingChip(
-                        text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime}",
-                        style = DISABLED,
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                    )
-                    SmashingChip(
-                        text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner}",
-                        style = DISABLED,
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                    )
-                }
-                Row(
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-                    SmashingChip(
-                        text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay}",
-                        style = DISABLED,
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                    )
-                    SmashingChip(
-                        text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse}",
-                        style = DISABLED,
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                    )
+                    if (uiState.tagCount.onTime > 0) {
+                        SmashingChip(
+                            text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime}",
+                            style = DISABLED,
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                        )
+                    }
+
+                    if (uiState.tagCount.goodManner > 0) {
+                        SmashingChip(
+                            text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner}",
+                            style = DISABLED,
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                        )
+                    }
+                    if (uiState.tagCount.fairPlay > 0) {
+                        SmashingChip(
+                            text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay}",
+                            style = DISABLED,
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                        )
+                    }
+                    if (uiState.tagCount.fastResponse > 0) {
+                        SmashingChip(
+                            text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse}",
+                            style = DISABLED,
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                        )
+                    }
                 }
             }
         }
@@ -167,7 +183,7 @@ private fun AllReviewScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 Text(
-                    "후기",
+                    text = stringResource(id = review),
                     style = SmashingTheme.typography.md.semibold16,
                     color = SmashingTheme.colors.txtPrimary
                 )

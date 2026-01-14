@@ -21,12 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
+import com.smashing.app.R.string.receive_review
+import com.smashing.app.R.string.all_review
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
@@ -62,12 +65,12 @@ fun ProfileReviewCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "받은 후기",
+                text = stringResource(id = receive_review),
                 style = SmashingTheme.typography.md.semibold16,
                 color = SmashingTheme.colors.txtPrimary,
             )
             Text(
-                text = "모두 보기",
+                text = stringResource(id = all_review),
                 style = SmashingTheme.typography.sm.medium14,
                 color = SmashingTheme.colors.txtSecondary,
                 modifier = Modifier.noRippleClickable(onViewAllReviewClick),
@@ -79,23 +82,29 @@ fun ProfileReviewCard(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            SmashingChip(
-                text = excellentCount.toString(),
-                style = DISABLED,
-                icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
-            )
+            if (excellentCount > 0) {
+                SmashingChip(
+                    text = excellentCount.toString(),
+                    style = DISABLED,
+                    icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
+                )
+            }
 
-            SmashingChip(
-                text = goodCount.toString(),
-                style = DISABLED,
-                icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
-            )
+            if (goodCount > 0) {
+                SmashingChip(
+                    text = goodCount.toString(),
+                    style = DISABLED,
+                    icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
+                )
+            }
 
-            SmashingChip(
-                text = badCount.toString(),
-                style = DISABLED,
-                icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
-            )
+            if (badCount > 0) {
+                SmashingChip(
+                    text = badCount.toString(),
+                    style = DISABLED,
+                    icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
