@@ -61,7 +61,7 @@ fun SignUpRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToHome -> navigateToHome
+                    is NavigateToHome -> navigateToHome()
                 }
             }
     }
