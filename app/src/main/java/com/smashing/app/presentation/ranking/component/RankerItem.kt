@@ -167,7 +167,7 @@ private fun RankerItem(
                             .aspectRatio(1f),
                     )
 
-                    Spacer(modifier = Modifier.width(3.dp))
+                    Spacer(modifier = Modifier.height(3.dp))
 
                     RankLp(lp = userRank.lp)
                 } else {
