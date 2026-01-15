@@ -17,10 +17,12 @@ fun NavController.navigateToRegion(
 
 fun NavGraphBuilder.regionGraph(
     innerPadding: PaddingValues,
+    navigateUp: () -> Unit,
 ) {
     composable<Region> {
         RegionRoute(
             modifier = Modifier.padding(innerPadding),
+            navigateUp = navigateUp,
         )
     }
 }

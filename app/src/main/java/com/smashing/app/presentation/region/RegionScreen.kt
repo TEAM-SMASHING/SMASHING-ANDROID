@@ -33,6 +33,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun RegionRoute(
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegionViewModel = hiltViewModel(),
 ) {
@@ -42,7 +43,11 @@ fun RegionRoute(
     RegionScreen(
         uiState = uiState,
         onSearchQueryChange = viewModel::updateSearchQuery,
-        onRegionSelected = viewModel::updateSelectedRegion,
+        onRegionSelected = { region ->
+            viewModel.updateSelectedRegion(region)
+            navigateUp()
+        },
+        navigateUp = navigateUp,
         modifier = modifier,
     )
 }
@@ -52,6 +57,7 @@ private fun RegionScreen(
     uiState: RegionContract.State,
     onSearchQueryChange: (String) -> Unit,
     onRegionSelected: (Region) -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val searchState = rememberTextFieldState(initialText = uiState.searchQuery)
@@ -82,7 +88,7 @@ private fun RegionScreen(
         SmashingSearchTopBar(
             searchState = searchState,
             placeholder = "주소를 검색해주세요",
-            onBackClick = {},
+            onBackClick = navigateUp,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -179,5 +185,6 @@ private fun RegionScreenPreview() {
         ),
         onSearchQueryChange = {},
         onRegionSelected = {},
+        navigateUp = {},
     )
 }
