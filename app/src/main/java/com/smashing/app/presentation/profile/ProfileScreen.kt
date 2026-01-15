@@ -26,17 +26,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.R.string.profile
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.component.ProfileReviewCard
-import com.smashing.app.presentation.profile.user.copmponent.ProfileStatsBar
-import com.smashing.app.presentation.profile.user.copmponent.ProfileTierBox
-import com.smashing.app.presentation.profile.user.copmponent.UserProfileCard
+import com.smashing.app.presentation.profile.user.component.ProfileStatsBar
+import com.smashing.app.presentation.profile.user.component.ProfileTierBox
+import com.smashing.app.presentation.profile.user.component.UserProfileCard
 
 
 @Composable

@@ -1,8 +1,7 @@
-package com.smashing.app.presentation.profile.user.copmponent
+package com.smashing.app.presentation.profile.user.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -21,12 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R.string.lose_label
+import com.smashing.app.R.string.profile_rate_percent
+import com.smashing.app.R.string.rate_label
+import com.smashing.app.R.string.win_label
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.R.string.win_label
-import com.smashing.app.R.string.lose_label
-import com.smashing.app.R.string.rate_label
-import com.smashing.app.R.string.profile_rate_percent
 
 
 @Composable
