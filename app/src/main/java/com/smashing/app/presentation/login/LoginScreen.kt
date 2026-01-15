@@ -65,8 +65,6 @@ fun LoginRoute(
         onKakaoLoginClick = {
             viewModel.postKakaoLogin(
                 context = context,
-                onSignedUpUserLoginSuccess = navigateToHome,
-                onNewUserLoginSuccess = navigateToSignUp,
             )
         },
         modifier = modifier,
