@@ -40,12 +40,19 @@ class SearchViewModel @Inject constructor(
     }
 
     fun applyTierItem() {
-        _uiState.update {
-            it.copy(
-                currentTierText = it.selectedTierItem,
-            )
-        }
+        updateCurrentTierText(_uiState.value.selectedTierItem)
         closeTierBottomSheet()
+    }
+
+    fun clearFilterTier() {
+        updateCurrentTierText(null)
+        updateSelectedTierItem(null)
+    }
+
+    fun updateCurrentTierText(tierText: String?) = _uiState.update {
+        it.copy(
+            currentTierText = tierText,
+        )
     }
 
     fun openGenderBottomSheet() {

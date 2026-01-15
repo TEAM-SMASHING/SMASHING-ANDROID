@@ -103,7 +103,6 @@ interface SearchContract {
                 reviews = 32,
             )
         ),
-        val filterChipStyle: FilterStyle = FilterStyle.DEFAULT,
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,
         val currentTierText: String? = null,

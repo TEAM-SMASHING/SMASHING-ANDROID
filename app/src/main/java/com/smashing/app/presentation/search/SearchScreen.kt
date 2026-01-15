@@ -52,6 +52,7 @@ fun SearchRoute(
         onGenderBottomSheetClose = viewModel::closeGenderBottomSheet,
         onTierApplyClick = viewModel::applyTierItem,
         onGenderApplyClick = viewModel::applyGenderItem,
+        onDeleteTierFilter = viewModel::clearFilterTier,
         modifier = modifier,
     )
 }
@@ -69,6 +70,7 @@ private fun SearchScreen(
     onGenderBottomSheetClose: () -> Unit,
     onTierApplyClick: () -> Unit,
     onGenderApplyClick: () -> Unit,
+    onDeleteTierFilter: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -96,9 +98,7 @@ private fun SearchScreen(
                 style = if (uiState.currentTierText == null) DEFAULT else VARIANT,
                 text = uiState.currentTierText ?: "티어",
                 onFilterClick = onTierBottomSheetOpen,
-                onFilterDelete = {
-                    //uiState.filterChipStyle == DEFAULT
-                },
+                onFilterDelete = onDeleteTierFilter,
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -195,6 +195,7 @@ private fun SearchScreenPreview() {
             onGenderBottomSheetClose = {},
             onTierApplyClick = {},
             onGenderApplyClick = {},
+            onDeleteTierFilter = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }
