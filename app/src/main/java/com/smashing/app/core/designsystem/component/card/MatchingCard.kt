@@ -25,6 +25,7 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_close_sm
 import com.smashing.app.R.drawable.ic_link
 import com.smashing.app.R.string.accept
+import com.smashing.app.R.string.matching_write
 import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
@@ -130,7 +131,7 @@ fun MatchingCard(
                 }
 
                 SmashingBaseButton(
-                    text = "매칭 작성하기",
+                    text = stringResource(matching_write),
                     textStyle = SmashingTheme.typography.sm.medium14,
                     onClick = cardState.onConfirmClick,
                     buttonColor = ButtonStyle.SECONDARY.getButtonColor(),
