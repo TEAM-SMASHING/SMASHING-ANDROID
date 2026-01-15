@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(getDummyState())
+    private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
 
     init {
