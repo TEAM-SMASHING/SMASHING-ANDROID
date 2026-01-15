@@ -83,7 +83,6 @@ private fun SubmitReviewScreen(
             title = "후기 작성",
             topBarType = TopBarType.BACK,
             onClick = onBackClick,
-            modifier = modifier,
         )
 
         Column(
