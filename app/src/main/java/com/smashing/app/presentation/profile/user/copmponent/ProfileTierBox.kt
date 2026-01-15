@@ -30,8 +30,6 @@ import com.smashing.app.R.drawable.ic_plus
 import com.smashing.app.R.string.lp_remaining_text
 import com.smashing.app.R.string.lp_status
 import com.smashing.app.R.string.tier_description
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
@@ -40,6 +38,8 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 
 
 @Composable

@@ -51,7 +51,7 @@ fun SignUpGender (
             GenderCard(
                 genderIcon = ic_woman_32,
                 genderText = GenderType.FEMALE.gender,
-                onCardClick = { onGenderSelected(GenderType.FEMALE)},
+                onCardClick = { onGenderSelected(GenderType.FEMALE) },
                 modifier = Modifier.weight(1f),
                 isCardEnabled = selectedGender == GenderType.FEMALE,
             )
