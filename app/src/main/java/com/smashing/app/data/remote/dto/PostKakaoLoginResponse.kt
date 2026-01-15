@@ -9,6 +9,10 @@ data class PostKakaoLoginResponse(
     val accessToken: String?,
     @SerialName("refreshToken")
     val refreshToken: String?,
-    @SerialName("authId")
-    val authId: String,
+    @SerialName("kakaoId")
+    val kakaoId: String,
+    @SerialName("userId")
+    val userId: String?,
+    @SerialName("isCompletedSignUp")
+    val isCompletedSignUp: Boolean,
 )
