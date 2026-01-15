@@ -211,22 +211,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    private fun getDummyState(): HomeContract.State {
-        val dummyActiveProfile = createDummyActiveProfile()
-        val dummyTopRankerList = createDummyTopRankerList()
-        val dummyMatchingCardList = createDummyMatchingCardList()
-        val dummyMatchedUser = createDummyMatchedUser()
-
-        return HomeContract.State(
-            activeUserProfile = dummyActiveProfile,
-            topRankerList = dummyTopRankerList,
-            matchingCardList = dummyMatchingCardList,
-            matchedUser = dummyMatchedUser,
-            isNotice = false,
-            loadState = HomeUiState.Success,
-        )
-    }
-
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
         currentState.copy(loadState = state)
     }
