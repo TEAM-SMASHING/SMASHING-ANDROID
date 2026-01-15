@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.region
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,21 +10,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndSelectAll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.core.common.state.UiState
+import com.smashing.app.core.designsystem.component.topbar.SmashingSearchTopBar
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.domain.model.Region
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun RegionRoute(
@@ -48,49 +54,50 @@ private fun RegionScreen(
     onRegionSelected: (Region) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val searchState = rememberTextFieldState(initialText = uiState.searchQuery)
+
+    LaunchedEffect(uiState.searchQuery) {
+        val currentText = searchState.text.toString()
+        if (currentText != uiState.searchQuery) {
+            searchState.setTextAndSelectAll(uiState.searchQuery)
+        }
+    }
+
+    LaunchedEffect(searchState.text.toString()) {
+        val currentText = searchState.text.toString()
+        if (currentText != uiState.searchQuery) {
+            onSearchQueryChange(currentText)
+        }
+    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .background(
+                color = SmashingTheme.colors.bgCanvas,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        Text(
-            text = "활동지역검색",
+        SmashingSearchTopBar(
+            searchState = searchState,
+            placeholder = "주소를 검색해주세요",
+            onBackClick = {},
+            modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedTextField(
-            value = uiState.searchQuery,
-            onValueChange = onSearchQueryChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            placeholder = {
-                Text(text = "주소를 입력하세요")
-            },
-        )
-        uiState.selectedRegion?.let { selected ->
-            Spacer(modifier = Modifier.height(8.dp))
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-            ) {
-                Text(
-                    text = "선택된 지역: ${selected.districtName}",
-                    modifier = Modifier.padding(16.dp),
-                )
-            }
-        }
         Spacer(modifier = Modifier.height(8.dp))
-        if(uiState.regionLoadState is UiState.Success){
+
+        if (uiState.regionLoadState is UiState.Success) {
             RegionList(
                 regions = uiState.regionLoadState.data,
                 onRegionClick = onRegionSelected,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(1f)
+                    .padding(
+                        vertical = 5.dp,
+                    ),
             )
         }
     }
@@ -104,7 +111,7 @@ private fun RegionList(
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         items(
             items = regions,
@@ -122,22 +129,25 @@ private fun RegionItem(
     region: Region,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isClicked: Boolean = false,
 ) {
-    Card(
+    Column(
         modifier = modifier
             .fillMaxWidth()
+            .background(
+                color = if (isClicked) SmashingTheme.colors.bgSurface else Color.Transparent,
+            )
             .noRippleClickable(onClick = onClick),
     ) {
-        Column {
-            Text(
-                text = region.addressName,
-                modifier = Modifier.padding(16.dp),
-            )
-            Text(
-                text = region.districtName,
-                modifier = Modifier.padding(16.dp),
-            )
-        }
+        Text(
+            text = region.addressName,
+            color = SmashingTheme.colors.txtSecondary,
+            style = SmashingTheme.typography.sm.medium14,
+            modifier = Modifier.padding(
+                horizontal = 16.dp,
+                vertical = 17.dp,
+            ),
+        )
     }
 }
 
@@ -145,7 +155,28 @@ private fun RegionItem(
 @Composable
 private fun RegionScreenPreview() {
     RegionScreen(
-        uiState = RegionContract.State(),
+        uiState = RegionContract.State(
+            searchQuery = "서울",
+            selectedRegion = Region(
+                addressName = "서울특별시 종로구",
+                cityName = "서울특별시",
+                districtName = "종로구",
+            ),
+            regionLoadState = UiState.Success(
+                listOf(
+                    Region(
+                        addressName = "서울특별시 종로구",
+                        cityName = "서울특별시",
+                        districtName = "종로구",
+                    ),
+                    Region(
+                        addressName = "서울특별시 강남구",
+                        cityName = "서울특별시",
+                        districtName = "강남구",
+                    )
+                ).toImmutableList(),
+            )
+        ),
         onSearchQueryChange = {},
         onRegionSelected = {},
     )
