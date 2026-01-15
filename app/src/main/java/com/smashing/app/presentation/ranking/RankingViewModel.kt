@@ -7,7 +7,6 @@ import com.smashing.app.data.model.rank.UserRank
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-@OptIn(FlowPreview::class)
 class RankingViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(RankingContract.State())
     val uiState = _uiState.asStateFlow()
