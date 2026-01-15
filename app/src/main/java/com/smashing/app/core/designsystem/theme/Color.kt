@@ -111,6 +111,7 @@ data class SmashingColors(
 
     // Icon
     val iconPrimary: Color,
+    val iconPrimaryReverse: Color,
     val iconSecondary: Color,
     val iconTertiary: Color,
     val iconError: Color,
@@ -191,6 +192,7 @@ val defaultSmashingColors = SmashingColors(
 
     // Icon
     iconPrimary = white,
+    iconPrimaryReverse = black,
     iconSecondary = gray300,
     iconTertiary = gray500,
     iconError = redMain,
