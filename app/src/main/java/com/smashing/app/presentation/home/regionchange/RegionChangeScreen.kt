@@ -30,10 +30,14 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.domain.model.Region
 
 @Composable
 fun RegionChangeRoute(
+    navigateToRegion: () -> Unit,
+    navigateUp: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegionChangeViewModel = hiltViewModel(),
 ) {
@@ -42,11 +46,17 @@ fun RegionChangeRoute(
     RegionChangeScreen(
         uiState = uiState,
         modifier = modifier,
+        navigateToRegion = navigateToRegion,
+        navigateUp = navigateUp,
+        navigateToHome = navigateToHome
     )
 }
 
 @Composable
 fun RegionChangeScreen(
+    navigateToRegion: () -> Unit,
+    navigateUp: () -> Unit,
+    navigateToHome: () -> Unit,
     uiState: RegionChangeContract.State,
     modifier: Modifier = Modifier,
 ) {
@@ -63,7 +73,7 @@ fun RegionChangeScreen(
         SmashingDefaultTopBar(
             title = "지역 변경",
             topBarType = TopBarType.CLOSE,
-            onClick = {},
+            onClick = navigateUp,
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -93,7 +103,7 @@ fun RegionChangeScreen(
             Text(
                 text = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
                 style = SmashingTheme.typography.sm.medium14,
-                color = if(uiState.selectedRegion != null) SmashingTheme.colors.txtPrimary else SmashingTheme.colors.txtDisabled,
+                color = if (uiState.selectedRegion != null) SmashingTheme.colors.txtPrimary else SmashingTheme.colors.txtDisabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -104,6 +114,9 @@ fun RegionChangeScreen(
                         width = 1.dp,
                         color = SmashingTheme.colors.iconTertiary,
                         shape = RoundedCornerShape(8.dp),
+                    )
+                    .noRippleClickable(
+                        onClick = navigateToRegion,
                     )
                     .padding(
                         horizontal = 16.dp,
@@ -116,7 +129,10 @@ fun RegionChangeScreen(
             SmashingButton(
                 buttonStyle = if (uiState.selectedRegion != null) ButtonStyle.PRIMARY else ButtonStyle.DISABLED_ACTIVE,
                 text = "완료",
-                onClick = {},
+                onClick = {
+                    showDialog = true
+                },
+                isEnabled = uiState.selectedRegion != null,
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -133,6 +149,7 @@ fun RegionChangeScreen(
             dismissText = "아니요",
             onConfirmClick = {
                 showDialog = false
+                navigateToHome()
             },
             onDismissClick = {
                 showDialog = false
@@ -153,6 +170,9 @@ private fun RegionChangeScreenPreview_Empty() {
                 selectedRegion = null,
                 regionLoadState = RegionChangeUiState.Idle,
             ),
+            navigateToRegion = {},
+            navigateUp = {},
+            navigateToHome = {},
         )
     }
 }
@@ -170,6 +190,9 @@ private fun RegionChangeScreenPreview_Selected() {
                 ),
                 regionLoadState = RegionChangeUiState.Success,
             ),
+            navigateToRegion = {},
+            navigateUp = {},
+            navigateToHome = {},
         )
     }
 }
