@@ -2,8 +2,8 @@ package com.smashing.app.presentation.write.submit
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -86,7 +86,6 @@ private fun SubmitResultScreen(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.SpaceBetween,
         ) {
             WriteResultContent(
                 submitter = uiState.submitter,
@@ -100,6 +99,8 @@ private fun SubmitResultScreen(
                 onLeftDoneClick = onLeftDoneClick,
                 onRightDoneClick = onRightDoneClick,
             )
+
+            Spacer(modifier = Modifier.weight(1f))
 
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
