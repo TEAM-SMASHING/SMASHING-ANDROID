@@ -33,9 +33,6 @@ import com.smashing.app.presentation.search.style.FilterStyle.DEFAULT
 import com.smashing.app.presentation.search.style.FilterStyle.VARIANT
 import kotlinx.collections.immutable.persistentListOf
 
-//Todo: 바텀시트 아이템 선택시
-// 필터링 되기
-
 @Composable
 fun SearchRoute(
     modifier: Modifier = Modifier,
