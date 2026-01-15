@@ -26,6 +26,7 @@ import com.smashing.app.R.string.review
 import com.smashing.app.R.string.win_lose_count
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.icon.icon20
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -51,7 +52,7 @@ fun MatchingCardContent(
 
         UserInfo(
             nickname = cardState.nickname,
-            genderIcon = cardState.genderType.iconRes,
+            genderIcon = cardState.genderType.icon20(),
             modifier = Modifier.padding(
                 vertical = 4.dp,
             )

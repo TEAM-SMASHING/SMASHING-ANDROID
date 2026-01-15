@@ -28,8 +28,6 @@ enum class TierType(
 
     companion object {
         private val ID_MAP: Map<Long, TierType> = entries.associateBy { it.id }
-        fun findTierType(id: Long): TierType? {
-            return ID_MAP[id]
-        }
+        fun findTierType(id: Long): TierType? = ID_MAP[id]
     }
 }
