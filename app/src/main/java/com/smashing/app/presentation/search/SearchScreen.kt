@@ -3,10 +3,8 @@ package com.smashing.app.presentation.search
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -15,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -30,7 +30,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.search.component.MatchingSearchFilterChip
 import com.smashing.app.presentation.search.component.SearchTopBar
 import com.smashing.app.presentation.search.style.FilterStyle.DEFAULT
-import com.smashing.app.presentation.search.style.FilterStyle.VARIANT
+import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
@@ -44,14 +44,27 @@ fun SearchRoute(
     SearchScreen(
         uiState = uiState,
         onProfileClick = {},
+        onTierItemClick = viewModel::updateSelectedTierItem,
+        onGenderItemClick = viewModel::updateSelectedGenderItem,
+        onTierBottomSheetOpen = viewModel::openTierBottomSheet,
+        onGenderBottomSheetOpen = viewModel::openGenderBottomSheet,
+        onTierBottomSheetClose = viewModel::closeTierBottomSheet,
+        onGenderBottomSheetClose = viewModel::closeGenderBottomSheet,
         modifier = modifier,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchScreen(
     uiState: SearchContract.State,
     onProfileClick: () -> Unit,
+    onTierItemClick: (String) -> Unit,
+    onGenderItemClick: (String) -> Unit,
+    onTierBottomSheetOpen: () -> Unit,
+    onGenderBottomSheetOpen: () -> Unit,
+    onTierBottomSheetClose: () -> Unit,
+    onGenderBottomSheetClose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -76,19 +89,61 @@ private fun SearchScreen(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             MatchingSearchFilterChip(
-                style = DEFAULT,
-                text = "티어",
-                onFilterClick = {},
-                onFilterDelete = {},
+                style = uiState.filterChipStyle,
+                text = if (uiState.filterChipStyle == DEFAULT) "티어" else "선택결과",
+                onFilterClick = onTierBottomSheetOpen,
+                onFilterDelete = {
+                    //uiState.filterChipStyle == DEFAULT
+                },
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             MatchingSearchFilterChip(
-                style = VARIANT,
-                text = "브론즈",
-                onFilterClick = {},
-                onFilterDelete = {},
+                style = uiState.filterChipStyle,
+                text = if (uiState.filterChipStyle == DEFAULT) "성별" else "선택결과",
+                onFilterClick = onGenderBottomSheetOpen,
+                onFilterDelete = {
+                    //uiState.filterChipStyle == DEFAULT
+                },
+            )
+        }
+
+        if (uiState.isTierBottomSheetEnabled) {
+            SmashingBottomSheet(
+                onDismissRequest = onTierBottomSheetClose,
+                title = "티어",
+                items = persistentListOf(
+                    "아이언",
+                    "브론즈",
+                    "실버",
+                    "골드",
+                    "플래티넘",
+                    "다이아",
+                    "챌린저",
+                ),
+                selectedItem = uiState.selectedTierItem,
+                contentToBtnPadding = 4.dp,
+                btnText = "적용하기",
+                onItemClick = onTierItemClick,
+                onBtnClick = onTierBottomSheetClose,
+            )
+        }
+
+        if (uiState.isGenderBottomSheetEnabled) {
+            SmashingBottomSheet(
+                onDismissRequest = onGenderBottomSheetClose,
+                title = "성별",
+                items = persistentListOf(
+                    "남성",
+                    "여성",
+                    "남여 모두",
+                ),
+                selectedItem = uiState.selectedGenderItem,
+                contentToBtnPadding = 4.dp,
+                btnText = "적용하기",
+                onItemClick = onGenderItemClick,
+                onBtnClick = onGenderBottomSheetClose,
             )
         }
 
@@ -128,7 +183,13 @@ private fun SearchScreenPreview() {
         SearchScreen(
             uiState = SearchContract.State(),
             onProfileClick = {},
-            modifier = Modifier.background(color = colors.bgCanvas)
+            onTierItemClick = {},
+            onGenderItemClick = {},
+            onTierBottomSheetOpen = {},
+            onGenderBottomSheetOpen = {},
+            onTierBottomSheetClose = {},
+            onGenderBottomSheetClose = {},
+            modifier = Modifier.background(color = colors.bgCanvas),
         )
     }
 }

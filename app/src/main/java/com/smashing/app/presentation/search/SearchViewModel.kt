@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +19,42 @@ class SearchViewModel @Inject constructor(
 
     init {
         getDummyList()
+    }
+
+    fun openTierBottomSheet() {
+        _uiState.update {
+            it.copy(isTierBottomSheetEnabled = true)
+        }
+    }
+
+    fun closeTierBottomSheet() {
+        _uiState.update {
+            it.copy(isTierBottomSheetEnabled = false)
+        }
+    }
+
+    fun updateSelectedTierItem(item: String) {
+        _uiState.update {
+            it.copy(selectedTierItem = item)
+        }
+    }
+
+    fun openGenderBottomSheet() {
+        _uiState.update {
+            it.copy(isGenderBottomSheetEnabled = true)
+        }
+    }
+
+    fun closeGenderBottomSheet() {
+        _uiState.update {
+            it.copy(isGenderBottomSheetEnabled = false)
+        }
+    }
+
+    fun updateSelectedGenderItem(item: String) {
+        _uiState.update {
+            it.copy(selectedGenderItem = item)
+        }
     }
 
     // TODO 더미 데이터 삭제 예정

@@ -3,6 +3,7 @@ package com.smashing.app.presentation.search
 import androidx.compose.runtime.Immutable
 import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.TierType
+import com.smashing.app.presentation.search.style.FilterStyle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -100,6 +101,11 @@ interface SearchContract {
                 losses = 38,
                 reviews = 32,
             )
-        )
+        ),
+        val filterChipStyle: FilterStyle = FilterStyle.DEFAULT,
+        val isTierBottomSheetEnabled: Boolean = false,
+        val isGenderBottomSheetEnabled: Boolean = false,
+        val selectedTierItem: String = "",
+        val selectedGenderItem: String = "",
     )
 }
