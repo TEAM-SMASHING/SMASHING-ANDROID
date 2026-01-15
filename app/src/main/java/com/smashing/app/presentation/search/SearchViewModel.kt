@@ -48,15 +48,6 @@ class SearchViewModel @Inject constructor(
         closeTierBottomSheet()
     }
 
-    fun applyGenderItem() {
-        _uiState.update {
-            it.copy(
-                currentGenderText = it.selectedGenderItem,
-            )
-        }
-        closeGenderBottomSheet()
-    }
-
     fun openGenderBottomSheet() {
         _uiState.update {
             it.copy(isGenderBottomSheetEnabled = true)
@@ -73,6 +64,15 @@ class SearchViewModel @Inject constructor(
         _uiState.update {
             it.copy(selectedGenderItem = genderItem)
         }
+    }
+
+    fun applyGenderItem() {
+        _uiState.update {
+            it.copy(
+                currentGenderText = it.selectedGenderItem,
+            )
+        }
+        closeGenderBottomSheet()
     }
 
     // TODO 더미 데이터 삭제 예정
