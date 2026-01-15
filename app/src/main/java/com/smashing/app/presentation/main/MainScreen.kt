@@ -17,7 +17,9 @@ import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
+import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
@@ -25,7 +27,7 @@ import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
-import com.smashing.app.presentation.write.navigation.submitGraph
+import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -130,8 +132,18 @@ private fun MainNavHost(
             innerPadding = innerPadding,
         )
 
-        submitGraph(
-            navigateUp = appState.navController::navigateUp,
+        writeGraph(
+            navigateToMatching = {
+                appState.navController.navigateToMatching(
+                    navOptions = navOptions {
+                        popUpTo<Matching> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    },
+                )
+            },
+            navController = appState.navController,
         )
     }
 }

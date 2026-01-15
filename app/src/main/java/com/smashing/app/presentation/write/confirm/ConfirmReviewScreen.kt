@@ -6,25 +6,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 
 @Composable
-fun ConfirmRoute(
+fun ConfirmReviewRoute(
     navigateUp: () -> Unit,
+    navigateToMatching: () -> Unit, // TODO 임시구현
+    viewModel: ConfirmViewModel,
     modifier: Modifier = Modifier,
 ) {
 
 }
 
 @Composable
-private fun ConfirmScreen(
-    modifier: Modifier = Modifier,
+private fun ConfirmReviewScreen(
+    modifier: Modifier =  Modifier,
 ) {
 
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ConfirmScreenPreview() {
+private fun ConfirmReviewScreenPreview() {
     SmashingAndroidTheme {
-        ConfirmScreen(
+        ConfirmReviewScreen(
 
         )
     }
