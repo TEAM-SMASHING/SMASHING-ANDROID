@@ -94,10 +94,7 @@ private fun LoginScreen(
             contentDescription = null,
             modifier = Modifier
                 .width(240.dp)
-                .aspectRatio(LOGO_RATIO)
-                .noRippleClickable(
-                    onClick = { onKakaoLoginClick }
-                ),
+                .aspectRatio(LOGO_RATIO),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
