@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.presentation.write.component.WriteResultContent
 
 @Composable
@@ -63,13 +65,16 @@ private fun SubmitResultScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(
                 color = SmashingTheme.colors.bgCanvas,
             )
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .clearFocus(focusManager),
     ) {
         SmashingDefaultTopBar(
             title = stringResource(submit_matching_result),
