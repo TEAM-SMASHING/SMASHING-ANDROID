@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,6 +31,7 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.presentation.write.component.WriteReviewContent
 
 @Composable
@@ -65,6 +67,8 @@ private fun SubmitReviewScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
+    val focusManager = LocalFocusManager.current
+
     var isAlertDialogOpen by remember { mutableStateOf(false) }
     var isConfirmDialogOpen by remember { mutableStateOf(false) }
 
@@ -72,7 +76,8 @@ private fun SubmitReviewScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas)
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .clearFocus(focusManager),
     ) {
         SmashingDefaultTopBar(
             title = "후기 작성",
