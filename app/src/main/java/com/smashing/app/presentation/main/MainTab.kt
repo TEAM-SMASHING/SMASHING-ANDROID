@@ -19,6 +19,7 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.navigation.Home
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.profile.navigation.Profile
+import com.smashing.app.presentation.profile.navigation.ProfileUser
 import com.smashing.app.presentation.search.navigation.Search
 
 enum class MainTab(
@@ -49,7 +50,7 @@ enum class MainTab(
         selectedIconRes = ic_profile_selected,
         unselectedIconRes = ic_profile_unselected,
         titleRes = profile,
-        route = Profile,
+        route = ProfileUser,
     );
 
     companion object {

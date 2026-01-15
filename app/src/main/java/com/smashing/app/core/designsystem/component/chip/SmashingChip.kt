@@ -45,11 +45,11 @@ import com.smashing.app.core.extension.noRippleClickable
 
 @Composable
 fun SmashingChip(
-    text: String,
     style: ChipStyle,
-    onClick: () -> Unit,
-    icon: ImageVector,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = { },
+    text: String? = null,
+    icon: ImageVector? = null,
 ) {
     Row(
         modifier = modifier
@@ -61,23 +61,34 @@ fun SmashingChip(
                 shape = RoundedCornerShape(999.dp),
             )
             .noRippleClickable(onClick = onClick, isEnabled = style != DISABLED)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(
+                horizontal = 16.dp,
+                vertical = if (icon != null) 8.dp else 10.dp,
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = style.contentColor(),
-            modifier = Modifier.size(24.dp),
-        )
-        Spacer(modifier = Modifier.width(10.dp))
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = style.contentColor(),
+                modifier = Modifier.size(24.dp),
+            )
+        }
 
-        Text(
-            text = text,
-            style = SmashingTheme.typography.sm.medium14,
-            color = style.contentColor(),
-        )
+        if (icon != null && text != null) {
+            Spacer(modifier = Modifier.width(10.dp))
+        }
+
+
+        if (text != null) {
+            Text(
+                text = text,
+                style = SmashingTheme.typography.sm.medium14,
+                color = style.contentColor(),
+            )
+        }
     }
 }
 
@@ -139,7 +150,15 @@ private fun PreviewSmashingChips() {
         SmashingChip(
             text = "text",
             style = PRESSED,
+            onClick = {},
+        )
+        SmashingChip(
+            style = PRESSED,
             icon = ImageVector.vectorResource(id = ic_fake_red),
+            onClick = {},
+        )
+        SmashingChip(
+            style = PRESSED,
             onClick = {},
         )
     }
