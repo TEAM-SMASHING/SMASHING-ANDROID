@@ -28,6 +28,8 @@ import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
+import com.smashing.app.presentation.submit.navigation.navigateToSubmit
+import com.smashing.app.presentation.submit.navigation.submitGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -87,6 +89,7 @@ private fun MainNavHost(
 
         matchingGraph(
             innerPadding = innerPadding,
+            navigateToSubmit = appState.navController::navigateToSubmit,
         )
 
         profileGraph(
@@ -138,6 +141,10 @@ private fun MainNavHost(
         noticeGraph(
             navigateUp = appState.navController::navigateUp,
             innerPadding = innerPadding,
+        )
+
+        submitGraph(
+            navigateUp = appState.navController::navigateUp,
         )
     }
 }

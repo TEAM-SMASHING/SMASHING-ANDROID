@@ -8,6 +8,11 @@
     <string name="count">%d</string>
     <string name="no">아니요</string>
     <string name="cancel">취소하기</string>
+    <string name="score_format">%1$d : %2$d</string>
+    <string name="next">다음</string>
+    <string name="asterisk_label">*</string>
+    <string name="zero_label">0</string>
+    <string name="score_separator">:</string>
 
     <!-- Login -->
     <string name="kakao_login">카카오로 시작하기</string>
@@ -50,6 +55,7 @@
     <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠어요?</string>
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료돼요.</string>
     <!--Search  -->
+    <!--Profile -->
     <!--Notice  -->
     <string name="notice">알림</string>
     <!--Profile-->
@@ -71,8 +77,10 @@
     <string name="satisfaction_review">만족도</string>
     <string name="profile_rate_percent">%d%%</string>
 
+    <!--Submit  -->
+    <string name="submit_matching_result">매칭 결과 작성</string>
+    <string name="submit_title">경기 결과를 작성해주세요</string>
+    <string name="submit_description">악의적인 결과 작성 시 활동이 제한될 수 있어요</string>
+    <string name="submit_winner">승자</string>
+    <string name="submit_score">스코어</string>
 </resources>
-
-
-
-
