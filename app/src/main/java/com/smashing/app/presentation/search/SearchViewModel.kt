@@ -12,7 +12,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(SearchContract.State())
+
+    private val _uiState = MutableStateFlow(getDummyList())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -32,7 +33,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_2",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.FEMALE,
                 tierId = TierType.BRONZE_1,
@@ -41,7 +42,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_3",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.MALE,
                 tierId = TierType.BRONZE_1,
@@ -50,7 +51,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_4",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.MALE,
                 tierId = TierType.CHALLENGER,
@@ -59,7 +60,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_5",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.FEMALE,
                 tierId = TierType.GOLD_1,
@@ -68,7 +69,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_6",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.FEMALE,
                 tierId = TierType.GOLD_1,
@@ -77,7 +78,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_7",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.MALE,
                 tierId = TierType.CHALLENGER,
@@ -86,7 +87,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_8",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.FEMALE,
                 tierId = TierType.GOLD_1,
@@ -95,7 +96,7 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_9",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.FEMALE,
                 tierId = TierType.SILVER_2,
@@ -104,14 +105,14 @@ class SearchViewModel @Inject constructor(
                 reviews = 32,
             ),
             SearchItemModel(
-                userId = "search_userId_1",
+                userId = "search_userId_10",
                 nickname = "하나둘셋넷다여칠팔구",
                 gender = GenderType.FEMALE,
                 tierId = TierType.GOLD_1,
                 wins = 254,
                 losses = 38,
                 reviews = 32,
-            )
+            ),
         )
 
         return SearchContract.State(

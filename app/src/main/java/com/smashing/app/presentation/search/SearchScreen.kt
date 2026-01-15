@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -15,10 +17,12 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -34,8 +38,11 @@ fun SearchRoute(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     SearchScreen(
-        uiState = SearchContract.State(),
+        uiState = uiState,
         onProfileClick = {},
         modifier = modifier,
     )
@@ -57,6 +64,7 @@ private fun SearchScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .systemBarsPadding(),
     ) {
 
         SearchTopBar(
@@ -86,15 +94,15 @@ private fun SearchScreen(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = modifier,
+            modifier = modifier
+                .padding(horizontal = 16.dp, vertical = 10.dp),
             state = listState,
-            contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(
                 items = uiState.searchList,
-                key = { it.userId }
+                key = { it.userId },
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Search(
@@ -110,7 +118,6 @@ private fun SearchScreen(
                 )
             }
         }
-
     }
 }
 

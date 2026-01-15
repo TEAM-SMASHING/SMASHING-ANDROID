@@ -22,7 +22,6 @@ fun NavGraphBuilder.searchGraph(
     composable<Search> {
         SearchRoute(
             modifier = Modifier
-                .padding(innerPadding),
         )
     }
 }
