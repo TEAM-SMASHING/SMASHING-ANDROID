@@ -20,13 +20,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_radio_empty
 import com.smashing.app.R.drawable.ic_radio_fill
-import com.smashing.app.R.string.sign_up_skill_subtitle
 import com.smashing.app.R.string.sign_up_skill_title
-import com.smashing.app.core.common.type.SkillType
+import com.smashing.app.R.string.sign_up_skill_subtitle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.core.common.type.SkillType
 import com.smashing.app.presentation.signup.component.SignUpTitle
 import kotlinx.collections.immutable.toImmutableList
 
@@ -38,7 +38,6 @@ fun SportSkillSelector(
     title: String = stringResource(sign_up_skill_title),
     subTitle: String = stringResource(sign_up_skill_subtitle),
 ) {
-
     val radioList = SkillType.entries.toImmutableList()
 
     Column(
