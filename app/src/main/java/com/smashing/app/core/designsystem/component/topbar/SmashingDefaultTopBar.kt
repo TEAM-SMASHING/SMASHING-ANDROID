@@ -18,6 +18,20 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
+/**
+ * 기본 탑바 컴포넌트입니다.
+ * 화면 상단에 제목과 네비게이션 아이콘을 표시하며, [TopBarType]에 따라 아이콘의 종류와 위치가 결정됩니다.
+ *
+ * @param title 탑바 중앙에 표시될 제목 텍스트
+ * @param topBarType 탑바의 타입으로, 아이콘 표시 방식을 결정합니다.
+ *   - [TopBarType.DEFAULT]: 아이콘 없이 제목만 표시
+ *   - [TopBarType.BACK]: 왼쪽에 뒤로가기 아이콘 표시 (화면 뒤로 이동)
+ *   - [TopBarType.CLOSE]: 오른쪽에 닫기 아이콘 표시 (현재 화면 닫기)
+ * @param onClick 아이콘 클릭 시 실행될 콜백 함수입니다.
+ *   [TopBarType.BACK] 또는 [TopBarType.CLOSE]일 때만 사용되며,
+ *   [TopBarType.DEFAULT]이거나 아이콘이 필요 없는 경우 `null`을 전달할 수 있습니다.
+ * @param modifier 적용할 Modifier
+ */
 @Composable
 fun SmashingDefaultTopBar(
     title: String,

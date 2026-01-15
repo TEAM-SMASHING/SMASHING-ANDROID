@@ -24,6 +24,16 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
+/**
+ * 검색 기능이 있는 탑바 컴포넌트입니다.
+ * 화면 상단에 뒤로가기 아이콘과 검색 입력 필드를 표시하며, 검색어 입력 및 뒤로가기 동작을 지원합니다.
+ *
+ * @param searchState 검색 입력 필드의 상태를 관리하는 [TextFieldState]입니다.
+ *   [rememberTextFieldState]를 사용하여 생성하고, 입력된 텍스트는 이 상태를 통해 관리됩니다.
+ * @param placeholder 검색 입력 필드에 표시될 플레이스홀더 텍스트입니다.
+ * @param onBackClick 뒤로가기 아이콘 클릭 시 실행될 콜백 함수입니다.
+ * @param modifier 적용할 Modifier
+ */
 @Composable
 fun SmashingSearchTopBar(
     searchState: TextFieldState,
