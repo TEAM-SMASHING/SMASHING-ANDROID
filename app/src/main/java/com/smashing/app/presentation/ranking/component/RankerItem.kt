@@ -30,6 +30,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_crown
+import com.smashing.app.R.drawable.ic_rank_first
+import com.smashing.app.R.drawable.ic_rank_second
+import com.smashing.app.R.drawable.ic_rank_third
 import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.image.UrlImage
@@ -38,6 +41,9 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.presentation.ranking.type.RankerType
+import com.smashing.app.presentation.ranking.type.RankerType.FIRST
+import com.smashing.app.presentation.ranking.type.RankerType.SECOND
+import com.smashing.app.presentation.ranking.type.RankerType.THIRD
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -53,20 +59,20 @@ fun Ranker(
     ) {
         RankerItem(
             userRank = rankerList?.getOrNull(0),
-            rankerType = RankerType.FIRST,
+            rankerType = FIRST,
             modifier = Modifier
                 .align(Alignment.BottomCenter),
         )
         RankerItem(
             userRank = rankerList?.getOrNull(1),
-            rankerType = RankerType.SECOND,
+            rankerType = SECOND,
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.BottomStart),
         )
         RankerItem(
             userRank = rankerList?.getOrNull(2),
-            rankerType = RankerType.THIRD,
+            rankerType = THIRD,
             modifier = Modifier
                 .padding(end = 16.dp)
                 .align(Alignment.BottomEnd),
@@ -93,7 +99,7 @@ private fun RankerItem(
             .width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val paddingValues = if (RankerType.FIRST == rankerType) {
+        val paddingValues = if (FIRST == rankerType) {
             PaddingValues(
                 start = 25.dp,
                 end = 25.dp,
@@ -107,7 +113,7 @@ private fun RankerItem(
             )
         }
 
-        if (userRank != null && rankerType == RankerType.FIRST) {
+        if (userRank != null && rankerType == FIRST) {
             Icon(
                 imageVector = ImageVector.vectorResource(ic_crown),
                 contentDescription = null,
@@ -150,12 +156,22 @@ private fun RankerItem(
                     .padding(paddingValues),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
-                    text = rankerType.ranking.toString(),
-                    style = if (rankerType == RankerType.FIRST) typography.hero.bold28 else typography.xl.semibold20,
-                    color = colors.txtPrimary,
-                    textAlign = TextAlign.Center,
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Icon(
+                    imageVector = ImageVector.vectorResource(
+                        when (rankerType) {
+                            FIRST -> ic_rank_first
+                            SECOND -> ic_rank_second
+                            THIRD -> ic_rank_third
+                        }
+                    ),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
                 )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
 
                 //TODO 티어 뱃지 이미지 완료 후 변경 예정
                 if (userRank != null) {
@@ -163,7 +179,7 @@ private fun RankerItem(
                         painter = painterResource(id = img_tier_dummy),
                         contentDescription = null,
                         modifier = Modifier
-                            .height(if (rankerType == RankerType.FIRST) 60.dp else 40.dp)
+                            .height(if (rankerType == FIRST) 60.dp else 40.dp)
                             .aspectRatio(1f),
                     )
 
@@ -174,7 +190,7 @@ private fun RankerItem(
                     Spacer(
                         modifier = Modifier
                             .size(
-                                height = if (rankerType == RankerType.FIRST) 78.dp else 58.dp,
+                                height = if (rankerType == FIRST) 78.dp else 58.dp,
                                 width = 67.dp,
                             ),
                     )
@@ -210,7 +226,7 @@ private fun RankerItemPreview_FirstPlace() {
             tierType = TierType.CHALLENGER,
             lp = 2500,
         ),
-        rankerType = RankerType.FIRST,
+        rankerType = FIRST,
     )
 }
 
@@ -225,7 +241,7 @@ private fun RankerItemPreview_SecondPlace() {
             tierType = TierType.DIAMOND_1,
             lp = 2300,
         ),
-        rankerType = RankerType.SECOND,
+        rankerType = SECOND,
         modifier = Modifier.padding(horizontal = 8.dp),
     )
 }
@@ -235,7 +251,7 @@ private fun RankerItemPreview_SecondPlace() {
 private fun RankerItemPreview_EmptyPlace() {
     RankerItem(
         userRank = null,
-        rankerType = RankerType.SECOND,
+        rankerType = SECOND,
         modifier = Modifier.padding(horizontal = 8.dp)
     )
 }
