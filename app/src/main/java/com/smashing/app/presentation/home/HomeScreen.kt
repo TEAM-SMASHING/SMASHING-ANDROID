@@ -80,6 +80,11 @@ private fun HomeScreen(
     navigateToNotice: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val activeUserProfile = uiState.activeUserProfile ?: run {
+        // TODO: 로딩 또는 에러 UI 표시
+        return
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
