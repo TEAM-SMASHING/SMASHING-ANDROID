@@ -16,7 +16,7 @@ interface ProfileContract {
         val loadState: ProfileUiState = ProfileUiState.Idle,
         val profileInfo: UserProfileInfo = UserProfileInfo(
             tierType = TierType.BRONZE_1,
-            mySports = listOf(SportType.PING_PONG),
+            mySports = listOf(SportType.PING_PONG, SportType.TENNIS),
             selectedSport = SportType.PING_PONG,
             lpProgress = 0f,
             minLp = 0,
