@@ -23,6 +23,7 @@ import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
+import com.smashing.app.presentation.profile.navigation.navigateToAddSports
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
@@ -43,15 +44,15 @@ fun MainScreen(
         bottomBar = {
             AnimatedVisibility(
                 visible = isBottomBarVisible,
-                enter = slideInVertically (initialOffsetY={it}),
+                enter = slideInVertically(initialOffsetY = { it }),
                 exit = slideOutVertically(targetOffsetY = { it })
             ) {
-            MainBottomBar(
-                isVisible = isBottomBarVisible,
-                tabs = MainTab.entries.toImmutableList(),
-                currentTab = currentTab,
-                onTabSelected = appState::navigate,
-            )
+                MainBottomBar(
+                    isVisible = isBottomBarVisible,
+                    tabs = MainTab.entries.toImmutableList(),
+                    currentTab = currentTab,
+                    onTabSelected = appState::navigate,
+                )
             }
         },
         containerColor = SmashingTheme.colors.bgCanvas,
@@ -96,7 +97,8 @@ private fun MainNavHost(
             innerPadding = innerPadding,
             navigateUp = appState.navController::navigateUp,
             navigateToReview = appState.navController::navigateToReview,
-            updateBottomBar= appState::updateBottomBarVisible,
+            updateBottomBar = appState::updateBottomBarVisible,
+            navigateToAddSports = appState.navController::navigateToAddSports,
         )
 
         loginGraph(

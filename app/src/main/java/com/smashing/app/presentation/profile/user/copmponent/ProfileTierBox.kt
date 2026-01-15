@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.profile.user.copmponent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -84,6 +85,7 @@ fun ProfileTierBox(
                     style = ChipStyle.DISABLED,
                     onClick = onAddSportClick,
                     icon = ImageVector.vectorResource(id = ic_plus),
+                    modifier = Modifier.clickable { onAddSportClick() },
                 )
             }
             Spacer(modifier = Modifier.height(30.dp))
