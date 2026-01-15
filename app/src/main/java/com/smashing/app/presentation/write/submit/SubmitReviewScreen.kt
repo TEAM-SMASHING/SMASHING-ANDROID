@@ -129,7 +129,7 @@ private fun SubmitReviewScreen(
         if (isConfirmDialogOpen) {
             SmashingDialog(
                 title = "매칭 결과를 제출하시겠습니까?",
-                subtitle = "정확한 경기 결과각 아닐 경우 반려될 수 있어요.",
+                subtitle = "정확한 경기 결과가 아닐 경우 반려될 수 있어요.",
                 type = DialogStyle.CONFIRM,
                 confirmText = "확인",
                 onDismissRequest = { isConfirmDialogOpen = false },
