@@ -1,4 +1,4 @@
-package com.smashing.app.core.common.type
+package com.smashing.app.data.type
 
 enum class NotificationType {
     RESULT_REJECTED_SCORE_MISMATCH,
