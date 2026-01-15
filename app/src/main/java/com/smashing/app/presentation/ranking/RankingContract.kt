@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.rank.UserRank
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 interface RankingContract {
     @Immutable
