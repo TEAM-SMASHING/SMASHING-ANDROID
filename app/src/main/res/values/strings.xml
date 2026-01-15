@@ -8,6 +8,11 @@
     <string name="count">%d</string>
     <string name="no">아니요</string>
     <string name="cancel">취소하기</string>
+    <string name="score_format">%1$d : %2$d</string>
+    <string name="next">다음</string>
+    <string name="asterisk_label">*</string>
+    <string name="zero_label">0</string>
+    <string name="score_separator">:</string>
 
     <!-- Login -->
     <string name="kakao_login">카카오로 시작하기</string>
@@ -74,4 +79,29 @@
     <!--Profile -->
     <!--Notice  -->
     <string name="notice">알림</string>
+    <!--Profile-->
+    <string name="win_label">승리</string>
+    <string name="lose_label">패배</string>
+    <string name="rate_label">승률</string>
+    <string name="add_sports_label">+</string>
+    <string name="tier_description">티어 설명</string>
+    <string name="lp_remaining_text">LP 남았어요!</string>
+    <string name="lp_status">LP</string>
+    <string name="record_label">전적</string>
+    <string name="receive_review">받은 후기</string>
+    <string name="short_review">빠른 후기</string>
+    <string name="all_review">모두 보기</string>
+    <string name="on_time_review">시간 약속을 잘 지켜요</string>
+    <string name="good_manner_review">경기 매너가 좋아요</string>
+    <string name="fair_play_review">승패를 깔끔하게 인정해요</string>
+    <string name="fast_response_review">응답이 빨라요</string>
+    <string name="satisfaction_review">만족도</string>
+    <string name="profile_rate_percent">%d%%</string>
+
+    <!--Submit  -->
+    <string name="submit_matching_result">매칭 결과 작성</string>
+    <string name="submit_title">경기 결과를 작성해주세요</string>
+    <string name="submit_description">악의적인 결과 작성 시 활동이 제한될 수 있어요</string>
+    <string name="submit_winner">승자</string>
+    <string name="submit_score">스코어</string>
 </resources>

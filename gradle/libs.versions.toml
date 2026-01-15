@@ -18,6 +18,7 @@ androidxAppCompat = "1.7.1"
 activityCompose = "1.11.0"
 composeBom = "2025.10.01"
 navigationCompose = "2.9.5"
+constraintlayoutCompose = "1.1.1"
 
 # Kotlin
 kotlin = "2.2.21"
@@ -70,6 +71,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -91,7 +93,7 @@ retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "re
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 
 # Kakao
-kakao-sdk-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao"}
+kakao-sdk-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 
 # DI
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
@@ -124,6 +126,7 @@ compose = [
     "androidx-ui-graphics",
     "androidx-ui-tooling-preview",
     "androidx-compose-navigation",
+    "androidx-constraintlayout-compose",
 ]
 
 network = [
