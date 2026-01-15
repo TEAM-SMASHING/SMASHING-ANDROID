@@ -1,7 +1,6 @@
 package com.smashing.app.core.extension
 
 import android.graphics.BlurMaskFilter
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -33,7 +32,6 @@ import androidx.compose.ui.unit.dp
  * @param spread 그림자의 확장 크기입니다. 원본 크기에서 이 값만큼 확장되어 그림자가 그려집니다.
  *   기본값은 1.dp입니다.
  * */
-@Composable
 fun Modifier.dropShadow(
     shape: Shape,
     color: Color = Color.Black.copy(0.25f),
