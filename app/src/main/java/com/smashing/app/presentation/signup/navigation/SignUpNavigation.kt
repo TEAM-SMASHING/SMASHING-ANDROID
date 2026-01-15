@@ -11,9 +11,9 @@ import com.smashing.app.presentation.signup.SignUpRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToSignUp(
-    authId: String,
+    kakaoId: String,
     navOptions: NavOptions? = null,
-) = navigate(SignUp(authId), navOptions)
+) = navigate(SignUp(kakaoId), navOptions)
 
 fun NavGraphBuilder.signUpGraph(
     navigateToHome: () -> Unit,
@@ -29,5 +29,5 @@ fun NavGraphBuilder.signUpGraph(
 
 @Serializable
 data class SignUp(
-    val authId: String,
+    val kakaoId: String,
 )

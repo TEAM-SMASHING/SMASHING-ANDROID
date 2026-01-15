@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToSignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,15 +17,21 @@ class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
+    private val _sideEffect = MutableSharedFlow<LoginContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
+
     fun postKakaoLogin(
         context: Context,
-        onKakaoLoginSuccess: (String) -> Unit,
     ) = viewModelScope.launch {
         authRepository.loginKakao(context = context)
             .onSuccess { token ->
                 authRepository.postKakaoLogin(token)
                     .onSuccess {
-                        onKakaoLoginSuccess(it.authId)
+                        if (it.isCompletedSignUp) {
+                            _sideEffect.emit(LoginContract.SideEffect.NavigateToHome)
+                        } else {
+                            _sideEffect.emit(NavigateToSignUp(it.kakaoId))
+                        }
                         Timber.tag("KakaoLogin").d("로그인 성공 $token")
                     }
                     .onFailure { error ->
