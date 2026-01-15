@@ -19,6 +19,6 @@ data class BaseResponse<T>(
 )
 
 fun <T> BaseResponse<T>.requireData(): T {
-    if (statusCode != HTTP_OK || statusCode != HTTP_ACCEPTED) throw IllegalStateException("API request failed.")
+    if (statusCode != HTTP_OK && statusCode != HTTP_ACCEPTED) throw IllegalStateException("API request failed.")
     return data ?: throw IllegalStateException("Successful response but data was null.")
 }

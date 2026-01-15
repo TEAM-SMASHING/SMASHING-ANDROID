@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.login.component
+package com.smashing.app.presentation.signup.component.nickname
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

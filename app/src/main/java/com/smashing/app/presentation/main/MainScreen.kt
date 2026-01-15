@@ -2,7 +2,6 @@ package com.smashing.app.presentation.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -23,6 +22,7 @@ import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
+import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
@@ -87,12 +87,15 @@ private fun MainNavHost(
 
         profileGraph(
             innerPadding = innerPadding,
+            navigateUp = appState.navController::navigateUp,
+            navigateToReview = appState.navController::navigateToReview,
+            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         loginGraph(
-            navigateToSignUp = { authId ->
+            navigateToSignUp = { kakaoId ->
                 appState.navController.navigateToSignUp(
-                    authId = authId,
+                    kakaoId = kakaoId,
                     navOptions = navOptions {
                         popUpTo<Login> {
                             inclusive = true
