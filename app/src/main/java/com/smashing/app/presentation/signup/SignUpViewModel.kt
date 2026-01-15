@@ -88,6 +88,7 @@ class SignUpViewModel @Inject constructor(
 
     fun postValidateChatLink(
     ) {
+        //Todo: 오픈채팅 유효성 검증 api
     }
 
 
