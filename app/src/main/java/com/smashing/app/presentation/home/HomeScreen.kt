@@ -62,6 +62,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun HomeRoute(
     navigateToNotice: () -> Unit,
+    navigateToRegionChange: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -70,6 +71,7 @@ fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         navigateToNotice = navigateToNotice,
+        navigateToRegionChange = navigateToRegionChange,
         modifier = modifier,
     )
 }
@@ -78,6 +80,7 @@ fun HomeRoute(
 private fun HomeScreen(
     uiState: HomeContract.State,
     navigateToNotice: () -> Unit,
+    navigateToRegionChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -98,7 +101,7 @@ private fun HomeScreen(
             userSport = uiState.activeUserProfile.sportType,
             userTier = uiState.activeUserProfile.tierType,
             onClickRegion = {},
-            onChangeRegion = {},
+            onChangeRegion = navigateToRegionChange,
             onClickSportChip = {},
             onClickNotice = navigateToNotice,
             isNotice = uiState.isNotice
@@ -589,6 +592,7 @@ private fun HomeScreenPreview() {
             isNotice = true,
         ),
         navigateToNotice = {},
+        navigateToRegionChange = {},
     )
 }
 
@@ -623,5 +627,6 @@ private fun HomeScreenEmptyValuePreview() {
             isNotice = false,
         ),
         navigateToNotice = {},
+        navigateToRegionChange = {},
     )
 }
