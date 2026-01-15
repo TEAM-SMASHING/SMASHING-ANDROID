@@ -5,8 +5,10 @@ import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import com.smashing.app.data.mapper.toKakaoLoginToken
 import com.smashing.app.data.mapper.toSignUpModel
+import com.smashing.app.data.mapper.toSignUpNickNameAvailableModel
 import com.smashing.app.data.model.auth.KakaoLoginModel
 import com.smashing.app.data.model.auth.SignUpModel
+import com.smashing.app.data.model.auth.SignUpNickNameAvailableModel
 import com.smashing.app.data.remote.datasource.api.AuthRemoteDataSource
 import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
 import com.smashing.app.data.remote.dto.auth.PostKakaoLoginRequest
@@ -48,4 +50,12 @@ class AuthRepositoryImpl @Inject constructor(
 
             response.toSignUpModel()
         }
+
+    override suspend fun getNicknameAvailable(nickname: String): Result<SignUpNickNameAvailableModel> =
+        suspendRunCatching {
+            val response = authRemoteDataSource.getNicknameAvailable(nickname).requireData()
+
+            response.toSignUpNickNameAvailableModel()
+        }
+
 }
