@@ -3,6 +3,7 @@ package com.smashing.app.presentation.write.submit
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import com.smashing.app.core.common.type.ReviewRatingType
+import com.smashing.app.core.common.type.ReviewTagType
 import com.smashing.app.presentation.write.model.MatchPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableSet
@@ -68,12 +69,19 @@ class SubmitViewModel @Inject constructor(
     else receiverScore > submitterScore
 
     fun updateSelectedRatingType(type: ReviewRatingType) = _uiState.update { state ->
-        val next = if (type in state.selectedRatingTypes) {
+        val next = if (type in state.selectedRatingTypes)
             state.selectedRatingTypes - type
-        } else {
-            state.selectedRatingTypes + type
-        }
+        else state.selectedRatingTypes + type
+
         state.copy(selectedRatingTypes = next.toImmutableSet())
+    }
+
+    fun updateSelectedTagType(type: ReviewTagType) = _uiState.update { state ->
+        val next = if (type in state.selectedTagTypes)
+            state.selectedTagTypes - type
+        else state.selectedTagTypes + type
+
+        state.copy(selectedTagTypes = next.toImmutableSet())
     }
 
     private fun getDummyState(): SubmitContract.State {

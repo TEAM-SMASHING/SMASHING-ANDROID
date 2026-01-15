@@ -35,13 +35,14 @@ private const val REVIEW_RATIO = 328 / 156f
 fun WriteReviewContent(
     nickname: String,
     textFieldState: TextFieldState,
-    selectedCardItems: ImmutableSet<ReviewRatingType>,
-    onCardItemClick: (ReviewRatingType) -> Unit,
+    selectedReviewRatingTypes: ImmutableSet<ReviewRatingType>,
+    selectedReviewTagTypes: ImmutableSet<ReviewTagType>,
+    onReviewRatingClick: (ReviewRatingType) -> Unit,
+    onReviewTagClick: (ReviewTagType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .padding(horizontal = 16.dp),
+        modifier = modifier,
     ) {
         Text(
             text = "${nickname}과의\n경기는 어떠셨나요?",
@@ -68,8 +69,8 @@ fun WriteReviewContent(
         Spacer(Modifier.height(8.dp))
 
         ReviewRatingCard(
-            selectedItems = selectedCardItems,
-            onItemClick = onCardItemClick,
+            selectedItems = selectedReviewRatingTypes,
+            onItemClick = onReviewRatingClick,
         )
 
         Spacer(Modifier.height(28.dp))
@@ -90,10 +91,12 @@ fun WriteReviewContent(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             ReviewTagType.entries.forEach {
+                val isSelected = selectedReviewTagTypes.contains(it)
+
                 SmashingChip(
                     text = it.tagLabel,
-                    style = ChipStyle.INACTIVE,
-                    onClick = {},
+                    style = if (isSelected) ChipStyle.ACTIVE else ChipStyle.INACTIVE,
+                    onClick = { onReviewTagClick(it) },
                 )
             }
         }
@@ -121,9 +124,14 @@ private fun WriteReviewContentPreview() {
     SmashingAndroidTheme {
         WriteReviewContent(
             nickname = "닉네임",
-            selectedCardItems = persistentSetOf(ReviewRatingType.BAD, ReviewRatingType.GOOD),
-            onCardItemClick = {},
+            selectedReviewRatingTypes = persistentSetOf(
+                ReviewRatingType.BAD,
+                ReviewRatingType.GOOD
+            ),
+            selectedReviewTagTypes = persistentSetOf(ReviewTagType.ON_TIME),
             textFieldState = TextFieldState(),
+            onReviewRatingClick = {},
+            onReviewTagClick = {},
         )
     }
 }

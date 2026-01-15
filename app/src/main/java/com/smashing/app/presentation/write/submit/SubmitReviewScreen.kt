@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.core.common.type.ReviewRatingType
+import com.smashing.app.core.common.type.ReviewTagType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -27,6 +29,7 @@ import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.write.component.WriteReviewContent
 
 @Composable
@@ -43,6 +46,8 @@ fun SubmitReviewRoute(
         reviewTextFieldState = viewModel.reviewTextFieldState,
         onBackClick = navigateUp,
         onDoneClick = navigateToMatching,
+        onReviewRatingClick = viewModel::updateSelectedRatingType,
+        onReviewTagClick = viewModel::updateSelectedTagType,
         isButtonEnabled = uiState.isButtonEnabled,
         modifier = modifier,
     )
@@ -52,17 +57,21 @@ fun SubmitReviewRoute(
 private fun SubmitReviewScreen(
     uiState: SubmitContract.State,
     reviewTextFieldState: TextFieldState,
+    onReviewRatingClick: (ReviewRatingType) -> Unit,
+    onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
     onDoneClick: () -> Unit,
     isButtonEnabled: Boolean,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
-    var isDialogOpen by remember { mutableStateOf(false) }
+    var isAlertDialogOpen by remember { mutableStateOf(false) }
+    var isConfirmDialogOpen by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = SmashingTheme.colors.bgCanvas)
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
@@ -81,8 +90,10 @@ private fun SubmitReviewScreen(
             WriteReviewContent(
                 nickname = uiState.receiver.name,
                 textFieldState = reviewTextFieldState,
-                selectedCardItems = uiState.selectedRatingTypes,
-                onCardItemClick = {},
+                selectedReviewRatingTypes = uiState.selectedRatingTypes,
+                selectedReviewTagTypes = uiState.selectedTagTypes,
+                onReviewRatingClick = onReviewRatingClick,
+                onReviewTagClick = onReviewTagClick,
             )
 
             SmashingButton(
@@ -92,29 +103,32 @@ private fun SubmitReviewScreen(
                 isEnabled = isButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 48.dp),
+                    .padding(
+                        top = 13.dp,
+                        bottom = 48.dp,
+                    ),
             )
         }
 
-        if (isDialogOpen) {
+        if (isAlertDialogOpen) {
             SmashingDialog(
                 title = "매칭 결과를 제출하시겠습니까?",
                 subtitle = "정확한 경기 결과각 아닐 경우 반려될 수 있어요.",
                 type = DialogStyle.ALERT,
                 confirmText = "제출하기",
                 dismissText = "아니요",
-                onDismissRequest = { isDialogOpen = false },
+                onDismissRequest = { isAlertDialogOpen = false },
                 onConfirmClick = onDoneClick, // TODO: 제출하기
             )
         }
 
-        if (isDialogOpen) {
+        if (isConfirmDialogOpen) {
             SmashingDialog(
                 title = "매칭 결과를 제출하시겠습니까?",
                 subtitle = "정확한 경기 결과각 아닐 경우 반려될 수 있어요.",
                 type = DialogStyle.CONFIRM,
                 confirmText = "확인",
-                onDismissRequest = { isDialogOpen = false },
+                onDismissRequest = { isConfirmDialogOpen = false },
                 onConfirmClick = onDoneClick, // TODO: 제출하기
             )
         }
@@ -131,6 +145,8 @@ private fun SubmitReviewScreenPreview() {
             onBackClick = {},
             onDoneClick = {},
             isButtonEnabled = true,
+            onReviewTagClick = {},
+            onReviewRatingClick = {},
             modifier = Modifier,
         )
     }
