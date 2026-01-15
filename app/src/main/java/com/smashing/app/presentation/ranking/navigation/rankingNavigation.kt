@@ -1,6 +1,5 @@
 package com.smashing.app.presentation.ranking.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -12,14 +11,11 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateRankingPage(
     navOptions: NavOptions? = null,
-){
+) {
     navigate(RankingPage)
 }
 
-fun NavGraphBuilder.rankingPage(
-    paddingValues: PaddingValues,
-    navController: NavController,
-) {
+fun NavGraphBuilder.rankingPage() {
     composable<RankingPage> { backStackEntry ->
         RankingRoute(
             modifier = Modifier,
