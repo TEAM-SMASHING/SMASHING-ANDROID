@@ -33,10 +33,28 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun updateSelectedTierItem(item: String) {
+    fun updateSelectedTierItem(tierItem: String?) {
         _uiState.update {
-            it.copy(selectedTierItem = item)
+            it.copy(selectedTierItem = tierItem)
         }
+    }
+
+    fun applyTierItem() {
+        _uiState.update {
+            it.copy(
+                currentTierText = it.selectedTierItem,
+            )
+        }
+        closeTierBottomSheet()
+    }
+
+    fun applyGenderItem() {
+        _uiState.update {
+            it.copy(
+                currentGenderText = it.selectedGenderItem,
+            )
+        }
+        closeGenderBottomSheet()
     }
 
     fun openGenderBottomSheet() {
@@ -51,9 +69,9 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun updateSelectedGenderItem(item: String) {
+    fun updateSelectedGenderItem(genderItem: String?) {
         _uiState.update {
-            it.copy(selectedGenderItem = item)
+            it.copy(selectedGenderItem = genderItem)
         }
     }
 

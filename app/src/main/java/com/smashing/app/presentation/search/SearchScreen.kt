@@ -30,11 +30,10 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.search.component.MatchingSearchFilterChip
 import com.smashing.app.presentation.search.component.SearchTopBar
 import com.smashing.app.presentation.search.style.FilterStyle.DEFAULT
+import com.smashing.app.presentation.search.style.FilterStyle.VARIANT
 import kotlinx.collections.immutable.persistentListOf
 
 //Todo: 바텀시트 아이템 선택시
-// 칩 이름 바뀌기
-// 칩 상태 바뀌기
 // 필터링 되기
 
 @Composable
@@ -54,6 +53,8 @@ fun SearchRoute(
         onGenderBottomSheetOpen = viewModel::openGenderBottomSheet,
         onTierBottomSheetClose = viewModel::closeTierBottomSheet,
         onGenderBottomSheetClose = viewModel::closeGenderBottomSheet,
+        onTierApplyClick = viewModel::applyTierItem,
+        onGenderApplyClick = viewModel::applyGenderItem,
         modifier = modifier,
     )
 }
@@ -69,6 +70,8 @@ private fun SearchScreen(
     onGenderBottomSheetOpen: () -> Unit,
     onTierBottomSheetClose: () -> Unit,
     onGenderBottomSheetClose: () -> Unit,
+    onTierApplyClick: () -> Unit,
+    onGenderApplyClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -93,8 +96,8 @@ private fun SearchScreen(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             MatchingSearchFilterChip(
-                style = uiState.filterChipStyle,
-                text = if (uiState.filterChipStyle == DEFAULT) "티어" else "선택결과",
+                style = if (uiState.currentTierText == null) DEFAULT else VARIANT,
+                text = uiState.currentTierText ?: "티어",
                 onFilterClick = onTierBottomSheetOpen,
                 onFilterDelete = {
                     //uiState.filterChipStyle == DEFAULT
@@ -104,8 +107,8 @@ private fun SearchScreen(
             Spacer(modifier = Modifier.width(8.dp))
 
             MatchingSearchFilterChip(
-                style = uiState.filterChipStyle,
-                text = if (uiState.filterChipStyle == DEFAULT) "성별" else "선택결과",
+                style = if (uiState.currentGenderText == null) DEFAULT else VARIANT,
+                text = uiState.currentGenderText ?: "성별",
                 onFilterClick = onGenderBottomSheetOpen,
                 onFilterDelete = {
                     //uiState.filterChipStyle == DEFAULT
@@ -126,11 +129,11 @@ private fun SearchScreen(
                     "다이아",
                     "챌린저",
                 ),
-                selectedItem = uiState.selectedTierItem,
+                selectedItem = "${uiState.selectedTierItem}",
                 contentToBtnPadding = 4.dp,
                 btnText = "적용하기",
                 onItemClick = onTierItemClick,
-                onBtnClick = onTierBottomSheetClose,
+                onBtnClick = onTierApplyClick,
             )
         }
 
@@ -143,11 +146,11 @@ private fun SearchScreen(
                     "여성",
                     "남여 모두",
                 ),
-                selectedItem = uiState.selectedGenderItem,
+                selectedItem = "${uiState.selectedGenderItem}",
                 contentToBtnPadding = 4.dp,
                 btnText = "적용하기",
                 onItemClick = onGenderItemClick,
-                onBtnClick = onGenderBottomSheetClose,
+                onBtnClick = onGenderApplyClick,
             )
         }
 
@@ -193,6 +196,8 @@ private fun SearchScreenPreview() {
             onGenderBottomSheetOpen = {},
             onTierBottomSheetClose = {},
             onGenderBottomSheetClose = {},
+            onTierApplyClick = {},
+            onGenderApplyClick = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.search
 
 import androidx.compose.runtime.Immutable
+import com.kakao.sdk.user.model.Gender
 import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.TierType
 import com.smashing.app.presentation.search.style.FilterStyle
@@ -105,7 +106,9 @@ interface SearchContract {
         val filterChipStyle: FilterStyle = FilterStyle.DEFAULT,
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,
-        val selectedTierItem: String = "",
-        val selectedGenderItem: String = "",
+        val currentTierText: String? = null,
+        val currentGenderText: String? = null,
+        val selectedTierItem: String? = null,
+        val selectedGenderItem: String? = null,
     )
 }
