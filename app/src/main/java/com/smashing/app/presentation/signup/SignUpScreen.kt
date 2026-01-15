@@ -68,6 +68,7 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
+        nickNameState = viewModel.nickNameState,
         openChatLinkState = viewModel.openChatLinkState,
         selectedGender = uiState.selectedGender,
         selectedSport = uiState.selectedSport,
@@ -76,6 +77,7 @@ fun SignUpRoute(
         onGenderSelected = viewModel::updateSelectedGender,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
+        onDuplicateBtnClick = viewModel::getNickNameAvailable,
         onBackClick = {},
         modifier = modifier,
         onBtnClick = {
@@ -91,6 +93,7 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    nickNameState: TextFieldState,
     openChatLinkState: TextFieldState,
     selectedGender: GenderType?,
     selectedSport: SportType?,
@@ -99,6 +102,7 @@ private fun SignUpScreen(
     onGenderSelected: (GenderType) -> Unit,
     onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
+    onDuplicateBtnClick: () -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -131,8 +135,10 @@ private fun SignUpScreen(
 
                 when (uiState.currentStep) {
                     1 -> SignUpNickName(
-                        nickNameState = openChatLinkState, //Todo 수정 필요
-                        onDuplicateBtnClick = { },
+                        nickNameState = nickNameState,
+                        onDuplicateBtnClick = onDuplicateBtnClick,
+                        nickNameErrorText = uiState.nickNameErrorText,
+                        nickNameConfirmText = uiState.nickNameConfirmText,
                     )
 
                     2 -> SignUpGender(
@@ -198,6 +204,7 @@ private fun SignUpScreenPreview() {
         SignUpScreen(
             uiState = SignUpContract.State(),
             isBtnEnabled = true,
+            nickNameState = rememberTextFieldState(),
             selectedGender = null,
             onGenderSelected = {},
             openChatLinkState = rememberTextFieldState(),
@@ -206,6 +213,7 @@ private fun SignUpScreenPreview() {
             selectedSkill = null,
             onSkillSelected = {},
             onBackClick = {},
+            onDuplicateBtnClick = {},
             onBtnClick = { currentStep = currentStep + 1 },
             modifier = Modifier.background(color = colors.bgCanvas),
         )

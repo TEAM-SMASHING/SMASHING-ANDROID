@@ -1,6 +1,8 @@
 package com.smashing.app.presentation.signup
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import androidx.navigation.toRoute
 import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.SkillType
 import com.smashing.app.core.common.type.SportType
+import com.smashing.app.core.util.TextInputValidator
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
@@ -39,12 +42,17 @@ class SignUpViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<SignUpContract.SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
+    private val _nickNameState = TextFieldState("")
+    val nickNameState: TextFieldState get() = _nickNameState
+
+    var isNickNameAvailable: Boolean = false
+
     private val _openChatLinkState = TextFieldState("")
     val openChatLinkState: TextFieldState get() = _openChatLinkState
 
     val isBtnEnabled: Boolean
         get() = when(_uiState.value.currentStep) {
-        1 -> true
+        1 -> isNickNameAvailable
         2 -> _uiState.value.selectedGender != null
         3 -> true
         4 -> _uiState.value.selectedSport != null
@@ -53,11 +61,36 @@ class SignUpViewModel @Inject constructor(
             else -> true
     }
 
+    init {
+        updateNickNameErrorText()
+    }
+
 
     fun updateCurrentStep() {
         _uiState.update {
             it.copy(currentStep = it.currentStep + 1)
         }
+    }
+
+    fun updateNickNameErrorText() = viewModelScope.launch {
+        snapshotFlow { nickNameState.text }
+            .collect { nickNameText ->
+                val text = nickNameText.toString()
+                val isNickNameValid = TextInputValidator.isTextInputValid(text)
+                if (text.isNotEmpty() && !isNickNameValid) {
+                    _uiState.update {
+                        it.copy(
+                            nickNameErrorText = "특수문자는 사용할 수 없습니다."
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            nickNameErrorText = null,
+                        )
+                    }
+                }
+            }
     }
 
     suspend fun updateOpenChatLink() {
@@ -89,6 +122,20 @@ class SignUpViewModel @Inject constructor(
     fun postValidateChatLink(
     ) {
         //Todo: 오픈채팅 유효성 검증 api
+    }
+
+    fun getNickNameAvailable() = viewModelScope.launch {
+        authRepository.getNicknameAvailable(nickNameState.text.toString())
+            .onSuccess {
+                _uiState.update {
+                    it.copy(nickNameConfirmText = "사용 가능한 닉네임입니다.")
+                }
+                isNickNameAvailable = true
+            }
+            .onFailure { error ->
+                _uiState.update {
+                    it.copy(nickNameErrorText = "$error")}
+            }
     }
 
 

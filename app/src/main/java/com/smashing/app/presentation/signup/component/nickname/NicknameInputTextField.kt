@@ -99,7 +99,7 @@ fun NicknameInputTextField(
         if (isError) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 5.dp),
+                modifier = Modifier.padding(top = 5.dp, start = 6.dp,),
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_warning),
@@ -118,15 +118,13 @@ fun NicknameInputTextField(
         } else if (isConfirm) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 7.dp),
+                modifier = Modifier.padding(bottom = 8.dp),
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_check),
                     contentDescription = "Success",
                     tint = SmashingTheme.colors.iconSuccess,
                 )
-
-                Spacer(modifier = Modifier.padding(start = 7.dp))
 
                 Text(
                     text = confirmText,

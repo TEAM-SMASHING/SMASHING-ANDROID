@@ -28,6 +28,8 @@ import com.smashing.app.R.string.sign_up_nickname_duplicate
 @Composable
 fun SignUpNickName (
     nickNameState: TextFieldState,
+    nickNameErrorText: String?,
+    nickNameConfirmText: String?,
     onDuplicateBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -44,6 +46,8 @@ fun SignUpNickName (
                 state = nickNameState,
                 placeholder = stringResource(sign_up_nickname_title),
                 modifier = Modifier.weight(1f),
+                errorText = nickNameErrorText,
+                confirmText = nickNameConfirmText,
             )
 
             Spacer(modifier = Modifier.width(10.dp))
@@ -71,6 +75,8 @@ private fun SignUpNickNamePreview() {
     SmashingAndroidTheme {
         SignUpNickName(
             nickNameState = rememberTextFieldState(""),
+            nickNameErrorText = null,
+            nickNameConfirmText = null,
             onDuplicateBtnClick = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
