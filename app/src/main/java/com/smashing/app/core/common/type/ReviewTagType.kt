@@ -10,9 +10,9 @@ enum class ReviewTagType(
         tagLabel = "경기 매너가 좋아요",
     ),
     FAIR_PLAY(
-        "승패를 깔끔하게 인정해요",
+        tagLabel = "승패를 깔끔하게 인정해요",
     ),
     FAST_RESPONSE(
-      tagLabel = "응답이 빨라요",
+        tagLabel = "응답이 빨라요",
     ),
 }
