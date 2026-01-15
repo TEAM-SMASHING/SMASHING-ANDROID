@@ -22,8 +22,6 @@ import com.smashing.app.R.drawable.ic_radio_fill
 import com.smashing.app.R.drawable.ic_radio_empty
 import com.smashing.app.R.string.sign_up_skill_title
 import com.smashing.app.R.string.sign_up_skill_subtitle
-import com.smashing.app.R.string.sign_up_sport_subtitle
-import com.smashing.app.R.string.sign_up_sport_title
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
