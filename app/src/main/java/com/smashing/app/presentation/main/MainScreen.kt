@@ -1,7 +1,10 @@
 package com.smashing.app.presentation.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -20,6 +23,7 @@ import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
+import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
@@ -37,12 +41,18 @@ fun MainScreen(
 
     Scaffold(
         bottomBar = {
+            AnimatedVisibility(
+                visible = isBottomBarVisible,
+                enter = slideInVertically (initialOffsetY={it}),
+                exit = slideOutVertically(targetOffsetY = { it })
+            ) {
             MainBottomBar(
                 isVisible = isBottomBarVisible,
                 tabs = MainTab.entries.toImmutableList(),
                 currentTab = currentTab,
                 onTabSelected = appState::navigate,
             )
+            }
         },
         containerColor = SmashingTheme.colors.bgCanvas,
         modifier = Modifier
@@ -84,6 +94,9 @@ private fun MainNavHost(
 
         profileGraph(
             innerPadding = innerPadding,
+            navigateUp = appState.navController::navigateUp,
+            navigateToReview = appState.navController::navigateToReview,
+            updateBottomBar= appState::updateBottomBarVisible,
         )
 
         loginGraph(
