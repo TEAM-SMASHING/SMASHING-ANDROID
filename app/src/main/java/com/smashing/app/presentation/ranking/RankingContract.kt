@@ -3,13 +3,15 @@ package com.smashing.app.presentation.ranking
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.rank.UserRank
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 interface RankingContract {
     @Immutable
     data class State(
         val rankingUiState: RankingUiState = RankingUiState.Idle,
-        val rankingList: ImmutableList<UserRank> = emptyList<UserRank>().toImmutableList(),
+        val rankingList: ImmutableList<UserRank> = persistentListOf(),
+        val userInfo: UserRank? = null,
     )
 }
 
