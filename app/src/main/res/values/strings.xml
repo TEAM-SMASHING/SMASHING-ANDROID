@@ -8,6 +8,11 @@
     <string name="count">%d</string>
     <string name="no">아니요</string>
     <string name="cancel">취소하기</string>
+    <string name="score_format">%1$d : %2$d</string>
+    <string name="next">다음</string>
+    <string name="asterisk_label">*</string>
+    <string name="zero_label">0</string>
+    <string name="score_separator">:</string>
 
     <!-- Login -->
     <string name="kakao_login">카카오로 시작하기</string>
@@ -34,8 +39,33 @@
     <!--Dropdown -->
     <string name="dropdown_region_select">지역 선택</string>
     <string name="dropdown_winner_select">승자 선택</string>
-    <!--Home  -->
+    <!--SignUp  -->
+    <string name="sign_up_next_btn">다음</string>
+    <string name="sign_up_end_btn">완료</string>
+    <string name="sign_up_nickname_title">닉네임을 입력해주세요</string>
+    <string name="sign_up_nickname_subtitle">한글, 영어, 숫자만 가능해요</string>
+    <string name="sign_up_nickname_duplicate">중복확인</string>
+    <string name="sign_up_gender_title">성별을 선택해주세요</string>
+    <string name="sign_up_chat_link_title">카카오톡 오픈채팅 링크를 입력해주세요</string>
+    <string name="sign_up_chat_link_subtitle">매칭이 확정되면 상대방이 확인할 수 있어요</string>
+    <string name="sign_up_chat_link_placeholder">오픈채팅 링크를 입력해주세요</string>
+    <string name="sign_up_sport_title">종목을 선택해주세요</string>
+    <string name="sign_up_sport_subtitle">회원가입 이후 종목을 추가할 수 있어요</string>
+    <string name="sign_up_skill_title">구력을 선택해주세요</string>
+    <string name="sign_up_skill_subtitle">구력을 통해 임시 티어가 결정돼요</string>
+    <string name="sign_up_location_title">활동 지역을 설정해주세요</string>
+    <string name="sign_up_location_subtitle">서울 소재 주소만 입력 가능해요</string>
+    <string name="sign_up_location_placeholder">주소를 검색해주세요</string>
+    <string name="sign_up_finish_title">환영합니다!</string>
+    <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
 
+
+    <!--Home  -->
+    <string name="home_no_matching">아직 확정된 매칭이 없어요.\n지금 바로 매칭을 신청해보세요!</string>
+    <string name="home_all_text">모두 보기</string>
+    <string name="home_region_ranker">우리 동네 랭커</string>
+    <string name="home_no_user">아직 동네 유저가 없습니다.</string>
+    <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요.</string>
     <!--Matching -->
     <string name="matching_write">결과 작성하기</string>
     <string name="matching_receive">받은 요청</string>
@@ -53,4 +83,29 @@
     <!--Profile -->
     <!--Notice  -->
     <string name="notice">알림</string>
+    <!--Profile-->
+    <string name="win_label">승리</string>
+    <string name="lose_label">패배</string>
+    <string name="rate_label">승률</string>
+    <string name="add_sports_label">+</string>
+    <string name="tier_description">티어 설명</string>
+    <string name="lp_remaining_text">LP 남았어요!</string>
+    <string name="lp_status">LP</string>
+    <string name="record_label">전적</string>
+    <string name="receive_review">받은 후기</string>
+    <string name="short_review">빠른 후기</string>
+    <string name="all_review">모두 보기</string>
+    <string name="on_time_review">시간 약속을 잘 지켜요</string>
+    <string name="good_manner_review">경기 매너가 좋아요</string>
+    <string name="fair_play_review">승패를 깔끔하게 인정해요</string>
+    <string name="fast_response_review">응답이 빨라요</string>
+    <string name="satisfaction_review">만족도</string>
+    <string name="profile_rate_percent">%d%%</string>
+
+    <!--Submit  -->
+    <string name="submit_matching_result">매칭 결과 작성</string>
+    <string name="submit_title">경기 결과를 작성해주세요</string>
+    <string name="submit_description">악의적인 결과 작성 시 활동이 제한될 수 있어요</string>
+    <string name="submit_winner">승자</string>
+    <string name="submit_score">스코어</string>
 </resources>
