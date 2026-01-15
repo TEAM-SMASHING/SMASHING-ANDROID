@@ -116,7 +116,6 @@ fun SmashingRankingItem(
         Spacer(modifier = Modifier.width(10.dp))
 
         Column(
-            modifier = Modifier,
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
