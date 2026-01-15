@@ -74,13 +74,20 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun updateCurrentGenderText(genderText: String?) = _uiState.update {
+        it.copy(
+            currentGenderText = genderText,
+        )
+    }
+
     fun applyGenderItem() {
-        _uiState.update {
-            it.copy(
-                currentGenderText = it.selectedGenderItem,
-            )
-        }
+        updateCurrentGenderText(_uiState.value.selectedGenderItem)
         closeGenderBottomSheet()
+    }
+
+    fun clearFilterGender() {
+        updateCurrentGenderText(null)
+        updateSelectedGenderItem(null)
     }
 
     // TODO 더미 데이터 삭제 예정
