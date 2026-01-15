@@ -4,8 +4,10 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
@@ -63,9 +65,11 @@ private fun SubmitResultScreen(
 ) {
     Column(
         modifier = modifier
+            .fillMaxSize()
             .background(
-                color = SmashingTheme.colors.bgSurface,
-            ),
+                color = SmashingTheme.colors.bgCanvas,
+            )
+            .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
             title = stringResource(submit_matching_result),
@@ -75,6 +79,7 @@ private fun SubmitResultScreen(
 
         Column(
             modifier = Modifier
+                .weight(1f)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
