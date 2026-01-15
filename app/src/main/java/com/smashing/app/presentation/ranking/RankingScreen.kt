@@ -63,12 +63,13 @@ fun RankingRoute(
 }
 
 @Composable
-fun RankingScreen(
+private fun RankingScreen(
     uiState: RankingContract.State,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
+            .systemBarsPadding()
             .fillMaxSize()
             .systemBarsPadding()
             .background(
@@ -181,7 +182,7 @@ fun RankingScreen(
 }
 
 @Composable
-fun MyRanking(
+private fun MyRanking(
     userId: String,
     nickname: String,
     tier: TierType,
