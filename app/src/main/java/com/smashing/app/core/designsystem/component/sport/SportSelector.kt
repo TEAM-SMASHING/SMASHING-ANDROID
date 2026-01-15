@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.string.sign_up_sport_subtitle
 import com.smashing.app.R.string.sign_up_sport_title
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
-import com.smashing.app.core.designsystem.icon.icon
+import com.smashing.app.core.designsystem.mapper.icon
 import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors

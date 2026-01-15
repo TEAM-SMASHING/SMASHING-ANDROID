@@ -27,7 +27,7 @@ import com.smashing.app.R.string.record_label
 import com.smashing.app.R.string.review
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.image.UrlImage
-import com.smashing.app.core.designsystem.icon.icon20
+import com.smashing.app.core.designsystem.mapper.icon20
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.util.ProfileImageProvider
