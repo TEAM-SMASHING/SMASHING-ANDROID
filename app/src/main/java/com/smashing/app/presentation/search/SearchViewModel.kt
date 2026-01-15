@@ -22,23 +22,20 @@ class SearchViewModel @Inject constructor(
         getDummyList()
     }
 
-    fun openTierBottomSheet() {
+    fun openTierBottomSheet() =
         _uiState.update {
             it.copy(isTierBottomSheetEnabled = true)
         }
-    }
 
-    fun closeTierBottomSheet() {
+    fun closeTierBottomSheet() =
         _uiState.update {
             it.copy(isTierBottomSheetEnabled = false)
         }
-    }
 
-    fun updateSelectedTierItem(tierItem: String?) {
+    fun updateSelectedTierItem(tierItem: String?) =
         _uiState.update {
             it.copy(selectedTierItem = tierItem)
         }
-    }
 
     fun applyTierItem() {
         updateCurrentTierText(_uiState.value.selectedTierItem)
@@ -50,35 +47,34 @@ class SearchViewModel @Inject constructor(
         updateSelectedTierItem(null)
     }
 
-    fun updateCurrentTierText(tierText: String?) = _uiState.update {
-        it.copy(
-            currentTierText = tierText,
-        )
-    }
+    fun updateCurrentTierText(tierText: String?) =
+        _uiState.update {
+            it.copy(
+                currentTierText = tierText,
+            )
+        }
 
-    fun openGenderBottomSheet() {
+    fun openGenderBottomSheet() =
         _uiState.update {
             it.copy(isGenderBottomSheetEnabled = true)
         }
-    }
 
-    fun closeGenderBottomSheet() {
+    fun closeGenderBottomSheet() =
         _uiState.update {
             it.copy(isGenderBottomSheetEnabled = false)
         }
-    }
 
-    fun updateSelectedGenderItem(genderItem: String?) {
+    fun updateSelectedGenderItem(genderItem: String?) =
         _uiState.update {
             it.copy(selectedGenderItem = genderItem)
         }
-    }
 
-    fun updateCurrentGenderText(genderText: String?) = _uiState.update {
-        it.copy(
-            currentGenderText = genderText,
-        )
-    }
+    fun updateCurrentGenderText(genderText: String?) =
+        _uiState.update {
+            it.copy(
+                currentGenderText = genderText,
+            )
+        }
 
     fun applyGenderItem() {
         updateCurrentGenderText(_uiState.value.selectedGenderItem)
