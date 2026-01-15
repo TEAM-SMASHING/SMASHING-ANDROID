@@ -105,18 +105,29 @@ fun ProfileReviewCard(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Column {
-            reviews.take(3).forEachIndexed { index, review ->
-                ReviewItem(
-                    review = review,
-                )
+        if (reviews.isEmpty()) {
+            Text(
+                text = "아직 받은 후기가 없어요",
+                style = SmashingTheme.typography.sm.regular14,
+                color = SmashingTheme.colors.txtPrimary,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
 
-                if (index < REVIEW_ITEM_COUNT - 1) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 12.dp),
-                        thickness = 1.dp,
-                        color = SmashingTheme.colors.borderPrimary,
+        } else {
+            Column {
+                reviews.take(3).forEachIndexed { index, review ->
+                    ReviewItem(
+                        review = review,
                     )
+
+                    if (index < REVIEW_ITEM_COUNT - 1) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            thickness = 1.dp,
+                            color = SmashingTheme.colors.borderPrimary,
+                        )
+                    }
                 }
             }
         }
