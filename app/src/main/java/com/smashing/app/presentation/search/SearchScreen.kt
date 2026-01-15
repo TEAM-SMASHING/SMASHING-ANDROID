@@ -34,20 +34,20 @@ import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
-fun SearchRoute(
-    modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = hiltViewModel(),
-) {
+        fun SearchRoute(
+            modifier: Modifier = Modifier,
+            viewModel: SearchViewModel = hiltViewModel(),
+        ) {
 
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    SearchScreen(
-        uiState = uiState,
-        onProfileClick = {},
-        onTierItemClick = viewModel::updateSelectedTierItem,
-        onGenderItemClick = viewModel::updateSelectedGenderItem,
-        onTierBottomSheetOpen = viewModel::openTierBottomSheet,
-        onGenderBottomSheetOpen = viewModel::openGenderBottomSheet,
+            SearchScreen(
+                uiState = uiState,
+                onProfileClick = {},
+                onTierItemClick = viewModel::updateSelectedTierItem,
+                onGenderItemClick = viewModel::updateSelectedGenderItem,
+                onTierBottomSheetOpen = viewModel::openTierBottomSheet,
+                onGenderBottomSheetOpen = viewModel::openGenderBottomSheet,
         onTierBottomSheetClose = viewModel::closeTierBottomSheet,
         onGenderBottomSheetClose = viewModel::closeGenderBottomSheet,
         modifier = modifier,
