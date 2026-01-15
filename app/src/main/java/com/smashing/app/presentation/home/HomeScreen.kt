@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -125,14 +126,14 @@ private fun HomeScreen(
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
-                                text = "곧 다가오는 매칭이 있어요.",
+                                text = stringResource(R.string.home_clos_matching_txt),
                                 style = SmashingTheme.typography.xl.semibold20,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                         }
 
                         Text(
-                            text = "모두 보기",
+                            text = stringResource(R.string.home_all_text),
                             style = SmashingTheme.typography.sm.medium14,
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
@@ -207,7 +208,7 @@ private fun HomeScreen(
                         }
                     } else {
                         Text(
-                            text = "아직 동네 유저가 없습니다.",
+                            text = stringResource(R.string.home_no_user),
                             style = SmashingTheme.typography.md.medium16,
                             color = SmashingTheme.colors.txtTertiary,
                             textAlign = TextAlign.Center,
@@ -241,7 +242,7 @@ private fun HomeScreen(
                         verticalAlignment = Alignment.Bottom,
                     ) {
                         Text(
-                            text = "우리 동네 랭커",
+                            text = stringResource(R.string.home_region_ranker),
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -249,7 +250,7 @@ private fun HomeScreen(
                         Spacer(modifier = Modifier.weight(1f))
 
                         Text(
-                            text = "모두 보기",
+                            text = stringResource(R.string.home_all_text),
                             style = SmashingTheme.typography.sm.medium14,
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
@@ -392,7 +393,7 @@ private fun CloseMatching(
 
         } else {
             Text(
-                text = "아직 확정된 매칭이 없어.\n지금 바로 매칭을 신청해보세요!",
+                text = stringResource(R.string.home_no_matching),
                 style = SmashingTheme.typography.md.medium16,
                 color = SmashingTheme.colors.txtTertiary,
                 textAlign = TextAlign.Center,
