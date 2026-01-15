@@ -32,22 +32,26 @@ import com.smashing.app.presentation.search.component.SearchTopBar
 import com.smashing.app.presentation.search.style.FilterStyle.DEFAULT
 import kotlinx.collections.immutable.persistentListOf
 
+//Todo: 바텀시트 아이템 선택시
+// 칩 이름 바뀌기
+// 칩 상태 바뀌기
+// 필터링 되기
 
 @Composable
-        fun SearchRoute(
-            modifier: Modifier = Modifier,
-            viewModel: SearchViewModel = hiltViewModel(),
-        ) {
+fun SearchRoute(
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = hiltViewModel(),
+) {
 
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            SearchScreen(
-                uiState = uiState,
-                onProfileClick = {},
-                onTierItemClick = viewModel::updateSelectedTierItem,
-                onGenderItemClick = viewModel::updateSelectedGenderItem,
-                onTierBottomSheetOpen = viewModel::openTierBottomSheet,
-                onGenderBottomSheetOpen = viewModel::openGenderBottomSheet,
+    SearchScreen(
+        uiState = uiState,
+        onProfileClick = {},
+        onTierItemClick = viewModel::updateSelectedTierItem,
+        onGenderItemClick = viewModel::updateSelectedGenderItem,
+        onTierBottomSheetOpen = viewModel::openTierBottomSheet,
+        onGenderBottomSheetOpen = viewModel::openGenderBottomSheet,
         onTierBottomSheetClose = viewModel::closeTierBottomSheet,
         onGenderBottomSheetClose = viewModel::closeGenderBottomSheet,
         modifier = modifier,
