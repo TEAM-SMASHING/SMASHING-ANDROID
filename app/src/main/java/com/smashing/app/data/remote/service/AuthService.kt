@@ -1,10 +1,10 @@
 package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
-import com.smashing.app.data.remote.dto.PostKakaoLoginRequest
-import com.smashing.app.data.remote.dto.PostKakaoLoginResponse
-import com.smashing.app.data.remote.dto.PostSignUpRequest
-import com.smashing.app.data.remote.dto.PostSignUpResponse
+import com.smashing.app.data.remote.dto.auth.PostKakaoLoginRequest
+import com.smashing.app.data.remote.dto.auth.PostKakaoLoginResponse
+import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
+import com.smashing.app.data.remote.dto.auth.PostSignUpResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 

@@ -10,7 +10,7 @@ import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.SkillType
 import com.smashing.app.core.common.type.SportType
 import com.smashing.app.data.model.auth.SignUpModel
-import com.smashing.app.data.remote.dto.PostSignUpRequest
+import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.signup.navigation.SignUp
