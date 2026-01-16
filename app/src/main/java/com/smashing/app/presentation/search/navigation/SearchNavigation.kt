@@ -1,8 +1,6 @@
 package com.smashing.app.presentation.search.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -18,9 +16,11 @@ fun NavController.navigateToSearch(
 
 fun NavGraphBuilder.searchGraph(
     innerPadding: PaddingValues,
+    navigateToSearchInput: () -> Unit,
 ) {
     composable<Search> {
         SearchRoute(
+            navigateToSearchInput = navigateToSearchInput,
             modifier = Modifier
         )
     }

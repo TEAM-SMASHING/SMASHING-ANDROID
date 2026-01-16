@@ -35,6 +35,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SearchRoute(
+    navigateToSearchInput: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -43,6 +44,7 @@ fun SearchRoute(
 
     SearchScreen(
         uiState = uiState,
+        onSearchClick = navigateToSearchInput,
         onProfileClick = {},
         onTierItemClick = viewModel::updateSelectedTierItem,
         onGenderItemClick = viewModel::updateSelectedGenderItem,
@@ -62,6 +64,7 @@ fun SearchRoute(
 @Composable
 private fun SearchScreen(
     uiState: SearchContract.State,
+    onSearchClick: () -> Unit,
     onProfileClick: () -> Unit,
     onTierItemClick: (String) -> Unit,
     onGenderItemClick: (String) -> Unit,
@@ -89,6 +92,7 @@ private fun SearchScreen(
     ) {
 
         SearchTopBar(
+            onSearchClick = onSearchClick,
             onRegionSelectClick = {},
             onReginItemClick = {},
         )
@@ -186,6 +190,7 @@ private fun SearchScreenPreview() {
     SmashingAndroidTheme {
         SearchScreen(
             uiState = SearchContract.State(),
+            onSearchClick = {},
             onProfileClick = {},
             onTierItemClick = {},
             onGenderItemClick = {},

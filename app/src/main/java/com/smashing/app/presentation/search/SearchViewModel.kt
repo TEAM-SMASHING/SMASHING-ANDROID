@@ -1,14 +1,19 @@
 package com.smashing.app.presentation.search
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.common.type.TierType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,8 +23,25 @@ class SearchViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SearchContract.State())
     val uiState = _uiState.asStateFlow()
 
+    val searchInputState = TextFieldState()
+
     init {
         getDummyList()
+        updateSearchInputText()
+    }
+
+    @OptIn(FlowPreview::class)
+    fun updateSearchInputText() = viewModelScope.launch {
+        snapshotFlow { searchInputState.text }
+            .collect { searchInputText ->
+                val text = searchInputState.toString()
+
+                if (text.isEmpty()) {
+                    // Todo: 리스트 빈걸로
+                } else {
+                    // Todo: 검색 api 호출
+                }
+            }
     }
 
     fun openTierBottomSheet() =

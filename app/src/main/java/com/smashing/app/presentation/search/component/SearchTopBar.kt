@@ -24,10 +24,12 @@ import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.extension.noRippleClickable
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SearchTopBar(
+    onSearchClick: () -> Unit,
     onRegionSelectClick: () -> Unit,
     onReginItemClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -67,6 +69,8 @@ fun SearchTopBar(
             imageVector = ImageVector.vectorResource(ic_search_lg),
             contentDescription = null,
             tint = colors.iconPrimary,
+            modifier = Modifier
+                .noRippleClickable(onClick = onSearchClick)
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -85,6 +89,7 @@ fun SearchTopBar(
 private fun SearchTopBarPreview() {
     SmashingAndroidTheme {
         SearchTopBar(
+            onSearchClick = {},
             onRegionSelectClick = {},
             onReginItemClick = {},
             modifier = Modifier

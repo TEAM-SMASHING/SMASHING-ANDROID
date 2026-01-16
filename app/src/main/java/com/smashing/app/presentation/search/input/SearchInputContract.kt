@@ -7,7 +7,6 @@ import kotlinx.collections.immutable.persistentListOf
 interface SearchInputContract {
     @Immutable
     data class State(
-        val searchInput: String = "",
         val suggestions: ImmutableList<SuggestionItem> = persistentListOf(),
         val isSuggestionVisible: Boolean = false,
     )

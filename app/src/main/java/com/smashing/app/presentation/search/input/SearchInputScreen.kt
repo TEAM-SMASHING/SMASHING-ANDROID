@@ -2,8 +2,10 @@ package com.smashing.app.presentation.search.input
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
@@ -21,6 +23,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.presentation.search.input.component.SearchInputEmpty
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -34,6 +37,7 @@ fun SearchInputRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SearchInputScreen(
+        uiState = uiState,
         items = uiState.suggestions,
         searchState = viewModel.searchInput,
         onBackClick = {},
@@ -44,6 +48,7 @@ fun SearchInputRoute(
 
 @Composable
 private fun SearchInputScreen(
+    uiState: SearchInputContract.State,
     items: ImmutableList<SuggestionItem>,
     searchState: TextFieldState,
     onBackClick: () -> Unit,
@@ -51,7 +56,9 @@ private fun SearchInputScreen(
     modifier: Modifier = Modifier,
 ) {
     Column (
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize()
+            .systemBarsPadding(),
     ){
         SmashingSearchTopBar(
             searchState = searchState,
@@ -59,19 +66,23 @@ private fun SearchInputScreen(
             onBackClick = onBackClick,
         )
 
-        items.forEach { item ->
-            Text(
-                text = item.nickname,
-                color = colors.txtSecondary,
-                style = typography.sm.medium14,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .noRippleClickable(
-                        onClick = onSuggestionItemClick,
-                    )
-                    .padding(vertical = 12.dp)
-                    .padding(start = 16.dp),
-            )
+        if(uiState.suggestions.isNotEmpty()) {
+            items.forEach { item ->
+                Text(
+                    text = item.nickname,
+                    color = colors.txtSecondary,
+                    style = typography.sm.medium14,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .noRippleClickable(
+                            onClick = onSuggestionItemClick,
+                        )
+                        .padding(vertical = 12.dp)
+                        .padding(start = 16.dp),
+                )
+            }
+        } else {
+            SearchInputEmpty()
         }
     }
 
@@ -82,24 +93,8 @@ private fun SearchInputScreen(
 private fun SearchInputScreenPreview() {
     SmashingAndroidTheme {
         SearchInputScreen(
-            items = persistentListOf(
-                SuggestionItem(
-                    userId = "1",
-                    nickname = "바나나"
-                ),
-                SuggestionItem(
-                    userId = "2",
-                    nickname = "바나1"
-                ),
-                SuggestionItem(
-                    userId = "3",
-                    nickname = "바나2"
-                ),
-                SuggestionItem(
-                    userId = "4",
-                    nickname = "바나3"
-                ),
-            ),
+            uiState = SearchInputContract.State(),
+            items = persistentListOf(),
             searchState = rememberTextFieldState(),
             onBackClick = {},
             onSuggestionItemClick = {},
