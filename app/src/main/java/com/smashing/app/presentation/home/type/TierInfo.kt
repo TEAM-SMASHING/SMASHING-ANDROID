@@ -3,8 +3,8 @@ package com.smashing.app.presentation.home.type
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
-import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.type.TierType
 
 enum class TierInfo(
     val tierName: String,

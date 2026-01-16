@@ -29,8 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
-import com.smashing.app.core.common.type.SportType
-import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle
@@ -38,6 +36,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.model.profile.ActiveUserProfile
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.HomeContract
 import com.smashing.app.presentation.home.HomeUiState
 import com.smashing.app.presentation.home.HomeViewModel
@@ -231,7 +231,7 @@ private fun TierInfoScreenPreview() {
                 region = "서울",
                 profileId = "0USP111222333",
                 sportType = SportType.TENNIS,
-                tierType = TierType.GOLD_1, // 초기 티어
+                tierType = TierType.GOLD_1,
                 lp = 123,
                 minLp = 100,
                 maxLp = 500,
