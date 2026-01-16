@@ -99,7 +99,7 @@ class SignUpViewModel @Inject constructor(
         if(selectedGender != null && selectedSport != null && selectedSkill != null){
             val request = PostSignUpRequest(
                 kakaoId = kakaoId,
-                nickname = "이지민",
+                nickname = "공승준",
                 gender = selectedGender.name,
                 openChatUrl = "https://open.kakao.com/o/xxxx",
                 sportCode = selectedSport.code,

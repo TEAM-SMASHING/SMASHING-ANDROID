@@ -61,7 +61,7 @@ fun MatchingRoute(
     MatchingScreen(
         navigateToSubmit = navigateToSubmit,
         uiState = uiState,
-        onTabClick = viewModel::updateMatchingType,
+        onTabClick = viewModel::selectMatchingType,
         onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
         modifier = modifier,
@@ -204,7 +204,7 @@ private fun MatchingList(
         modifier = modifier,
     ) {
         when (uiState.selectedType) {
-            MatchingType.SEND -> items(uiState.sendList) {
+            MatchingType.SEND -> items(uiState.sentList) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
                         userId = it.userId,
@@ -220,7 +220,7 @@ private fun MatchingList(
                 )
             }
 
-            MatchingType.RECEIVE -> items(uiState.receiveList) {
+            MatchingType.RECEIVE -> items(uiState.receivedList) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
                         userId = it.userId,

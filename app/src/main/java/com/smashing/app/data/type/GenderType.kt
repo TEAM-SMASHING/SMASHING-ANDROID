@@ -1,16 +1,16 @@
 package com.smashing.app.data.type
 
 enum class GenderType(
-    val gender: String,
+    val displayName: String,
 ) {
     FEMALE(
-        gender = "여성",
+        displayName = "여성",
     ),
     MALE(
-        gender = "남성",
+        displayName = "남성",
     );
 
     companion object {
-        fun findGenderType(gender: String): GenderType? = entries.find { it.gender == gender }
+        fun findByName(name: String): GenderType? = entries.find { it.name == name }
     }
 }

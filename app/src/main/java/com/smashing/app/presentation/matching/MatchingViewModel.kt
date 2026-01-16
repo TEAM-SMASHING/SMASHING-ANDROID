@@ -1,29 +1,50 @@
 package com.smashing.app.presentation.matching
 
 import androidx.lifecycle.ViewModel
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.TierType
+import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.matching.ReceivedMatching
 import com.smashing.app.data.model.matching.SentMatching
+import com.smashing.app.data.repository.api.MatchingRepository
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.matching.type.MatchingType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import javax.inject.Inject
 
 @HiltViewModel
 class MatchingViewModel @Inject constructor(
+    private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
 
-    fun updateMatchingType(type: MatchingType) = _uiState.update {
+    fun selectMatchingType(type: MatchingType) {
+        updateMatchingType(type)
+        when (type) {
+            MatchingType.RECEIVE -> fetchReceivedMatchingList(true)
+            MatchingType.SEND -> {
+                //  fetchSentMatchingList()
+            }
+
+            MatchingType.ACCEPTED -> {
+                // fetchAcceptedMatchingList()
+            }
+        }
+    }
+
+    private fun updateMatchingType(type: MatchingType) = _uiState.update {
         it.copy(selectedType = type)
     }
 
@@ -33,6 +54,33 @@ class MatchingViewModel @Inject constructor(
 
     fun hideDialogVisible() = _uiState.update {
         it.copy(isDialogVisible = false)
+    }
+
+    private fun fetchReceivedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
+        matchingRepository.getMeReceivedMatchingList(
+            snapshotAt = if (isRefresh) null else _uiState.value.receivedCursor.snapshotAt,
+            cursor = if (isRefresh) null else _uiState.value.receivedCursor.nextCursor,
+            size = CURSOR_SIZE,
+        ).onSuccess { cursorPage ->
+            Timber.tag("MatchingViewModel").d("fetchReceivedMatchingList: $cursorPage")
+            _uiState.update { state ->
+                state.copy(
+                    receivedList = if (isRefresh) {
+                        cursorPage.items.toImmutableList()
+                    } else {
+                        (state.receivedList + cursorPage.items).toImmutableList()
+                    },
+                    receivedCursor = cursorPage.cursor,
+                    loadState = if (cursorPage.items.isEmpty() && isRefresh) {
+                        MatchingUiState.Empty
+                    } else {
+                        MatchingUiState.Success
+                    },
+                )
+            }
+        }.onFailure { throwable ->
+            Timber.tag("MatchingViewModel").d("fetchReceivedMatchingList: ${throwable.message}")
+        }
     }
 
     // TODO 더미 데이터 삭제 예정
@@ -149,6 +197,7 @@ class MatchingViewModel @Inject constructor(
                 reviewCount = 12,
                 winCount = 8,
                 loseCount = 3,
+                createdAt = "",
             ),
             ReceivedMatching(
                 matchingId = "matching_received_2",
@@ -159,6 +208,7 @@ class MatchingViewModel @Inject constructor(
                 reviewCount = 27,
                 winCount = 21,
                 loseCount = 10,
+                createdAt = "",
             ),
         )
 
@@ -198,9 +248,16 @@ class MatchingViewModel @Inject constructor(
         return MatchingContract.State(
             loadState = MatchingUiState.Success,
             selectedType = MatchingType.ACCEPTED,
-            receiveList = dummyReceivedList,
-            sendList = dummySentList,
+            receivedCursor = Cursor(),
+            sentCursor = Cursor(),
+            acceptedCursor = Cursor(),
+            receivedList = dummyReceivedList,
+            sentList = dummySentList,
             acceptedList = dummyAcceptedList,
         )
+    }
+
+    companion object {
+        private const val CURSOR_SIZE = 20L
     }
 }
