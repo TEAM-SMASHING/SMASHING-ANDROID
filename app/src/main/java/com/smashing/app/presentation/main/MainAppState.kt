@@ -9,9 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.smashing.app.core.extension.stateInWhileSubscribed
-import com.smashing.app.presentation.home.navigation.navigateToHome
-import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.home.navigation.Home
+import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.profile.navigation.navigateToProfile
 import com.smashing.app.presentation.search.navigation.navigateToSearch

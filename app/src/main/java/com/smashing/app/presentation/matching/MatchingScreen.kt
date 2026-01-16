@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
 import com.smashing.app.R.drawable.img_app_icon
 import com.smashing.app.R.string.cancel
 import com.smashing.app.R.string.matching_accepted_dialog_description
@@ -90,12 +89,13 @@ private fun MatchingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = SmashingTheme.colors.bgCanvas)
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         SmashingDefaultTopBar(
-            title = stringResource(R.string.submit_matching_result),
+            title = "매칭 관리",
             topBarType = TopBarType.DEFAULT,
             onClick = null,
         )
