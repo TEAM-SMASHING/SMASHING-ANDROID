@@ -22,7 +22,7 @@ interface AuthService {
         @Body request: PostSignUpRequest,
     ): BaseResponse<PostSignUpResponse>
 
-    @GET("/api/v1/users/nickname-availability?nickname={nickname}")
+    @GET("/api/v1/users/nickname-availability")
     suspend fun getNickNameAvailable(
         @Query("nickname") nickname: String,
     ): BaseResponse<GetNickNameAvailableResponse>

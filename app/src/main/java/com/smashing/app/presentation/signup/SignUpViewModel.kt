@@ -18,11 +18,13 @@ import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -51,15 +53,15 @@ class SignUpViewModel @Inject constructor(
     val openChatLinkState: TextFieldState get() = _openChatLinkState
 
     val isBtnEnabled: Boolean
-        get() = when(_uiState.value.currentStep) {
-        1 -> isNickNameAvailable
-        2 -> _uiState.value.selectedGender != null
-        3 -> true
-        4 -> _uiState.value.selectedSport != null
-        5 -> _uiState.value.selectedSkill != null
-        6 -> true
+        get() = when (_uiState.value.currentStep) {
+            1 -> isNickNameAvailable
+            2 -> _uiState.value.selectedGender != null
+            3 -> true
+            4 -> _uiState.value.selectedSport != null
+            5 -> _uiState.value.selectedSkill != null
+            6 -> true
             else -> true
-    }
+        }
 
     init {
         updateNickNameErrorText()
@@ -72,23 +74,23 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    @OptIn(FlowPreview::class)
     fun updateNickNameErrorText() = viewModelScope.launch {
         snapshotFlow { nickNameState.text }
+            .debounce(NICKNAME_DUPLICATE_DEBOUNCE)
             .collect { nickNameText ->
                 val text = nickNameText.toString()
                 val isNickNameValid = TextInputValidator.isTextInputValid(text)
-                if (text.isNotEmpty() && !isNickNameValid) {
-                    _uiState.update {
-                        it.copy(
-                            nickNameErrorText = "특수문자는 사용할 수 없습니다."
-                        )
-                    }
+
+                if (text.isEmpty()) {
+                    _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null) }
+                    isNickNameAvailable = false
+                } else if (text.isBlank() || !isNickNameValid) {
+                    _uiState.update { it.copy(nickNameErrorText = INVALID_NICKNAME_FORMAT, nickNameConfirmText = null) }
+                    isNickNameAvailable = false
                 } else {
-                    _uiState.update {
-                        it.copy(
-                            nickNameErrorText = null,
-                        )
-                    }
+                    _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null) }
+                    getNickNameAvailable()
                 }
             }
     }
@@ -127,14 +129,20 @@ class SignUpViewModel @Inject constructor(
     fun getNickNameAvailable() = viewModelScope.launch {
         authRepository.getNicknameAvailable(nickNameState.text.toString())
             .onSuccess {
-                _uiState.update {
-                    it.copy(nickNameConfirmText = "사용 가능한 닉네임입니다.")
+                if (it.available) {
+                    _uiState.update {
+                        it.copy(nickNameConfirmText = VALID_NICKNAME_FORMAT, nickNameErrorText = null)
+                    }
+                    isNickNameAvailable = true
+                } else {
+                    _uiState.update {
+                        it.copy(nickNameErrorText = DUPLICATE_NICKNAME, nickNameConfirmText = null)
+                    }
+                    isNickNameAvailable = false
                 }
-                isNickNameAvailable = true
             }
             .onFailure { error ->
-                _uiState.update {
-                    it.copy(nickNameErrorText = "$error")}
+                Timber.tag("SignUp").e("닉네임 중복확인 실패 $error")
             }
     }
 
@@ -143,7 +151,7 @@ class SignUpViewModel @Inject constructor(
         val selectedGender = _uiState.value.selectedGender
         val selectedSport = _uiState.value.selectedSport
         val selectedSkill = _uiState.value.selectedSkill
-        if(selectedGender != null && selectedSport != null && selectedSkill != null){
+        if (selectedGender != null && selectedSport != null && selectedSkill != null) {
             val request = PostSignUpRequest(
                 kakaoId = kakaoId,
                 nickname = nickNameState.text.toString(),
@@ -170,5 +178,12 @@ class SignUpViewModel @Inject constructor(
                     Timber.tag("SignUp").e("회원가입 실패 $error")
                 }
         }
+    }
+
+    companion object SignUpConstants {
+        const val NICKNAME_DUPLICATE_DEBOUNCE = 1000L
+        const val INVALID_NICKNAME_FORMAT = "특수문자는 사용할 수 없습니다."
+        const val VALID_NICKNAME_FORMAT = "사용 가능한 닉네임입니다."
+        const val DUPLICATE_NICKNAME = "이미 존재하는 닉네임입니다."
     }
 }

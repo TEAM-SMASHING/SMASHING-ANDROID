@@ -77,7 +77,6 @@ fun SignUpRoute(
         onGenderSelected = viewModel::updateSelectedGender,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
-        onDuplicateBtnClick = viewModel::getNickNameAvailable,
         onBackClick = {},
         modifier = modifier,
         onBtnClick = {
@@ -102,7 +101,6 @@ private fun SignUpScreen(
     onGenderSelected: (GenderType) -> Unit,
     onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
-    onDuplicateBtnClick: () -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -136,7 +134,6 @@ private fun SignUpScreen(
                 when (uiState.currentStep) {
                     1 -> SignUpNickName(
                         nickNameState = nickNameState,
-                        onDuplicateBtnClick = onDuplicateBtnClick,
                         nickNameErrorText = uiState.nickNameErrorText,
                         nickNameConfirmText = uiState.nickNameConfirmText,
                     )
@@ -213,7 +210,6 @@ private fun SignUpScreenPreview() {
             selectedSkill = null,
             onSkillSelected = {},
             onBackClick = {},
-            onDuplicateBtnClick = {},
             onBtnClick = { currentStep = currentStep + 1 },
             modifier = Modifier.background(color = colors.bgCanvas),
         )
