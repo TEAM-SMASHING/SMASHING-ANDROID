@@ -9,7 +9,9 @@ interface RankingContract {
     @Immutable
     data class State(
         val rankingUiState: RankingUiState = RankingUiState.Idle,
-        val rankingList: ImmutableList<UserRank> = persistentListOf(),
+        val totalRankingList: ImmutableList<UserRank> = persistentListOf(),
+        val topRankingList: ImmutableList<UserRank> = persistentListOf(),
+        val restRankingList: ImmutableList<UserRank> = persistentListOf(),
         val userInfo: UserRank? = null,
     )
 }

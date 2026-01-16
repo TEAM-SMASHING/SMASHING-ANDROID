@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -51,6 +51,7 @@ import com.smashing.app.data.type.TierType
 
 @Composable
 fun RankingRoute(
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RankingViewModel = hiltViewModel(),
 ) {
@@ -58,6 +59,7 @@ fun RankingRoute(
 
     RankingScreen(
         uiState = uiState,
+        navigateUp = navigateUp,
         modifier = modifier,
     )
 }
@@ -65,16 +67,16 @@ fun RankingRoute(
 @Composable
 private fun RankingScreen(
     uiState: RankingContract.State,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    Box(
         modifier = modifier
-            .systemBarsPadding()
             .fillMaxSize()
-            .systemBarsPadding()
             .background(
                 color = colors.bgCanvas,
             )
+            .statusBarsPadding()
     ) {
         Box(
             modifier = Modifier
@@ -88,96 +90,89 @@ private fun RankingScreen(
                 )
                 .size(200.dp)
         )
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        SmashingDefaultTopBar(
-            title = "전체 랭킹",
-            topBarType = TopBarType.BACK,
-            onClick = {},
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            SmashingDefaultTopBar(
+                title = "전체 랭킹",
+                topBarType = TopBarType.BACK,
+                onClick = {},
+            )
 
-        val rankingList = uiState.rankingList
+            Ranker(
+                rankerList = uiState.topRankingList,
+            )
 
-        val topThree = rankingList
-            .filter { it.rank in 1..3 }
-            .sortedBy { it.rank }
-            .take(3)
-            .toImmutableList()
-
-        val rest = rankingList
-            .filter { it.rank > 3 }
-            .sortedBy { it.rank }
-            .toImmutableList()
-
-        Ranker(
-            rankerList = topThree,
-        )
-
-        if (rest.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(
-                        color = colors.bgCanvas,
-                        shape = RoundedCornerShape(
-                            topStart = 20.dp,
-                            topEnd = 20.dp,
+            if (uiState.restRankingList.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .background(
+                            color = colors.bgCanvas,
+                            shape = RoundedCornerShape(
+                                topStart = 20.dp,
+                                topEnd = 20.dp,
+                            )
                         )
-                    )
-                    .padding(
-                        top = 44.dp,
+                        .padding(
+                            top = 44.dp,
+                        ),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 12.dp,
                     ),
-                contentPadding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 12.dp,
-                ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                items(
-                    items = rest,
-                    key = { it.userId },
-                ) { user ->
-                    SmashingRankingItem(
-                        userId = user.userId,
-                        nickname = user.nickname,
-                        rank = user.rank,
-                        tier = user.tierType,
-                        lp = user.lp,
-                        onClick = {},
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    items(
+                        items = uiState.restRankingList,
+                        key = { it.userId },
+                    ) { user ->
+                        SmashingRankingItem(
+                            userId = user.userId,
+                            nickname = user.nickname,
+                            rank = user.rank,
+                            tier = user.tierType,
+                            lp = user.lp,
+                            onClick = {},
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                        )
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .background(
+                            color = colors.bgCanvas
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Spacer(modifier = Modifier.weight(0.3f))
+                    Text(
+                        text = "아직 동네 랭커가 없어요.",
+                        style = typography.md.medium16,
+                        color = colors.txtTertiary,
+                        textAlign = TextAlign.Center,
                     )
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
-        } else {
-            Text(
-                text = "아직 동네 랭커가 없어요.",
-                style = typography.md.medium16,
-                color = colors.txtTertiary,
-                textAlign = TextAlign.Center,
+
+            MyRanking(
+                userId = "myUserId",
+                nickname = "내 닉네임",
+                tier = TierType.GOLD_1,
+                lp = 1850,
                 modifier = Modifier
-                    .weight(1f)
                     .fillMaxWidth()
-                    .background(
-                        color = colors.bgCanvas
-                    )
             )
         }
-
-        MyRanking(
-            userId = "myUserId",
-            nickname = "내 닉네임",
-            tier = TierType.GOLD_1,
-            lp = 1850,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
     }
 }
 
@@ -249,7 +244,7 @@ private fun MyRanking(
 fun RankingScreenPreview_OnlyFirst() {
     RankingScreen(
         uiState = RankingContract.State(
-            rankingList = listOf(
+            totalRankingList = listOf(
                 UserRank(
                     userId = "user1",
                     nickname = "1위 유저",
@@ -257,8 +252,18 @@ fun RankingScreenPreview_OnlyFirst() {
                     tierType = TierType.CHALLENGER,
                     lp = 2500,
                 ),
-            ).toImmutableList()
+            ).toImmutableList(),
+            topRankingList = listOf(
+                UserRank(
+                    userId = "user1",
+                    nickname = "1위 유저",
+                    rank = 1,
+                    tierType = TierType.CHALLENGER,
+                    lp = 2500,
+                ),
+            ).toImmutableList(),
         ),
+        navigateUp = {},
     )
 }
 
@@ -267,7 +272,7 @@ fun RankingScreenPreview_OnlyFirst() {
 fun RankingScreenPreview_TopTen() {
     RankingScreen(
         uiState = RankingContract.State(
-            rankingList =
+            totalRankingList =
                 listOf(
                     UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
                     UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
@@ -279,9 +284,25 @@ fun RankingScreenPreview_TopTen() {
                     UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
                     UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
                     UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
-                ).toImmutableList()
-
+                ).toImmutableList(),
+            topRankingList =
+                listOf(
+                    UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
+                    UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
+                    UserRank("user3", "3위 유저", 3, TierType.CHALLENGER, 2400),
+                ).toImmutableList(),
+            restRankingList =
+                listOf(
+                    UserRank("user4", "4위 유저", 4, TierType.DIAMOND_1, 2350),
+                    UserRank("user5", "5위 유저", 5, TierType.DIAMOND_1, 2300),
+                    UserRank("user6", "6위 유저", 6, TierType.DIAMOND_2, 2250),
+                    UserRank("user7", "7위 유저", 7, TierType.DIAMOND_2, 2200),
+                    UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
+                    UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
+                    UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
+                ).toImmutableList(),
         ),
+        navigateUp = {},
     )
 }
 
@@ -291,7 +312,7 @@ fun RankingScreenPreview_TopTen() {
 fun RankingScreenPreview_TopTwenty() {
     RankingScreen(
         uiState = RankingContract.State(
-            rankingList =
+            totalRankingList =
                 listOf(
                     UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
                     UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
@@ -314,6 +335,7 @@ fun RankingScreenPreview_TopTwenty() {
                     UserRank("user19", "19위 유저", 19, TierType.BRONZE_2, 1600),
                     UserRank("user20", "20위 유저", 20, TierType.BRONZE_3, 1550),
                 ).toImmutableList()
-        )
+        ),
+        navigateUp = {},
     )
 }

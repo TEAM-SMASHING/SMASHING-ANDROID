@@ -29,7 +29,9 @@ class RankingViewModel @Inject constructor() : ViewModel() {
         updateRankingUiState(RankingUiState.Success)
         _uiState.update { currentState ->
             currentState.copy(
-                rankingList = rankingData
+                totalRankingList = rankingData,
+                topRankingList = rankingData.take(3).toImmutableList(),
+                restRankingList = rankingData.drop(3).toImmutableList(),
             )
         }
     }
