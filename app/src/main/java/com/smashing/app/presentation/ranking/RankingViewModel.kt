@@ -2,8 +2,8 @@ package com.smashing.app.presentation.ranking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.common.type.TierType
 import com.smashing.app.data.model.rank.UserRank
+import com.smashing.app.data.type.TierType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList

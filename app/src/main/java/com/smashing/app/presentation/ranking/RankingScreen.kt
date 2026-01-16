@@ -35,7 +35,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.R.string.ranking_tier_with_lp
-import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -48,6 +47,7 @@ import kotlinx.collections.immutable.toImmutableList
 import com.smashing.app.core.designsystem.theme.primary300
 import com.smashing.app.core.extension.dropShadow
 import com.smashing.app.data.model.rank.UserRank
+import com.smashing.app.data.type.TierType
 
 @Composable
 fun RankingRoute(
