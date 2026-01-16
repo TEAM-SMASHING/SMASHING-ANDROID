@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,8 @@ import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 import com.smashing.app.core.designsystem.component.sport.SportSelector
 import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
+import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import kotlinx.collections.immutable.persistentListOf
 
@@ -105,9 +109,16 @@ private fun SignUpScreen(
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(
+                color = colors.bgCanvas,
+            )
+            .systemBarsPadding()
+            .clearFocus(focusManager)
             .padding(
                 bottom = 48.dp,
             ),
