@@ -7,11 +7,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
+import com.smashing.app.presentation.login.navigation.Login
+import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.region.navigation.navigateToRegion
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(
@@ -19,14 +23,14 @@ fun NavController.navigateToHome(
 ) = navigate(Home, navOptions)
 
 fun NavController.navigateToRegionChange(
-    navOptions: NavOptions? = null
-) = navigate(RegionChange, navOptions)
+    addressName: String? = null,
+    cityName: String? = null,
+    districtName: String? = null,
+    navOptions: NavOptions? = null,
+) = navigate(RegionChange(addressName, cityName, districtName), navOptions)
 
 fun NavGraphBuilder.homeGraph(
     innerPadding: PaddingValues,
-    navigateToNotice: () -> Unit,
-    navigateToRegion: () -> Unit,
-    navigateUp: () -> Unit,
     navController: NavController,
 ) {
     navigation<Home>(
@@ -35,21 +39,18 @@ fun NavGraphBuilder.homeGraph(
         composable<HomeUser> {
             HomeRoute(
                 modifier = Modifier.padding(innerPadding),
-                navigateToNotice = navigateToNotice,
-                navigateToRegionChange = {
-                    navController.navigateToRegionChange()
-                },
+                navigateToNotice = navController::navigateToNotice,
+                navigateToRegionChange = navController::navigateToRegionChange,
             )
         }
 
         composable<RegionChange> {
             RegionChangeRoute(
                 modifier = Modifier.padding(innerPadding),
-                navigateToRegion = navigateToRegion,
-                navigateUp = navigateUp,
-                navigateToHome = {
-                    navController.popBackStack(HomeUser, false)
-                },
+                navigateToRegion = navController::navigateToRegion,
+                navigateUp = navController::navigateUp,
+                //TODO Home 과정 수정 예정
+                navigateToHome = navController::navigateUp,
             )
         }
     }
@@ -62,4 +63,8 @@ data object Home : MainTabRoute
 data object HomeUser : MainTabRoute
 
 @Serializable
-data object RegionChange : Route
+data class RegionChange(
+    val addressName: String?,
+    val cityName: String?,
+    val districtName: String?,
+) : Route

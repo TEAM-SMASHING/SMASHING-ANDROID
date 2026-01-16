@@ -9,6 +9,11 @@ interface RegionChangeContract {
         val selectedRegion: Region? = null,
         val regionLoadState: RegionChangeUiState = RegionChangeUiState.Idle,
     )
+
+    sealed interface SideEffect {
+        data object NavigateUp : SideEffect
+        data object NavigateToRegion : SideEffect
+    }
 }
 
 sealed interface RegionChangeUiState{

@@ -5,11 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.common.state.UiState
 import com.smashing.app.domain.model.Region
 import com.smashing.app.domain.usecase.GetSeoulFilterRegionUseCase
+import com.smashing.app.presentation.home.regionchange.RegionChangeContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -17,6 +20,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +30,9 @@ class RegionViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RegionContract.State())
     val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<RegionContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -74,8 +81,24 @@ class RegionViewModel @Inject constructor(
             }
     }
 
-    fun updateSelectedRegion(region: Region) = _uiState.update { currentState ->
-        currentState.copy(selectedRegion = region)
+    fun updateSelectedRegion(region: Region) {
+        _uiState.update { currentState ->
+            currentState.copy(selectedRegion = region)
+        }.also {
+            viewModelScope.launch {
+                _sideEffect.emit(
+                    RegionContract.SideEffect.NavigateToRegionChange(
+                        addressName = region.addressName,
+                        cityName = region.cityName,
+                        districtName = region.districtName,
+                    )
+                )
+            }
+        }
+    }
+
+    fun updateNavigateUp() = viewModelScope.launch {
+        _sideEffect.emit(RegionContract.SideEffect.NavigateUp)
     }
 
     companion object {
