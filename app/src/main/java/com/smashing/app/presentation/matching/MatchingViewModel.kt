@@ -34,10 +34,7 @@ class MatchingViewModel @Inject constructor(
         updateMatchingType(type)
         when (type) {
             MatchingType.RECEIVE -> fetchReceivedMatchingList(true)
-            MatchingType.SEND -> {
-                //  fetchSentMatchingList()
-            }
-
+            MatchingType.SEND -> fetchSentMatchingList(true)
             MatchingType.ACCEPTED -> {
                 // fetchAcceptedMatchingList()
             }
@@ -59,12 +56,12 @@ class MatchingViewModel @Inject constructor(
     fun fetchMatchingList() {
         when (uiState.value.selectedType) {
             MatchingType.RECEIVE -> fetchReceivedMatchingList()
-            MatchingType.SEND -> {}
+            MatchingType.SEND -> fetchSentMatchingList()
             MatchingType.ACCEPTED -> {}
         }
     }
 
-    fun fetchReceivedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
+    private fun fetchReceivedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
         matchingRepository.getMeReceivedMatchingList(
             snapshotAt = if (isRefresh) null else _uiState.value.receivedCursor.snapshotAt,
             cursor = if (isRefresh) null else _uiState.value.receivedCursor.nextCursor,
@@ -88,6 +85,33 @@ class MatchingViewModel @Inject constructor(
             }
         }.onFailure { throwable ->
             Timber.tag("MatchingViewModel").d("fetchReceivedMatchingList: ${throwable.message}")
+        }
+    }
+
+    private fun fetchSentMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
+        matchingRepository.getMeSentMatchingList(
+            snapshotAt = if (isRefresh) null else _uiState.value.sentCursor.snapshotAt,
+            cursor = if (isRefresh) null else _uiState.value.sentCursor.nextCursor,
+            size = CURSOR_SIZE,
+        ).onSuccess { cursorPage ->
+            Timber.tag("MatchingViewModel").d("fetchSentMatchingList: $cursorPage")
+            _uiState.update { state ->
+                state.copy(
+                    sentList = if (isRefresh) {
+                        cursorPage.items.toImmutableList()
+                    } else {
+                        (state.sentList + cursorPage.items).toImmutableList()
+                    },
+                    sentCursor = cursorPage.cursor,
+                    loadState = if (cursorPage.items.isEmpty() && isRefresh) {
+                        MatchingUiState.Empty
+                    } else {
+                        MatchingUiState.Success
+                    },
+                )
+            }
+        }.onFailure { throwable ->
+            Timber.tag("MatchingViewModel").d("fetchSentMatchingList: ${throwable.message}")
         }
     }
 
@@ -230,6 +254,7 @@ class MatchingViewModel @Inject constructor(
                 reviewCount = 5,
                 winCount = 3,
                 loseCount = 1,
+                createdAt = "",
             ),
             SentMatching(
                 matchingId = "matching_sent_2",
@@ -240,6 +265,7 @@ class MatchingViewModel @Inject constructor(
                 reviewCount = 18,
                 winCount = 14,
                 loseCount = 6,
+                createdAt = "",
             ),
             SentMatching(
                 matchingId = "matching_sent_2",
@@ -250,6 +276,7 @@ class MatchingViewModel @Inject constructor(
                 reviewCount = 18,
                 winCount = 14,
                 loseCount = 6,
+                createdAt = ""
             ),
         )
 
@@ -266,6 +293,6 @@ class MatchingViewModel @Inject constructor(
     }
 
     companion object {
-        private const val CURSOR_SIZE = 20L
+        private const val CURSOR_SIZE = 6L
     }
 }
