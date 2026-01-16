@@ -53,10 +53,11 @@ import kotlinx.collections.immutable.toImmutableList
 fun SmashingWinnerDropdown(
     selectedItem: String?,
     items: ImmutableList<String>,
-    onClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = {},
     placeholder: String = stringResource(dropdown_winner_select),
     isDivide: Boolean = true,
+    enabled: Boolean = true,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -82,7 +83,7 @@ fun SmashingWinnerDropdown(
                 )
                 .noRippleClickable(
                     onClick = {
-                        if (items.isNotEmpty()) {
+                        if (items.isNotEmpty() && enabled) {
                             isExpanded = !isExpanded
                         }
                     }

@@ -44,6 +44,7 @@ private const val SCORE_INPUT_RATIO = 45f / 41f
 fun ScoreInputTextField(
     state: TextFieldState,
     placeholder: String,
+    isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
     onDoneClick: () -> Unit = {},
 ) {
@@ -103,6 +104,7 @@ fun ScoreInputTextField(
     ) {
         SmashingBasicTextField(
             state = state,
+            isEnabled = isEnabled,
             contentAlignment = Alignment.Center,
             textColor = inputState.getContentColor(),
             textStyle = inputState.getTextStyle().copy(
