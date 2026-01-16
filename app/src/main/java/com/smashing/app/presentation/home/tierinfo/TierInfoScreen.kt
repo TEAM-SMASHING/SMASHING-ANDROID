@@ -102,8 +102,12 @@ private fun TierInfoScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                TierTag()
-                TierTag()
+                TierTag(
+                    tagText = "티어 설명"
+                )
+                TierTag(
+                    tagText = "티어 설명"
+                )
             }
         }
         
@@ -168,10 +172,11 @@ private fun TierInfoScreen(
 
 @Composable
 private fun TierTag(
+    tagText: String,
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = "test",
+        text = tagText,
         style = SmashingTheme.typography.sm.medium14,
         color = SmashingTheme.colors.txtPrimary,
         modifier = modifier
