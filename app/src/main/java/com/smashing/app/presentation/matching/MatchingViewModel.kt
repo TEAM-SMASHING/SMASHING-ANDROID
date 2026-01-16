@@ -1,8 +1,8 @@
 package com.smashing.app.presentation.matching
 
 import androidx.lifecycle.ViewModel
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.matching.ReceivedMatching
 import com.smashing.app.data.model.matching.SentMatching

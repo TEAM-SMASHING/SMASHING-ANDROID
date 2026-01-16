@@ -1,7 +1,7 @@
 package com.smashing.app.data.model.profile
 
-import com.smashing.app.core.common.type.SportType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import java.time.LocalDateTime
 
 data class UserProfileInfo(

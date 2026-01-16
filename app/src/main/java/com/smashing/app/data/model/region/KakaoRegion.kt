@@ -1,4 +1,4 @@
-package com.smashing.app.data.model
+package com.smashing.app.data.model.region
 
 data class KakaoRegion(
     val addressName: String,

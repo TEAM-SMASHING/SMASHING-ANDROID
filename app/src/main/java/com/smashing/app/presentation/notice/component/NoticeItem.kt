@@ -23,15 +23,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.ic_badminton
-import com.smashing.app.R.drawable.ic_pingpong
-import com.smashing.app.R.drawable.ic_tennis
-import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.mapper.icon
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
+import com.smashing.app.data.type.SportType
 
 @Composable
 fun NoticeItem(
@@ -47,12 +45,6 @@ fun NoticeItem(
     val backgroundColor =
         if (!isRead) SmashingTheme.colors.bgSurface
         else SmashingTheme.colors.bgCanvas
-
-    val sportIcon = when (sportType) {
-        SportType.TENNIS -> ic_tennis
-        SportType.PING_PONG -> ic_pingpong
-        SportType.BADMINTON -> ic_badminton
-    }
 
     Column(
         modifier = modifier,
@@ -84,7 +76,7 @@ fun NoticeItem(
             Column {
                 Row {
                     Icon(
-                        imageVector = ImageVector.vectorResource(sportIcon),
+                        imageVector = ImageVector.vectorResource(sportType.icon()),
                         contentDescription = null,
                         tint = SmashingTheme.colors.iconPrimary,
                         modifier = Modifier.padding(end = 2.dp),
