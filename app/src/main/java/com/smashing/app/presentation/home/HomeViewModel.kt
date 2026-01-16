@@ -7,7 +7,7 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.model.rank.TopUserInfo
+import com.smashing.app.data.model.rank.UserRankInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import com.smashing.app.presentation.home.type.TierInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     init {
         fetchActiveProfile()
-        fetchTopRankerList()
+        fetchRegionRankerList()
         fetchMatchingCardList()
         fetchMatchedUser()
     }
@@ -40,18 +40,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
         _uiState.update { currentState ->
             currentState.copy(activeUserProfile = dummyActiveProfile)
-        }
-    }
-
-    fun fetchTopRankerList() = viewModelScope.launch {
-        updateLoadState(HomeUiState.Loading)
-
-        val dummyTopRankerList = createDummyTopRankerList()
-
-        updateLoadState(HomeUiState.Success)
-
-        _uiState.update { currentState ->
-            currentState.copy(topRankerList = dummyTopRankerList)
         }
     }
 
@@ -76,6 +64,19 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
         _uiState.update { currentState ->
             currentState.copy(matchedUser = dummyMatchedUser)
+        }
+    }
+
+    fun fetchRegionRankerList() = viewModelScope.launch {
+        updateLoadState(HomeUiState.Loading)
+
+        val dummyRegionRankerList = createDummyTopRankerList()
+
+        updateLoadState(HomeUiState.Success)
+
+        _uiState.update { currentState ->
+            currentState.copy(topRankerList = dummyRegionRankerList.take(5).toImmutableList())
+            currentState.copy(regionRankerList = dummyRegionRankerList.take(30).toImmutableList())
         }
     }
 
@@ -130,72 +131,72 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
 
-    private fun createDummyTopRankerList(): ImmutableList<TopUserInfo> {
+    private fun createDummyTopRankerList(): ImmutableList<UserRankInfo> {
         return listOf(
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user1",
                 nickname = "1위 유저",
                 rank = 1,
                 tier = TierType.CHALLENGER,
                 lp = 2500,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user2",
                 nickname = "열글자테스트중입니다",
                 rank = 2,
                 tier = TierType.CHALLENGER,
                 lp = 2450,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user3",
                 nickname = "1위 유저",
                 rank = 3,
                 tier = TierType.CHALLENGER,
                 lp = 2400,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user4",
                 nickname = "프로게이머",
                 rank = 4,
                 tier = TierType.DIAMOND_1,
                 lp = 2350,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user5",
                 nickname = "랭커킹커",
                 rank = 5,
                 tier = TierType.DIAMOND_1,
                 lp = 2300,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user6",
                 nickname = "승리만추구",
                 rank = 6,
                 tier = TierType.DIAMOND_2,
                 lp = 2250,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user7",
                 nickname = "플래티넘마스터",
                 rank = 7,
                 tier = TierType.DIAMOND_2,
                 lp = 2200,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user8",
                 nickname = "골드라이더",
                 rank = 8,
                 tier = TierType.DIAMOND_3,
                 lp = 2150,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user9",
                 nickname = "실버도전자",
                 rank = 9,
                 tier = TierType.PLATINUM_1,
                 lp = 2100,
             ),
-            TopUserInfo(
+            UserRankInfo(
                 userId = "user10",
                 nickname = "브론즈탈출",
                 rank = 10,
