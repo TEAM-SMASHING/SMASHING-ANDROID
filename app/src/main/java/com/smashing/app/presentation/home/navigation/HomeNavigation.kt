@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.home.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -21,7 +20,7 @@ fun NavGraphBuilder.homeGraph(
 ) {
     composable<Home> {
         HomeRoute(
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier,
             navigateToNotice = navigateToNotice,
         )
     }

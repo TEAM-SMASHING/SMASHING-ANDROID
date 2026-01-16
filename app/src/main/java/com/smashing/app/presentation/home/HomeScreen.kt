@@ -9,11 +9,15 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,10 +28,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -55,6 +65,7 @@ import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.rank.TopUserInfo
+import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import kotlinx.collections.immutable.toImmutableList
@@ -80,21 +91,75 @@ private fun HomeScreen(
     navigateToNotice: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+    var topBarHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
+    val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+
+    // 스포츠 리스트 가져오기 (실제로는 ViewModel이나 다른 곳에서 가져와야 함)
+    val sportList = remember {
+        listOf(
+            SportType.TENNIS,
+            SportType.PING_PONG,
+            SportType.BADMINTON,
+        ).toImmutableList()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        HomeTopBar(
-            userRegion = uiState.activeUserProfile.region,
-            userSport = uiState.activeUserProfile.sportType,
-            userTier = uiState.activeUserProfile.tierType,
-            onClickRegion = {},
-            onChangeRegion = {},
-            onClickSportChip = {},
-            onClickNotice = navigateToNotice,
-            isNotice = uiState.isNotice
+        Box(
+            modifier = Modifier
+                .background(
+                    color = if (isDropdownExpanded) SmashingTheme.colors.bgSurface else Color.Transparent,
+                )
+                .onGloballyPositioned { coordinates ->
+                    topBarHeight = with(density) {
+                        coordinates.size.height.toDp()
+                    }
+                }
+                .statusBarsPadding()
+        ) {
+            HomeTopBar(
+                userRegion = uiState.activeUserProfile.region,
+                userSport = uiState.activeUserProfile.sportType,
+                userTier = uiState.activeUserProfile.tierType,
+                onClickRegion = {},
+                onChangeRegion = {},
+                onClickSportChip = { isDropdownExpanded = !isDropdownExpanded },
+                onClickNotice = navigateToNotice,
+                isNotice = uiState.isNotice,
+            )
+        }
+
+        HomeDropdown(
+            isExpanded = isDropdownExpanded,
+            activeSport = uiState.activeUserProfile.sportType,
+            sportList = sportList,
+            tierType = uiState.activeUserProfile.tierType,
+            minLp = uiState.activeUserProfile.minLp,
+            maxLp = uiState.activeUserProfile.maxLp,
+            winCount = uiState.activeUserProfile.wins,
+            loseCount = uiState.activeUserProfile.losses,
+            onSportChipClick = {
+                // 스포츠 변경 로직 (필요시 추가)
+                isDropdownExpanded = false
+            },
+            onSportAddClick = {
+                // 스포츠 추가 로직 (필요시 추가)
+                isDropdownExpanded = false
+            },
+            onTierClick = {
+                isDropdownExpanded = false
+            },
+            onDismiss = {
+                isDropdownExpanded = false
+            },
+            triggerHeight = topBarHeight,
         )
 
         LazyColumn(
@@ -115,9 +180,7 @@ private fun HomeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.Bottom,
                     ) {
-                        Column(
-                            modifier = Modifier,
-                        ) {
+                        Column {
                             Text(
                                 text = "${uiState.activeUserProfile.nickname}님,",
                                 style = SmashingTheme.typography.xxl.semibold24,
@@ -377,7 +440,7 @@ private fun CloseMatching(
                 )
 
                 MatchedUserItem(
-                    matchedUser= matchedMyData,
+                    matchedUser = matchedMyData,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                 )
@@ -433,7 +496,7 @@ private fun MatchedUserItem(
                 .padding(
                     horizontal = 28.dp,
                 )
-        ){
+        ) {
             UrlImage(
                 url = ProfileImageProvider.getTempUrl(matchedUser.userId),
                 modifier = Modifier
