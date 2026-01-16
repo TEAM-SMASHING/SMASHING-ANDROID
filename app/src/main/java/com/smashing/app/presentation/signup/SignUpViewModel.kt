@@ -6,20 +6,24 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.core.util.TextInputValidator
+import com.smashing.app.data.model.auth.SignUpModel
+import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
+import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
+import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
-import com.smashing.app.data.model.auth.SignUpModel
-import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
-import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -39,18 +43,24 @@ class SignUpViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<SignUpContract.SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    private val _openChatLinkState = TextFieldState("")
-    val openChatLinkState: TextFieldState get() = _openChatLinkState
+    val nickNameState = TextFieldState()
+
+    val openChatState = TextFieldState()
 
     val isBtnEnabled: Boolean
-        get() = when(_uiState.value.currentStep) {
-        1 -> true
-        2 -> _uiState.value.selectedGender != null
-        3 -> true
-        4 -> _uiState.value.selectedSport != null
-        5 -> _uiState.value.selectedSkill != null
-        6 -> true
+        get() = when (_uiState.value.currentStep) {
+            1 -> _uiState.value.isNickNameAvailable
+            2 -> _uiState.value.selectedGender != null
+            3 -> _uiState.value.isOpenChatValid
+            4 -> _uiState.value.selectedSport != null
+            5 -> _uiState.value.selectedSkill != null
+            6 -> true
             else -> true
+        }
+
+    init {
+        updateNickNameErrorText()
+        updateOpenChatErrorText()
     }
 
 
@@ -60,11 +70,54 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateOpenChatLink() {
-        snapshotFlow { openChatLinkState }
-            .collectLatest { linkText ->
-                //Todo 링크 유효성 판단 api (성공시 updateCurrentStep, 실패시 errorText 반환 및 이동 X
-                postValidateChatLink()
+    @OptIn(FlowPreview::class)
+    fun updateNickNameErrorText() = viewModelScope.launch {
+        snapshotFlow { nickNameState.text }
+            .debounce(NETWORK_DEBOUNCE)
+            .collect { nickNameText ->
+                val text = nickNameText.toString()
+                val isNickNameValid = TextInputValidator.isTextInputValid(text)
+
+                if (text.isEmpty()) {
+                    _uiState.update {
+                        it.copy(
+                            nickNameErrorText = null,
+                            nickNameConfirmText = null,
+                            isNickNameAvailable = false
+                        )
+                    }
+                } else if (text.isBlank() || !isNickNameValid) {
+                    _uiState.update {
+                        it.copy(
+                            nickNameErrorText = INVALID_NICKNAME_FORMAT,
+                            nickNameConfirmText = null,
+                            isNickNameAvailable = false
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            nickNameErrorText = null,
+                            nickNameConfirmText = null
+                        )
+                    }
+                    getNickNameAvailable()
+                }
+            }
+    }
+
+    @OptIn(FlowPreview::class)
+    fun updateOpenChatErrorText() = viewModelScope.launch {
+        snapshotFlow { openChatState.text }
+            .debounce(NETWORK_DEBOUNCE)
+            .collectLatest { openChatText ->
+                val text = openChatText.toString()
+
+                if (text.isEmpty()) {
+                    _uiState.update { it.copy(openChatErrorText = null, isOpenChatValid = false) }
+                } else {
+                    postOpenchatValid()
+                }
             }
     }
 
@@ -86,9 +139,52 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    fun postValidateChatLink(
-    ) {
-        //Todo: 오픈채팅 유효성 검증 api
+    fun postOpenchatValid() = viewModelScope.launch {
+        val request = PostOpenchatValidRequest(
+            openchatUrl = openChatState.text.toString()
+        )
+        authRepository.postOpenchatValid(request)
+            .onSuccess {
+                if (it.valid) {
+                    _uiState.update { it.copy(openChatErrorText = null, isOpenChatValid = true) }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            openChatErrorText = INVALID_OPEN_CHAT_FORMAT,
+                            isOpenChatValid = false
+                        )
+                    }
+                }
+            }
+            .onFailure { error ->
+                Timber.tag("SignUp").e("채팅 링크 유효성 확인 실패 $error")
+            }
+    }
+
+    fun getNickNameAvailable() = viewModelScope.launch {
+        authRepository.getNicknameAvailable(nickNameState.text.toString())
+            .onSuccess {
+                if (it.available) {
+                    _uiState.update {
+                        it.copy(
+                            nickNameConfirmText = VALID_NICKNAME_FORMAT,
+                            nickNameErrorText = null,
+                            isNickNameAvailable = true
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            nickNameErrorText = DUPLICATE_NICKNAME,
+                            nickNameConfirmText = null,
+                            isNickNameAvailable = false
+                        )
+                    }
+                }
+            }
+            .onFailure { error ->
+                Timber.tag("SignUp").e("닉네임 중복확인 실패 $error")
+            }
     }
 
 
@@ -96,12 +192,12 @@ class SignUpViewModel @Inject constructor(
         val selectedGender = _uiState.value.selectedGender
         val selectedSport = _uiState.value.selectedSport
         val selectedSkill = _uiState.value.selectedSkill
-        if(selectedGender != null && selectedSport != null && selectedSkill != null){
+        if (selectedGender != null && selectedSport != null && selectedSkill != null) {
             val request = PostSignUpRequest(
                 kakaoId = kakaoId,
-                nickname = "공승준",
+                nickname = nickNameState.text.toString(),
                 gender = selectedGender.name,
-                openChatUrl = "https://open.kakao.com/o/xxxx",
+                openChatUrl = openChatState.text.toString(),
                 sportCode = selectedSport.code,
                 tier = selectedSkill.skillCode,
                 region = "양천구",
@@ -123,5 +219,13 @@ class SignUpViewModel @Inject constructor(
                     Timber.tag("SignUp").e("회원가입 실패 $error")
                 }
         }
+    }
+
+    companion object SignUpConstants {
+        const val NETWORK_DEBOUNCE = 500L
+        const val INVALID_NICKNAME_FORMAT = "특수문자는 사용할 수 없습니다."
+        const val VALID_NICKNAME_FORMAT = "사용 가능한 닉네임입니다."
+        const val DUPLICATE_NICKNAME = "이미 존재하는 닉네임입니다."
+        const val INVALID_OPEN_CHAT_FORMAT = "유효하지 않은 링크입니다."
     }
 }
