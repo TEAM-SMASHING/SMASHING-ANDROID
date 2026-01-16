@@ -6,8 +6,6 @@ import com.smashing.app.data.remote.dto.auth.PostKakaoLoginRequest
 import com.smashing.app.data.remote.dto.auth.PostKakaoLoginResponse
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidResponse
-import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
-import com.smashing.app.data.remote.dto.auth.PostSignUpResponse
 
 interface AuthRemoteDataSource {
     suspend fun postKakaoLogin(request: PostKakaoLoginRequest): BaseResponse<PostKakaoLoginResponse>

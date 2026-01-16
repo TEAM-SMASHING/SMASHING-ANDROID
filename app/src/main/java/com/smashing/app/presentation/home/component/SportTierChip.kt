@@ -18,13 +18,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.ic_badminton
-import com.smashing.app.R.drawable.ic_pingpong
-import com.smashing.app.R.drawable.ic_tennis
-import com.smashing.app.core.common.type.SportType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.core.designsystem.mapper.icon
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 
 @Composable
 fun SportsTierChip(
@@ -52,19 +50,7 @@ fun SportsTierChip(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            imageVector = when (sportType) {
-                SportType.PING_PONG -> ImageVector.vectorResource(
-                    id = ic_pingpong,
-                )
-
-                SportType.TENNIS -> ImageVector.vectorResource(
-                    id = ic_tennis,
-                )
-
-                SportType.BADMINTON -> ImageVector.vectorResource(
-                    id = ic_badminton,
-                )
-            },
+            imageVector = ImageVector.vectorResource(sportType.icon()),
             contentDescription = null,
             tint = SmashingTheme.colors.iconSuccess,
         )

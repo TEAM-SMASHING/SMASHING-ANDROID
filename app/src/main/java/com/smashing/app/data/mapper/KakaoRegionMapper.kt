@@ -1,7 +1,7 @@
 package com.smashing.app.data.mapper
 
-import com.smashing.app.data.model.KakaoRegion
-import com.smashing.app.data.remote.dto.region.kakaoRegion.GetKakaoAddressSearchResponse
+import com.smashing.app.data.model.region.KakaoRegion
+import com.smashing.app.data.remote.dto.region.GetKakaoAddressSearchResponse
 
 fun GetKakaoAddressSearchResponse.toRegionList(): List<KakaoRegion> =
     documents.map { it.toRegion() }

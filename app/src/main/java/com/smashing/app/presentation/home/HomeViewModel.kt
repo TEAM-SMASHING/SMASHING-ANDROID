@@ -2,13 +2,14 @@ package com.smashing.app.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.SportType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
+import com.smashing.app.presentation.home.type.TierInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(getDummyState())
+    private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -211,24 +212,13 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    private fun getDummyState(): HomeContract.State {
-        val dummyActiveProfile = createDummyActiveProfile()
-        val dummyTopRankerList = createDummyTopRankerList()
-        val dummyMatchingCardList = createDummyMatchingCardList()
-        val dummyMatchedUser = createDummyMatchedUser()
-
-        return HomeContract.State(
-            activeUserProfile = dummyActiveProfile,
-            topRankerList = dummyTopRankerList,
-            matchingCardList = dummyMatchingCardList,
-            matchedUser = dummyMatchedUser,
-            isNotice = false,
-            loadState = HomeUiState.Success,
-        )
-    }
-
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
         currentState.copy(loadState = state)
     }
 
+    fun updateTierInfo(tierInfo: TierInfo) {
+        _uiState.update { currentState ->
+            currentState.copy(selectedTierInfo = tierInfo)
+        }
+    }
 }
