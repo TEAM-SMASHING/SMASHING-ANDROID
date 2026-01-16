@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.ranking.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -9,16 +10,20 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.ranking.RankingRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateRankingPage(
+fun NavController.navigateToRankingPage(
     navOptions: NavOptions? = null,
-) {
-    navigate(RankingPage)
-}
+) { navigate(RankingPage, navOptions) }
 
-fun NavGraphBuilder.rankingPage() {
-    composable<RankingPage> { backStackEntry ->
+fun NavGraphBuilder.rankingGraph(
+    navigateUp: () -> Unit,
+    innerPadding: PaddingValues,
+) {
+    composable<RankingPage> {
         RankingRoute(
             modifier = Modifier,
+            navigateUp = navigateUp,
+            //TODO 클릭했을 때, 대상의 프로필로 이동
+            navigateToProfile = {},
         )
     }
 }

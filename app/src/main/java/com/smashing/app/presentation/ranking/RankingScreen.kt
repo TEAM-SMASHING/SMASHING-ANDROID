@@ -52,6 +52,7 @@ import com.smashing.app.data.type.TierType
 @Composable
 fun RankingRoute(
     navigateUp: () -> Unit,
+    navigateToProfile: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RankingViewModel = hiltViewModel(),
 ) {
@@ -97,7 +98,7 @@ private fun RankingScreen(
             SmashingDefaultTopBar(
                 title = "전체 랭킹",
                 topBarType = TopBarType.BACK,
-                onClick = {},
+                onClick = navigateUp,
             )
 
             Ranker(
