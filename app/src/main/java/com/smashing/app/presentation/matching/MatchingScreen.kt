@@ -52,6 +52,7 @@ import com.smashing.app.presentation.matching.type.MatchingType
 @Composable
 fun MatchingRoute(
     navigateToSubmit: () -> Unit,
+    navigateToConfirm: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -61,6 +62,7 @@ fun MatchingRoute(
     MatchingScreen(
         navigateToSubmit = navigateToSubmit,
         uiState = uiState,
+        navigateToConfirm = navigateToConfirm,
         onTabClick = viewModel::updateMatchingType,
         onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
@@ -72,6 +74,7 @@ fun MatchingRoute(
 private fun MatchingScreen(
     uiState: MatchingContract.State,
     navigateToSubmit: () -> Unit,
+    navigateToConfirm: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
@@ -144,7 +147,7 @@ private fun MatchingScreen(
                 uiState = uiState,
                 gridState = gridState,
                 onCloseClick = onCardCloseClick,
-                onConfirmClick = navigateToSubmit,
+                onConfirmClick = navigateToConfirm, // TODO 임시 함수 호출 navigateToSubmit,
             )
         }
 
@@ -261,6 +264,7 @@ private fun MatchingScreenPreview() {
         MatchingScreen(
             navigateToSubmit = {},
             uiState = MatchingContract.State(),
+            navigateToConfirm = {},
             onTabClick = {},
             onCardCloseClick = {},
             onDialogDismissClick = {},

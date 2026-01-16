@@ -29,6 +29,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.review.component.ConfirmReviewCard
 import com.smashing.app.presentation.write.confirm.ConfirmContract
+import com.smashing.app.presentation.write.confirm.ConfirmViewModel
 import com.smashing.app.presentation.write.model.MatchPlayer
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
@@ -39,7 +40,7 @@ fun ReviewFastRoute(
     navigateUp: () -> Unit,
     navigateToNext: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ReviewFastViewModel = hiltViewModel(),
+    viewModel: ConfirmViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

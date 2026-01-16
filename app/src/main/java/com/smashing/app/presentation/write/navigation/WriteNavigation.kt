@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
+import com.smashing.app.presentation.review.ReviewFastRoute
 import com.smashing.app.presentation.write.confirm.ConfirmResultRoute
 import com.smashing.app.presentation.write.confirm.ConfirmReviewRoute
 import com.smashing.app.presentation.write.confirm.ConfirmViewModel
@@ -31,6 +32,11 @@ fun NavController.navigateToSubmitReview(
 fun NavController.navigateToConfirmReview(
     navOptions: NavOptions? = null,
 ) = navigate(ConfirmReview, navOptions)
+
+fun NavController.navigateToReviewFast(
+    navOptions: NavOptions? = null,
+) = navigate(ReviewFast, navOptions)
+
 
 fun NavGraphBuilder.writeGraph(
     navigateToMatching: () -> Unit,
@@ -69,6 +75,7 @@ fun NavGraphBuilder.writeGraph(
             ConfirmResultRoute(
                 navigateUp = navController::navigateUp,
                 navigateToConfirmReview = navController::navigateToConfirmReview,
+                navigateToMatching = navigateToMatching,
                 viewModel = viewModel,
             )
         }
@@ -79,6 +86,15 @@ fun NavGraphBuilder.writeGraph(
             ConfirmReviewRoute(
                 navigateUp = navController::navigateUp,
                 navigateToMatching = navigateToMatching,
+                viewModel = viewModel,
+            )
+        }
+
+        composable<ReviewFast> { backStackEntry ->
+            val viewModel = backStackEntry.sharedViewModel<ConfirmViewModel>(navController)
+            ReviewFastRoute(
+                navigateUp = navController::navigateUp,
+                navigateToNext = navigateToMatching,
                 viewModel = viewModel,
             )
         }
@@ -102,3 +118,6 @@ data object ConfirmResult : Route
 
 @Serializable
 data object ConfirmReview : Route
+
+@Serializable
+data object ReviewFast : Route

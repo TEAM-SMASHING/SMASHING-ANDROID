@@ -19,6 +19,33 @@ class ConfirmViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
     val reviewTextFieldState: TextFieldState = TextFieldState()
+    val leftTextFieldState: TextFieldState = TextFieldState()
+    val rightTextFieldState: TextFieldState = TextFieldState()
+
+    fun updateSelectedRatingType(type: ReviewRatingType) = _uiState.update { state ->
+        val next = if (type in state.selectedRatingTypes)
+            state.selectedRatingTypes - type
+        else state.selectedRatingTypes + type
+
+        state.copy(selectedRatingTypes = next.toImmutableSet())
+    }
+
+
+    private fun isScoreMatchingWinner(
+        isSubmitterWinner: Boolean,
+        submitterScore: Int,
+        receiverScore: Int,
+    ): Boolean = if (isSubmitterWinner) submitterScore > receiverScore
+    else receiverScore > submitterScore
+
+
+    fun updateSelectedTagType(type: ReviewTagType) = _uiState.update { state ->
+        val next = if (type in state.selectedTagTypes)
+            state.selectedTagTypes - type
+        else state.selectedTagTypes + type
+
+        state.copy(selectedTagTypes = next.toImmutableSet())
+    }
 
     fun updateSelectedWinner(winnerName: String) = _uiState.update { state ->
         val isSubmitterWinner = winnerName == state.submitter.name
@@ -30,18 +57,6 @@ class ConfirmViewModel @Inject constructor(
             isButtonEnabled = isScoreMatchingWinner(
                 isSubmitterWinner = isSubmitterWinner,
                 submitterScore = state.submitterScore,
-                receiverScore = state.receiverScore,
-            ),
-        )
-    }
-
-    fun updateSubmitterScore(score: Int) = _uiState.update { state ->
-        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
-        state.copy(
-            submitterScore = score,
-            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
-                isSubmitterWinner = isSubmitterWinner,
-                submitterScore = score,
                 receiverScore = state.receiverScore,
             ),
         )
@@ -59,27 +74,16 @@ class ConfirmViewModel @Inject constructor(
         )
     }
 
-    private fun isScoreMatchingWinner(
-        isSubmitterWinner: Boolean,
-        submitterScore: Int,
-        receiverScore: Int,
-    ): Boolean = if (isSubmitterWinner) submitterScore > receiverScore
-    else receiverScore > submitterScore
-
-    fun updateSelectedRatingType(type: ReviewRatingType) = _uiState.update { state ->
-        val next = if (type in state.selectedRatingTypes)
-            state.selectedRatingTypes - type
-        else state.selectedRatingTypes + type
-
-        state.copy(selectedRatingTypes = next.toImmutableSet())
-    }
-
-    fun updateSelectedTagType(type: ReviewTagType) = _uiState.update { state ->
-        val next = if (type in state.selectedTagTypes)
-            state.selectedTagTypes - type
-        else state.selectedTagTypes + type
-
-        state.copy(selectedTagTypes = next.toImmutableSet())
+    fun updateSubmitterScore(score: Int) = _uiState.update { state ->
+        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
+        state.copy(
+            submitterScore = score,
+            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
+                isSubmitterWinner = isSubmitterWinner,
+                submitterScore = score,
+                receiverScore = state.receiverScore,
+            ),
+        )
     }
 
     private fun getDummyState(): ConfirmContract.State {

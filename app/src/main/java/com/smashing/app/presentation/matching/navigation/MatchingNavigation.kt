@@ -17,11 +17,13 @@ fun NavController.navigateToMatching(
 
 fun NavGraphBuilder.matchingGraph(
     navigateToSubmit: () -> Unit,
+    navigateToConfirm: () -> Unit,
     innerPadding: PaddingValues,
 ) {
     composable<Matching> {
         MatchingRoute(
             navigateToSubmit = navigateToSubmit,
+            navigateToConfirm = navigateToConfirm,
             modifier = Modifier.padding(innerPadding),
         )
     }

@@ -27,6 +27,7 @@ import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
+import com.smashing.app.presentation.write.navigation.navigateToConfirm
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -83,6 +84,7 @@ private fun MainNavHost(
         matchingGraph(
             innerPadding = innerPadding,
             navigateToSubmit = appState.navController::navigateToSubmit,
+            navigateToConfirm = appState.navController::navigateToConfirm,
         )
 
         profileGraph(

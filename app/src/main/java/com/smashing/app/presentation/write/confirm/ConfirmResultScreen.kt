@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.confirm_result
 import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.button.SmashingButton
@@ -39,9 +40,24 @@ import kotlinx.collections.immutable.persistentListOf
 fun ConfirmResultRoute(
     navigateUp: () -> Unit,
     navigateToConfirmReview: () -> Unit,
+    navigateToMatching: () -> Unit,
     viewModel: ConfirmViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ConfirmResultScreen(
+        uiState = uiState,
+        leftTextFieldState = viewModel.leftTextFieldState,
+        rightTextFieldState = viewModel.rightTextFieldState,
+        onBackClick = navigateUp,
+        onWinnerSelected = viewModel::updateSelectedWinner,
+        onLeftDoneClick = viewModel::updateSubmitterScore,
+        onRightDoneClick = viewModel::updateReceiverScore,
+        onConfirmClick = navigateToConfirmReview,
+        onDenyClick = navigateToMatching,
+        modifier = modifier,
+    )
 
 }
 
@@ -56,7 +72,7 @@ private fun ConfirmResultScreen(
     onLeftDoneClick: (Int) -> Unit,
     onRightDoneClick: (Int) -> Unit,
     onConfirmClick: () -> Unit,
-    onDenyClick: (String) -> Unit,
+    onDenyClick: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -138,7 +154,7 @@ private fun ConfirmResultScreen(
                 onBtnClick = {
                     showExitBottomSheet = false
                     if (selectedReason.isNotEmpty()) {
-                        onDenyClick(selectedReason)
+                        onDenyClick()
                     }
                 },
             )
