@@ -5,6 +5,7 @@ import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
+import com.smashing.app.presentation.home.type.TierInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -16,7 +17,8 @@ interface HomeContract {
         val topRankerList: ImmutableList<TopUserInfo> = persistentListOf(),
         val matchingCardList: ImmutableList<MatchingCardState.Search> = persistentListOf(),
         val matchedUser: DummyMatchedUser? = null,
-        val isNotice: Boolean = false,
+        val selectedTierInfo: TierInfo = TierInfo.IRON,
+        val isNotice: Boolean,
         )
 
     sealed interface SideEffect {
