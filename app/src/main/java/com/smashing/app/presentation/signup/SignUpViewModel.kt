@@ -14,7 +14,12 @@ import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.domain.model.Region
+import com.smashing.app.presentation.home.regionchange.RegionChangeContract
+import com.smashing.app.presentation.home.regionchange.RegionChangeUiState
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
+import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToRegion
+import com.smashing.app.presentation.signup.SignUpContract.SignUpUiState
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -36,6 +41,7 @@ class SignUpViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val kakaoId = savedStateHandle.toRoute<SignUp>().kakaoId
+    private val addressName = savedStateHandle
 
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
@@ -122,6 +128,19 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    fun updateSelectedRegion(region: Region) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedRegion = region,
+                regionLoadState = SignUpUiState.Success,
+            )
+        }
+    }
+
+    fun navigateToRegion() = viewModelScope.launch {
+        _sideEffect.emit(NavigateToRegion)
+    }
+
     fun postOpenchatValid()  = viewModelScope.launch {
         val request = PostOpenchatValidRequest(
             openchatUrl = openChatState.text.toString()
@@ -170,7 +189,7 @@ class SignUpViewModel @Inject constructor(
                 openChatUrl = openChatState.text.toString(),
                 sportCode = selectedSport.code,
                 tier = selectedSkill.skillCode,
-                region = "양천구",
+                region = _uiState.value.selectedRegion.toString(),
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {

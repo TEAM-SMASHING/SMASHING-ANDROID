@@ -24,6 +24,7 @@ import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
+import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
@@ -119,6 +120,16 @@ private fun MainNavHost(
         )
 
         signUpGraph(
+            navigateToRegion = {
+                appState.navController.navigateToRegion(
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    },
+                )
+            },
             navigateToHome = {
                 appState.navController.navigateToHome(
                     navOptions = navOptions {

@@ -47,13 +47,18 @@ import com.smashing.app.core.designsystem.component.sport.SportSelector
 import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
+import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
+import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToRegion
 import kotlinx.collections.immutable.persistentListOf
 
 private const val MAX_STEP = 6
 
 @Composable
 fun SignUpRoute(
+    regionResult: Region?,
+    onRegionResultConsumed: () -> Unit,
+    navigateToRegion: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel(),
@@ -61,11 +66,19 @@ fun SignUpRoute(
     val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(regionResult) {
+        if (regionResult != null) {
+            viewModel.updateSelectedRegion(regionResult)
+            onRegionResultConsumed()
+        }
+    }
+
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
+                    is NavigateToRegion -> navigateToRegion()
                 }
             }
     }
@@ -81,6 +94,7 @@ fun SignUpRoute(
         onGenderSelected = viewModel::updateSelectedGender,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
+        onAddressClick = viewModel::navigateToRegion,
         onBackClick = {},
         modifier = modifier,
         onBtnClick = {
@@ -105,6 +119,7 @@ private fun SignUpScreen(
     onGenderSelected: (GenderType) -> Unit,
     onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
+    onAddressClick:() -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -175,7 +190,9 @@ private fun SignUpScreen(
                     )
 
                     else -> SignUpLocation(
-                        onAddressClick = {},
+                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
+                        isAddressExist = if (uiState.selectedRegion != null) true else false,
+                        onAddressClick = onAddressClick,
                     )
                 }
             } else {
@@ -221,6 +238,7 @@ private fun SignUpScreenPreview() {
             onSportSelected = {},
             selectedSkill = null,
             onSkillSelected = {},
+            onAddressClick = {},
             onBackClick = {},
             onBtnClick = { currentStep = currentStep + 1 },
             modifier = Modifier.background(color = colors.bgCanvas),
