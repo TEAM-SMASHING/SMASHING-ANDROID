@@ -2,8 +2,8 @@ package com.smashing.app.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.common.type.SportType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.data.model.profile.RatingCount
 import com.smashing.app.data.model.profile.Review
 import com.smashing.app.data.model.profile.TagCount

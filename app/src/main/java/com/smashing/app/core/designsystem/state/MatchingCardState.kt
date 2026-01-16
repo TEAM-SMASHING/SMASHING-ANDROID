@@ -1,8 +1,8 @@
 package com.smashing.app.core.designsystem.state
 
 import androidx.compose.runtime.Stable
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.TierType
 
 /**
  * 매칭 카드 UI를 구성하기 위한 상태 모델입니다.

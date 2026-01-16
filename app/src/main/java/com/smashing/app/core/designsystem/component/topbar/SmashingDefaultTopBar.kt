@@ -22,8 +22,8 @@ import com.smashing.app.core.extension.noRippleClickable
 fun SmashingDefaultTopBar(
     title: String,
     topBarType: TopBarType,
-    onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
     Box(
         modifier = modifier

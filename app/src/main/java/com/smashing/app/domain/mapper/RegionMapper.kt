@@ -1,6 +1,6 @@
 package com.smashing.app.domain.mapper
 
-import com.smashing.app.data.model.KakaoRegion
+import com.smashing.app.data.model.region.KakaoRegion
 import com.smashing.app.domain.model.Region
 
 fun KakaoRegion.toRegion(): Region {

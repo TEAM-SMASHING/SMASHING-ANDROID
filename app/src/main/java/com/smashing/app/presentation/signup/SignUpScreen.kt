@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.signup
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,9 +29,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.sign_up_next_btn
 import com.smashing.app.R.string.sign_up_end_btn
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.SkillType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SkillType
+import com.smashing.app.data.type.SportType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.progressbar.SmashingProgressBar
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -43,6 +46,8 @@ import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 import com.smashing.app.core.designsystem.component.sport.SportSelector
 import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
+import com.smashing.app.core.extension.clearFocus
+import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import kotlinx.collections.immutable.persistentListOf
 
@@ -50,12 +55,22 @@ private const val MAX_STEP = 6
 
 @Composable
 fun SignUpRoute(
+    regionResult: Region?,
+    onRegionResultConsumed: () -> Unit,
+    navigateToRegion: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(regionResult) {
+        if (regionResult != null) {
+            viewModel.updateSelectedRegion(regionResult)
+            onRegionResultConsumed()
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -68,7 +83,8 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
-        openChatLinkState = viewModel.openChatLinkState,
+        nickNameState = viewModel.nickNameState,
+        openChatLinkState = viewModel.openChatState,
         selectedGender = uiState.selectedGender,
         selectedSport = uiState.selectedSport,
         selectedSkill = uiState.selectedSkill,
@@ -76,7 +92,8 @@ fun SignUpRoute(
         onGenderSelected = viewModel::updateSelectedGender,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
-        onBackClick = {},
+        onAddressClick = navigateToRegion,
+        onBackClick = viewModel::deleteCurrentStep,
         modifier = modifier,
         onBtnClick = {
             if (uiState.currentStep < MAX_STEP + 1)
@@ -91,6 +108,7 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    nickNameState: TextFieldState,
     openChatLinkState: TextFieldState,
     selectedGender: GenderType?,
     selectedSport: SportType?,
@@ -99,13 +117,25 @@ private fun SignUpScreen(
     onGenderSelected: (GenderType) -> Unit,
     onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
+    onAddressClick:() -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
+
+    BackHandler (enabled = uiState.currentStep > 0){
+        onBackClick()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(
+                color = colors.bgCanvas,
+            )
+            .systemBarsPadding()
+            .clearFocus(focusManager)
             .padding(
                 bottom = 48.dp,
             ),
@@ -131,8 +161,9 @@ private fun SignUpScreen(
 
                 when (uiState.currentStep) {
                     1 -> SignUpNickName(
-                        nickNameState = openChatLinkState, //Todo 수정 필요
-                        onDuplicateBtnClick = { },
+                        nickNameState = nickNameState,
+                        nickNameErrorText = uiState.nickNameErrorText,
+                        nickNameConfirmText = uiState.nickNameConfirmText,
                     )
 
                     2 -> SignUpGender(
@@ -142,6 +173,7 @@ private fun SignUpScreen(
 
                     3 -> SignUpChatLink(
                         openChatLinkState = openChatLinkState,
+                        openChatErrorText = uiState.openChatErrorText,
                     )
 
                     4 -> SportSelector(
@@ -159,8 +191,16 @@ private fun SignUpScreen(
                         onSkillSelected = onSkillSelected,
                     )
 
-                    else -> SignUpLocation(
-                        onAddressClick = {},
+                    6 -> SignUpLocation(
+                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
+                        isAddressExist = if (uiState.selectedRegion != null) true else false,
+                        onAddressClick = onAddressClick,
+                    )
+
+                    else -> SignUpNickName(
+                        nickNameState = nickNameState,
+                        nickNameErrorText = uiState.nickNameErrorText,
+                        nickNameConfirmText = uiState.nickNameConfirmText,
                     )
                 }
             } else {
@@ -198,6 +238,7 @@ private fun SignUpScreenPreview() {
         SignUpScreen(
             uiState = SignUpContract.State(),
             isBtnEnabled = true,
+            nickNameState = rememberTextFieldState(),
             selectedGender = null,
             onGenderSelected = {},
             openChatLinkState = rememberTextFieldState(),
@@ -205,6 +246,7 @@ private fun SignUpScreenPreview() {
             onSportSelected = {},
             selectedSkill = null,
             onSkillSelected = {},
+            onAddressClick = {},
             onBackClick = {},
             onBtnClick = { currentStep = currentStep + 1 },
             modifier = Modifier.background(color = colors.bgCanvas),

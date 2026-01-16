@@ -117,7 +117,7 @@ private fun SmashingProgressBarPreview() {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            
+
             SmashingProgressBar(
                 progress = progress,
             )
@@ -137,4 +137,3 @@ private fun SmashingProgressBarPreview() {
 
     }
 }
-

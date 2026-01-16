@@ -25,8 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_arrow_left
-import com.smashing.app.core.common.type.NotificationType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.NotificationType
+import com.smashing.app.data.type.SportType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
