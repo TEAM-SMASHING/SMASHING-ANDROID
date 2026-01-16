@@ -46,6 +46,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TierInfoRoute(
+    onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -53,6 +54,8 @@ fun TierInfoRoute(
 
     TierInfoScreen(
         uiState = uiState,
+        onClick = viewModel::updateTierInfo,
+        onBack = onNavigateUp,
         modifier = modifier,
     )
 }
@@ -60,12 +63,10 @@ fun TierInfoRoute(
 @Composable
 private fun TierInfoScreen(
     uiState: HomeContract.State,
+    onClick: (TierInfo) -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val userTier = uiState.activeUserProfile.tierType.toTierInfo()
-
-    val selectedTier = remember { mutableStateOf(userTier) }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -77,7 +78,7 @@ private fun TierInfoScreen(
         SmashingDefaultTopBar(
             title = "티어 설명",
             topBarType = TopBarType.CLOSE,
-            onClick = {},
+            onClick = onBack,
         )
 
         Column(
@@ -85,16 +86,16 @@ private fun TierInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(selectedTier.value.getImg()),
+                painter = painterResource(uiState.selectedTierInfo.getImg()),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp),
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = selectedTier.value.tierName,
+                text = uiState.selectedTierInfo.tierName,
                 style = SmashingTheme.typography.xl.semibold20,
-                color = selectedTier.value.getTxtColor(),
+                color = uiState.selectedTierInfo.getTxtColor(),
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -127,10 +128,8 @@ private fun TierInfoScreen(
             ) {
                 SmashingChip(
                     text = it.tierName,
-                    style = if (it != selectedTier.value) ChipStyle.INACTIVE else ChipStyle.ACTIVE,
-                    onClick = {
-                        selectedTier.value = it
-                    },
+                    style = if (it != uiState.selectedTierInfo) ChipStyle.INACTIVE else ChipStyle.ACTIVE,
+                    onClick = { onClick(it) },
                 )
             }
         }
@@ -155,7 +154,7 @@ private fun TierInfoScreen(
             LazyColumn(
                 modifier = Modifier
                     .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(
                     items = listOf("", "", ""),
@@ -246,11 +245,14 @@ private fun TierInfoScreenPreview() {
             matchingCardList = persistentListOf(),
             matchedUser = null,
             isNotice = false,
+            selectedTierInfo = TierType.GOLD_1.toTierInfo(),
         )
 
         TierInfoScreen(
             uiState = dummyState,
             modifier = Modifier,
+            onClick = {},
+            onBack = {},
         )
     }
 }

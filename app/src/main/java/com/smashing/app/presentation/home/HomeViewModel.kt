@@ -9,6 +9,7 @@ import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
+import com.smashing.app.presentation.home.type.TierInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -231,4 +232,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         currentState.copy(loadState = state)
     }
 
+    fun updateTierInfo(tierInfo: TierInfo) {
+        _uiState.update { currentState ->
+            currentState.copy(selectedTierInfo = tierInfo)
+        }
+    }
 }
