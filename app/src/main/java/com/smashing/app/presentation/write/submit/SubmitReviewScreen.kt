@@ -87,8 +87,9 @@ private fun SubmitReviewScreen(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .verticalScroll(scrollState),
+                .weight(1f)
+                .verticalScroll(scrollState)
+                .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             WriteReviewContent(
