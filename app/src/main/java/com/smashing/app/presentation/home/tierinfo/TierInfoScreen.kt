@@ -86,7 +86,7 @@ private fun TierInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(R.drawable.img_tier_dummy),
+                painter = painterResource(selectedTier.value.getImg()),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp),

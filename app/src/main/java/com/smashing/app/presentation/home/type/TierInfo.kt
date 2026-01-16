@@ -1,8 +1,10 @@
 package com.smashing.app.presentation.home.type
 
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
+import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.TierType
 
@@ -41,6 +43,17 @@ enum class TierInfo(
         PLATINUM -> SmashingTheme.colors.tierPlatinumTxt
         DIAMOND -> SmashingTheme.colors.tierDiamondTxt
         CHALLENGER -> SmashingTheme.colors.tierChallengerTxt
+    }
+
+    @DrawableRes
+    fun getImg(): Int = when (this) {
+        IRON -> img_tier_dummy
+        BRONZE -> img_tier_dummy
+        SILVER -> img_tier_dummy
+        GOLD -> img_tier_dummy
+        PLATINUM -> img_tier_dummy
+        DIAMOND -> img_tier_dummy
+        CHALLENGER -> img_tier_dummy
     }
 }
 
