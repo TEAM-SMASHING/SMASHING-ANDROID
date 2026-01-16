@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.smashing.app.presentation.home.navigation.RegionChange
-import com.smashing.app.presentation.region.navigation.Region
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +23,9 @@ class RegionChangeViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun getRegion() {
-        Timber.tag("RegionChangeViewModel").d("dddd")
-        Timber.tag("RegionChangeViewModel").d(savedStateHandle.toRoute<RegionChange>().addressName)
-        Timber.tag("RegionChangeViewModel").d(savedStateHandle.toRoute<RegionChange>().districtName)
-        Timber.tag("RegionChangeViewModel").d(savedStateHandle.toRoute<RegionChange>().cityName)
+        val regionChange = savedStateHandle.toRoute<RegionChange>()
+        Timber.tag("RegionChangeViewModel").d("addressName: ${regionChange.addressName}")
+        Timber.tag("RegionChangeViewModel").d("districtName: ${regionChange.districtName}")
+        Timber.tag("RegionChangeViewModel").d("cityName: ${regionChange.cityName}")
     }
 }

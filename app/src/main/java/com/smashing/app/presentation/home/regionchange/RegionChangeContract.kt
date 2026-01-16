@@ -16,7 +16,7 @@ interface RegionChangeContract {
     }
 }
 
-sealed interface RegionChangeUiState{
+sealed interface RegionChangeUiState {
     object Idle : RegionChangeUiState
 
     object Success : RegionChangeUiState

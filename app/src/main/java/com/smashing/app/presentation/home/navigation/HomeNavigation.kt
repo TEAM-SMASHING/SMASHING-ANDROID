@@ -7,13 +7,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
-import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import kotlinx.serialization.Serializable

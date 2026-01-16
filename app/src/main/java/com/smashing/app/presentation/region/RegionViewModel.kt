@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.common.state.UiState
 import com.smashing.app.domain.model.Region
 import com.smashing.app.domain.usecase.GetSeoulFilterRegionUseCase
-import com.smashing.app.presentation.home.regionchange.RegionChangeContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

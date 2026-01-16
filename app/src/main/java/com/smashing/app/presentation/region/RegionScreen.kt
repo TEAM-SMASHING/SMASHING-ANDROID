@@ -30,7 +30,8 @@ import com.smashing.app.core.designsystem.component.topbar.SmashingSearchTopBar
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.domain.model.Region
-import com.smashing.app.presentation.region.RegionContract.SideEffect.*
+import com.smashing.app.presentation.region.RegionContract.SideEffect.NavigateToRegionChange
+import com.smashing.app.presentation.region.RegionContract.SideEffect.NavigateUp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
