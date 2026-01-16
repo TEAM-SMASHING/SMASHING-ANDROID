@@ -1,6 +1,7 @@
 package com.smashing.app.core.extension
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
@@ -13,10 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.delay
 
 /**
@@ -45,6 +50,7 @@ fun Modifier.noRippleClickable(
  */
 fun Modifier.bringIntoViewOnFocus(
     isFocused: Boolean,
+    extraBottom: Dp,
     delayMillis: Long = 400L,
 ): Modifier = composed {
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
@@ -53,23 +59,40 @@ fun Modifier.bringIntoViewOnFocus(
     val density = LocalDensity.current
     val imeBottom = WindowInsets.ime.getBottom(density)
     val isImeVisible = imeBottom > 0
+    val extraBottomPx = with(density) { extraBottom.toPx() }
 
-    LaunchedEffect(isFocused, isImeVisible) {
-        if (!isFocused || !isImeVisible) return@LaunchedEffect
+    LaunchedEffect(isImeVisible, isFocused) {
+        if (!isFocused) return@LaunchedEffect
         val coords = layoutCoordinates ?: return@LaunchedEffect
 
-        val rect = Rect(
-            left = 0f,
-            top = 0f,
-            right = coords.size.width.toFloat(),
-            bottom = coords.size.height.toFloat(),
+        val original = coords.boundsInParent()
+        val targetRect = Rect(
+            left = original.left,
+            top = original.top,
+            right = original.right,
+            bottom = original.bottom + extraBottomPx,
         )
 
         delay(delayMillis)
-        bringIntoViewRequester.bringIntoView(rect)
+        bringIntoViewRequester.bringIntoView(targetRect)
     }
 
     this
         .bringIntoViewRequester(bringIntoViewRequester)
         .onGloballyPositioned { layoutCoordinates = it }
+}
+
+/**
+ * 화면의 빈 영역을 터치했을 때 포커스를 해제하는 함수
+ * @param focusManager 현재 화면의 [FocusManager] 객체
+ * @param doOnClear 포커스 해제 시 추가로 실행할 동작
+ */
+fun Modifier.clearFocus(
+    focusManager: FocusManager,
+    doOnClear: () -> Unit = {},
+): Modifier = this.pointerInput(Unit) {
+    detectTapGestures(onTap = {
+        doOnClear()
+        focusManager.clearFocus()
+    })
 }
