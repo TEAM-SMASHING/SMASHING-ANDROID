@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.signup
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +46,6 @@ import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 import com.smashing.app.core.designsystem.component.sport.SportSelector
 import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
-import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
@@ -85,6 +85,7 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
+        isLoading = uiState.isLoading,
         nickNameState = viewModel.nickNameState,
         openChatLinkState = viewModel.openChatState,
         selectedGender = uiState.selectedGender,
@@ -95,7 +96,7 @@ fun SignUpRoute(
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
         onAddressClick = viewModel::navigateToRegion,
-        onBackClick = {},
+        onBackClick = viewModel::deleteCurrentStep,
         modifier = modifier,
         onBtnClick = {
             if (uiState.currentStep < MAX_STEP + 1)
@@ -110,6 +111,7 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    isLoading: Boolean,
     nickNameState: TextFieldState,
     openChatLinkState: TextFieldState,
     selectedGender: GenderType?,
@@ -125,6 +127,11 @@ private fun SignUpScreen(
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
+
+    BackHandler {
+        if (isLoading) return@BackHandler
+        onBackClick()
+    }
 
     Column(
         modifier = modifier
@@ -229,6 +236,7 @@ private fun SignUpScreenPreview() {
 
         SignUpScreen(
             uiState = SignUpContract.State(),
+            isLoading = false,
             isBtnEnabled = true,
             nickNameState = rememberTextFieldState(),
             selectedGender = null,

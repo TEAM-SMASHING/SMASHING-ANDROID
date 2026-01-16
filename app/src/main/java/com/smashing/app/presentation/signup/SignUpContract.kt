@@ -12,6 +12,7 @@ import com.smashing.app.presentation.region.RegionContract
 interface SignUpContract {
     @Immutable
     data class State(
+        val isLoading: Boolean = false,
         val currentStep: Int = 1,
         val nickNameErrorText: String? = null,
         val nickNameConfirmText: String? = null,

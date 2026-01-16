@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -73,6 +74,12 @@ class SignUpViewModel @Inject constructor(
     fun updateCurrentStep() {
         _uiState.update {
             it.copy(currentStep = it.currentStep + 1)
+        }
+    }
+
+    fun deleteCurrentStep() {
+        _uiState.update {
+            it.copy(currentStep = it.currentStep - 1)
         }
     }
 
@@ -188,7 +195,7 @@ class SignUpViewModel @Inject constructor(
                 gender = selectedGender.name,
                 openChatUrl = openChatState.text.toString(),
                 sportCode = selectedSport.code,
-                tier = selectedSkill.skillCode,
+                experienceRange = selectedSkill.skillCode,
                 region = _uiState.value.selectedRegion.toString(),
             )
             authRepository.postSignUp(request = request)
@@ -205,7 +212,11 @@ class SignUpViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    Timber.tag("SignUp").e("회원가입 실패 $error")
+                    Timber.tag("SignUp").e("회원가입 실패 ${error.message}")
+                    if (error is HttpException) {
+                        val errorBody = error.response()?.errorBody()?.string()
+                        Timber.tag("SignUp").e("SignUp errorBody = $errorBody")
+                    }
                 }
         }
     }
