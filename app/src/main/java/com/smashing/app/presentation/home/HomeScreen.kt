@@ -63,6 +63,7 @@ import kotlinx.collections.immutable.toImmutableList
 fun HomeRoute(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
+    navigateToRanking: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -72,6 +73,7 @@ fun HomeRoute(
         uiState = uiState,
         navigateToNotice = navigateToNotice,
         navigateToRegionChange = navigateToRegionChange,
+        navigateToRanking = navigateToRanking,
         modifier = modifier,
     )
 }
@@ -81,6 +83,7 @@ private fun HomeScreen(
     uiState: HomeContract.State,
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
+    navigateToRanking: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -261,7 +264,7 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = {}
+                                    onClick = navigateToRanking
                                 )
                         )
                     }
@@ -385,7 +388,7 @@ private fun CloseMatching(
                 )
 
                 MatchedUserItem(
-                    matchedUser= matchedMyData,
+                    matchedUser = matchedMyData,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                 )
@@ -441,7 +444,7 @@ private fun MatchedUserItem(
                 .padding(
                     horizontal = 28.dp,
                 )
-        ){
+        ) {
             UrlImage(
                 url = ProfileImageProvider.getTempUrl(matchedUser.userId),
                 modifier = Modifier
@@ -591,6 +594,7 @@ private fun HomeScreenPreview() {
         ),
         navigateToNotice = {},
         navigateToRegionChange = {},
+        navigateToRanking = {},
     )
 }
 
@@ -626,5 +630,6 @@ private fun HomeScreenEmptyValuePreview() {
         ),
         navigateToNotice = {},
         navigateToRegionChange = {},
+        navigateToRanking = {},
     )
 }

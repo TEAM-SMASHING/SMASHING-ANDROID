@@ -75,8 +75,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         updateLoadState(HomeUiState.Success)
 
         _uiState.update { currentState ->
-            currentState.copy(topRankerList = dummyRegionRankerList.take(5).toImmutableList())
-            currentState.copy(regionRankerList = dummyRegionRankerList.take(30).toImmutableList())
+            currentState.copy(
+                topRankerList = dummyRegionRankerList.take(5).toImmutableList(),
+                regionRankerList = dummyRegionRankerList.take(30).toImmutableList()
+            )
         }
     }
 
