@@ -106,7 +106,7 @@ private fun AddSportScreen(
                 showExitDialog = false
                 onBackClick()
             },
-            onDismissClick = { },
+            onDismissClick = { showExitDialog = false },
             onDismissRequest = { showExitDialog = false },
         )
 
@@ -180,12 +180,13 @@ private fun SignUpScreenPreview() {
         var currentStep by rememberSaveable { mutableIntStateOf(1) }
 
         AddSportScreen(
-            uiState = AddSportsContract.State(currentStep = 1), isBtnEnabled = true,
+            uiState = AddSportsContract.State(currentStep = currentStep),
+            isBtnEnabled = true,
             selectedSport = null,
             onSportSelected = {},
             selectedSkill = null,
             onSkillSelected = {},
-            onBtnClick = { currentStep + 1 },
+            onBtnClick = { currentStep ++ },
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

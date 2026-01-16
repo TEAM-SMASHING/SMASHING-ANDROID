@@ -52,18 +52,12 @@ class AddSportsViewModel @Inject constructor(
     fun postAddSport() {
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = AddSportsUiState.Loading) }
-            try {
-                _uiState.update { it.copy(loadState = AddSportsUiState.Success) }
-                _sideEffect.send(AddSportsUiState.AddSportsSideEffect.NavigateToSports)
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        loadState = AddSportsUiState.Failure(
-                            e.message ?: "Error",
-                        )
-                    )
-                }
-            }
+            // TODO: 실제 API 호출로 교체 필요
+            //repository.addSport(uiState.value.addSportsInfo)
+            //     .onSuccess { ... }
+            //     .onFailure { ... }
+            _uiState.update { it.copy(loadState = AddSportsUiState.Success) }
+            _sideEffect.send(AddSportsUiState.AddSportsSideEffect.NavigateToSports)
         }
     }
 }
