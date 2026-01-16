@@ -1,7 +1,7 @@
 package com.smashing.app.domain.model
 
-import com.smashing.app.core.common.type.NotificationType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.NotificationType
+import com.smashing.app.data.type.SportType
 
 data class Notification(
     val notificationId: String,

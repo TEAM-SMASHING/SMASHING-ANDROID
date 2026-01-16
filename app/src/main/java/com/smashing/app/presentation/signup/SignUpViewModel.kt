@@ -6,11 +6,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.SkillType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SkillType
+import com.smashing.app.data.type.SportType
 import com.smashing.app.data.model.auth.SignUpModel
-import com.smashing.app.data.remote.dto.PostSignUpRequest
+import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.signup.navigation.SignUp

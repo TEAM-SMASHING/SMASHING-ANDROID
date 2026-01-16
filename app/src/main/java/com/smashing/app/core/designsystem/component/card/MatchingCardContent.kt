@@ -20,15 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.ic_man_20
-import com.smashing.app.R.drawable.ic_woman_20
 import com.smashing.app.R.string.count
 import com.smashing.app.R.string.record
 import com.smashing.app.R.string.review
 import com.smashing.app.R.string.win_lose_count
-import com.smashing.app.core.common.type.GenderType
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.mapper.icon20
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -39,11 +37,6 @@ fun MatchingCardContent(
     cardState: MatchingCardState,
     modifier: Modifier = Modifier,
 ) {
-    val genderIcon = when (cardState.genderType) {
-        GenderType.MALE -> ic_man_20
-        GenderType.FEMALE -> ic_woman_20
-    }
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,7 +52,7 @@ fun MatchingCardContent(
 
         UserInfo(
             nickname = cardState.nickname,
-            genderIcon = genderIcon,
+            genderIcon = cardState.genderType.icon20(),
             modifier = Modifier.padding(
                 vertical = 4.dp,
             )

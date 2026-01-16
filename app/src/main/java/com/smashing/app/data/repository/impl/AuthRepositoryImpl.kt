@@ -9,8 +9,8 @@ import com.smashing.app.data.model.auth.KakaoLoginModel
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.datasource.api.AuthRemoteDataSource
 import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
-import com.smashing.app.data.remote.dto.PostKakaoLoginRequest
-import com.smashing.app.data.remote.dto.PostSignUpRequest
+import com.smashing.app.data.remote.dto.auth.PostKakaoLoginRequest
+import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.AuthRepository
 import javax.inject.Inject

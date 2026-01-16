@@ -7,9 +7,11 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,10 +22,12 @@ import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.bringIntoViewOnFocus
 import com.smashing.app.core.extension.checkLength
 
 private const val AREA_RATIO = 296 / 128f
@@ -42,7 +47,7 @@ fun SmashingAreaTextField(
     modifier: Modifier = Modifier,
     isError: Boolean = false,
     maxLength: Int = 100,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -57,6 +62,17 @@ fun SmashingAreaTextField(
         isError = isError,
         isConfirm = false,
     )
+
+    val density = LocalDensity.current
+    val imeBottom = WindowInsets.ime.getBottom(density)
+    val isImeVisible = imeBottom > 0
+
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
+        }
+    }
+
     Box(
         modifier = modifier
             .border(
@@ -65,7 +81,11 @@ fun SmashingAreaTextField(
                 shape = RoundedCornerShape(12.dp),
             )
             .aspectRatio(AREA_RATIO)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = 16.dp, vertical = 14.dp)
+            .bringIntoViewOnFocus(
+                isFocused = isFocused,
+                extraBottom = 13.dp,
+            ),
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
