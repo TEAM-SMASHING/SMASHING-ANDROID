@@ -101,6 +101,7 @@ private fun TierInfoScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                //TODO 더미 추가 후 수정 예정
                 TierTag(
                     tagText = "티어 설명",
                 )
@@ -154,6 +155,7 @@ private fun TierInfoScreen(
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
+                //TODO 더미 추가 후 수정 예정
                 items(
                     items = listOf("", "", ""),
                 ) {
