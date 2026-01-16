@@ -77,7 +77,7 @@ private fun TierInfoScreen(
         SmashingDefaultTopBar(
             title = "티어 설명",
             topBarType = TopBarType.CLOSE,
-            onClick = {}
+            onClick = {},
         )
 
         Column(
@@ -94,7 +94,7 @@ private fun TierInfoScreen(
             Text(
                 text = selectedTier.value.tierName,
                 style = SmashingTheme.typography.xl.semibold20,
-                color = selectedTier.value.getTxtColor()
+                color = selectedTier.value.getTxtColor(),
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -103,14 +103,14 @@ private fun TierInfoScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TierTag(
-                    tagText = "티어 설명"
+                    tagText = "티어 설명",
                 )
                 TierTag(
-                    tagText = "티어 설명"
+                    tagText = "티어 설명",
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(28.dp))
 
         LazyRow(
@@ -119,18 +119,18 @@ private fun TierInfoScreen(
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(
                 horizontal = 16.dp,
-            )
+            ),
         ) {
             items(
                 items = TierInfo.entries,
-                key = { it.tierName }
+                key = { it.tierName },
             ) {
                 SmashingChip(
                     text = it.tierName,
                     style = if (it != selectedTier.value) ChipStyle.INACTIVE else ChipStyle.ACTIVE,
                     onClick = {
                         selectedTier.value = it
-                    }
+                    },
                 )
             }
         }
@@ -156,13 +156,13 @@ private fun TierInfoScreen(
                 modifier = Modifier
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
+            ) {
                 items(
-                    items = listOf("","",""),
-                ){
+                    items = listOf("", "", ""),
+                ) {
                     CommentTag(
                         title = "test",
-                        comment = "test"
+                        comment = "test",
                     )
                 }
             }
@@ -186,7 +186,7 @@ private fun TierTag(
             )
             .padding(
                 8.dp,
-            )
+            ),
     )
 }
 
@@ -195,7 +195,7 @@ private fun CommentTag(
     title: String,
     comment: String,
     modifier: Modifier = Modifier,
-){
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -219,7 +219,7 @@ private fun CommentTag(
         Text(
             text = comment,
             style = SmashingTheme.typography.xs.medium12,
-            color = SmashingTheme.colors.txtSecondary
+            color = SmashingTheme.colors.txtSecondary,
         )
     }
 }
