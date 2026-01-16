@@ -10,7 +10,7 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.ranking.RankingRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToRankingPage(
+fun NavController.navigateToRanking(
     navOptions: NavOptions? = null,
 ) { navigate(RankingPage, navOptions) }
 
