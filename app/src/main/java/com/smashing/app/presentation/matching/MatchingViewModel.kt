@@ -56,7 +56,15 @@ class MatchingViewModel @Inject constructor(
         it.copy(isDialogVisible = false)
     }
 
-    private fun fetchReceivedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
+    fun fetchMatchingList() {
+        when (uiState.value.selectedType) {
+            MatchingType.RECEIVE -> fetchReceivedMatchingList()
+            MatchingType.SEND -> {}
+            MatchingType.ACCEPTED -> {}
+        }
+    }
+
+    fun fetchReceivedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
         matchingRepository.getMeReceivedMatchingList(
             snapshotAt = if (isRefresh) null else _uiState.value.receivedCursor.snapshotAt,
             cursor = if (isRefresh) null else _uiState.value.receivedCursor.nextCursor,

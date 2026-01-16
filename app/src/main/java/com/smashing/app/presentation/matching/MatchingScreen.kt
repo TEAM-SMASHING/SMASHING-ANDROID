@@ -17,7 +17,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +48,7 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
 
@@ -59,8 +62,9 @@ fun MatchingRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MatchingScreen(
-        navigateToSubmit = navigateToSubmit,
         uiState = uiState,
+        navigateToSubmit = navigateToSubmit,
+        onLoadMoreMatchingList = viewModel::fetchMatchingList,
         onTabClick = viewModel::selectMatchingType,
         onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
@@ -71,6 +75,7 @@ fun MatchingRoute(
 @Composable
 private fun MatchingScreen(
     uiState: MatchingContract.State,
+    onLoadMoreMatchingList: () -> Unit,
     navigateToSubmit: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
@@ -146,6 +151,7 @@ private fun MatchingScreen(
                 gridState = gridState,
                 onCloseClick = onCardCloseClick,
                 onConfirmClick = navigateToSubmit,
+                onLoadMoreMatchingList = onLoadMoreMatchingList,
             )
         }
 
@@ -191,10 +197,23 @@ private fun MatchingScreen(
 private fun MatchingList(
     uiState: MatchingContract.State,
     gridState: LazyGridState,
+    onLoadMoreMatchingList: () -> Unit,
     onCloseClick: () -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val hasUserScrolled = remember(gridState) {
+        derivedStateOf {
+            gridState.firstVisibleItemIndex > 0 || gridState.isScrollInProgress
+        }
+    }
+
+    gridState.onBottomReached(
+        threshold = 3,
+        onLoadMore = onLoadMoreMatchingList,
+        isLoading = hasUserScrolled.value,
+    )
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         state = gridState,
@@ -265,6 +284,7 @@ private fun MatchingScreenPreview() {
             onTabClick = {},
             onCardCloseClick = {},
             onDialogDismissClick = {},
+            onLoadMoreMatchingList = {},
             modifier = Modifier
                 .background(Color.Black),
         )
