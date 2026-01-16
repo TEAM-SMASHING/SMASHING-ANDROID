@@ -31,13 +31,13 @@ import com.smashing.app.R.drawable.ic_gold
 import com.smashing.app.R.drawable.ic_silver
 import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.R.string.ranking_tier_with_lp
-import com.smashing.app.core.common.type.TierType
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
+import com.smashing.app.data.type.TierType
 
 /**
  * 랭킹 아이템 컴포넌트

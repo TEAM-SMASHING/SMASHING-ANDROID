@@ -1,8 +1,8 @@
 package com.smashing.app.presentation.notice
 
 import androidx.lifecycle.ViewModel
-import com.smashing.app.core.common.type.NotificationType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.NotificationType
+import com.smashing.app.data.type.SportType
 import com.smashing.app.domain.model.Notification
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList

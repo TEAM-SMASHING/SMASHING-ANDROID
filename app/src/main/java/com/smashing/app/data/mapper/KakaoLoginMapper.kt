@@ -1,7 +1,7 @@
 package com.smashing.app.data.mapper
 
 import com.smashing.app.data.model.auth.KakaoLoginModel
-import com.smashing.app.data.remote.dto.PostKakaoLoginResponse
+import com.smashing.app.data.remote.dto.auth.PostKakaoLoginResponse
 
 fun PostKakaoLoginResponse.toKakaoLoginToken() = KakaoLoginModel(
     accessToken = this.accessToken,

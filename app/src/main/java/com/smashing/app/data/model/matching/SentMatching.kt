@@ -1,7 +1,7 @@
 package com.smashing.app.data.model.matching
 
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.TierType
 
 data class SentMatching(
     val matchingId: String,

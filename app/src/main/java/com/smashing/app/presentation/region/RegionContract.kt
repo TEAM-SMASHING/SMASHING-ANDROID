@@ -12,4 +12,12 @@ interface RegionContract {
         val selectedRegion: Region? = null,
         val regionLoadState: UiState<ImmutableList<Region>> = UiState.Idle,
     )
+
+    sealed interface SideEffect {
+        data class NavigateUpWithResult(
+            val addressName: String,
+            val cityName: String,
+            val districtName: String,
+        ) : SideEffect
+    }
 }

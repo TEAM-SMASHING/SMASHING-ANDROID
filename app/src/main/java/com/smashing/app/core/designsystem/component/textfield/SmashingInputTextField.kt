@@ -71,7 +71,7 @@ fun SmashingInputTextField(
         ) {
             SmashingBasicTextField(
                 state = state,
-                placeholder = placeholder,
+                placeholder = if (isFocused) "" else placeholder,
                 placeholderColor = inputState.getContentColor(),
                 placeholderStyle = inputState.getTextStyle(),
                 textColor = inputState.getContentColor(),
