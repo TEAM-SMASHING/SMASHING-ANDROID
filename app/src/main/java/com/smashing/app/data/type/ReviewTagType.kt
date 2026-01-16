@@ -1,4 +1,4 @@
-package com.smashing.app.core.common.type
+package com.smashing.app.data.type
 
 enum class ReviewTagType(
     val tagLabel: String,

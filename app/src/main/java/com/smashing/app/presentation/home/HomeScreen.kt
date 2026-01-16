@@ -40,9 +40,9 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
 import com.smashing.app.R.drawable.img_dummy_versus
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.SportType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
@@ -83,9 +83,7 @@ private fun HomeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                color = SmashingTheme.colors.bgCanvas,
-            ),
+            .background(color = SmashingTheme.colors.bgCanvas),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         HomeTopBar(

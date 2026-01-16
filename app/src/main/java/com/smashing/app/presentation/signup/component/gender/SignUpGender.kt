@@ -7,10 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,7 +17,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.signup.component.SignUpTitle
 import com.smashing.app.R.string.sign_up_gender_title
-import com.smashing.app.core.common.type.GenderType
+import com.smashing.app.data.type.GenderType
 
 
 @Composable
@@ -55,7 +51,7 @@ fun SignUpGender (
             GenderCard(
                 genderIcon = ic_woman_32,
                 genderText = GenderType.FEMALE.gender,
-                onCardClick = { onGenderSelected(GenderType.FEMALE)},
+                onCardClick = { onGenderSelected(GenderType.FEMALE) },
                 modifier = Modifier.weight(1f),
                 isCardEnabled = selectedGender == GenderType.FEMALE,
             )
