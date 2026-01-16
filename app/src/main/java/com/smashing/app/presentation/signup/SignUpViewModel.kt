@@ -14,7 +14,9 @@ import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
+import com.smashing.app.presentation.signup.SignUpContract.SignUpUiState
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -54,7 +57,7 @@ class SignUpViewModel @Inject constructor(
             3 -> _uiState.value.isOpenChatValid
             4 -> _uiState.value.selectedSport != null
             5 -> _uiState.value.selectedSkill != null
-            6 -> true
+            6 -> _uiState.value.isRegionSelected
             else -> true
         }
 
@@ -66,7 +69,13 @@ class SignUpViewModel @Inject constructor(
 
     fun updateCurrentStep() {
         _uiState.update {
-            it.copy(currentStep = it.currentStep + 1)
+            it.copy(currentStep = it.currentStep + 1 )
+        }
+    }
+
+    fun deleteCurrentStep() {
+        _uiState.update {
+            it.copy(currentStep = maxOf(1, it.currentStep - 1))
         }
     }
 
@@ -122,6 +131,17 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    fun updateSelectedRegion(region: Region) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedRegion = region,
+                isRegionSelected = true,
+                regionLoadState = SignUpUiState.Success,
+            )
+        }
+
+    }
+
     fun postOpenchatValid()  = viewModelScope.launch {
         val request = PostOpenchatValidRequest(
             openchatUrl = openChatState.text.toString()
@@ -169,8 +189,8 @@ class SignUpViewModel @Inject constructor(
                 gender = selectedGender.name,
                 openChatUrl = openChatState.text.toString(),
                 sportCode = selectedSport.code,
-                tier = selectedSkill.skillCode,
-                region = "양천구",
+                experienceRange = selectedSkill.skillCode,
+                region = _uiState.value.selectedRegion.toString(),
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {
@@ -186,7 +206,7 @@ class SignUpViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    Timber.tag("SignUp").e("회원가입 실패 $error")
+                    Timber.tag("SignUp").e("회원가입 실패 ${error}")
                 }
         }
     }
