@@ -69,7 +69,7 @@ fun SignUpRoute(
     SignUpScreen(
         uiState = uiState,
         nickNameState = viewModel.nickNameState,
-        openChatLinkState = viewModel.openChatLinkState,
+        openChatLinkState = viewModel.openChatState,
         selectedGender = uiState.selectedGender,
         selectedSport = uiState.selectedSport,
         selectedSkill = uiState.selectedSkill,
@@ -145,6 +145,7 @@ private fun SignUpScreen(
 
                     3 -> SignUpChatLink(
                         openChatLinkState = openChatLinkState,
+                        openChatErrorText = uiState.openChatErrorText,
                     )
 
                     4 -> SportSelector(
