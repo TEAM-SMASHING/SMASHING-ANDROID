@@ -43,11 +43,9 @@ class SignUpViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<SignUpContract.SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    private val _nickNameState = TextFieldState("")
-    val nickNameState: TextFieldState get() = _nickNameState
+    val nickNameState = TextFieldState()
 
-    private val _openChatState = TextFieldState("")
-    val openChatState: TextFieldState get() = _openChatState
+    val openChatState = TextFieldState()
 
     val isBtnEnabled: Boolean
         get() = when (_uiState.value.currentStep) {
