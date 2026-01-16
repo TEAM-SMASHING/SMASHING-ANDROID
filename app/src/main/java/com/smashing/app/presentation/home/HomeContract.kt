@@ -18,7 +18,7 @@ interface HomeContract {
         val matchingCardList: ImmutableList<MatchingCardState.Search> = persistentListOf(),
         val matchedUser: DummyMatchedUser? = null,
         val selectedTierInfo: TierInfo = TierInfo.IRON,
-        val isNotice: Boolean,
+        val isNotice: Boolean = false,
         )
 
     sealed interface SideEffect {

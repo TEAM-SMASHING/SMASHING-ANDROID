@@ -35,6 +35,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.domain.model.Region
+import com.smashing.app.presentation.home.regionchange.RegionChangeContract.SideEffect.NavigateToRegion
 
 @Composable
 fun RegionChangeRoute(
@@ -60,7 +61,7 @@ fun RegionChangeRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is RegionChangeContract.SideEffect.NavigateToRegion -> navigateToRegion
+                    is NavigateToRegion -> navigateToRegion()
                 }
             }
     }
