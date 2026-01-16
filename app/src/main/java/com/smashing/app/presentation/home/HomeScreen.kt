@@ -65,12 +65,15 @@ import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.presentation.home.type.DummyMatchedUser
+import com.smashing.app.presentation.home.type.TierInfo
+import com.smashing.app.presentation.home.type.toTierInfo
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
+    navigateToTierInfo: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -80,6 +83,11 @@ fun HomeRoute(
         uiState = uiState,
         navigateToNotice = navigateToNotice,
         navigateToRegionChange = navigateToRegionChange,
+        navigateToTierInfo = navigateToTierInfo,
+        onTierInfoClick = {
+            viewModel.updateTierInfo(uiState.activeUserProfile?.tierType?.toTierInfo() ?: TierInfo.IRON)
+            navigateToTierInfo()
+        },
         modifier = modifier,
     )
 }
@@ -89,6 +97,8 @@ private fun HomeScreen(
     uiState: HomeContract.State,
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
+    navigateToTierInfo: () -> Unit,
+    onTierInfoClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -133,7 +143,7 @@ private fun HomeScreen(
                 userSport = uiState.activeUserProfile.sportType,
                 userTier = uiState.activeUserProfile.tierType,
                 onClickRegion = {},
-                onChangeRegion = {},
+                onChangeRegion = navigateToRegionChange,
                 onClickSportChip = { isDropdownExpanded = !isDropdownExpanded },
                 onClickNotice = navigateToNotice,
                 isNotice = uiState.isNotice,
@@ -159,6 +169,7 @@ private fun HomeScreen(
             },
             onTierClick = {
                 isDropdownExpanded = false
+                onTierInfoClick()
             },
             onDismiss = {
                 isDropdownExpanded = false
@@ -650,6 +661,8 @@ private fun HomeScreenPreview() {
         ),
         navigateToNotice = {},
         navigateToRegionChange = {},
+        navigateToTierInfo = {},
+        onTierInfoClick = {},
     )
 }
 
@@ -685,5 +698,7 @@ private fun HomeScreenEmptyValuePreview() {
         ),
         navigateToNotice = {},
         navigateToRegionChange = {},
+        navigateToTierInfo = {},
+        onTierInfoClick = {},
     )
 }

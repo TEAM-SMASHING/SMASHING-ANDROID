@@ -44,7 +44,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TierInfoRoute(
-    onNavigateUp: () -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -53,7 +53,7 @@ fun TierInfoRoute(
     TierInfoScreen(
         uiState = uiState,
         onClick = viewModel::updateTierInfo,
-        onBack = onNavigateUp,
+        onBack = navigateUp,
         modifier = modifier,
     )
 }

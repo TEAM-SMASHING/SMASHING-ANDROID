@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.home.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -11,6 +12,7 @@ import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
+import com.smashing.app.presentation.home.tierinfo.TierInfoRoute
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.region.navigation.getRegionResult
 import com.smashing.app.presentation.region.navigation.navigateToRegion
@@ -25,6 +27,10 @@ fun NavController.navigateToRegionChange(
     navOptions: NavOptions? = null,
 ) = navigate(RegionChange, navOptions)
 
+fun NavController.navigateToTierInfo(
+    navOptions: NavOptions? = null,
+) = navigate(TierInfo, navOptions)
+
 fun NavGraphBuilder.homeGraph(
     innerPadding: PaddingValues,
     navController: NavController,
@@ -34,9 +40,10 @@ fun NavGraphBuilder.homeGraph(
     ) {
         composable<HomeUser> {
             HomeRoute(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier,
                 navigateToNotice = navController::navigateToNotice,
                 navigateToRegionChange = navController::navigateToRegionChange,
+                navigateToTierInfo = navController::navigateToTierInfo,
             )
         }
 
@@ -51,6 +58,13 @@ fun NavGraphBuilder.homeGraph(
                 onRegionResultConsumed = savedStateHandle::removeRegionResult,
             )
         }
+
+        composable<TierInfo>{
+            TierInfoRoute(
+                modifier = Modifier.padding(innerPadding),
+                navigateUp = navController::navigateUp,
+            )
+        }
     }
 }
 
@@ -62,3 +76,6 @@ data object HomeUser : MainTabRoute
 
 @Serializable
 data object RegionChange : Route
+
+@Serializable
+data object TierInfo : Route
