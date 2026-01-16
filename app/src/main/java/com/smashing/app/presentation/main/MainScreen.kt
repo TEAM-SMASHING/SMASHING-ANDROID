@@ -24,6 +24,7 @@ import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
+import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
@@ -73,7 +74,7 @@ private fun MainNavHost(
     ) {
         homeGraph(
             innerPadding = innerPadding,
-            navigateToNotice = appState.navController::navigateToNotice,
+            navController = appState.navController,
         )
 
         searchGraph(
@@ -147,6 +148,11 @@ private fun MainNavHost(
                     },
                 )
             },
+            navController = appState.navController,
+        )
+
+        regionGraph(
+            innerPadding = innerPadding,
             navController = appState.navController,
         )
     }

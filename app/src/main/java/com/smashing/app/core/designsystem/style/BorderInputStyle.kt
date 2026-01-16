@@ -28,9 +28,9 @@ enum class BorderInputStyle {
         ): BorderInputStyle {
             return when {
                 isError -> ERROR
-                isConfirm -> CONFIRM
-                !isFocused && isFilled -> ACTIVE
                 isFocused -> TYPING
+                !isFocused && isFilled -> ACTIVE
+                isConfirm -> CONFIRM
                 else -> INACTIVE
             }
         }
@@ -38,8 +38,8 @@ enum class BorderInputStyle {
 
     @Composable
     fun getContentColor(): Color = when (this) {
-        ERROR, CONFIRM, ACTIVE, TYPING -> SmashingTheme.colors.txtPrimary
-        INACTIVE -> SmashingTheme.colors.txtDisabled
+        ERROR, CONFIRM, TYPING-> SmashingTheme.colors.txtPrimary
+        ACTIVE, INACTIVE -> SmashingTheme.colors.txtDisabled
     }
 
     @Composable

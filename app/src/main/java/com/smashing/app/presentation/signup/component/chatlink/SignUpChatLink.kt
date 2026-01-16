@@ -20,7 +20,7 @@ import com.smashing.app.presentation.signup.component.SignUpTitle
 fun SignUpChatLink(
     openChatLinkState: TextFieldState,
     modifier: Modifier = Modifier,
-    errorText: String? = null,
+    openChatErrorText: String? = null,
 ) {
     Column(
         modifier = modifier,
@@ -33,7 +33,7 @@ fun SignUpChatLink(
         SmashingInputTextField(
             state = openChatLinkState,
             placeholder = stringResource(sign_up_chat_link_placeholder),
-            errorText = errorText,
+            errorText = openChatErrorText,
         )
     }
 }

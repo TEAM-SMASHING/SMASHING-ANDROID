@@ -70,6 +70,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun HomeRoute(
     navigateToNotice: () -> Unit,
+    navigateToRegionChange: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -78,6 +79,7 @@ fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         navigateToNotice = navigateToNotice,
+        navigateToRegionChange = navigateToRegionChange,
         modifier = modifier,
     )
 }
@@ -86,8 +88,14 @@ fun HomeRoute(
 private fun HomeScreen(
     uiState: HomeContract.State,
     navigateToNotice: () -> Unit,
+    navigateToRegionChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val activeUserProfile = uiState.activeUserProfile ?: run {
+        // TODO: 로딩 또는 에러 UI 표시
+        return
+    }
+
 
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }
@@ -641,6 +649,7 @@ private fun HomeScreenPreview() {
             isNotice = true,
         ),
         navigateToNotice = {},
+        navigateToRegionChange = {},
     )
 }
 
@@ -675,5 +684,6 @@ private fun HomeScreenEmptyValuePreview() {
             isNotice = false,
         ),
         navigateToNotice = {},
+        navigateToRegionChange = {},
     )
 }
