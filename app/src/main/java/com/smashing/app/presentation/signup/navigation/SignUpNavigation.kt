@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.signup.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -30,7 +29,7 @@ fun NavGraphBuilder.signUpGraph(
             onRegionResultConsumed = savedStateHandle::removeRegionResult,
             navigateToRegion = navigateToRegion,
             navigateToHome = navigateToHome,
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier,
         )
     }
 }
