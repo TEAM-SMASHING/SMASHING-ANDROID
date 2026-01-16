@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,9 +28,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.sign_up_next_btn
 import com.smashing.app.R.string.sign_up_end_btn
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.SkillType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SkillType
+import com.smashing.app.data.type.SportType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.progressbar.SmashingProgressBar
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -43,6 +45,8 @@ import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 import com.smashing.app.core.designsystem.component.sport.SportSelector
 import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
+import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import kotlinx.collections.immutable.persistentListOf
 
@@ -68,7 +72,8 @@ fun SignUpRoute(
 
     SignUpScreen(
         uiState = uiState,
-        openChatLinkState = viewModel.openChatLinkState,
+        nickNameState = viewModel.nickNameState,
+        openChatLinkState = viewModel.openChatState,
         selectedGender = uiState.selectedGender,
         selectedSport = uiState.selectedSport,
         selectedSkill = uiState.selectedSkill,
@@ -91,6 +96,7 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
+    nickNameState: TextFieldState,
     openChatLinkState: TextFieldState,
     selectedGender: GenderType?,
     selectedSport: SportType?,
@@ -103,9 +109,16 @@ private fun SignUpScreen(
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(
+                color = colors.bgCanvas,
+            )
+            .systemBarsPadding()
+            .clearFocus(focusManager)
             .padding(
                 bottom = 48.dp,
             ),
@@ -131,8 +144,9 @@ private fun SignUpScreen(
 
                 when (uiState.currentStep) {
                     1 -> SignUpNickName(
-                        nickNameState = openChatLinkState, //Todo 수정 필요
-                        onDuplicateBtnClick = { },
+                        nickNameState = nickNameState,
+                        nickNameErrorText = uiState.nickNameErrorText,
+                        nickNameConfirmText = uiState.nickNameConfirmText,
                     )
 
                     2 -> SignUpGender(
@@ -142,6 +156,7 @@ private fun SignUpScreen(
 
                     3 -> SignUpChatLink(
                         openChatLinkState = openChatLinkState,
+                        openChatErrorText = uiState.openChatErrorText,
                     )
 
                     4 -> SportSelector(
@@ -198,6 +213,7 @@ private fun SignUpScreenPreview() {
         SignUpScreen(
             uiState = SignUpContract.State(),
             isBtnEnabled = true,
+            nickNameState = rememberTextFieldState(),
             selectedGender = null,
             onGenderSelected = {},
             openChatLinkState = rememberTextFieldState(),

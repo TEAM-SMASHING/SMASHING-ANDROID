@@ -26,8 +26,8 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.common.type.SkillType
 import com.smashing.app.presentation.signup.component.SignUpTitle
+import com.smashing.app.data.type.SkillType
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

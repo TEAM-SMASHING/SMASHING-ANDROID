@@ -1,5 +1,3 @@
-@file:JvmName("SportSelectorKt")
-
 package com.smashing.app.core.designsystem.component.sport
 
 import androidx.compose.foundation.background
@@ -20,11 +18,11 @@ import com.smashing.app.R.drawable.ic_pingpong
 import com.smashing.app.R.drawable.ic_tennis
 import com.smashing.app.R.string.sign_up_sport_subtitle
 import com.smashing.app.R.string.sign_up_sport_title
-import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.data.type.SportType
 import com.smashing.app.presentation.signup.component.SignUpTitle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
