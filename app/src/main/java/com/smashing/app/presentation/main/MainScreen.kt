@@ -15,20 +15,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.presentation.home.navigation.RegionChange
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
-import com.smashing.app.presentation.home.navigation.navigateToRegionChange
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.matchingGraph
-import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
-import com.smashing.app.presentation.region.navigation.Region
-import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
@@ -154,22 +149,7 @@ private fun MainNavHost(
 
         regionGraph(
             innerPadding = innerPadding,
-            navigateUp = appState.navController::navigateUp,
-            navigateToRegionChange = { addressName, cityName, districtName ->
-                appState.navController.navigateToRegionChange(
-                    addressName = addressName,
-                    cityName = cityName,
-                    districtName = districtName,
-                    navOptions = navOptions {
-                        popUpTo<Region> {
-                            inclusive = false
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                )
-            },
+            navController = appState.navController,
         )
     }
 }

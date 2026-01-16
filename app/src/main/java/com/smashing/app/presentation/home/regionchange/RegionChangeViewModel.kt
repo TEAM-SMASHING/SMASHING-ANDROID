@@ -1,31 +1,29 @@
 package com.smashing.app.presentation.home.regionchange
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
-import com.smashing.app.presentation.home.navigation.RegionChange
+import com.smashing.app.domain.model.Region
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import timber.log.Timber
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class RegionChangeViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+class RegionChangeViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(RegionChangeContract.State())
     val uiState = _uiState.asStateFlow()
 
     private val _sideEffect = MutableSharedFlow<RegionChangeContract.SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun getRegion() {
-        val regionChange = savedStateHandle.toRoute<RegionChange>()
-        Timber.tag("RegionChangeViewModel").d("addressName: ${regionChange.addressName}")
-        Timber.tag("RegionChangeViewModel").d("districtName: ${regionChange.districtName}")
-        Timber.tag("RegionChangeViewModel").d("cityName: ${regionChange.cityName}")
+    fun updateSelectedRegion(region: Region) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedRegion = region,
+                regionLoadState = RegionChangeUiState.Success,
+            )
+        }
     }
 }

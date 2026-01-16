@@ -38,14 +38,18 @@ import com.smashing.app.domain.model.Region
 fun RegionChangeRoute(
     navigateToRegion: () -> Unit,
     navigateUp: () -> Unit,
-    navigateToHome: () -> Unit,
+    regionResult: Region?,
+    onRegionResultConsumed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegionChangeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.getRegion()
+    LaunchedEffect(regionResult) {
+        if (regionResult != null) {
+            viewModel.updateSelectedRegion(regionResult)
+            onRegionResultConsumed()
+        }
     }
 
     RegionChangeScreen(
@@ -53,7 +57,7 @@ fun RegionChangeRoute(
         modifier = modifier,
         navigateToRegion = navigateToRegion,
         navigateUp = navigateUp,
-        navigateToHome = navigateToHome
+        navigateToHome = navigateUp
     )
 }
 

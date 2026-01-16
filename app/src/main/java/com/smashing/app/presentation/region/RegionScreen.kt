@@ -30,20 +30,17 @@ import com.smashing.app.core.designsystem.component.topbar.SmashingSearchTopBar
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.domain.model.Region
-import com.smashing.app.presentation.region.RegionContract.SideEffect.NavigateToRegionChange
-import com.smashing.app.presentation.region.RegionContract.SideEffect.NavigateUp
+import com.smashing.app.presentation.region.RegionContract.SideEffect.NavigateUpWithResult
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import timber.log.Timber
 
 @Composable
 fun RegionRoute(
-    navigateToRegionChange: (String, String, String) -> Unit,
+    navigateToRegionChange: (Region) -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegionViewModel = hiltViewModel(),
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -52,13 +49,13 @@ fun RegionRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateUp -> navigateUp()
-                    is NavigateToRegionChange -> {
-                        Timber.tag("RegionRoute").d(sideEffect.addressName)
+                    is NavigateUpWithResult -> {
                         navigateToRegionChange(
-                            sideEffect.addressName,
-                            sideEffect.cityName,
-                            sideEffect.districtName,
+                            Region(
+                                sideEffect.addressName,
+                                sideEffect.cityName,
+                                sideEffect.districtName,
+                            )
                         )
                     }
                 }
@@ -68,9 +65,7 @@ fun RegionRoute(
     RegionScreen(
         uiState = uiState,
         onSearchQueryChange = viewModel::updateSearchQuery,
-        onRegionSelected = { region ->
-            viewModel.updateSelectedRegion(region)
-        },
+        onRegionSelected = viewModel::updateSelectedRegion,
         navigateUp = navigateUp,
         modifier = modifier,
     )

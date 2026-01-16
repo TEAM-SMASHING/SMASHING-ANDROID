@@ -13,7 +13,9 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.region.navigation.getRegionResult
 import com.smashing.app.presentation.region.navigation.navigateToRegion
+import com.smashing.app.presentation.region.navigation.removeRegionResult
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(
@@ -21,11 +23,8 @@ fun NavController.navigateToHome(
 ) = navigate(Home, navOptions)
 
 fun NavController.navigateToRegionChange(
-    addressName: String? = null,
-    cityName: String? = null,
-    districtName: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(RegionChange(addressName, cityName, districtName), navOptions)
+) = navigate(RegionChange, navOptions)
 
 fun NavGraphBuilder.homeGraph(
     innerPadding: PaddingValues,
@@ -42,13 +41,15 @@ fun NavGraphBuilder.homeGraph(
             )
         }
 
-        composable<RegionChange> {
+        composable<RegionChange> { backStackEntry ->
+            val savedStateHandle = backStackEntry.savedStateHandle
+
             RegionChangeRoute(
                 modifier = Modifier.padding(innerPadding),
                 navigateToRegion = navController::navigateToRegion,
                 navigateUp = navController::navigateUp,
-                //TODO Home 과정 수정 예정
-                navigateToHome = navController::navigateUp,
+                regionResult = savedStateHandle.getRegionResult(),
+                onRegionResultConsumed = savedStateHandle::removeRegionResult,
             )
         }
     }
@@ -61,8 +62,4 @@ data object Home : MainTabRoute
 data object HomeUser : MainTabRoute
 
 @Serializable
-data class RegionChange(
-    val addressName: String?,
-    val cityName: String?,
-    val districtName: String?,
-) : Route
+data object RegionChange : Route

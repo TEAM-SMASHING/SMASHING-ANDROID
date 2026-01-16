@@ -14,9 +14,7 @@ interface RegionContract {
     )
 
     sealed interface SideEffect {
-        data object NavigateUp : SideEffect
-
-        data class NavigateToRegionChange(
+        data class NavigateUpWithResult(
             val addressName: String,
             val cityName: String,
             val districtName: String,

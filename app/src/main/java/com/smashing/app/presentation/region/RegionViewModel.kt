@@ -85,7 +85,7 @@ class RegionViewModel @Inject constructor(
         }.also {
             viewModelScope.launch {
                 _sideEffect.emit(
-                    RegionContract.SideEffect.NavigateToRegionChange(
+                    RegionContract.SideEffect.NavigateUpWithResult(
                         addressName = region.addressName,
                         cityName = region.cityName,
                         districtName = region.districtName,
@@ -93,10 +93,6 @@ class RegionViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    fun updateNavigateUp() = viewModelScope.launch {
-        _sideEffect.emit(RegionContract.SideEffect.NavigateUp)
     }
 
     companion object {
