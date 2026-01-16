@@ -44,8 +44,8 @@ fun WriteResultContent(
     onWinnerSelected: (String) -> Unit,
     onLeftDoneClick: (Int) -> Unit,
     onRightDoneClick: (Int) -> Unit,
-    isTextFieldsEnabled: Boolean = true,
     modifier: Modifier = Modifier,
+    isTextFieldsEnabled: Boolean = true,
     title: String = stringResource(submit_title),
     subTitle: String = stringResource(submit_description),
 ) {
