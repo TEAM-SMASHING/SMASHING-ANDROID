@@ -22,7 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -45,6 +47,8 @@ fun RegionChangeRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     LaunchedEffect(regionResult) {
         if (regionResult != null) {
             viewModel.updateSelectedRegion(regionResult)
@@ -52,10 +56,19 @@ fun RegionChangeRoute(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is RegionChangeContract.SideEffect.NavigateToRegion -> navigateToRegion
+                }
+            }
+    }
+
     RegionChangeScreen(
         uiState = uiState,
         modifier = modifier,
-        navigateToRegion = navigateToRegion,
+        navigateToRegion = viewModel::updateToRegion,
         navigateUp = navigateUp,
         navigateToHome = navigateUp
     )

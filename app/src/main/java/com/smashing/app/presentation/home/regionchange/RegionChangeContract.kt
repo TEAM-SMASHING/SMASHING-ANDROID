@@ -11,7 +11,6 @@ interface RegionChangeContract {
     )
 
     sealed interface SideEffect {
-        data object NavigateUp : SideEffect
         data object NavigateToRegion : SideEffect
     }
 }
