@@ -9,7 +9,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -26,6 +28,9 @@ class RegionViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RegionContract.State())
     val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<RegionContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -74,8 +79,20 @@ class RegionViewModel @Inject constructor(
             }
     }
 
-    fun updateSelectedRegion(region: Region) = _uiState.update { currentState ->
-        currentState.copy(selectedRegion = region)
+    fun updateSelectedRegion(region: Region) {
+        _uiState.update { currentState ->
+            currentState.copy(selectedRegion = region)
+        }.also {
+            viewModelScope.launch {
+                _sideEffect.emit(
+                    RegionContract.SideEffect.NavigateUpWithResult(
+                        addressName = region.addressName,
+                        cityName = region.cityName,
+                        districtName = region.districtName,
+                    )
+                )
+            }
+        }
     }
 
     companion object {

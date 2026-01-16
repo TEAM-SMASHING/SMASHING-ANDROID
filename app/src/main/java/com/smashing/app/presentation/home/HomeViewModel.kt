@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(getDummyState())
+    private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -209,22 +209,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         return DummyMatchedUser(
             userId = "matchedUser1",
             nickname = "더미하는김에긴닉네임",
-        )
-    }
-
-    private fun getDummyState(): HomeContract.State {
-        val dummyActiveProfile = createDummyActiveProfile()
-        val dummyTopRankerList = createDummyTopRankerList()
-        val dummyMatchingCardList = createDummyMatchingCardList()
-        val dummyMatchedUser = createDummyMatchedUser()
-
-        return HomeContract.State(
-            activeUserProfile = dummyActiveProfile,
-            topRankerList = dummyTopRankerList,
-            matchingCardList = dummyMatchingCardList,
-            matchedUser = dummyMatchedUser,
-            isNotice = false,
-            loadState = HomeUiState.Success,
         )
     }
 
