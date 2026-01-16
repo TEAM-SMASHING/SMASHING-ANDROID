@@ -1,8 +1,8 @@
 package com.smashing.app.presentation.write.submit
 
 import androidx.compose.runtime.Immutable
-import com.smashing.app.core.common.type.ReviewRatingType
-import com.smashing.app.core.common.type.ReviewTagType
+import com.smashing.app.data.type.ReviewRatingType
+import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.model.MatchPlayer
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf

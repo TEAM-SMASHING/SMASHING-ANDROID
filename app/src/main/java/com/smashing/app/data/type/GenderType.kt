@@ -1,6 +1,5 @@
 package com.smashing.app.data.type
 
-
 enum class GenderType(
     val gender: String,
 ) {
