@@ -49,7 +49,6 @@ import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
 import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
-import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToRegion
 import kotlinx.collections.immutable.persistentListOf
 
 private const val MAX_STEP = 6
@@ -78,14 +77,12 @@ fun SignUpRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
-                    is NavigateToRegion -> navigateToRegion()
                 }
             }
     }
 
     SignUpScreen(
         uiState = uiState,
-        isLoading = uiState.isLoading,
         nickNameState = viewModel.nickNameState,
         openChatLinkState = viewModel.openChatState,
         selectedGender = uiState.selectedGender,
@@ -95,7 +92,7 @@ fun SignUpRoute(
         onGenderSelected = viewModel::updateSelectedGender,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
-        onAddressClick = viewModel::navigateToRegion,
+        onAddressClick = navigateToRegion,
         onBackClick = viewModel::deleteCurrentStep,
         modifier = modifier,
         onBtnClick = {
@@ -111,7 +108,6 @@ fun SignUpRoute(
 @Composable
 private fun SignUpScreen(
     uiState: SignUpContract.State,
-    isLoading: Boolean,
     nickNameState: TextFieldState,
     openChatLinkState: TextFieldState,
     selectedGender: GenderType?,
@@ -128,8 +124,7 @@ private fun SignUpScreen(
 ) {
     val focusManager = LocalFocusManager.current
 
-    BackHandler {
-        if (isLoading) return@BackHandler
+    BackHandler (enabled = uiState.currentStep > 0){
         onBackClick()
     }
 
@@ -196,10 +191,16 @@ private fun SignUpScreen(
                         onSkillSelected = onSkillSelected,
                     )
 
-                    else -> SignUpLocation(
+                    6 -> SignUpLocation(
                         addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
                         isAddressExist = if (uiState.selectedRegion != null) true else false,
                         onAddressClick = onAddressClick,
+                    )
+
+                    else -> SignUpNickName(
+                        nickNameState = nickNameState,
+                        nickNameErrorText = uiState.nickNameErrorText,
+                        nickNameConfirmText = uiState.nickNameConfirmText,
                     )
                 }
             } else {
@@ -236,7 +237,6 @@ private fun SignUpScreenPreview() {
 
         SignUpScreen(
             uiState = SignUpContract.State(),
-            isLoading = false,
             isBtnEnabled = true,
             nickNameState = rememberTextFieldState(),
             selectedGender = null,

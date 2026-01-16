@@ -15,10 +15,7 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.domain.model.Region
-import com.smashing.app.presentation.home.regionchange.RegionChangeContract
-import com.smashing.app.presentation.home.regionchange.RegionChangeUiState
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
-import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToRegion
 import com.smashing.app.presentation.signup.SignUpContract.SignUpUiState
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +39,6 @@ class SignUpViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val kakaoId = savedStateHandle.toRoute<SignUp>().kakaoId
-    private val addressName = savedStateHandle
 
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
@@ -61,7 +57,7 @@ class SignUpViewModel @Inject constructor(
             3 -> _uiState.value.isOpenChatValid
             4 -> _uiState.value.selectedSport != null
             5 -> _uiState.value.selectedSkill != null
-            6 -> true
+            6 -> _uiState.value.isRegionSelected
             else -> true
         }
 
@@ -73,13 +69,13 @@ class SignUpViewModel @Inject constructor(
 
     fun updateCurrentStep() {
         _uiState.update {
-            it.copy(currentStep = it.currentStep + 1)
+            it.copy(currentStep = it.currentStep + 1 )
         }
     }
 
     fun deleteCurrentStep() {
         _uiState.update {
-            it.copy(currentStep = it.currentStep - 1)
+            it.copy(currentStep = maxOf(1, it.currentStep - 1))
         }
     }
 
@@ -139,13 +135,11 @@ class SignUpViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 selectedRegion = region,
+                isRegionSelected = true,
                 regionLoadState = SignUpUiState.Success,
             )
         }
-    }
 
-    fun navigateToRegion() = viewModelScope.launch {
-        _sideEffect.emit(NavigateToRegion)
     }
 
     fun postOpenchatValid()  = viewModelScope.launch {
@@ -212,11 +206,7 @@ class SignUpViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    Timber.tag("SignUp").e("회원가입 실패 ${error.message}")
-                    if (error is HttpException) {
-                        val errorBody = error.response()?.errorBody()?.string()
-                        Timber.tag("SignUp").e("SignUp errorBody = $errorBody")
-                    }
+                    Timber.tag("SignUp").e("회원가입 실패 ${error}")
                 }
         }
     }

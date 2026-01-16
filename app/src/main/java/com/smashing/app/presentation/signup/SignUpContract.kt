@@ -5,14 +5,10 @@ import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.domain.model.Region
-import com.smashing.app.presentation.home.regionchange.RegionChangeContract
-import com.smashing.app.presentation.home.regionchange.RegionChangeUiState
-import com.smashing.app.presentation.region.RegionContract
 
 interface SignUpContract {
     @Immutable
     data class State(
-        val isLoading: Boolean = false,
         val currentStep: Int = 1,
         val nickNameErrorText: String? = null,
         val nickNameConfirmText: String? = null,
@@ -23,12 +19,12 @@ interface SignUpContract {
         val selectedSport: SportType? = null,
         val selectedSkill: SkillType?= null,
         val selectedRegion: Region? = null,
+        val isRegionSelected: Boolean = false,
         val regionLoadState: SignUpUiState = SignUpUiState.Idle,
     )
 
     sealed interface SideEffect {
         data object NavigateToHome: SideEffect
-        data object NavigateToRegion : SideEffect
     }
 
     sealed interface SignUpUiState {
