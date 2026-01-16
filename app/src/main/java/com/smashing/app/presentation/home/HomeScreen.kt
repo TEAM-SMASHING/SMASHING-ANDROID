@@ -95,7 +95,6 @@ private fun HomeScreen(
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
-    val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
 
     // 스포츠 리스트 가져오기 (실제로는 ViewModel이나 다른 곳에서 가져와야 함)
     val sportList = remember {

@@ -71,8 +71,6 @@ fun HomeDropdown(
 ) {
     val density = LocalDensity.current
 
-    val expandedState = remember { MutableTransitionState(isExpanded) }
-
     val transition = updateTransition(
         targetState = isExpanded,
         label = "HomeDropdown"
@@ -124,7 +122,7 @@ fun HomeDropdown(
             ),
         ) {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .graphicsLayer(
                         translationY = yOffset,
