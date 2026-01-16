@@ -12,6 +12,10 @@ import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
+import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.region.navigation.getRegionResult
+import com.smashing.app.presentation.region.navigation.navigateToRegion
+import com.smashing.app.presentation.region.navigation.removeRegionResult
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(
@@ -19,14 +23,11 @@ fun NavController.navigateToHome(
 ) = navigate(Home, navOptions)
 
 fun NavController.navigateToRegionChange(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) = navigate(RegionChange, navOptions)
 
 fun NavGraphBuilder.homeGraph(
     innerPadding: PaddingValues,
-    navigateToNotice: () -> Unit,
-    navigateToRegion: () -> Unit,
-    navigateUp: () -> Unit,
     navController: NavController,
 ) {
     navigation<Home>(
@@ -35,21 +36,20 @@ fun NavGraphBuilder.homeGraph(
         composable<HomeUser> {
             HomeRoute(
                 modifier = Modifier.padding(innerPadding),
-                navigateToNotice = navigateToNotice,
-                navigateToRegionChange = {
-                    navController.navigateToRegionChange()
-                },
+                navigateToNotice = navController::navigateToNotice,
+                navigateToRegionChange = navController::navigateToRegionChange,
             )
         }
 
-        composable<RegionChange> {
+        composable<RegionChange> { backStackEntry ->
+            val savedStateHandle = backStackEntry.savedStateHandle
+
             RegionChangeRoute(
                 modifier = Modifier.padding(innerPadding),
-                navigateToRegion = navigateToRegion,
-                navigateUp = navigateUp,
-                navigateToHome = {
-                    navController.popBackStack(HomeUser, false)
-                },
+                navigateToRegion = navController::navigateToRegion,
+                navigateUp = navController::navigateUp,
+                regionResult = savedStateHandle.getRegionResult(),
+                onRegionResultConsumed = savedStateHandle::removeRegionResult,
             )
         }
     }

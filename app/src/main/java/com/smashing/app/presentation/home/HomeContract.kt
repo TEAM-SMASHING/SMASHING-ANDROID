@@ -18,6 +18,12 @@ interface HomeContract {
         val matchedUser: DummyMatchedUser? = null,
         val isNotice: Boolean = false,
         )
+
+    sealed interface SideEffect {
+        data object NavigateUp : SideEffect
+        data object NavigateToNotice : SideEffect
+        data object NavigateToRegionChange : SideEffect
+    }
 }
 
 sealed interface HomeUiState{

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,18 +38,26 @@ import com.smashing.app.domain.model.Region
 fun RegionChangeRoute(
     navigateToRegion: () -> Unit,
     navigateUp: () -> Unit,
-    navigateToHome: () -> Unit,
+    regionResult: Region?,
+    onRegionResultConsumed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegionChangeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(regionResult) {
+        if (regionResult != null) {
+            viewModel.updateSelectedRegion(regionResult)
+            onRegionResultConsumed()
+        }
+    }
 
     RegionChangeScreen(
         uiState = uiState,
         modifier = modifier,
         navigateToRegion = navigateToRegion,
         navigateUp = navigateUp,
-        navigateToHome = navigateToHome
+        navigateToHome = navigateUp
     )
 }
 
@@ -61,7 +70,6 @@ fun RegionChangeScreen(
     modifier: Modifier = Modifier,
 ) {
     var showDialog by remember { mutableStateOf(false) }
-
 
     Column(
         modifier = modifier
