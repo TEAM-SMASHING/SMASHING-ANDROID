@@ -6,12 +6,15 @@ import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import com.smashing.app.data.mapper.toKakaoLoginToken
 import com.smashing.app.data.mapper.toSignUpModel
 import com.smashing.app.data.mapper.toSignUpNickNameAvailableModel
+import com.smashing.app.data.mapper.toSignUpOpenchatValidModel
 import com.smashing.app.data.model.auth.KakaoLoginModel
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.model.auth.SignUpNickNameAvailableModel
+import com.smashing.app.data.model.auth.SignUpOpenchatValidModel
 import com.smashing.app.data.remote.datasource.api.AuthRemoteDataSource
 import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
 import com.smashing.app.data.remote.dto.auth.PostKakaoLoginRequest
+import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.AuthRepository
@@ -58,4 +61,11 @@ class AuthRepositoryImpl @Inject constructor(
             response.toSignUpNickNameAvailableModel()
         }
 
+    override suspend fun postOpenchatValid(request: PostOpenchatValidRequest): Result<SignUpOpenchatValidModel> =
+        suspendRunCatching {
+            val response = authRemoteDataSource.postOpenchatValid(request).requireData()
+
+            response.toSignUpOpenchatValidModel()
+        }
+    
 }
