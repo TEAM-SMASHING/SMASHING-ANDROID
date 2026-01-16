@@ -42,7 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
                         refreshToken = loginModel.refreshToken,
                     )
                 }
-                false -> throw Exception("token is empty")
+                false -> {}
             }
             loginModel
         }
