@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.matching
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,6 +51,8 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
+
+private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 
 @Composable
 fun MatchingRoute(
@@ -121,48 +124,57 @@ private fun MatchingScreen(
             modifier = Modifier.padding(bottom = 12.dp),
         )
 
-        if (currentUiState is MatchingUiState.Empty) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(Modifier.weight(171 / 252f))
+        Crossfade(
+            targetState = currentUiState,
+            label = MATCHING_CONTENT_CROSSFADE,
+        ) { state ->
+            when (state) {
+                is MatchingUiState.Empty -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Spacer(Modifier.weight(171 / 252f))
 
-                Image(
-                    painter = painterResource(img_app_icon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .aspectRatio(1f)
-                        .padding(bottom = 16.dp),
-                )
+                        Image(
+                            painter = painterResource(img_app_icon),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .aspectRatio(1f)
+                                .padding(bottom = 16.dp),
+                        )
 
-                Text(
-                    text = emptyTitle,
-                    style = SmashingTheme.typography.lg.semibold18,
-                    color = SmashingTheme.colors.txtSecondary,
-                )
+                        Text(
+                            text = emptyTitle,
+                            style = SmashingTheme.typography.lg.semibold18,
+                            color = SmashingTheme.colors.txtSecondary,
+                        )
 
-                Text(
-                    text = stringResource(matching_empty_description),
-                    style = SmashingTheme.typography.sm.medium14,
-                    color = SmashingTheme.colors.txtTertiary,
-                )
+                        Text(
+                            text = stringResource(matching_empty_description),
+                            style = SmashingTheme.typography.sm.medium14,
+                            color = SmashingTheme.colors.txtTertiary,
+                        )
 
-                Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+
+                is MatchingUiState.Success -> {
+                    MatchingList(
+                        uiState = uiState,
+                        gridState = gridState,
+                        onCloseClick = onCardCloseClick,
+                        onConfirmClick = navigateToSubmit,
+                        onLoadMoreMatchingList = onLoadMoreMatchingList,
+                    )
+                }
+
+                else -> {}
             }
-        }
-
-        if (currentUiState is MatchingUiState.Success) {
-            MatchingList(
-                uiState = uiState,
-                gridState = gridState,
-                onCloseClick = onCardCloseClick,
-                onConfirmClick = navigateToSubmit,
-                onLoadMoreMatchingList = onLoadMoreMatchingList,
-            )
         }
 
         if (uiState.isDialogVisible) {
