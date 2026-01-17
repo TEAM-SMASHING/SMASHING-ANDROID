@@ -27,6 +27,7 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.searchmain.component.MatchingSearchFilterChip
@@ -37,6 +38,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SearchMainRoute(
+    navigateToNotice: () -> Unit,
     navigateToSearchInput: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
@@ -47,6 +49,7 @@ fun SearchMainRoute(
     SearchMainScreen(
         uiState = uiState,
         onRegionDropdownClick = viewModel::updateSelectedRegion,
+        onNoticeClick = navigateToNotice,
         onSearchClick = navigateToSearchInput,
         onProfileClick = {},
         onTierItemClick = viewModel::updateSelectedTierItem,
@@ -68,6 +71,7 @@ fun SearchMainRoute(
 private fun SearchMainScreen(
     uiState: SearchContract.State,
     onRegionDropdownClick: (String) -> Unit,
+    onNoticeClick: () -> Unit,
     onSearchClick: () -> Unit,
     onProfileClick: () -> Unit,
     onTierItemClick: (String) -> Unit,
@@ -101,6 +105,7 @@ private fun SearchMainScreen(
             onRegionDropdownClick = onRegionDropdownClick,
             onSearchClick = onSearchClick,
             onRegionSelectClick = {},
+            onNoticeClick = onNoticeClick,
             onReginItemClick = {},
         )
 
@@ -128,15 +133,7 @@ private fun SearchMainScreen(
             SmashingBottomSheet(
                 onDismissRequest = onTierBottomSheetClose,
                 title = "티어",
-                items = persistentListOf(
-                    "아이언",
-                    "브론즈",
-                    "실버",
-                    "골드",
-                    "플래티넘",
-                    "다이아",
-                    "챌린저",
-                ),
+                items = uiState.tierBottomSheetList,
                 selectedItem = "${uiState.selectedTierItem}",
                 contentToBtnPadding = 4.dp,
                 btnText = "적용하기",
@@ -149,11 +146,7 @@ private fun SearchMainScreen(
             SmashingBottomSheet(
                 onDismissRequest = onGenderBottomSheetClose,
                 title = "성별",
-                items = persistentListOf(
-                    "남성",
-                    "여성",
-                    "남여 모두",
-                ),
+                items = uiState.genderBottomSheetList,
                 selectedItem = "${uiState.selectedGenderItem}",
                 contentToBtnPadding = 4.dp,
                 btnText = "적용하기",
@@ -198,6 +191,7 @@ private fun SearchScreenPreview() {
         SearchMainScreen(
             uiState = SearchContract.State(),
             onRegionDropdownClick = {},
+            onNoticeClick = {},
             onSearchClick = {},
             onProfileClick = {},
             onTierItemClick = {},

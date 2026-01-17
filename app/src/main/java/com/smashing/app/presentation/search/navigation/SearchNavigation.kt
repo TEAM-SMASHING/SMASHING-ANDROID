@@ -11,6 +11,7 @@ import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
+import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.input.SearchInputRoute
 import com.smashing.app.presentation.search.searchmain.SearchMainRoute
@@ -27,6 +28,7 @@ fun NavController.navigateToSearchInput(
 
 fun NavGraphBuilder.searchGraph(
     innerPadding: PaddingValues,
+    navigateToNotice: () -> Unit,
     navigateToSearchInput: () -> Unit,
     navController: NavHostController,
 ) {
@@ -37,6 +39,7 @@ fun NavGraphBuilder.searchGraph(
             val viewModel = backStackEntry.sharedViewModel<SearchViewModel>(navController)
 
             SearchMainRoute(
+                navigateToNotice = navigateToNotice,
                 navigateToSearchInput = navigateToSearchInput,
                 modifier = Modifier,
                 viewModel = viewModel,
