@@ -84,8 +84,8 @@ private fun AcceptedMatchingListResponse.toAcceptedMatching(): AcceptedMatching 
         openChatUrl = opponentSummary.openChatUrl,
         genderType = GenderType.findByName(opponentSummary.gender),
         tierType = TierType.findTierType(opponentSummary.tierId),
-        submitAvailableAt = submitLock.submitAvailableAt,
-        remainingSeconds = submitLock.remainingSeconds,
-        isLocked = submitLock.isLocked,
+        submitAvailableAt = submitAvailableAt,
+        remainingSeconds = remainingSeconds,
+        isSubmitLocked = isSubmitLocked,
     )
 }
