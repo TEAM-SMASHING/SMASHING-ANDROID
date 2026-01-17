@@ -9,12 +9,14 @@ import androidx.navigation.toRoute
 import com.smashing.app.core.util.TextInputValidator
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
-import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
-import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
+import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
+import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
+import com.smashing.app.presentation.signup.SignUpContract.SignUpUiState
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -54,7 +57,7 @@ class SignUpViewModel @Inject constructor(
             3 -> _uiState.value.isOpenChatValid
             4 -> _uiState.value.selectedSport != null
             5 -> _uiState.value.selectedSkill != null
-            6 -> true
+            6 -> _uiState.value.isRegionSelected
             else -> true
         }
 
@@ -66,7 +69,13 @@ class SignUpViewModel @Inject constructor(
 
     fun updateCurrentStep() {
         _uiState.update {
-            it.copy(currentStep = it.currentStep + 1)
+            it.copy(currentStep = it.currentStep + 1 )
+        }
+    }
+
+    fun deleteCurrentStep() {
+        _uiState.update {
+            it.copy(currentStep = maxOf(1, it.currentStep - 1))
         }
     }
 
@@ -79,28 +88,11 @@ class SignUpViewModel @Inject constructor(
                 val isNickNameValid = TextInputValidator.isTextInputValid(text)
 
                 if (text.isEmpty()) {
-                    _uiState.update {
-                        it.copy(
-                            nickNameErrorText = null,
-                            nickNameConfirmText = null,
-                            isNickNameAvailable = false
-                        )
-                    }
+                    _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null, isNickNameAvailable = false) }
                 } else if (text.isBlank() || !isNickNameValid) {
-                    _uiState.update {
-                        it.copy(
-                            nickNameErrorText = INVALID_NICKNAME_FORMAT,
-                            nickNameConfirmText = null,
-                            isNickNameAvailable = false
-                        )
-                    }
+                    _uiState.update { it.copy(nickNameErrorText = INVALID_NICKNAME_FORMAT, nickNameConfirmText = null, isNickNameAvailable = false) }
                 } else {
-                    _uiState.update {
-                        it.copy(
-                            nickNameErrorText = null,
-                            nickNameConfirmText = null
-                        )
-                    }
+                    _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null) }
                     getNickNameAvailable()
                 }
             }
@@ -113,7 +105,7 @@ class SignUpViewModel @Inject constructor(
             .collectLatest { openChatText ->
                 val text = openChatText.toString()
 
-                if (text.isEmpty()) {
+                if(text.isEmpty()) {
                     _uiState.update { it.copy(openChatErrorText = null, isOpenChatValid = false) }
                 } else {
                     postOpenchatValid()
@@ -139,21 +131,27 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    fun postOpenchatValid() = viewModelScope.launch {
+    fun updateSelectedRegion(region: Region) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedRegion = region,
+                isRegionSelected = true,
+                regionLoadState = SignUpUiState.Success,
+            )
+        }
+
+    }
+
+    fun postOpenchatValid()  = viewModelScope.launch {
         val request = PostOpenchatValidRequest(
             openchatUrl = openChatState.text.toString()
         )
         authRepository.postOpenchatValid(request)
             .onSuccess {
-                if (it.valid) {
+                if(it.valid) {
                     _uiState.update { it.copy(openChatErrorText = null, isOpenChatValid = true) }
                 } else {
-                    _uiState.update {
-                        it.copy(
-                            openChatErrorText = INVALID_OPEN_CHAT_FORMAT,
-                            isOpenChatValid = false
-                        )
-                    }
+                    _uiState.update { it.copy(openChatErrorText = INVALID_OPEN_CHAT_FORMAT, isOpenChatValid = false) }
                 }
             }
             .onFailure { error ->
@@ -166,19 +164,11 @@ class SignUpViewModel @Inject constructor(
             .onSuccess {
                 if (it.available) {
                     _uiState.update {
-                        it.copy(
-                            nickNameConfirmText = VALID_NICKNAME_FORMAT,
-                            nickNameErrorText = null,
-                            isNickNameAvailable = true
-                        )
+                        it.copy(nickNameConfirmText = VALID_NICKNAME_FORMAT, nickNameErrorText = null, isNickNameAvailable = true)
                     }
                 } else {
                     _uiState.update {
-                        it.copy(
-                            nickNameErrorText = DUPLICATE_NICKNAME,
-                            nickNameConfirmText = null,
-                            isNickNameAvailable = false
-                        )
+                        it.copy(nickNameErrorText = DUPLICATE_NICKNAME, nickNameConfirmText = null, isNickNameAvailable = false)
                     }
                 }
             }
@@ -199,8 +189,8 @@ class SignUpViewModel @Inject constructor(
                 gender = selectedGender.name,
                 openChatUrl = openChatState.text.toString(),
                 sportCode = selectedSport.code,
-                tier = selectedSkill.skillCode,
-                region = "양천구",
+                experienceRange = selectedSkill.skillCode,
+                region = _uiState.value.selectedRegion.toString(),
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {
@@ -216,7 +206,7 @@ class SignUpViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    Timber.tag("SignUp").e("회원가입 실패 $error")
+                    Timber.tag("SignUp").e("회원가입 실패 ${error}")
                 }
         }
     }

@@ -36,7 +36,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun RegionRoute(
-    navigateToRegionChange: (Region) -> Unit,
+    navigateToBackStack: (Region) -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegionViewModel = hiltViewModel(),
@@ -50,7 +50,7 @@ fun RegionRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateUpWithResult -> {
-                        navigateToRegionChange(
+                        navigateToBackStack(
                             Region(
                                 sideEffect.addressName,
                                 sideEffect.cityName,
