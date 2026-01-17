@@ -101,10 +101,7 @@ private fun RankerItem(
 
     Column(
         modifier = modifier
-            .width(IntrinsicSize.Max)
-            .noRippleClickable(
-                onClick = { navigateToProfile(userRank?.userId ?: "") }
-            ),
+            .width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val paddingValues = if (FIRST == rankerType) {
@@ -135,7 +132,10 @@ private fun RankerItem(
                 modifier = Modifier
                     .height(40.dp)
                     .aspectRatio(1f)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .noRippleClickable(
+                        onClick = { navigateToProfile(userRank.userId) }
+                    ),
             )
 
             Text(
@@ -144,7 +144,10 @@ private fun RankerItem(
                 color = colors.txtPrimary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .noRippleClickable(
+                        onClick = { navigateToProfile(userRank.userId) }
+                    ),
             )
         }
 
