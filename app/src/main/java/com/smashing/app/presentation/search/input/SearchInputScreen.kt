@@ -24,8 +24,8 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.presentation.search.SearchContract
-import com.smashing.app.presentation.search.input.component.SearchInputEmpty
 import com.smashing.app.presentation.search.SearchViewModel
+import com.smashing.app.presentation.search.component.SearchEmpty
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -85,7 +85,10 @@ private fun SearchInputScreen(
                 )
             }
         } else {
-            SearchInputEmpty()
+            SearchEmpty(
+                title = "검색 결과가 없습니다.",
+                subTitle = "다른 검색어를 입력해보세요",
+            )
         }
     }
 

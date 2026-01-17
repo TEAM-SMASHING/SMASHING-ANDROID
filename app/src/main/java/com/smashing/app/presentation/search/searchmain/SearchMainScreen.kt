@@ -30,6 +30,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
+import com.smashing.app.presentation.search.component.SearchEmpty
 import com.smashing.app.presentation.search.searchmain.component.MatchingSearchFilterChip
 import com.smashing.app.presentation.search.searchmain.component.SearchTopBar
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.DEFAULT
@@ -155,31 +156,38 @@ private fun SearchMainScreen(
             )
         }
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = modifier
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            state = listState,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            items(
-                items = uiState.searchList,
-                key = { it.userId },
+        if(uiState.searchList.isNotEmpty()) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = modifier
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                state = listState,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                MatchingCard(
-                    cardState = MatchingCardState.Search(
-                        userId = it.userId,
-                        nickname = it.nickname,
-                        genderType = it.gender,
-                        tierType = it.tierId,
-                        onProfileClick = onProfileClick,
-                        winCount = it.wins,
-                        loseCount = it.losses,
-                        reviewCount = it.reviews.toLong(),
+                items(
+                    items = uiState.searchList,
+                    key = { it.userId },
+                ) {
+                    MatchingCard(
+                        cardState = MatchingCardState.Search(
+                            userId = it.userId,
+                            nickname = it.nickname,
+                            genderType = it.gender,
+                            tierType = it.tierId,
+                            onProfileClick = onProfileClick,
+                            winCount = it.wins,
+                            loseCount = it.losses,
+                            reviewCount = it.reviews.toLong(),
+                        )
                     )
-                )
+                }
             }
+        } else {
+            SearchEmpty(
+                title = "해당 조건에 맞는 유저가 없어요",
+                subTitle = "적용된 필터를 변경해보세요",
+            )
         }
     }
 }

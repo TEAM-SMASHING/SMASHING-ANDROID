@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search.input.component
+package com.smashing.app.presentation.search.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +19,9 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 private const val PADDING_RATIO = 219f/320f
 
 @Composable
-fun SearchInputEmpty(
+fun SearchEmpty(
+    title: String,
+    subTitle: String,
     modifier: Modifier = Modifier,
 ) {
     Column (
