@@ -28,7 +28,6 @@ fun NavController.navigateToSearchInput(
 ) = navigate(SearchInput, navOptions)
 
 fun NavGraphBuilder.searchGraph(
-    innerPadding: PaddingValues,
     navController: NavHostController,
 ) {
     navigation<Search>(
@@ -41,7 +40,6 @@ fun NavGraphBuilder.searchGraph(
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToNotice = navController::navigateToNotice,
                 navigateToSearchInput = navController::navigateToSearchInput,
-                modifier = Modifier,
                 viewModel = viewModel,
             )
         }
@@ -51,7 +49,6 @@ fun NavGraphBuilder.searchGraph(
 
             SearchInputRoute(
                 navigateToSearchMain = navController::navigateUp,
-                modifier = Modifier,
                 viewModel = viewModel,
             )
         }
