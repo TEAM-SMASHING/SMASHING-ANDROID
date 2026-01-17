@@ -80,6 +80,7 @@
     <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠어요?</string>
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료돼요.</string>
     <!--Search  -->
+    <string name="search_placeholder">닉네임을 검색해주세요</string>
     <!--Profile -->
     <!--Notice  -->
     <string name="notice">알림</string>

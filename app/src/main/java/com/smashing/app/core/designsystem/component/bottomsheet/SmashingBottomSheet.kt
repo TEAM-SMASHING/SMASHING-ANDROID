@@ -163,8 +163,8 @@ private fun CustomDragHandle(
             .padding(vertical = 8.dp)
             .size(width = 40.dp, height = 4.dp)
             .background(
-                color = colors.iconTertiary,
-                shape = RoundedCornerShape(28.0.dp)
+                color = colors.borderSecondary,
+                shape = RoundedCornerShape(28.0.dp),
             ),
     )
 }
