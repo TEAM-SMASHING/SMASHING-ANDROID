@@ -4,8 +4,11 @@ import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.data.model.search.SearchMainItemModel
+import com.smashing.app.data.type.TierType
+import com.smashing.app.presentation.home.type.TierInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 interface SearchContract {
     @Immutable
@@ -15,15 +18,7 @@ interface SearchContract {
         val searchList: ImmutableList<SearchMainItemModel> = persistentListOf(),
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,
-        val tierBottomSheetList: ImmutableList<String> = persistentListOf(
-            "아이언",
-            "브론즈",
-            "실버",
-            "골드",
-            "플래티넘",
-            "다이아",
-            "챌린저",
-        ),
+        val tierBottomSheetList: ImmutableList<String> = TierInfo.entries.map { it.tierKName }.toImmutableList(),
         val genderBottomSheetList: ImmutableList<String> = persistentListOf(
             "남성",
             "여성",
@@ -31,7 +26,7 @@ interface SearchContract {
         ),
         val currentTierText: String? = null,
         val currentGenderText: String? = null,
-        val selectedTierItem: String? = null,
+        val selectedTierItem: TierInfo? = null,
         val selectedGenderItem: String? = null,
         val suggestions: ImmutableList<SuggestionItemModel> = persistentListOf(),
         val isSuggestionVisible: Boolean = false,

@@ -5,6 +5,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.SearchRepository
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.presentation.home.type.TierInfo
 import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -74,17 +77,19 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedTierItem(tierItem: String?) =
         _uiState.update {
-            it.copy(selectedTierItem = tierItem)
+            it.copy(selectedTierItem = TierInfo.findTierInfo(tierItem))
         }
 
     fun applyTierItem() {
-        updateCurrentTierText(_uiState.value.selectedTierItem)
+        updateCurrentTierText(_uiState.value.selectedTierItem?.tierKName)
+        fetchRegionUsersList(isRefresh = true)
         closeTierBottomSheet()
     }
 
     fun clearFilterTier() {
         updateCurrentTierText(null)
         updateSelectedTierItem(null)
+        fetchRegionUsersList(isRefresh = true)
     }
 
     fun updateCurrentTierText(tierText: String?) =
@@ -126,7 +131,7 @@ class SearchViewModel @Inject constructor(
         updateSelectedGenderItem(null)
     }
 
-    private fun fetchRegionUsersList(isRefresh: Boolean = false) = viewModelScope.launch {
+    fun fetchRegionUsersList(isRefresh: Boolean = false) = viewModelScope.launch {
         val currentState = _uiState.value
 
         if (!isRefresh) {
@@ -139,8 +144,8 @@ class SearchViewModel @Inject constructor(
         searchRepository.getRegionUsersSearch(
             cursor = if (isRefresh) null else currentState.searchRegionUsersCursor.nextCursor,
             size = CURSOR_SIZE,
-            gender = _uiState.value.selectedTierItem,
-            tier = _uiState.value.selectedTierItem,
+            gender = _uiState.value.selectedGenderItem,
+            tier = _uiState.value.selectedTierItem?.name,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
                 state.copy(
@@ -169,6 +174,6 @@ class SearchViewModel @Inject constructor(
     }
 
     companion object {
-        private const val CURSOR_SIZE = 4
+        private const val CURSOR_SIZE = 20
     }
 }

@@ -9,29 +9,50 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.TierType
 
 enum class TierInfo(
+    val id: Long,
     val tierName: String,
+    val tierKName: String,
 ) {
     IRON(
+        id = 1,
         tierName = "Iron",
+        tierKName = "아이언",
     ),
     BRONZE(
+        id = 2,
         tierName = "Bronze",
+        tierKName = "브론즈",
     ),
     SILVER(
+        id = 3,
         tierName = "Silver",
+        tierKName = "실버",
     ),
     GOLD(
+        id = 4,
         tierName = "Gold",
+        tierKName = "골드",
     ),
     PLATINUM(
+        id = 5,
         tierName = "Platinum",
+        tierKName = "플래티넘",
     ),
     DIAMOND(
+        id = 6,
         tierName = "Diamond",
+        tierKName = "다이아",
     ),
     CHALLENGER(
+        id = 7,
         tierName = "Challenger",
+        tierKName = "챌린저"
     );
+
+    companion object {
+        private val ID_MAP: Map<String, TierInfo> = TierInfo.entries.associateBy { it.tierKName }
+        fun findTierInfo(tierKName: String?): TierInfo? = ID_MAP[tierKName]
+    }
 
     @ReadOnlyComposable
     @Composable
