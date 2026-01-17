@@ -116,8 +116,6 @@ private fun ConfirmResultScreen(
                 onLeftDoneClick = onLeftDoneClick,
                 onRightDoneClick = onRightDoneClick,
                 isTextFieldsEnabled = false,
-                title="경기 결과를 확인해주세요",
-                subTitle = "",
             )
 
             Spacer(modifier = Modifier.weight(1f))
