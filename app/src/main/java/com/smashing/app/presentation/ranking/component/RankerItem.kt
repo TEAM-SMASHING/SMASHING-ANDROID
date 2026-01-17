@@ -3,6 +3,7 @@ package com.smashing.app.presentation.ranking.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_crown
 import com.smashing.app.R.drawable.ic_rank_first
@@ -55,14 +56,22 @@ fun Ranker(
     navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
     ) {
+        val screenWidth = maxWidth
+
+        val sidePadding = screenWidth * 0.04f
+        val firstWidth = screenWidth * 0.342f
+        val otherWidth = screenWidth * 0.29f
+
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
             navigateToProfile = navigateToProfile,
+            contentWidth = firstWidth,
+            sidePadding = sidePadding,
             modifier = Modifier
                 .align(Alignment.BottomCenter),
         )
@@ -70,16 +79,18 @@ fun Ranker(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
             navigateToProfile = navigateToProfile,
+            contentWidth = otherWidth,
+            sidePadding = sidePadding,
             modifier = Modifier
-                .padding(start = 16.dp)
                 .align(Alignment.BottomStart),
         )
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
             navigateToProfile = navigateToProfile,
+            contentWidth = otherWidth,
+            sidePadding = sidePadding,
             modifier = Modifier
-                .padding(end = 16.dp)
                 .align(Alignment.BottomEnd),
         )
     }
@@ -89,6 +100,8 @@ fun Ranker(
 private fun RankerItem(
     userRank: UserRank?,
     rankerType: RankerType,
+    contentWidth: Dp,
+    sidePadding: Dp,
     navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -153,10 +166,12 @@ private fun RankerItem(
 
         Box(
             modifier = Modifier
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = sidePadding)
+                .width(contentWidth),
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .background(
                         brush = backgroundGradation,
                         shape = RoundedCornerShape(
@@ -198,9 +213,9 @@ private fun RankerItem(
                 } else {
                     Spacer(
                         modifier = Modifier
-                            .size(
+                            .fillMaxWidth()
+                            .height(
                                 height = if (rankerType == FIRST) 78.dp else 58.dp,
-                                width = 67.dp,
                             ),
                     )
                 }
@@ -220,53 +235,52 @@ private fun RankLp(
         color = colors.txtTertiary,
         textAlign = TextAlign.Center,
         modifier = modifier
-            .width(67.dp)
     )
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
-@Composable
-private fun RankerItemPreview_FirstPlace() {
-    RankerItem(
-        userRank = UserRank(
-            userId = "user1",
-            nickname = "1위 유저",
-            rank = 1,
-            tierType = TierType.CHALLENGER,
-            lp = 2500,
-        ),
-        rankerType = FIRST,
-        navigateToProfile = {},
-    )
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
-@Composable
-private fun RankerItemPreview_SecondPlace() {
-    RankerItem(
-        userRank = UserRank(
-            userId = "user2",
-            nickname = "2위 유저",
-            rank = 2,
-            tierType = TierType.DIAMOND_1,
-            lp = 2300,
-        ),
-        rankerType = SECOND,
-        modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {}
-    )
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
-@Composable
-private fun RankerItemPreview_EmptyPlace() {
-    RankerItem(
-        userRank = null,
-        rankerType = SECOND,
-        modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {}
-    )
-}
+//@Preview(showBackground = true, backgroundColor = 0xFF000000)
+//@Composable
+//private fun RankerItemPreview_FirstPlace() {
+//    RankerItem(
+//        userRank = UserRank(
+//            userId = "user1",
+//            nickname = "1위 유저",
+//            rank = 1,
+//            tierType = TierType.CHALLENGER,
+//            lp = 2500,
+//        ),
+//        rankerType = FIRST,
+//        navigateToProfile = {},
+//    )
+//}
+//
+//@Preview(showBackground = true, backgroundColor = 0xFF000000)
+//@Composable
+//private fun RankerItemPreview_SecondPlace() {
+//    RankerItem(
+//        userRank = UserRank(
+//            userId = "user2",
+//            nickname = "2위 유저",
+//            rank = 2,
+//            tierType = TierType.DIAMOND_1,
+//            lp = 2300,
+//        ),
+//        rankerType = SECOND,
+//        modifier = Modifier.padding(horizontal = 8.dp),
+//        navigateToProfile = {}
+//    )
+//}
+//
+//@Preview(showBackground = true, backgroundColor = 0xFF000000)
+//@Composable
+//private fun RankerItemPreview_EmptyPlace() {
+//    RankerItem(
+//        userRank = null,
+//        rankerType = SECOND,
+//        modifier = Modifier.padding(horizontal = 8.dp),
+//        navigateToProfile = {}
+//    )
+//}
 
 @Preview(showBackground = true)
 @Composable
@@ -275,14 +289,14 @@ private fun RankerPreview_AllThree() {
         rankerList = listOf(
             UserRank(
                 userId = "user1",
-                nickname = "1위 유저",
+                nickname = "1위 유저1위 유저1위 유저1위 유저",
                 rank = 1,
                 tierType = TierType.CHALLENGER,
                 lp = 2500,
             ),
             UserRank(
                 userId = "user2",
-                nickname = "2위 유저",
+                nickname = "긴 이름은 열글자",
                 rank = 2,
                 tierType = TierType.CHALLENGER,
                 lp = 2450,

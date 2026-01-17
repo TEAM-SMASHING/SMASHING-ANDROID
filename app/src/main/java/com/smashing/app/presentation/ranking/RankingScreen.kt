@@ -83,13 +83,14 @@ private fun RankingScreen(
     ) {
         Box(
             modifier = Modifier
+                .align(Alignment.TopCenter)
                 .dropShadow(
                     shape = CircleShape,
                     color = primary300,
                     spread = 100.dp,
                     blur = 100.dp,
-                    offsetX = 50.dp,
-                    offsetY = 160.dp,
+                    offsetX = -50.dp,
+                    offsetY = 190.dp,
                 )
                 .size(200.dp)
         )
