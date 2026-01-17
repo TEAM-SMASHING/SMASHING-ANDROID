@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.home.type
+package com.smashing.app.core.designsystem.style
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable

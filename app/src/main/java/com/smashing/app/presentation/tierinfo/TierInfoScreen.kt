@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.home.tierinfo
+package com.smashing.app.presentation.tierinfo
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,15 +39,15 @@ import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.HomeContract
 import com.smashing.app.presentation.home.HomeUiState
 import com.smashing.app.presentation.home.HomeViewModel
-import com.smashing.app.presentation.home.type.TierInfo
-import com.smashing.app.presentation.home.type.toTierInfo
+import com.smashing.app.core.designsystem.style.TierInfo
+import com.smashing.app.core.designsystem.style.toTierInfo
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TierInfoRoute(
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: TierInfoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -60,7 +61,7 @@ fun TierInfoRoute(
 
 @Composable
 private fun TierInfoScreen(
-    uiState: HomeContract.State,
+    uiState: TierInfoContract.State,
     onClick: (TierInfo) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -227,24 +228,7 @@ private fun CommentTag(
 @Composable
 private fun TierInfoScreenPreview() {
     SmashingAndroidTheme {
-        val dummyState = HomeContract.State(
-            loadState = HomeUiState.Success,
-            activeUserProfile = ActiveUserProfile(
-                nickname = "테스트유저",
-                region = "서울",
-                profileId = "0USP111222333",
-                sportType = SportType.TENNIS,
-                tierType = TierType.GOLD_1,
-                lp = 123,
-                minLp = 100,
-                maxLp = 500,
-                wins = 10,
-                losses = 7,
-            ),
-            topRankerList = persistentListOf(),
-            matchingCardList = persistentListOf(),
-            matchedUser = null,
-            isNotice = false,
+        val dummyState = TierInfoContract.State(
             selectedTierInfo = TierType.GOLD_1.toTierInfo(),
         )
 
