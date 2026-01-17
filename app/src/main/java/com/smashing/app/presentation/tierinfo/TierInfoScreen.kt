@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,15 +32,9 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
-import com.smashing.app.presentation.home.HomeContract
-import com.smashing.app.presentation.home.HomeUiState
-import com.smashing.app.presentation.home.HomeViewModel
 import com.smashing.app.core.designsystem.style.TierInfo
 import com.smashing.app.core.designsystem.style.toTierInfo
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun TierInfoRoute(
