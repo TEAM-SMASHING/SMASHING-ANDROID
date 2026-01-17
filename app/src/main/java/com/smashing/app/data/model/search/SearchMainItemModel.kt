@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search.searchmain
+package com.smashing.app.data.model.search
 
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
-import com.smashing.app.presentation.search.searchmain.SearchMainItemModel
+import com.smashing.app.data.model.search.SearchMainItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.FlowPreview

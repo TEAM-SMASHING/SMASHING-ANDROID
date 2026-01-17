@@ -2,7 +2,7 @@ package com.smashing.app.presentation.search
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.presentation.search.input.SuggestionItem
-import com.smashing.app.presentation.search.searchmain.SearchMainItemModel
+import com.smashing.app.data.model.search.SearchMainItemModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
