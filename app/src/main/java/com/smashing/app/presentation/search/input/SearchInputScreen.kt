@@ -26,6 +26,7 @@ import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
+import com.smashing.app.data.model.search.SuggestionItemModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -52,7 +53,7 @@ fun SearchInputRoute(
 @Composable
 private fun SearchInputScreen(
     uiState: SearchContract.State,
-    items: ImmutableList<SuggestionItem>,
+    items: ImmutableList<SuggestionItemModel>,
     searchState: TextFieldState,
     onBackClick: () -> Unit,
     onSuggestionItemClick: () -> Unit,

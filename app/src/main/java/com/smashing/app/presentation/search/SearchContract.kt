@@ -1,7 +1,7 @@
 package com.smashing.app.presentation.search
 
 import androidx.compose.runtime.Immutable
-import com.smashing.app.presentation.search.input.SuggestionItem
+import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.data.model.search.SearchMainItemModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -32,7 +32,7 @@ interface SearchContract {
         val currentGenderText: String? = null,
         val selectedTierItem: String? = null,
         val selectedGenderItem: String? = null,
-        val suggestions: ImmutableList<SuggestionItem> = persistentListOf(),
+        val suggestions: ImmutableList<SuggestionItemModel> = persistentListOf(),
         val isSuggestionVisible: Boolean = false,
     )
 }
