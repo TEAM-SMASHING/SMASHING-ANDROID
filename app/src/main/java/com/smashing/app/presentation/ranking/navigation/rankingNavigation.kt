@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToRanking(
     navOptions: NavOptions? = null,
-) { navigate(RankingPage, navOptions) }
+) = navigate(RankingPage, navOptions)
 
 fun NavGraphBuilder.rankingGraph(
     navigateUp: () -> Unit,

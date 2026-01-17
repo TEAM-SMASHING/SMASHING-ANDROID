@@ -19,10 +19,10 @@ class RankingViewModel @Inject constructor() : ViewModel() {
     val uiState = _uiState.asStateFlow()
 
     init {
-        fetchRankingData()
+        fetchRankingList()
     }
 
-    fun fetchRankingData() = viewModelScope.launch {
+    fun fetchRankingList() = viewModelScope.launch {
         updateRankingUiState(RankingUiState.Loading)
 
         val rankingData = createDummyRankingData()
