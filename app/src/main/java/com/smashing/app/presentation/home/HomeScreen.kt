@@ -152,6 +152,7 @@ private fun HomeScreen(
             activeSport = uiState.activeUserProfile.sportType,
             sportList = sportList,
             tierType = uiState.activeUserProfile.tierType,
+            lp = uiState.activeUserProfile.lp,
             minLp = uiState.activeUserProfile.minLp,
             maxLp = uiState.activeUserProfile.maxLp,
             winCount = uiState.activeUserProfile.wins,

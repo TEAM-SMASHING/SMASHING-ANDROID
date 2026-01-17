@@ -8,6 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -44,10 +46,12 @@ import com.smashing.app.core.designsystem.component.progressbar.SmashingProgress
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 
 @Composable
@@ -55,6 +59,7 @@ fun HomeDropdown(
     activeSport: SportType,
     sportList: ImmutableList<SportType>,
     tierType: TierType,
+    lp: Int,
     minLp: Int,
     maxLp: Int,
     winCount: Int,
@@ -181,8 +186,7 @@ fun HomeDropdown(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 SmashingProgressBar(
-                    //TODO progress 수정 필요
-                    progress = 0.6f,
+                    progress = (lp - minLp) / (maxLp - minLp).toFloat(),
                     modifier = Modifier.fillMaxWidth(),
                 )
 
