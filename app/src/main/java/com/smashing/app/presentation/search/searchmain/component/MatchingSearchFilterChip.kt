@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search.component
+package com.smashing.app.presentation.search.searchmain.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,10 +25,10 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.designsystem.theme.gray300
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.presentation.search.style.FilterStyle
-import com.smashing.app.presentation.search.style.FilterStyle.DEFAULT
-import com.smashing.app.presentation.search.style.FilterStyle.VARIANT
-import com.smashing.app.presentation.search.style.FilterStyleData
+import com.smashing.app.presentation.search.searchmain.style.FilterStyle
+import com.smashing.app.presentation.search.searchmain.style.FilterStyle.DEFAULT
+import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
+import com.smashing.app.presentation.search.searchmain.style.FilterStyleData
 
 @Composable
 fun MatchingSearchFilterChip(

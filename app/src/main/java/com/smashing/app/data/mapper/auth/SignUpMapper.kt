@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.auth
 
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.auth.PostSignUpResponse

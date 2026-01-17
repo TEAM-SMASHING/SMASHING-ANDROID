@@ -30,8 +30,8 @@ data class AcceptedMatchingListResponse(
         val openChatUrl: String?,
         @SerialName("gender")
         val gender: String,
-        @SerialName("tierId")
-        val tierId: Long,
+        @SerialName("tierCode")
+        val tierCode: String,
         @SerialName("tierName")
         val tierName: String,
     )
