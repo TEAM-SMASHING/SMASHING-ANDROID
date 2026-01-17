@@ -1,7 +1,7 @@
 package com.smashing.app.presentation.search
 
-import com.smashing.app.core.common.type.GenderType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.TierType
 import javax.annotation.concurrent.Immutable
 
 @Immutable
