@@ -82,9 +82,6 @@ private fun MainNavHost(
 
         searchGraph(
             innerPadding = innerPadding,
-            navigateToRegionChange = appState.navController::navigateToRegionChange,
-            navigateToNotice = appState.navController::navigateToNotice,
-            navigateToSearchInput = appState.navController::navigateToSearchInput,
             navController = appState.navController,
         )
 
