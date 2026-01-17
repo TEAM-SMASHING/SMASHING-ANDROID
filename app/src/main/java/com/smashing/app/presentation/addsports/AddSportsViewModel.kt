@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.addsports
+package com.smashing.app.presentation.addsports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

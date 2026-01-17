@@ -48,47 +48,46 @@ import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.extension.formatCount
-import com.smashing.app.data.model.profile.Review
-import com.smashing.app.presentation.profile.ProfileContract
+import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.presentation.profile.component.ReviewItem
+import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun ReviewRoute(
+fun AllReviewRoute(
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ReviewViewModel = hiltViewModel(),
+    viewModel: AllReviewViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ReviewScreen(
+    AllReviewScreen(
         modifier = modifier,
         uiState = uiState,
         onBackClick = navigateUp,
-        reviews = uiState.reviews,
+        reviews = uiState.gameReview,
     )
 }
 
 
 @Composable
-private fun ReviewScreen(
-    uiState: ProfileContract.State,
-    reviews: ImmutableList<Review>,
+private fun AllReviewScreen(
+    uiState: MyProfileContract.State,
+    reviews: ImmutableList<GameReview>,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
     val isReviewEmpty = reviews.isEmpty() &&
-            uiState.reviewRate.run { best == 0 && good == 0 && bad == 0 } &&
-            uiState.tagCount.run { onTime == 0 && goodManner == 0 && fairPlay == 0 && fastResponse == 0 }
+            uiState.gameReviewResult.run { bestCount == 0L && goodCount == 0L && badCount == 0L } &&
+            uiState.gameReviewResult.run { onTimeCount == 0L && goodMannerCount == 0L && fairPlayCount == 0L && fastResponseCount == 0L }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas),
-    ) {
+        ) {
         SmashingDefaultTopBar(
             modifier = Modifier.statusBarsPadding(),
             title = stringResource(receive_review),
@@ -122,9 +121,8 @@ private fun ReviewScreen(
                 state = lazyListState,
                 modifier = modifier
                     .fillMaxSize()
-                    .navigationBarsPadding()
                     .background(color = SmashingTheme.colors.bgCanvas)
-                    .padding(vertical = 330.dp, horizontal = 97.dp),
+                    .navigationBarsPadding(),
                 verticalArrangement = Arrangement.spacedBy(32.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp),
             ) {
@@ -140,24 +138,24 @@ private fun ReviewScreen(
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            if (uiState.reviewRate.best > 0) {
+                            if (uiState.gameReviewResult.bestCount > 0) {
                                 SmashingChip(
-                                    text = uiState.reviewRate.best.formatCount(),
+                                    text = uiState.gameReviewResult.bestCount.toString(),
                                     style = DISABLED,
                                     icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
                                 )
                             }
 
-                            if (uiState.reviewRate.good > 0)
+                            if (uiState.gameReviewResult.goodCount > 0)
                                 SmashingChip(
-                                    text = uiState.reviewRate.good.formatCount(),
+                                    text = uiState.gameReviewResult.goodCount.toString(),
                                     style = DISABLED,
                                     icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
                                 )
 
-                            if (uiState.reviewRate.bad > 0) {
+                            if (uiState.gameReviewResult.badCount > 0) {
                                 SmashingChip(
-                                    text = uiState.reviewRate.bad.formatCount(),
+                                    text = uiState.gameReviewResult.badCount.toString(),
                                     style = DISABLED,
                                     icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
                                 )
@@ -181,28 +179,28 @@ private fun ReviewScreen(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier.fillMaxWidth(),
                         ) {
-                            if (uiState.tagCount.onTime > 0) {
+                            if (uiState.gameReviewResult.onTimeCount > 0) {
                                 SmashingChip(
-                                    text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime.formatCount()}",
+                                    text = "${stringResource(id = on_time_review)} ${uiState.gameReviewResult.onTimeCount}",
                                     style = DISABLED,
                                 )
                             }
 
-                            if (uiState.tagCount.goodManner > 0) {
+                            if (uiState.gameReviewResult.goodMannerCount > 0) {
                                 SmashingChip(
-                                    text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner.formatCount()}",
+                                    text = "${stringResource(id = good_manner_review)} ${uiState.gameReviewResult.goodMannerCount}",
                                     style = DISABLED,
                                 )
                             }
-                            if (uiState.tagCount.fairPlay > 0) {
+                            if (uiState.gameReviewResult.fairPlayCount > 0) {
                                 SmashingChip(
-                                    text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay.formatCount()}",
+                                    text = "${stringResource(id = fair_play_review)} ${uiState.gameReviewResult.fairPlayCount}",
                                     style = DISABLED,
                                 )
                             }
-                            if (uiState.tagCount.fastResponse > 0) {
+                            if (uiState.gameReviewResult.fastResponseCount > 0) {
                                 SmashingChip(
-                                    text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse.formatCount()}",
+                                    text = "${stringResource(id = fast_response_review)} ${uiState.gameReviewResult.fastResponseCount}",
                                     style = DISABLED,
                                 )
                             }
@@ -245,8 +243,8 @@ private fun ReviewScreen(
 @Composable
 private fun ReviewScreenPreview() {
     SmashingAndroidTheme {
-        val emptyState = ProfileContract.State()
-        ReviewScreen(
+        val emptyState = MyProfileContract.State()
+        AllReviewScreen(
             uiState = emptyState,
             onBackClick = {},
             reviews = persistentListOf(),

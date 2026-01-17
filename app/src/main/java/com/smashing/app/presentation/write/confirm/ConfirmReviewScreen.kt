@@ -22,8 +22,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.core.common.type.ReviewRatingType
-import com.smashing.app.core.common.type.ReviewTagType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -33,6 +31,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
+import com.smashing.app.data.type.ReviewRatingType
+import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.component.WriteReviewContent
 
 @Composable

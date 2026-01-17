@@ -17,6 +17,7 @@ import com.smashing.app.R.string.profile
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.navigation.Home
+import com.smashing.app.presentation.home.navigation.HomeUser
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.profile.navigation.Profile
 import com.smashing.app.presentation.profile.navigation.ProfileUser

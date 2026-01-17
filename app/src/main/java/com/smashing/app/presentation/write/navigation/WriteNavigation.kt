@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
-import com.smashing.app.presentation.review.ReviewFastRoute
 import com.smashing.app.presentation.write.confirm.ConfirmResultRoute
 import com.smashing.app.presentation.write.confirm.ConfirmReviewRoute
 import com.smashing.app.presentation.write.confirm.ConfirmViewModel
@@ -90,14 +89,6 @@ fun NavGraphBuilder.writeGraph(
             )
         }
 
-        composable<ReviewFast> { backStackEntry ->
-            val viewModel = backStackEntry.sharedViewModel<ConfirmViewModel>(navController)
-            ReviewFastRoute(
-                navigateUp = navController::navigateUp,
-                navigateToNext = navigateToMatching,
-                viewModel = viewModel,
-            )
-        }
     }
 }
 

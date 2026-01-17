@@ -11,9 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.presentation.profile.ProfileRoute
-import com.smashing.app.presentation.profile.addsports.AddSportsRoute
-import com.smashing.app.presentation.profile.review.ReviewRoute
+import com.smashing.app.presentation.profile.myprofile.ProfileRoute
+import com.smashing.app.presentation.addsports.AddSportsRoute
+import com.smashing.app.presentation.profile.review.AllReviewRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToProfile(
@@ -43,12 +43,12 @@ fun NavGraphBuilder.profileGraph(
             ProfileRoute(
                 navigateToSportAdd = navigateToAddSports,
                 navigateToTierGuide = {},
-                navigateToReviews = navigateToReview,
+                navigateToReview = navigateToReview,
                 updateBottomBar = updateBottomBar,
             )
         }
         composable<Review> {
-            ReviewRoute(
+            AllReviewRoute(
                 modifier = Modifier.padding(innerPadding),
                 navigateUp = navigateUp,
             )

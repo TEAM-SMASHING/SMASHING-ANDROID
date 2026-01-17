@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.user.component
+package com.smashing.app.presentation.profile.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

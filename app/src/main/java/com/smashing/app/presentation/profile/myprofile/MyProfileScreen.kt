@@ -1,15 +1,16 @@
-package com.smashing.app.presentation.profile
+package com.smashing.app.presentation.profile.myprofile
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -30,47 +31,45 @@ import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
-import com.smashing.app.presentation.profile.component.ProfileReviewCard
-import com.smashing.app.presentation.profile.user.component.ProfileStatsBar
-import com.smashing.app.presentation.profile.user.component.ProfileTierBox
-import com.smashing.app.presentation.profile.user.component.UserProfileCard
+import com.smashing.app.presentation.profile.component.ProfileStatsBar
+import com.smashing.app.presentation.profile.component.ProfileTierBox
+import com.smashing.app.presentation.profile.component.ReviewCard
+import com.smashing.app.presentation.profile.component.UserProfileCard
+import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
 fun ProfileRoute(
     navigateToSportAdd: () -> Unit,
     navigateToTierGuide: () -> Unit,
-    navigateToReviews: () -> Unit,
+    navigateToReview: () -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel = hiltViewModel(),
+    viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ProfileScreen(
+    MyProfileScreen(
         modifier = modifier,
         uiState = uiState,
         updateBottomBar = updateBottomBar,
-        onSportClick = viewModel::updateSelectedSport,
+        onSportClick = viewModel::selectProfileId,
         onAddSportClick = navigateToSportAdd,
         onTierGuideClick = navigateToTierGuide,
-        onReviewsClick = navigateToReviews,
+        onReviewClick = navigateToReview,
     )
 }
 
 @Composable
-private fun ProfileScreen(
-    uiState: ProfileContract.State,
+private fun MyProfileScreen(
+    uiState: MyProfileContract.State,
     onAddSportClick: () -> Unit,
     onTierGuideClick: () -> Unit,
-    onReviewsClick: () -> Unit,
-    onSportClick: (SportType) -> Unit,
+    onReviewClick: () -> Unit,
+    onSportClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    lazyListState: LazyListState = rememberLazyListState(),
+    scrollState: ScrollState = rememberScrollState(),
 ) {
 
     val nestedScrollConnection = remember {
@@ -85,8 +84,9 @@ private fun ProfileScreen(
             }
         }
     }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas)
             .systemBarsPadding(),
@@ -98,71 +98,63 @@ private fun ProfileScreen(
             onClick = null,
         )
 
-        LazyColumn(
-            state = lazyListState,
-            modifier = modifier
+        Column(
+            modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .nestedScroll(nestedScrollConnection)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
-            contentPadding = PaddingValues(bottom = 16.dp),
         ) {
+            UserProfileCard(
+                nickname = uiState.profileInfo.nickname,
+                gender = uiState.profileInfo.genderType,
+                tierType = uiState.profileInfo.tierType,
+                winCount = uiState.profileInfo.winCount,
+                loseCount = uiState.profileInfo.loseCount,
+                reviewCount = uiState.profileInfo.reviewCount,
+            )
 
-            //TODO 하드코딩된 값 변경 필요
-            item {
-                UserProfileCard(
-                    nickname = "하나둘셋넷다여칠팔구",
-                    gender = GenderType.FEMALE,
-                    tierType = TierType.GOLD_1,
-                    winCount = 254,
-                    loseCount = 38,
-                    reviewCount = 32,
-                )
-            }
+            ProfileTierBox(
+                tierType = uiState.profileInfo.tierType,
+                sportProfileList = uiState.sportProfileList,
+                selectedProfileId = uiState.selectedSportProfileId,
+                onSportClick = onSportClick,
+                tierIconResId = R.drawable.ic_check, // TODO 수정 예정
+                progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
+                lpStatus = uiState.profileInfo.minLp,
+                totalLp = uiState.profileInfo.maxLp,
+                onAddSportClick = onAddSportClick,
+                onTierInfoClick = onTierGuideClick,
+            )
 
-            item {
-                ProfileTierBox(
-                    tierType = uiState.profileInfo.tierType,
-                    sports = uiState.profileInfo.mySports,
-                    selectedSport = uiState.profileInfo.selectedSport,
-                    onSportClick = onSportClick,
-                    tierIconResId = R.drawable.ic_check, // TODO 수정 예정
-                    progress = uiState.profileInfo.lpProgress,
-                    lpStatus = uiState.profileInfo.minLp,
-                    totalLp = uiState.profileInfo.maxLp,
-                    onAddSportClick = onAddSportClick,
-                    onTierInfoClick = onTierGuideClick,
-                )
-            }
-            item {
-                ProfileStatsBar(
-                    winCount = uiState.profileInfo.winCount,
-                    loseCount = uiState.profileInfo.loseCount,
-                )
-            }
-            item {
-                ProfileReviewCard(
-                    reviews = uiState.reviews,
-                    onViewAllReviewClick = onReviewsClick,
-                    excellentCount = uiState.reviewRate.best,
-                    goodCount = uiState.reviewRate.good,
-                    badCount = uiState.reviewRate.bad,
-                )
-            }
+            ProfileStatsBar(
+                winCount = uiState.profileInfo.winCount,
+                loseCount = uiState.profileInfo.loseCount,
+            )
+
+            ReviewCard(
+                reviews = persistentListOf(),
+                onViewAllReviewClick = onReviewClick,
+                bestCount = uiState.gameReviewResult.bestCount,
+                goodCount = uiState.gameReviewResult.goodCount,
+                badCount = uiState.gameReviewResult.badCount,
+            )
+
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
 private fun ProfileScreenPreview() {
     SmashingAndroidTheme {
-        ProfileScreen(
-            uiState = ProfileContract.State(),
+        MyProfileScreen(
+            uiState = MyProfileContract.State(),
             onAddSportClick = {},
             onTierGuideClick = {},
-            onReviewsClick = {},
+            onReviewClick = {},
             onSportClick = {},
             updateBottomBar = {},
         )

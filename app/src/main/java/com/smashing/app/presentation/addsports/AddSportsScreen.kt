@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.addsports
+package com.smashing.app.presentation.addsports
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

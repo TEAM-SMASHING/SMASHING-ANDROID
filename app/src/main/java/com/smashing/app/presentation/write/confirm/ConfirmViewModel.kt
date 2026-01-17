@@ -2,8 +2,8 @@ package com.smashing.app.presentation.write.confirm
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
-import com.smashing.app.core.common.type.ReviewRatingType
-import com.smashing.app.core.common.type.ReviewTagType
+import com.smashing.app.data.type.ReviewRatingType
+import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.model.MatchPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableSet
@@ -97,7 +97,5 @@ class ConfirmViewModel @Inject constructor(
             isButtonEnabled = false,
         )
     }
-
-
 }
 
