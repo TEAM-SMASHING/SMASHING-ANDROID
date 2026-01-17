@@ -65,15 +65,15 @@ import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.presentation.home.type.DummyMatchedUser
-import com.smashing.app.presentation.home.type.TierInfo
-import com.smashing.app.presentation.home.type.toTierInfo
+import com.smashing.app.core.designsystem.style.TierInfo
+import com.smashing.app.core.designsystem.style.toTierInfo
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
-    navigateToTierInfo: () -> Unit,
+    navigateToTierInfo: (TierInfo) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -83,10 +83,8 @@ fun HomeRoute(
         uiState = uiState,
         navigateToNotice = navigateToNotice,
         navigateToRegionChange = navigateToRegionChange,
-        navigateToTierInfo = navigateToTierInfo,
-        onTierInfoClick = {
-            viewModel.updateTierInfo(uiState.activeUserProfile?.tierType?.toTierInfo() ?: TierInfo.IRON)
-            navigateToTierInfo()
+        navigateToTierInfo = {
+            navigateToTierInfo(uiState.activeUserProfile?.tierType?.toTierInfo() ?: TierInfo.IRON)
         },
         modifier = modifier,
     )
@@ -98,7 +96,6 @@ private fun HomeScreen(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: () -> Unit,
-    onTierInfoClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -169,7 +166,7 @@ private fun HomeScreen(
             },
             onTierClick = {
                 isDropdownExpanded = false
-                onTierInfoClick()
+                navigateToTierInfo()
             },
             onDismiss = {
                 isDropdownExpanded = false
@@ -662,7 +659,6 @@ private fun HomeScreenPreview() {
         navigateToNotice = {},
         navigateToRegionChange = {},
         navigateToTierInfo = {},
-        onTierInfoClick = {},
     )
 }
 
@@ -699,6 +695,5 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToNotice = {},
         navigateToRegionChange = {},
         navigateToTierInfo = {},
-        onTierInfoClick = {},
     )
 }
