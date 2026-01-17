@@ -25,4 +25,8 @@ interface MatchingRepository {
         size: Long?,
         order: OrderType? = null,
     ): Result<CursorPage<AcceptedMatching>>
+
+    suspend fun postAcceptedMatching(
+        matchingId: String,
+    ): Result<Unit>
 }

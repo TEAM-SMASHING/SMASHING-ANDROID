@@ -169,6 +169,30 @@ class MatchingViewModel @Inject constructor(
         }
     }
 
+    fun acceptReceivedMatching(
+        matchingId: String,
+    ) = viewModelScope.launch {
+        matchingRepository.postAcceptedMatching(
+            matchingId = matchingId,
+        ).onSuccess {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    receivedList = _uiState.value.receivedList
+                        .filter { it.matchingId != matchingId }
+                        .toImmutableList()
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    acceptedUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
     companion object {
         private const val CURSOR_SIZE = 4L
         private const val TAG = "MatchingViewModel"

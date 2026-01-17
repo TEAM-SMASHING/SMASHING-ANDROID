@@ -48,4 +48,10 @@ class MatchingRemoteDataSourceImpl @Inject constructor(
             size = size,
             order = order,
         )
+
+    override suspend fun postAcceptedMatching(
+        matchingId: String,
+    ): BaseResponse<Unit> = matchingService.postAcceptedMatching(
+        matchingId = matchingId,
+    )
 }

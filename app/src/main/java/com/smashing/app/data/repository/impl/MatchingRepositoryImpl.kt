@@ -55,4 +55,12 @@ class MatchingRepositoryImpl @Inject constructor(
         ).requireData().toAcceptedMatchingList()
     }
 
+    override suspend fun postAcceptedMatching(
+        matchingId: String,
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.postAcceptedMatching(
+            matchingId = matchingId,
+        ).requireData()
+    }
+
 }

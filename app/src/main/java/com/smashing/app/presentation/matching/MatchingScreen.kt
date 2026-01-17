@@ -70,6 +70,13 @@ fun MatchingRoute(
         onTabClick = viewModel::updateMatchingType,
         onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
+        onReceivedAcceptClick = viewModel::acceptReceivedMatching,
+        onProfileClick = { userId -> /* TODO: Navigate to profile */ },
+        onSentCloseClick = { matchingId -> /* TODO: Cancel sent matching */ },
+        onReceivedSkipClick = { matchingId -> /* TODO: Skip received matching */ },
+        onAcceptedConfirmClick = { gameId -> navigateToSubmit() },
+        onAcceptedKakaoLinkClick = { url -> /* TODO: Open Kakao link */ },
+        onAcceptedCloseClick = { gameId -> /* TODO: Cancel accepted matching */ },
         modifier = modifier,
     )
 }
@@ -82,7 +89,14 @@ private fun MatchingScreen(
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
+    onReceivedAcceptClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onProfileClick: (String) -> Unit = {},
+    onSentCloseClick: (String) -> Unit = {},
+    onReceivedSkipClick: (String) -> Unit = {},
+    onAcceptedConfirmClick: (String) -> Unit = {},
+    onAcceptedKakaoLinkClick: (String?) -> Unit = {},
+    onAcceptedCloseClick: (String) -> Unit = {},
 ) {
     val gridState = rememberLazyGridState()
 
@@ -167,9 +181,14 @@ private fun MatchingScreen(
                     MatchingList(
                         uiState = uiState,
                         gridState = gridState,
-                        onCloseClick = onCardCloseClick,
-                        onConfirmClick = navigateToSubmit,
                         onLoadMoreMatchingList = onLoadMoreMatchingList,
+                        onProfileClick = onProfileClick,
+                        onSentCloseClick = onSentCloseClick,
+                        onReceivedSkipClick = onReceivedSkipClick,
+                        onReceivedAcceptClick = onReceivedAcceptClick,
+                        onAcceptedConfirmClick = onAcceptedConfirmClick,
+                        onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
+                        onAcceptedCloseClick = onAcceptedCloseClick,
                     )
                 }
 
@@ -220,8 +239,13 @@ private fun MatchingList(
     uiState: MatchingContract.State,
     gridState: LazyGridState,
     onLoadMoreMatchingList: () -> Unit,
-    onCloseClick: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onProfileClick: (String) -> Unit,
+    onSentCloseClick: (String) -> Unit,
+    onReceivedSkipClick: (String) -> Unit,
+    onReceivedAcceptClick: (String) -> Unit,
+    onAcceptedConfirmClick: (String) -> Unit,
+    onAcceptedKakaoLinkClick: (String?) -> Unit,
+    onAcceptedCloseClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -245,22 +269,6 @@ private fun MatchingList(
         modifier = modifier,
     ) {
         when (uiState.selectedType) {
-            MatchingType.SEND -> items(uiState.sentList) {
-                MatchingCard(
-                    cardState = MatchingCardState.Send(
-                        userId = it.userId,
-                        nickname = it.nickname,
-                        genderType = it.genderType,
-                        tierType = it.tierType,
-                        onProfileClick = {},
-                        onCloseClick = onCloseClick,
-                        winCount = it.winCount,
-                        loseCount = it.loseCount,
-                        reviewCount = it.reviewCount,
-                    ),
-                )
-            }
-
             MatchingType.RECEIVE -> items(uiState.receivedList) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
@@ -271,9 +279,25 @@ private fun MatchingList(
                         winCount = it.winCount,
                         loseCount = it.loseCount,
                         reviewCount = it.reviewCount,
-                        onProfileClick = {},
-                        onSkipClick = {},
-                        onAcceptClick = {},
+                        onProfileClick = { onProfileClick(it.userId) },
+                        onSkipClick = { onReceivedSkipClick(it.matchingId) },
+                        onAcceptClick = { onReceivedAcceptClick(it.matchingId) },
+                    ),
+                )
+            }
+
+            MatchingType.SEND -> items(uiState.sentList) {
+                MatchingCard(
+                    cardState = MatchingCardState.Send(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        onProfileClick = { onProfileClick(it.userId) },
+                        onCloseClick = { onSentCloseClick(it.matchingId) },
+                        winCount = it.winCount,
+                        loseCount = it.loseCount,
+                        reviewCount = it.reviewCount,
                     ),
                 )
             }
@@ -285,10 +309,10 @@ private fun MatchingList(
                         nickname = it.nickname,
                         genderType = it.genderType,
                         tierType = it.tierType,
-                        onProfileClick = {},
-                        onConfirmClick = onConfirmClick,
-                        onKakaoLinkClick = {},
-                        onCloseClick = onCloseClick,
+                        onProfileClick = { onProfileClick(it.userId) },
+                        onConfirmClick = { onAcceptedConfirmClick(it.gameId) },
+                        onKakaoLinkClick = { onAcceptedKakaoLinkClick(it.openChatUrl) },
+                        onCloseClick = { onAcceptedCloseClick(it.gameId) },
                     ),
                 )
             }
@@ -307,6 +331,13 @@ private fun MatchingScreenPreview() {
             onCardCloseClick = {},
             onDialogDismissClick = {},
             onLoadMoreMatchingList = {},
+            onReceivedAcceptClick = {},
+            onProfileClick = {},
+            onSentCloseClick = {},
+            onReceivedSkipClick = {},
+            onAcceptedConfirmClick = {},
+            onAcceptedKakaoLinkClick = {},
+            onAcceptedCloseClick = {},
             modifier = Modifier
                 .background(Color.Black),
         )

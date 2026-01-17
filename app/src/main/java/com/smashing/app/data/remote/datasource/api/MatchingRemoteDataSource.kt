@@ -27,4 +27,8 @@ interface MatchingRemoteDataSource {
         order: OrderType?,
     ): BaseResponse<CursorDto<AcceptedMatchingListResponse>>
 
+    suspend fun postAcceptedMatching(
+        matchingId: String,
+    ): BaseResponse<Unit>
+
 }
