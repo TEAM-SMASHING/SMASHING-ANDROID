@@ -38,8 +38,8 @@ fun NavGraphBuilder.homeGraph(
                 modifier = Modifier,
                 navigateToNotice = navController::navigateToNotice,
                 navigateToRegionChange = navController::navigateToRegionChange,
-                navigateToTierInfo = { tierInfo ->
-                    navController.navigateToTierInfo(tierInfo.name)
+                navigateToTierInfo = { tierInfoStyle ->
+                    navController.navigateToTierInfo(tierInfoStyle.name)
                 },
             )
         }
