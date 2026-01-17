@@ -24,8 +24,8 @@ data class SentMatchingListResponse(
         val gender: String,
         @SerialName("reviewCount")
         val reviewCount: Long,
-        @SerialName("tierId")
-        val tierId: Long,
+        @SerialName("tierCode")
+        val tierCode: String,
         @SerialName("tierName")
         val tierName: String,
         @SerialName("wins")
