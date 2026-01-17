@@ -174,7 +174,7 @@ private fun SearchMainScreen(
                             userId = it.userId,
                             nickname = it.nickname,
                             genderType = it.gender,
-                            tierType = it.tierId,
+                            tierType = it.tierCode,
                             onProfileClick = onProfileClick,
                             winCount = it.wins,
                             loseCount = it.losses,

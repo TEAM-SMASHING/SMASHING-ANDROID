@@ -11,8 +11,8 @@ data class GetRegionUsersSearchResponse(
     val nickname: String,
     @SerialName("gender")
     val gender: String,
-    @SerialName("tierId")
-    val tierId: Long,
+    @SerialName("tierCode")
+    val tierCode: String,
     @SerialName("wins")
     val wins: Int,
     @SerialName("losses")
