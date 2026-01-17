@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,11 +26,14 @@ import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.noRippleClickable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SearchTopBar(
     selectedRegion: String,
+    regionItems: ImmutableList<String>,
     onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onRegionSelectClick: () -> Unit,
@@ -47,10 +51,6 @@ fun SearchTopBar(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        
-        val regionItems = remember {
-            listOf("양천구", "강서구", "장신구").toImmutableList()
-        }
 
         RegionDropdown(
             selectedItem = selectedRegion,
@@ -87,6 +87,7 @@ private fun SearchTopBarPreview() {
     SmashingAndroidTheme {
         SearchTopBar(
             selectedRegion = "양천구",
+            regionItems = persistentListOf("양천구", "강서구", "장신구"),
             onRegionDropdownClick = {},
             onSearchClick = {},
             onRegionSelectClick = {},

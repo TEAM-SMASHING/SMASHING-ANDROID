@@ -8,6 +8,7 @@ interface SearchContract {
     @Immutable
     data class State(
         val selectedRegion: String = "양천구",
+        val regionItems: ImmutableList<String> = persistentListOf("양천구", "강서구", "장신구"),
         val searchList: ImmutableList<SearchItemModel> = persistentListOf(),
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,

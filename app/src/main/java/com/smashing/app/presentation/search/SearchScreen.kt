@@ -95,6 +95,7 @@ private fun SearchScreen(
 
         SearchTopBar(
             selectedRegion = uiState.selectedRegion,
+            regionItems = uiState.regionItems,
             onRegionDropdownClick = onRegionDropdownClick,
             onSearchClick = onSearchClick,
             onRegionSelectClick = {},
