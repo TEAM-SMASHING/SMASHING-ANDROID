@@ -243,49 +243,55 @@ private fun RankLp(
     )
 }
 
-//@Preview(showBackground = true, backgroundColor = 0xFF000000)
-//@Composable
-//private fun RankerItemPreview_FirstPlace() {
-//    RankerItem(
-//        userRank = UserRank(
-//            userId = "user1",
-//            nickname = "1위 유저",
-//            rank = 1,
-//            tierType = TierType.CHALLENGER,
-//            lp = 2500,
-//        ),
-//        rankerType = FIRST,
-//        navigateToProfile = {},
-//    )
-//}
-//
-//@Preview(showBackground = true, backgroundColor = 0xFF000000)
-//@Composable
-//private fun RankerItemPreview_SecondPlace() {
-//    RankerItem(
-//        userRank = UserRank(
-//            userId = "user2",
-//            nickname = "2위 유저",
-//            rank = 2,
-//            tierType = TierType.DIAMOND_1,
-//            lp = 2300,
-//        ),
-//        rankerType = SECOND,
-//        modifier = Modifier.padding(horizontal = 8.dp),
-//        navigateToProfile = {}
-//    )
-//}
-//
-//@Preview(showBackground = true, backgroundColor = 0xFF000000)
-//@Composable
-//private fun RankerItemPreview_EmptyPlace() {
-//    RankerItem(
-//        userRank = null,
-//        rankerType = SECOND,
-//        modifier = Modifier.padding(horizontal = 8.dp),
-//        navigateToProfile = {}
-//    )
-//}
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun RankerItemPreview_FirstPlace() {
+    RankerItem(
+        userRank = UserRank(
+            userId = "user1",
+            nickname = "1위 유저",
+            rank = 1,
+            tierType = TierType.CHALLENGER,
+            lp = 2500,
+        ),
+        rankerType = FIRST,
+        contentWidth = 120.dp,
+        sidePadding = 16.dp,
+        navigateToProfile = {},
+    )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun RankerItemPreview_SecondPlace() {
+    RankerItem(
+        userRank = UserRank(
+            userId = "user2",
+            nickname = "2위 유저",
+            rank = 2,
+            tierType = TierType.DIAMOND_1,
+            lp = 2300,
+        ),
+        rankerType = SECOND,
+        contentWidth = 100.dp,
+        sidePadding = 16.dp,
+        modifier = Modifier.padding(horizontal = 8.dp),
+        navigateToProfile = {}
+    )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun RankerItemPreview_EmptyPlace() {
+    RankerItem(
+        userRank = null,
+        rankerType = SECOND,
+        contentWidth = 100.dp,
+        sidePadding = 16.dp,
+        modifier = Modifier.padding(horizontal = 8.dp),
+        navigateToProfile = {}
+    )
+}
 
 @Preview(showBackground = true)
 @Composable
