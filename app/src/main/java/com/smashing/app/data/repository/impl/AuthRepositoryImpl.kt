@@ -3,10 +3,10 @@ package com.smashing.app.data.repository.impl
 import android.content.Context
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
-import com.smashing.app.data.mapper.toKakaoLoginToken
-import com.smashing.app.data.mapper.toSignUpModel
-import com.smashing.app.data.mapper.toSignUpNickNameAvailableModel
-import com.smashing.app.data.mapper.toSignUpOpenchatValidModel
+import com.smashing.app.data.mapper.auth.toKakaoLoginToken
+import com.smashing.app.data.mapper.auth.toSignUpModel
+import com.smashing.app.data.mapper.auth.toSignUpNickNameAvailableModel
+import com.smashing.app.data.mapper.auth.toSignUpOpenchatValidModel
 import com.smashing.app.data.model.auth.KakaoLoginModel
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.model.auth.SignUpNickNameAvailableModel

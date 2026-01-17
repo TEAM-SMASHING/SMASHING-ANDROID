@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.matching
 
 import androidx.compose.runtime.Immutable
+import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.matching.ReceivedMatching
 import com.smashing.app.data.model.matching.SentMatching
@@ -11,17 +12,24 @@ import kotlinx.collections.immutable.persistentListOf
 interface MatchingContract {
     @Immutable
     data class State(
-        val loadState: MatchingUiState = MatchingUiState.Idle,
-        val selectedType: MatchingType = MatchingType.SEND,
-        val receiveList: ImmutableList<ReceivedMatching> = persistentListOf(),
-        val sendList: ImmutableList<SentMatching> = persistentListOf(),
+        val selectedType: MatchingType = MatchingType.RECEIVE,
+        val receivedList: ImmutableList<ReceivedMatching> = persistentListOf(),
+        val receivedCursor: Cursor = Cursor(),
+        val receivedUiState: MatchingUiState = MatchingUiState.Idle,
+        val sentList: ImmutableList<SentMatching> = persistentListOf(),
+        val sentCursor: Cursor = Cursor(),
+        val sentUiState: MatchingUiState = MatchingUiState.Idle,
         val acceptedList: ImmutableList<AcceptedMatching> = persistentListOf(),
+        val acceptedCursor: Cursor = Cursor(),
+        val acceptedUiState: MatchingUiState = MatchingUiState.Idle,
         val isDialogVisible: Boolean = false,
     )
 }
 
 sealed interface MatchingUiState {
     data object Idle : MatchingUiState
+
+    data object Loading : MatchingUiState
 
     data object Empty : MatchingUiState
 

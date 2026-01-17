@@ -19,7 +19,7 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.navigation.HomeUser
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.profile.navigation.ProfileUser
-import com.smashing.app.presentation.search.navigation.Search
+import com.smashing.app.presentation.search.navigation.SearchMain
 
 enum class MainTab(
     @DrawableRes val selectedIconRes: Int,
@@ -37,7 +37,7 @@ enum class MainTab(
         selectedIconRes = ic_search_selected,
         unselectedIconRes = ic_search_unselected,
         titleRes = matching_search,
-        route = Search,
+        route = SearchMain,
     ),
     MATCHING(
         selectedIconRes = ic_trophy_selected,

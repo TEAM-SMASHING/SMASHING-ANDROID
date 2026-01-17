@@ -63,6 +63,7 @@ import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.component.HomeDropdown
+import com.smashing.app.data.model.rank.UserRankInfo
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import com.smashing.app.core.designsystem.style.TierInfoStyle
@@ -74,6 +75,7 @@ fun HomeRoute(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: (TierInfoStyle) -> Unit,
+    navigateToRanking: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -86,6 +88,7 @@ fun HomeRoute(
         navigateToTierInfo = {
             navigateToTierInfo(uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON)
         },
+        navigateToRanking = navigateToRanking,
         modifier = modifier,
     )
 }
@@ -96,6 +99,7 @@ private fun HomeScreen(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: () -> Unit,
+    navigateToRanking: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -322,6 +326,25 @@ private fun HomeScreen(
                         userId = ranker.userId,
                         onClick = {},
                     )
+                        Text(
+                            text = stringResource(R.string.home_all_text),
+                            style = SmashingTheme.typography.sm.medium14,
+                            color = SmashingTheme.colors.txtTertiary,
+                            modifier = Modifier
+                                .noRippleClickable(
+                                    onClick = navigateToRanking
+                                )
+                        )
+                    }
+                    uiState.topRankerList.forEach { ranker ->
+                        SmashingRankingItem(
+                            rank = ranker.rank,
+                            nickname = ranker.nickname,
+                            tier = ranker.tier,
+                            lp = ranker.lp,
+                            userId = ranker.userId,
+                            onClick = {},
+                        )
 
                 }
             }
@@ -527,70 +550,70 @@ private fun HomeScreenPreview() {
                 losses = 7,
             ),
             topRankerList = listOf(
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
                     lp = 2500,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user2",
                     nickname = "열글자테스트중입니다",
                     rank = 2,
                     tier = TierType.CHALLENGER,
                     lp = 2450,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user3",
                     nickname = "1위 유저",
                     rank = 3,
                     tier = TierType.CHALLENGER,
                     lp = 2400,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user4",
                     nickname = "프로게이머",
                     rank = 4,
                     tier = TierType.DIAMOND_1,
                     lp = 2350,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user5",
                     nickname = "랭커킹커",
                     rank = 5,
                     tier = TierType.DIAMOND_1,
                     lp = 2300,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user6",
                     nickname = "승리만추구",
                     rank = 6,
                     tier = TierType.DIAMOND_2,
                     lp = 2250,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user7",
                     nickname = "플래티넘마스터",
                     rank = 7,
                     tier = TierType.DIAMOND_2,
                     lp = 2200,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user8",
                     nickname = "골드라이더",
                     rank = 8,
                     tier = TierType.DIAMOND_3,
                     lp = 2150,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user9",
                     nickname = "실버도전자",
                     rank = 9,
                     tier = TierType.PLATINUM_1,
                     lp = 2100,
                 ),
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user10",
                     nickname = "브론즈탈출",
                     rank = 10,
@@ -640,6 +663,7 @@ private fun HomeScreenPreview() {
         navigateToNotice = {},
         navigateToRegionChange = {},
         navigateToTierInfo = {},
+        navigateToRanking = {},
     )
 }
 
@@ -661,7 +685,7 @@ private fun HomeScreenEmptyValuePreview() {
                 losses = 7,
             ),
             topRankerList = listOf(
-                TopUserInfo(
+                UserRankInfo(
                     userId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
@@ -676,5 +700,6 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToNotice = {},
         navigateToRegionChange = {},
         navigateToTierInfo = {},
+        navigateToRanking = {},
     )
 }

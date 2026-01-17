@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_bronze
 import com.smashing.app.R.drawable.ic_gold
 import com.smashing.app.R.drawable.ic_silver
-import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.R.string.ranking_tier_with_lp
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -116,7 +116,6 @@ fun SmashingRankingItem(
         Spacer(modifier = Modifier.width(10.dp))
 
         Column(
-            modifier = Modifier,
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
@@ -139,7 +138,7 @@ fun SmashingRankingItem(
 
         //TODO 티어 뱃지 TierType 사용해 이미지 수정 예정
         Image(
-            painter = painterResource(id = img_tier_dummy),
+            painter = painterResource(id = tier.img()),
             contentDescription = null,
             modifier = Modifier
                 .height(40.dp)
