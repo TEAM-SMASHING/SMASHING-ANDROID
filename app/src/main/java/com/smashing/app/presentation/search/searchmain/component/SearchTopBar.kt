@@ -33,10 +33,6 @@ fun SearchTopBar(
     onNoticeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    //val density = LocalDensity.current
-    //var isExpanded by remember { mutableStateOf(false) }
-    //var triggerWidth by remember { mutableStateOf(0.dp) }
-    //var triggerHeight by remember { mutableStateOf(0.dp) }
 
     Row(
         modifier = modifier
