@@ -44,6 +44,7 @@ fun SearchRoute(
 
     SearchScreen(
         uiState = uiState,
+        onRegionDropdownClick = viewModel::updateSelectedRegion,
         onSearchClick = navigateToSearchInput,
         onProfileClick = {},
         onTierItemClick = viewModel::updateSelectedTierItem,
@@ -64,6 +65,7 @@ fun SearchRoute(
 @Composable
 private fun SearchScreen(
     uiState: SearchContract.State,
+    onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onProfileClick: () -> Unit,
     onTierItemClick: (String) -> Unit,
@@ -92,6 +94,8 @@ private fun SearchScreen(
     ) {
 
         SearchTopBar(
+            selectedRegion = uiState.selectedRegion,
+            onRegionDropdownClick = onRegionDropdownClick,
             onSearchClick = onSearchClick,
             onRegionSelectClick = {},
             onReginItemClick = {},
@@ -190,6 +194,7 @@ private fun SearchScreenPreview() {
     SmashingAndroidTheme {
         SearchScreen(
             uiState = SearchContract.State(),
+            onRegionDropdownClick = {},
             onSearchClick = {},
             onProfileClick = {},
             onTierItemClick = {},

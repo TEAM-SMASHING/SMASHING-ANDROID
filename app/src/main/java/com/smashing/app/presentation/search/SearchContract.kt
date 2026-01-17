@@ -7,6 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 interface SearchContract {
     @Immutable
     data class State(
+        val selectedRegion: String = "양천구",
         val searchList: ImmutableList<SearchItemModel> = persistentListOf(),
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,

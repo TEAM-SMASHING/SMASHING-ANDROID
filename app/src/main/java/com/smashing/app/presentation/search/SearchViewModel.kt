@@ -43,6 +43,12 @@ class SearchViewModel @Inject constructor(
             }
     }
 
+    fun updateSelectedRegion(region: String) {
+        _uiState.update {
+            it.copy(selectedRegion = region)
+        }
+    }
+
     fun openTierBottomSheet() =
         _uiState.update {
             it.copy(isTierBottomSheetEnabled = true)
@@ -111,6 +117,7 @@ class SearchViewModel @Inject constructor(
     private fun getDummyList() {
         _uiState.update {
             it.copy(
+                searchList =
                 persistentListOf(
                     SearchItemModel(
                         userId = "search_userId_1",

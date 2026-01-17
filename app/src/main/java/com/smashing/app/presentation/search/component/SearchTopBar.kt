@@ -29,15 +29,17 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SearchTopBar(
+    selectedRegion: String,
+    onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onRegionSelectClick: () -> Unit,
     onReginItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val density = LocalDensity.current
-    var isExpanded by remember { mutableStateOf(false) }
-    var triggerWidth by remember { mutableStateOf(0.dp) }
-    var triggerHeight by remember { mutableStateOf(0.dp) }
+    //val density = LocalDensity.current
+    //var isExpanded by remember { mutableStateOf(false) }
+    //var triggerWidth by remember { mutableStateOf(0.dp) }
+    //var triggerHeight by remember { mutableStateOf(0.dp) }
 
     Row(
         modifier = modifier
@@ -45,9 +47,7 @@ fun SearchTopBar(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-
-        var selectedRegion by remember { mutableStateOf("양천구") }
-
+        
         val regionItems = remember {
             listOf("양천구", "강서구", "장신구").toImmutableList()
         }
@@ -55,10 +55,7 @@ fun SearchTopBar(
         RegionDropdown(
             selectedItem = selectedRegion,
             items = regionItems,
-            onClick = { region ->
-                selectedRegion = region
-                println("$region 선택됨")
-            },
+            onClick = onRegionDropdownClick,
             onRegionChange = onRegionSelectClick,
             isDivide = false,
         )
@@ -89,6 +86,8 @@ fun SearchTopBar(
 private fun SearchTopBarPreview() {
     SmashingAndroidTheme {
         SearchTopBar(
+            selectedRegion = "양천구",
+            onRegionDropdownClick = {},
             onSearchClick = {},
             onRegionSelectClick = {},
             onReginItemClick = {},
