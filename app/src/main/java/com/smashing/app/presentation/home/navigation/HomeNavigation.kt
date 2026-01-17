@@ -47,7 +47,7 @@ fun NavGraphBuilder.homeGraph(
             val savedStateHandle = backStackEntry.savedStateHandle
 
             RegionChangeRoute(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier,
                 navigateToRegion = navController::navigateToRegion,
                 navigateUp = navController::navigateUp,
                 regionResult = savedStateHandle.getRegionResult(),

@@ -22,6 +22,6 @@ enum class SportType(
     );
 
     companion object {
-        fun findSportType(sportId: Long): SportType? = entries.find { it.id == sportId }
+        fun findSportType(sportId: Long): SportType = entries.find { it.id == sportId } ?: PING_PONG
     }
 }

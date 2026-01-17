@@ -13,34 +13,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_man_32
 import com.smashing.app.R.drawable.ic_woman_32
+import com.smashing.app.R.string.sign_up_gender_title
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
-import com.smashing.app.presentation.signup.component.SignUpTitle
-import com.smashing.app.R.string.sign_up_gender_title
 import com.smashing.app.data.type.GenderType
+import com.smashing.app.presentation.signup.component.SignUpTitle
 
 
 @Composable
-fun SignUpGender (
+fun SignUpGender(
     selectedGender: GenderType?,
     onGenderSelected: (GenderType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column (
+    Column(
         modifier = modifier,
-    ){
+    ) {
         SignUpTitle(
             title = stringResource(sign_up_gender_title),
             subTitle = "",
         )
 
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth(),
-        ){
+        ) {
             GenderCard(
                 genderIcon = ic_man_32,
-                genderText = GenderType.MALE.gender,
+                genderText = GenderType.MALE.displayName,
                 onCardClick = { onGenderSelected(GenderType.MALE) },
                 modifier = Modifier.weight(1f),
                 isCardEnabled = selectedGender == GenderType.MALE,
@@ -50,7 +50,7 @@ fun SignUpGender (
 
             GenderCard(
                 genderIcon = ic_woman_32,
-                genderText = GenderType.FEMALE.gender,
+                genderText = GenderType.FEMALE.displayName,
                 onCardClick = { onGenderSelected(GenderType.FEMALE) },
                 modifier = Modifier.weight(1f),
                 isCardEnabled = selectedGender == GenderType.FEMALE,

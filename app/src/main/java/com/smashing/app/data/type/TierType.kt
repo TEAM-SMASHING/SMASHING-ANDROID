@@ -23,11 +23,11 @@ enum class TierType(
     CHALLENGER(17, "Challenger");
 
     fun getNextTier(): TierType {
-        return findTierType(this.id + 1) ?: this
+        return ID_MAP[this.id + 1] ?: this
     }
 
     companion object {
         private val ID_MAP: Map<Long, TierType> = entries.associateBy { it.id }
-        fun findTierType(id: Long): TierType? = ID_MAP[id]
+        fun findTierType(id: Long): TierType = ID_MAP[id] ?: IRON
     }
 }

@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.matching
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,8 +48,11 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
+
+private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 
 @Composable
 fun MatchingRoute(
@@ -59,8 +64,9 @@ fun MatchingRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MatchingScreen(
-        navigateToSubmit = navigateToSubmit,
         uiState = uiState,
+        navigateToSubmit = navigateToSubmit,
+        onLoadMoreMatchingList = viewModel::fetchMatchingList,
         onTabClick = viewModel::updateMatchingType,
         onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
@@ -71,6 +77,7 @@ fun MatchingRoute(
 @Composable
 private fun MatchingScreen(
     uiState: MatchingContract.State,
+    onLoadMoreMatchingList: () -> Unit,
     navigateToSubmit: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
@@ -78,6 +85,11 @@ private fun MatchingScreen(
     modifier: Modifier = Modifier,
 ) {
     val gridState = rememberLazyGridState()
+
+    LaunchedEffect(uiState.selectedType) {
+        gridState.scrollToItem(0)
+    }
+
     val emptyTitle = stringResource(
         when (uiState.selectedType) {
             MatchingType.SEND -> matching_send_empty
@@ -85,6 +97,12 @@ private fun MatchingScreen(
             MatchingType.ACCEPTED -> matching_confirm_empty
         }
     )
+
+    val currentUiState = when (uiState.selectedType) {
+        MatchingType.SEND -> uiState.sentUiState
+        MatchingType.RECEIVE -> uiState.receivedUiState
+        MatchingType.ACCEPTED -> uiState.acceptedUiState
+    }
 
     Column(
         modifier = modifier
@@ -106,47 +124,57 @@ private fun MatchingScreen(
             modifier = Modifier.padding(bottom = 12.dp),
         )
 
-        if (uiState.loadState is MatchingUiState.Empty) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(Modifier.weight(171 / 252f))
+        Crossfade(
+            targetState = currentUiState,
+            label = MATCHING_CONTENT_CROSSFADE,
+        ) { state ->
+            when (state) {
+                is MatchingUiState.Empty -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Spacer(Modifier.weight(171 / 252f))
 
-                Image(
-                    painter = painterResource(img_app_icon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .aspectRatio(1f)
-                        .padding(bottom = 16.dp),
-                )
+                        Image(
+                            painter = painterResource(img_app_icon),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .aspectRatio(1f)
+                                .padding(bottom = 16.dp),
+                        )
 
-                Text(
-                    text = emptyTitle,
-                    style = SmashingTheme.typography.lg.semibold18,
-                    color = SmashingTheme.colors.txtSecondary,
-                )
+                        Text(
+                            text = emptyTitle,
+                            style = SmashingTheme.typography.lg.semibold18,
+                            color = SmashingTheme.colors.txtSecondary,
+                        )
 
-                Text(
-                    text = stringResource(matching_empty_description),
-                    style = SmashingTheme.typography.sm.medium14,
-                    color = SmashingTheme.colors.txtTertiary,
-                )
+                        Text(
+                            text = stringResource(matching_empty_description),
+                            style = SmashingTheme.typography.sm.medium14,
+                            color = SmashingTheme.colors.txtTertiary,
+                        )
 
-                Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+
+                is MatchingUiState.Success -> {
+                    MatchingList(
+                        uiState = uiState,
+                        gridState = gridState,
+                        onCloseClick = onCardCloseClick,
+                        onConfirmClick = navigateToSubmit,
+                        onLoadMoreMatchingList = onLoadMoreMatchingList,
+                    )
+                }
+
+                else -> {}
             }
-        }
-
-        if (uiState.loadState is MatchingUiState.Success) {
-            MatchingList(
-                uiState = uiState,
-                gridState = gridState,
-                onCloseClick = onCardCloseClick,
-                onConfirmClick = navigateToSubmit,
-            )
         }
 
         if (uiState.isDialogVisible) {
@@ -191,10 +219,23 @@ private fun MatchingScreen(
 private fun MatchingList(
     uiState: MatchingContract.State,
     gridState: LazyGridState,
+    onLoadMoreMatchingList: () -> Unit,
     onCloseClick: () -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val currentIsLoading = when (uiState.selectedType) {
+        MatchingType.SEND -> uiState.sentUiState is MatchingUiState.Loading
+        MatchingType.RECEIVE -> uiState.receivedUiState is MatchingUiState.Loading
+        MatchingType.ACCEPTED -> uiState.acceptedUiState is MatchingUiState.Loading
+    }
+
+    gridState.onBottomReached(
+        threshold = 3,
+        onLoadMore = onLoadMoreMatchingList,
+        isLoading = currentIsLoading,
+    )
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         state = gridState,
@@ -204,7 +245,7 @@ private fun MatchingList(
         modifier = modifier,
     ) {
         when (uiState.selectedType) {
-            MatchingType.SEND -> items(uiState.sendList) {
+            MatchingType.SEND -> items(uiState.sentList) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
                         userId = it.userId,
@@ -220,7 +261,7 @@ private fun MatchingList(
                 )
             }
 
-            MatchingType.RECEIVE -> items(uiState.receiveList) {
+            MatchingType.RECEIVE -> items(uiState.receivedList) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
                         userId = it.userId,
@@ -265,6 +306,7 @@ private fun MatchingScreenPreview() {
             onTabClick = {},
             onCardCloseClick = {},
             onDialogDismissClick = {},
+            onLoadMoreMatchingList = {},
             modifier = Modifier
                 .background(Color.Black),
         )

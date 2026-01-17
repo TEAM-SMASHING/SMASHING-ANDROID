@@ -14,6 +14,7 @@ import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
+import com.smashing.app.presentation.home.navigation.navigateToRegionChange
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
@@ -23,8 +24,10 @@ import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
+import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.regionGraph
+import com.smashing.app.presentation.search.navigation.navigateToSearchInput
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
@@ -78,7 +81,7 @@ private fun MainNavHost(
         )
 
         searchGraph(
-            innerPadding = innerPadding,
+            navController = appState.navController,
         )
 
         matchingGraph(
@@ -119,6 +122,16 @@ private fun MainNavHost(
         )
 
         signUpGraph(
+            navigateToRegion = {
+                appState.navController.navigateToRegion(
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    },
+                )
+            },
             navigateToHome = {
                 appState.navController.navigateToHome(
                     navOptions = navOptions {

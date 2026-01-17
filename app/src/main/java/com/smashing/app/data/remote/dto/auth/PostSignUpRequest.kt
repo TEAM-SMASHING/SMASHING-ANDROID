@@ -15,8 +15,8 @@ data class PostSignUpRequest(
     val openChatUrl: String,
     @SerialName("sportCode")
     val sportCode: String,
-    @SerialName("tier")
-    val tier: String,
+    @SerialName("experienceRange")
+    val experienceRange: String,
     @SerialName("region")
     val region: String,
 )
