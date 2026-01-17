@@ -2,6 +2,7 @@ package com.smashing.app.presentation.write.submit
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
+import com.smashing.app.data.repository.api.GameRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.model.MatchPlayer
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SubmitViewModel @Inject constructor(
+    private val gameRepository: GameRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
@@ -83,6 +85,7 @@ class SubmitViewModel @Inject constructor(
 
         state.copy(selectedTagTypes = next.toImmutableSet())
     }
+
 
     private fun getDummyState(): SubmitContract.State {
         return SubmitContract.State(
