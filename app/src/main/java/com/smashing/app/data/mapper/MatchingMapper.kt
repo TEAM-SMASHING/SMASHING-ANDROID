@@ -9,6 +9,7 @@ import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.matching.AcceptedMatchingListResponse
 import com.smashing.app.data.remote.dto.matching.ReceivedMatchingListResponse
 import com.smashing.app.data.remote.dto.matching.SentMatchingListResponse
+import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
 
@@ -28,8 +29,8 @@ private fun ReceivedMatchingListResponse.toReceivedMatching(): ReceivedMatching 
         matchingId = matchingId,
         userId = requester.userId,
         nickname = requester.nickname,
-        genderType = GenderType.findByName(requester.gender) ?: GenderType.MALE,
-        tierType = TierType.findTierType(requester.tierId) ?: TierType.IRON,
+        genderType = GenderType.findByName(requester.gender),
+        tierType = TierType.findTierType(requester.tierId),
         reviewCount = requester.reviewCount,
         winCount = requester.winCount,
         loseCount = requester.loseCount,
@@ -53,8 +54,8 @@ private fun SentMatchingListResponse.toSentMatching(): SentMatching {
         matchingId = matchingId,
         userId = receiver.userId,
         nickname = receiver.nickname,
-        genderType = GenderType.findByName(receiver.gender) ?: GenderType.MALE,
-        tierType = TierType.findTierType(receiver.tierId) ?: TierType.IRON,
+        genderType = GenderType.findByName(receiver.gender),
+        tierType = TierType.findTierType(receiver.tierId),
         reviewCount = receiver.reviewCount,
         winCount = receiver.winCount,
         loseCount = receiver.loseCount,
@@ -76,13 +77,13 @@ fun CursorDto<AcceptedMatchingListResponse>.toAcceptedMatchingList(): CursorPage
 private fun AcceptedMatchingListResponse.toAcceptedMatching(): AcceptedMatching {
     return AcceptedMatching(
         gameId = gameId,
-        resultStatus = resultStatus,
+        resultStatus = GameResultStatusType.findByResultStatus(resultStatus),
         createdAt = createdAt,
         userId = opponentSummary.userId,
         nickname = opponentSummary.nickname,
         openChatUrl = opponentSummary.openChatUrl,
-        genderType = GenderType.findByName(opponentSummary.gender) ?: GenderType.MALE,
-        tierType = TierType.findTierType(opponentSummary.tierId) ?: TierType.IRON,
+        genderType = GenderType.findByName(opponentSummary.gender),
+        tierType = TierType.findTierType(opponentSummary.tierId),
         submitAvailableAt = submitLock.submitAvailableAt,
         remainingSeconds = submitLock.remainingSeconds,
         isLocked = submitLock.isLocked,

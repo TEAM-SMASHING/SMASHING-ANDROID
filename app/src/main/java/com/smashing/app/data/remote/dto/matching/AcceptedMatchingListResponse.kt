@@ -1,6 +1,5 @@
 package com.smashing.app.data.remote.dto.matching
 
-import com.smashing.app.data.type.GameResultStatusType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,7 +8,7 @@ data class AcceptedMatchingListResponse(
     @SerialName("gameId")
     val gameId: String,
     @SerialName("resultStatus")
-    val resultStatus: GameResultStatusType,
+    val resultStatus: String,
     @SerialName("createdAt")
     val createdAt: String,
     @SerialName("opponent")

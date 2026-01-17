@@ -11,6 +11,6 @@ enum class GenderType(
     );
 
     companion object {
-        fun findByName(name: String): GenderType? = entries.find { it.name == name }
+        fun findByName(name: String): GenderType = entries.find { it.name == name } ?: MALE
     }
 }

@@ -6,4 +6,10 @@ enum class GameResultStatusType {
     RESULT_REJECTED,
     CANCELED,
     RESULT_CONFIRMED,
+    UNKNOWN;
+
+    companion object {
+        fun findByResultStatus(status: String): GameResultStatusType =
+            GameResultStatusType.entries.find { it.name == status } ?: UNKNOWN
+    }
 }
