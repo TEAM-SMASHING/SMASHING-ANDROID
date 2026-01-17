@@ -14,13 +14,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -124,7 +125,7 @@ private fun HomeScreen(
                         coordinates.size.height.toDp()
                     }
                 }
-                .statusBarsPadding()
+                .systemBarsPadding()
         ) {
             HomeTopBar(
                 userRegion = uiState.activeUserProfile.region,
@@ -166,177 +167,166 @@ private fun HomeScreen(
             triggerHeight = topBarHeight,
         )
 
-        LazyColumn(
+        Column(
             modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
                 .padding(
                     horizontal = 16.dp,
                 )
-                .padding(top = 12.dp),
-            contentPadding = PaddingValues(
-                bottom = 22.dp,
-            )
+                .padding(
+                    top = 12.dp,
+                    bottom = 22.dp
+                ),
         ) {
-            item {
-                Column {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Bottom,
-                    ) {
-                        Column {
-                            Text(
-                                text = "${uiState.activeUserProfile.nickname}님,",
-                                style = SmashingTheme.typography.xxl.semibold24,
-                                color = SmashingTheme.colors.txtPrimary,
-                            )
-                            Text(
-                                text = stringResource(R.string.home_clos_matching_txt),
-                                style = SmashingTheme.typography.xl.semibold20,
-                                color = SmashingTheme.colors.txtPrimary,
-                            )
-                        }
-
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom,
+                ) {
+                    Column {
                         Text(
-                            text = stringResource(R.string.home_all_text),
-                            style = SmashingTheme.typography.sm.medium14,
-                            color = SmashingTheme.colors.txtTertiary,
-                            modifier = Modifier
-                                .noRippleClickable(
-                                    onClick = {}
-                                ),
+                            text = "${uiState.activeUserProfile.nickname}님,",
+                            style = SmashingTheme.typography.xxl.semibold24,
+                            color = SmashingTheme.colors.txtPrimary,
+                        )
+                        Text(
+                            text = stringResource(R.string.home_clos_matching_txt),
+                            style = SmashingTheme.typography.xl.semibold20,
+                            color = SmashingTheme.colors.txtPrimary,
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = stringResource(R.string.home_all_text),
+                        style = SmashingTheme.typography.sm.medium14,
+                        color = SmashingTheme.colors.txtTertiary,
+                        modifier = Modifier
+                            .noRippleClickable(
+                                onClick = {}
+                            ),
+                    )
+                }
 
-                    //TODO 아래 유저 ID에 profileId를 임시로 넣었어요. 받는 값에 유저ID가 없어...
-                    CloseMatching(
-                        matchedMyData = DummyMatchedUser(
-                            userId = uiState.activeUserProfile.profileId,
-                            nickname = uiState.activeUserProfile.nickname,
-                        ),
-                        matchedUserData = uiState.matchedUser,
-                        onClick = {},
+                Spacer(modifier = Modifier.height(20.dp))
+
+                //TODO 아래 유저 ID에 profileId를 임시로 넣었어요. 받는 값에 유저ID가 없어...
+                CloseMatching(
+                    matchedMyData = DummyMatchedUser(
+                        userId = uiState.activeUserProfile.profileId,
+                        nickname = uiState.activeUserProfile.nickname,
+                    ),
+                    matchedUserData = uiState.matchedUser,
+                    onClick = {},
+                )
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "${uiState.activeUserProfile.nickname}님을 위한 추천",
+                        style = SmashingTheme.typography.lg.semibold18,
+                        color = SmashingTheme.colors.txtPrimary,
+                    )
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_info),
+                        contentDescription = null,
+                        tint = SmashingTheme.colors.iconTertiary,
+                        modifier = Modifier
+                            .noRippleClickable(
+                                //TODO 알림 창 확인 후 구현
+                                onClick = {}
+                            ),
+                    )
+                }
+                if (uiState.matchingCardList.isNotEmpty()) {
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        items(
+                            items = uiState.matchingCardList,
+                            key = { it.userId }
+                        ) { cardState ->
+                            MatchingCard(
+                                cardState = cardState,
+                            )
+                        }
+                    }
+                } else {
+                    Text(
+                        text = stringResource(R.string.home_no_user),
+                        style = SmashingTheme.typography.md.medium16,
+                        color = SmashingTheme.colors.txtTertiary,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = SmashingTheme.colors.bgSurface,
+                                shape = RoundedCornerShape(8.dp),
+                            )
+                            .padding(
+                                vertical = 31.dp
+                            )
                     )
                 }
             }
-            //TODO 매칭
+            Spacer(modifier = Modifier.height(32.dp))
 
-            item {
-                Spacer(modifier = Modifier.height(32.dp))
-            }
-
-            item {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Bottom,
                 ) {
-                    Row(
+                    Text(
+                        text = stringResource(R.string.home_region_ranker),
+                        style = SmashingTheme.typography.lg.semibold18,
+                        color = SmashingTheme.colors.txtPrimary,
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Text(
+                        text = stringResource(R.string.home_all_text),
+                        style = SmashingTheme.typography.sm.medium14,
+                        color = SmashingTheme.colors.txtTertiary,
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = "${uiState.activeUserProfile.nickname}님을 위한 추천",
-                            style = SmashingTheme.typography.lg.semibold18,
-                            color = SmashingTheme.colors.txtPrimary,
-                        )
+                            .noRippleClickable(
+                                onClick = {}
+                            )
+                    )
+                }
+                uiState.topRankerList.forEach { ranker ->
+                    SmashingRankingItem(
+                        rank = ranker.rank,
+                        nickname = ranker.nickname,
+                        tier = ranker.tier,
+                        lp = ranker.lp,
+                        userId = ranker.userId,
+                        onClick = {},
+                    )
 
-                        Spacer(modifier = Modifier.width(4.dp))
-
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_info),
-                            contentDescription = null,
-                            tint = SmashingTheme.colors.iconTertiary,
-                            modifier = Modifier
-                                .noRippleClickable(
-                                    //TODO 알림 창 확인 후 구현
-                                    onClick = {}
-                                ),
-                        )
-                    }
-                    if (uiState.matchingCardList.isNotEmpty()) {
-                        LazyRow(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        ) {
-                            items(
-                                items = uiState.matchingCardList,
-                                key = { it.userId }
-                            ) { cardState ->
-                                MatchingCard(
-                                    cardState = cardState,
-                                )
-                            }
-                        }
-                    } else {
-                        Text(
-                            text = stringResource(R.string.home_no_user),
-                            style = SmashingTheme.typography.md.medium16,
-                            color = SmashingTheme.colors.txtTertiary,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(
-                                    color = SmashingTheme.colors.bgSurface,
-                                    shape = RoundedCornerShape(8.dp),
-                                )
-                                .padding(
-                                    vertical = 31.dp
-                                )
-                        )
-                    }
                 }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(32.dp))
-            }
-
-            item {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.Bottom,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.home_region_ranker),
-                            style = SmashingTheme.typography.lg.semibold18,
-                            color = SmashingTheme.colors.txtPrimary,
-                        )
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        Text(
-                            text = stringResource(R.string.home_all_text),
-                            style = SmashingTheme.typography.sm.medium14,
-                            color = SmashingTheme.colors.txtTertiary,
-                            modifier = Modifier
-                                .noRippleClickable(
-                                    onClick = {}
-                                )
-                        )
-                    }
-                    uiState.topRankerList.forEach { ranker ->
-                        SmashingRankingItem(
-                            rank = ranker.rank,
-                            nickname = ranker.nickname,
-                            tier = ranker.tier,
-                            lp = ranker.lp,
-                            userId = ranker.userId,
-                            onClick = {},
-                        )
-
-                    }
-                }
-            }
         }
     }
 }
