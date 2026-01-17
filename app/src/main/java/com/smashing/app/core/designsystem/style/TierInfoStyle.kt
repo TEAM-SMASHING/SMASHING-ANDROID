@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.home.type
+package com.smashing.app.core.designsystem.style
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
@@ -8,8 +8,8 @@ import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.TierType
 
-enum class TierInfo(
-    val id: Long,
+enum class TierInfoStyle(
+    val id: Int,
     val tierName: String,
     val tierKName: String,
 ) {
@@ -50,8 +50,8 @@ enum class TierInfo(
     );
 
     companion object {
-        private val ID_MAP: Map<String, TierInfo> = TierInfo.entries.associateBy { it.tierKName }
-        fun findTierInfo(tierKName: String?): TierInfo? = ID_MAP[tierKName]
+        private val ID_MAP: Map<String, TierInfoStyle> = TierInfoStyle.entries.associateBy { it.tierKName }
+        fun findTierInfo(tierKName: String?): TierInfoStyle? = ID_MAP[tierKName]
     }
 
     @ReadOnlyComposable
@@ -78,24 +78,28 @@ enum class TierInfo(
     }
 }
 
-fun TierType.toTierInfo(): TierInfo {
+fun TierType.toTierInfoStyle(): TierInfoStyle {
     return when (this) {
-        TierType.IRON -> TierInfo.IRON
+        TierType.IRON -> TierInfoStyle.IRON
         TierType.BRONZE_3,
         TierType.BRONZE_2,
-        TierType.BRONZE_1 -> TierInfo.BRONZE
+        TierType.BRONZE_1 -> TierInfoStyle.BRONZE
         TierType.SILVER_3,
         TierType.SILVER_2,
-        TierType.SILVER_1 -> TierInfo.SILVER
+        TierType.SILVER_1 -> TierInfoStyle.SILVER
         TierType.GOLD_3,
         TierType.GOLD_2,
-        TierType.GOLD_1 -> TierInfo.GOLD
+        TierType.GOLD_1 -> TierInfoStyle.GOLD
         TierType.PLATINUM_3,
         TierType.PLATINUM_2,
-        TierType.PLATINUM_1 -> TierInfo.PLATINUM
+        TierType.PLATINUM_1 -> TierInfoStyle.PLATINUM
         TierType.DIAMOND_3,
         TierType.DIAMOND_2,
-        TierType.DIAMOND_1 -> TierInfo.DIAMOND
-        TierType.CHALLENGER -> TierInfo.CHALLENGER
+        TierType.DIAMOND_1 -> TierInfoStyle.DIAMOND
+        TierType.CHALLENGER -> TierInfoStyle.CHALLENGER
     }
+}
+
+fun String.toTierInfoStyle(): TierInfoStyle {
+    return TierInfoStyle.entries.find { it.name == this } ?: TierInfoStyle.IRON
 }

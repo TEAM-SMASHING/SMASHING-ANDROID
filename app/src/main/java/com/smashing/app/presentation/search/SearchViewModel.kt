@@ -4,9 +4,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.data.repository.api.SearchRepository
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.presentation.home.type.TierInfo
 import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,7 +77,7 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedTierItem(tierItem: String?) =
         _uiState.update {
-            it.copy(selectedTierItem = TierInfo.findTierInfo(tierItem))
+            it.copy(selectedTierItem = TierInfoStyle.findTierInfo(tierItem))
         }
 
     fun applyTierItem() {
