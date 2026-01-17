@@ -17,9 +17,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -65,7 +64,7 @@ fun MatchingRoute(
         uiState = uiState,
         navigateToSubmit = navigateToSubmit,
         onLoadMoreMatchingList = viewModel::fetchMatchingList,
-        onTabClick = viewModel::selectMatchingType,
+        onTabClick = viewModel::updateMatchingType,
         onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
         modifier = modifier,
@@ -83,6 +82,11 @@ private fun MatchingScreen(
     modifier: Modifier = Modifier,
 ) {
     val gridState = rememberLazyGridState()
+
+    LaunchedEffect(uiState.selectedType) {
+        gridState.scrollToItem(0)
+    }
+
     val emptyTitle = stringResource(
         when (uiState.selectedType) {
             MatchingType.SEND -> matching_send_empty
@@ -90,6 +94,12 @@ private fun MatchingScreen(
             MatchingType.ACCEPTED -> matching_confirm_empty
         }
     )
+
+    val currentUiState = when (uiState.selectedType) {
+        MatchingType.SEND -> uiState.sentUiState
+        MatchingType.RECEIVE -> uiState.receivedUiState
+        MatchingType.ACCEPTED -> uiState.acceptedUiState
+    }
 
     Column(
         modifier = modifier
@@ -111,7 +121,7 @@ private fun MatchingScreen(
             modifier = Modifier.padding(bottom = 12.dp),
         )
 
-        if (uiState.loadState is MatchingUiState.Empty) {
+        if (currentUiState is MatchingUiState.Empty) {
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -145,7 +155,7 @@ private fun MatchingScreen(
             }
         }
 
-        if (uiState.loadState is MatchingUiState.Success) {
+        if (currentUiState is MatchingUiState.Success) {
             MatchingList(
                 uiState = uiState,
                 gridState = gridState,
@@ -202,16 +212,16 @@ private fun MatchingList(
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val hasUserScrolled = remember(gridState) {
-        derivedStateOf {
-            gridState.firstVisibleItemIndex > 0 || gridState.isScrollInProgress
-        }
+    val currentIsLoading = when (uiState.selectedType) {
+        MatchingType.SEND -> uiState.sentUiState is MatchingUiState.Loading
+        MatchingType.RECEIVE -> uiState.receivedUiState is MatchingUiState.Loading
+        MatchingType.ACCEPTED -> uiState.acceptedUiState is MatchingUiState.Loading
     }
 
     gridState.onBottomReached(
         threshold = 3,
         onLoadMore = onLoadMoreMatchingList,
-        isLoading = hasUserScrolled.value,
+        isLoading = currentIsLoading,
     )
 
     LazyVerticalGrid(
