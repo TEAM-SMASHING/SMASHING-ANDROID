@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.region
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +29,6 @@ import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.core.common.state.UiState
 import com.smashing.app.core.designsystem.component.topbar.SmashingSearchTopBar
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.region.RegionContract.SideEffect.NavigateUpWithResult
 import kotlinx.collections.immutable.ImmutableList
@@ -156,24 +156,23 @@ private fun RegionItem(
     modifier: Modifier = Modifier,
     isClicked: Boolean = false,
 ) {
-    Column(
-        modifier = modifier
+    Text(
+        text = region.addressName,
+        color = SmashingTheme.colors.txtSecondary,
+        style = SmashingTheme.typography.sm.medium14,
+        modifier =  modifier
             .fillMaxWidth()
+            .padding(
+                horizontal = 16.dp,
+                vertical = 17.dp,
+            )
             .background(
                 color = if (isClicked) SmashingTheme.colors.bgSurface else Color.Transparent,
             )
-            .noRippleClickable(onClick = onClick),
-    ) {
-        Text(
-            text = region.addressName,
-            color = SmashingTheme.colors.txtSecondary,
-            style = SmashingTheme.typography.sm.medium14,
-            modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 17.dp,
+            .clickable(
+                onClick = onClick,
             ),
-        )
-    }
+    )
 }
 
 @Preview(showBackground = true)
