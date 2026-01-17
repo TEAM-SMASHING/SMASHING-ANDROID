@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -61,7 +61,6 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.data.model.rank.UserRankInfo
 import com.smashing.app.presentation.home.component.SportsTierChip
@@ -86,7 +85,9 @@ fun HomeRoute(
         navigateToNotice = navigateToNotice,
         navigateToRegionChange = navigateToRegionChange,
         navigateToTierInfo = {
-            navigateToTierInfo(uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON)
+            navigateToTierInfo(
+                uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON
+            )
         },
         navigateToRanking = navigateToRanking,
         modifier = modifier,
@@ -128,7 +129,7 @@ private fun HomeScreen(
                         coordinates.size.height.toDp()
                     }
                 }
-                .systemBarsPadding()
+                .statusBarsPadding()
         ) {
             HomeTopBar(
                 userRegion = uiState.activeUserProfile.region,
@@ -313,7 +314,7 @@ private fun HomeScreen(
                         color = SmashingTheme.colors.txtTertiary,
                         modifier = Modifier
                             .noRippleClickable(
-                                onClick = {}
+                                onClick = navigateToRanking
                             )
                     )
                 }
@@ -326,29 +327,8 @@ private fun HomeScreen(
                         userId = ranker.userId,
                         onClick = {},
                     )
-                        Text(
-                            text = stringResource(R.string.home_all_text),
-                            style = SmashingTheme.typography.sm.medium14,
-                            color = SmashingTheme.colors.txtTertiary,
-                            modifier = Modifier
-                                .noRippleClickable(
-                                    onClick = navigateToRanking
-                                )
-                        )
-                    }
-                    uiState.topRankerList.forEach { ranker ->
-                        SmashingRankingItem(
-                            rank = ranker.rank,
-                            nickname = ranker.nickname,
-                            tier = ranker.tier,
-                            lp = ranker.lp,
-                            userId = ranker.userId,
-                            onClick = {},
-                        )
-
                 }
             }
-
         }
     }
 }
