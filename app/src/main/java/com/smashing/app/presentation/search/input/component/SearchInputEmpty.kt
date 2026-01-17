@@ -1,6 +1,5 @@
 package com.smashing.app.presentation.search.input.component
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +16,7 @@ import com.smashing.app.R.drawable.img_search_result_empty
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 
-private const val PADDING_RATIO = 219/320f
+private const val PADDING_RATIO = 219f/320f
 
 @Composable
 fun SearchInputEmpty(
