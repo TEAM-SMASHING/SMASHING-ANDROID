@@ -23,15 +23,18 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.input.component.SearchInputEmpty
+import com.smashing.app.presentation.search.SearchViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
 fun SearchInputRoute(
+    navigateToSearchMain: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchInputViewModel = hiltViewModel(),
+    viewModel: SearchViewModel = hiltViewModel(),
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -40,7 +43,7 @@ fun SearchInputRoute(
         uiState = uiState,
         items = uiState.suggestions,
         searchState = viewModel.searchInput,
-        onBackClick = {},
+        onBackClick = navigateToSearchMain,
         onSuggestionItemClick = {},
         modifier = modifier,
     )
@@ -48,7 +51,7 @@ fun SearchInputRoute(
 
 @Composable
 private fun SearchInputScreen(
-    uiState: SearchInputContract.State,
+    uiState: SearchContract.State,
     items: ImmutableList<SuggestionItem>,
     searchState: TextFieldState,
     onBackClick: () -> Unit,
@@ -93,7 +96,7 @@ private fun SearchInputScreen(
 private fun SearchInputScreenPreview() {
     SmashingAndroidTheme {
         SearchInputScreen(
-            uiState = SearchInputContract.State(),
+            uiState = SearchContract.State(),
             items = persistentListOf(),
             searchState = rememberTextFieldState(),
             onBackClick = {},

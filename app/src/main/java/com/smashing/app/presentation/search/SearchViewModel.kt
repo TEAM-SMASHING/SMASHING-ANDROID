@@ -1,16 +1,21 @@
 package com.smashing.app.presentation.search
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
+import com.smashing.app.presentation.search.searchmain.SearchMainItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +28,12 @@ class SearchViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     val searchInputState = TextFieldState()
+
+    val searchInput = TextFieldState()
+
+    var searchResults: List<String> by mutableStateOf(emptyList())
+        private set
+
 
     init {
         getDummyList()
@@ -113,103 +124,114 @@ class SearchViewModel @Inject constructor(
         updateSelectedGenderItem(null)
     }
 
+    suspend fun run() {
+        snapshotFlow { searchInput.text }
+            .collectLatest { inputText ->
+                searchResults = performSearch(inputText = inputText)
+            }
+    }
+
+    private suspend fun performSearch(inputText: CharSequence): List<String> {
+        TODO()
+    }
+
     // TODO 더미 데이터 삭제 예정
     private fun getDummyList() {
         _uiState.update {
             it.copy(
                 searchList =
-                persistentListOf(
-                    SearchItemModel(
-                        userId = "search_userId_1",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.FEMALE,
-                        tierId = TierType.GOLD_1,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_2",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.FEMALE,
-                        tierId = TierType.BRONZE_1,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_3",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.MALE,
-                        tierId = TierType.BRONZE_1,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_4",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.MALE,
-                        tierId = TierType.CHALLENGER,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_5",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.FEMALE,
-                        tierId = TierType.GOLD_1,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_6",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.FEMALE,
-                        tierId = TierType.GOLD_1,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_7",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.MALE,
-                        tierId = TierType.CHALLENGER,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_8",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.FEMALE,
-                        tierId = TierType.GOLD_1,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_9",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.FEMALE,
-                        tierId = TierType.SILVER_2,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                    SearchItemModel(
-                        userId = "search_userId_10",
-                        nickname = "하나둘셋넷다여칠팔구",
-                        gender = GenderType.FEMALE,
-                        tierId = TierType.GOLD_1,
-                        wins = 254,
-                        losses = 38,
-                        reviews = 32,
-                    ),
-                )
+                    persistentListOf(
+                        SearchMainItemModel(
+                            userId = "search_userId_1",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.FEMALE,
+                            tierId = TierType.GOLD_1,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_2",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.FEMALE,
+                            tierId = TierType.BRONZE_1,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_3",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.MALE,
+                            tierId = TierType.BRONZE_1,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_4",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.MALE,
+                            tierId = TierType.CHALLENGER,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_5",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.FEMALE,
+                            tierId = TierType.GOLD_1,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_6",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.FEMALE,
+                            tierId = TierType.GOLD_1,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_7",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.MALE,
+                            tierId = TierType.CHALLENGER,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_8",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.FEMALE,
+                            tierId = TierType.GOLD_1,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_9",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.FEMALE,
+                            tierId = TierType.SILVER_2,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                        SearchMainItemModel(
+                            userId = "search_userId_10",
+                            nickname = "하나둘셋넷다여칠팔구",
+                            gender = GenderType.FEMALE,
+                            tierId = TierType.GOLD_1,
+                            wins = 254,
+                            losses = 38,
+                            reviews = 32,
+                        ),
+                    )
             )
         }
     }

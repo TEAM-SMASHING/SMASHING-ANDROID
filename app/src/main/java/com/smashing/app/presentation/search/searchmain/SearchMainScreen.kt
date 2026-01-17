@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search
+package com.smashing.app.presentation.search.searchmain
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,14 +27,16 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
-import com.smashing.app.presentation.search.component.MatchingSearchFilterChip
-import com.smashing.app.presentation.search.component.SearchTopBar
-import com.smashing.app.presentation.search.style.FilterStyle.DEFAULT
-import com.smashing.app.presentation.search.style.FilterStyle.VARIANT
+import com.smashing.app.presentation.search.SearchContract
+import com.smashing.app.presentation.search.SearchViewModel
+import com.smashing.app.presentation.search.searchmain.component.MatchingSearchFilterChip
+import com.smashing.app.presentation.search.searchmain.component.SearchTopBar
+import com.smashing.app.presentation.search.searchmain.style.FilterStyle.DEFAULT
+import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun SearchRoute(
+fun SearchMainRoute(
     navigateToSearchInput: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
@@ -42,7 +44,7 @@ fun SearchRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    SearchScreen(
+    SearchMainScreen(
         uiState = uiState,
         onRegionDropdownClick = viewModel::updateSelectedRegion,
         onSearchClick = navigateToSearchInput,
@@ -63,7 +65,7 @@ fun SearchRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SearchScreen(
+private fun SearchMainScreen(
     uiState: SearchContract.State,
     onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
@@ -193,7 +195,7 @@ private fun SearchScreen(
 @Composable
 private fun SearchScreenPreview() {
     SmashingAndroidTheme {
-        SearchScreen(
+        SearchMainScreen(
             uiState = SearchContract.State(),
             onRegionDropdownClick = {},
             onSearchClick = {},
