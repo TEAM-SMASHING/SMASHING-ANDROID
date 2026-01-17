@@ -1,9 +1,6 @@
 package com.smashing.app.presentation.search
 
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +12,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,10 +27,6 @@ class SearchViewModel @Inject constructor(
 
     val searchInput = TextFieldState()
 
-    var searchResults: List<String> by mutableStateOf(emptyList())
-        private set
-
-
     init {
         getDummyList()
         updateSearchInputText()
@@ -47,9 +39,18 @@ class SearchViewModel @Inject constructor(
                 val text = searchInputState.toString()
 
                 if (text.isEmpty()) {
-                    // Todo: 리스트 빈걸로
+                    _uiState.update {
+                        it.copy(
+                            suggestions = persistentListOf()
+                        )
+                    }
                 } else {
                     // Todo: 검색 api 호출
+                    _uiState.update {
+                        it.copy(
+                            // suggestions = api 응답값
+                        )
+                    }
                 }
             }
     }
@@ -122,17 +123,6 @@ class SearchViewModel @Inject constructor(
     fun clearFilterGender() {
         updateCurrentGenderText(null)
         updateSelectedGenderItem(null)
-    }
-
-    suspend fun run() {
-        snapshotFlow { searchInput.text }
-            .collectLatest { inputText ->
-                searchResults = performSearch(inputText = inputText)
-            }
-    }
-
-    private suspend fun performSearch(inputText: CharSequence): List<String> {
-        TODO()
     }
 
     // TODO 더미 데이터 삭제 예정
