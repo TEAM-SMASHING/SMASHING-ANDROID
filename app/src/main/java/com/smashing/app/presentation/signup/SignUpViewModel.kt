@@ -190,7 +190,7 @@ class SignUpViewModel @Inject constructor(
                 openChatUrl = openChatState.text.toString(),
                 sportCode = selectedSport.code,
                 experienceRange = selectedSkill.skillCode,
-                region = _uiState.value.selectedRegion.toString(),
+                region = _uiState.value.selectedRegion?.districtName.toString(),
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {
