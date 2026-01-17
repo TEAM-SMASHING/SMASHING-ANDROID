@@ -32,7 +32,5 @@ data class AcceptedMatchingListResponse(
         val gender: String,
         @SerialName("tierCode")
         val tierCode: String,
-        @SerialName("tierName")
-        val tierName: String,
     )
 }
