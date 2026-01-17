@@ -81,7 +81,6 @@ private fun MainNavHost(
         )
 
         searchGraph(
-            innerPadding = innerPadding,
             navController = appState.navController,
         )
 
