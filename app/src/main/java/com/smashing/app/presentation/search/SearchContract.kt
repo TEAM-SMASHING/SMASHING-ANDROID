@@ -6,6 +6,7 @@ import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.data.model.search.SearchMainItemModel
 import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.type.TierInfo
+import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -19,15 +20,11 @@ interface SearchContract {
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,
         val tierBottomSheetList: ImmutableList<String> = TierInfo.entries.map { it.tierKName }.toImmutableList(),
-        val genderBottomSheetList: ImmutableList<String> = persistentListOf(
-            "남성",
-            "여성",
-            "남여 모두",
-        ),
+        val genderBottomSheetList: ImmutableList<String> = GenderInfo.entries.map { it.genderKName }.toImmutableList(),
         val currentTierText: String? = null,
         val currentGenderText: String? = null,
         val selectedTierItem: TierInfo? = null,
-        val selectedGenderItem: String? = null,
+        val selectedGenderItem: GenderInfo? = null,
         val suggestions: ImmutableList<SuggestionItemModel> = persistentListOf(),
         val isSuggestionVisible: Boolean = false,
         val searchRegionUsersUiState: SearchUiState = SearchUiState.Idle,

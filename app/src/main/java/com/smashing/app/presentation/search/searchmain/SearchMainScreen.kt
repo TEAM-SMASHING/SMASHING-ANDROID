@@ -150,7 +150,7 @@ private fun SearchMainScreen(
                 onDismissRequest = onGenderBottomSheetClose,
                 title = "성별",
                 items = uiState.genderBottomSheetList,
-                selectedItem = "${uiState.selectedGenderItem}",
+                selectedItem = uiState.selectedGenderItem?.genderKName ?: "",
                 contentToBtnPadding = 4.dp,
                 btnText = "적용하기",
                 onItemClick = onGenderItemClick,

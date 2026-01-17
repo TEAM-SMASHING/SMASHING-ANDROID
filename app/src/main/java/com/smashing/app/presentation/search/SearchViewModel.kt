@@ -8,6 +8,7 @@ import com.smashing.app.data.repository.api.SearchRepository
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.presentation.home.type.TierInfo
 import com.smashing.app.presentation.search.SearchContract.SearchUiState
+import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -111,7 +112,7 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedGenderItem(genderItem: String?) =
         _uiState.update {
-            it.copy(selectedGenderItem = genderItem)
+            it.copy(selectedGenderItem = GenderInfo.findGenderInfo(genderItem))
         }
 
     fun updateCurrentGenderText(genderText: String?) =
@@ -122,13 +123,15 @@ class SearchViewModel @Inject constructor(
         }
 
     fun applyGenderItem() {
-        updateCurrentGenderText(_uiState.value.selectedGenderItem)
+        updateCurrentGenderText(_uiState.value.selectedGenderItem?.genderKName)
+        fetchRegionUsersList(isRefresh = true)
         closeGenderBottomSheet()
     }
 
     fun clearFilterGender() {
         updateCurrentGenderText(null)
         updateSelectedGenderItem(null)
+        fetchRegionUsersList(isRefresh = true)
     }
 
     fun fetchRegionUsersList(isRefresh: Boolean = false) = viewModelScope.launch {
@@ -144,7 +147,7 @@ class SearchViewModel @Inject constructor(
         searchRepository.getRegionUsersSearch(
             cursor = if (isRefresh) null else currentState.searchRegionUsersCursor.nextCursor,
             size = CURSOR_SIZE,
-            gender = _uiState.value.selectedGenderItem,
+            gender = _uiState.value.selectedGenderItem?.genderName,
             tier = _uiState.value.selectedTierItem?.name,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
