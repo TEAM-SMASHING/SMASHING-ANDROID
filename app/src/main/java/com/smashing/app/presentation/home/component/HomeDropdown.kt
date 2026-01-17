@@ -320,32 +320,36 @@ private fun winRate(winCount: Int, loseCount: Int): Int {
     return winRate
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//private fun HomeDropdownPreview() {
-//    SmashingAndroidTheme {
-//        Box(
-//            modifier = Modifier
-//                .background(
-//                    color = SmashingTheme.colors.bgSurface
-//                )
-//        ) {
-//            HomeDropdown(
-//                activeSport = SportType.TENNIS,
-//                sportList = listOf(
-//                    SportType.TENNIS,
-//                    SportType.PING_PONG,
-//                    SportType.BADMINTON,
-//                ).toImmutableList(),
-//                tierType = TierType.GOLD_1,
-//                minLp = 100,
-//                maxLp = 500,
-//                winCount = 10,
-//                loseCount = 7,
-//                onSportChipClick = {},
-//                onSportAddClick = {},
-//                onTierClick = {},
-//            )
-//        }
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+private fun HomeDropdownPreview() {
+    SmashingAndroidTheme {
+        Box(
+            modifier = Modifier
+                .background(
+                    color = SmashingTheme.colors.bgSurface
+                )
+        ) {
+            HomeDropdown(
+                activeSport = SportType.TENNIS,
+                sportList = listOf(
+                    SportType.TENNIS,
+                    SportType.PING_PONG,
+                    SportType.BADMINTON,
+                ).toImmutableList(),
+                tierType = TierType.GOLD_1,
+                lp = 123,
+                minLp = 100,
+                maxLp = 500,
+                winCount = 10,
+                loseCount = 7,
+                onSportChipClick = {},
+                onSportAddClick = {},
+                onTierClick = {},
+                onDismiss = {},
+                triggerHeight = 50.dp,
+                isExpanded = true, // 프리뷰에서 보이도록 true
+            )
+        }
+    }
+}
