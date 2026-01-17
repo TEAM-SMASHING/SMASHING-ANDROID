@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.home.tierinfo
+package com.smashing.app.presentation.tierinfo
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,36 +32,30 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
-import com.smashing.app.presentation.home.HomeContract
-import com.smashing.app.presentation.home.HomeUiState
-import com.smashing.app.presentation.home.HomeViewModel
-import com.smashing.app.presentation.home.type.TierInfo
-import com.smashing.app.presentation.home.type.toTierInfo
-import kotlinx.collections.immutable.persistentListOf
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
 
 @Composable
 fun TierInfoRoute(
-    onNavigateUp: () -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: TierInfoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     TierInfoScreen(
         uiState = uiState,
         onClick = viewModel::updateTierInfo,
-        onBack = onNavigateUp,
+        onBack = navigateUp,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun TierInfoScreen(
-    uiState: HomeContract.State,
-    onClick: (TierInfo) -> Unit,
+    uiState: TierInfoContract.State,
+    onClick: (TierInfoStyle) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -84,16 +78,16 @@ private fun TierInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(uiState.selectedTierInfo.getImg()),
+                painter = painterResource(uiState.selectedTierInfoStyle.getImg()),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp),
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = uiState.selectedTierInfo.tierName,
+                text = uiState.selectedTierInfoStyle.tierName,
                 style = SmashingTheme.typography.xl.semibold20,
-                color = uiState.selectedTierInfo.getTxtColor(),
+                color = uiState.selectedTierInfoStyle.getTxtColor(),
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -122,12 +116,12 @@ private fun TierInfoScreen(
             ),
         ) {
             items(
-                items = TierInfo.entries,
+                items = TierInfoStyle.entries,
                 key = { it.tierName },
             ) {
                 SmashingChip(
                     text = it.tierName,
-                    style = if (it != uiState.selectedTierInfo) ChipStyle.INACTIVE else ChipStyle.ACTIVE,
+                    style = if (it != uiState.selectedTierInfoStyle) ChipStyle.INACTIVE else ChipStyle.ACTIVE,
                     onClick = { onClick(it) },
                 )
             }
@@ -227,25 +221,8 @@ private fun CommentTag(
 @Composable
 private fun TierInfoScreenPreview() {
     SmashingAndroidTheme {
-        val dummyState = HomeContract.State(
-            loadState = HomeUiState.Success,
-            activeUserProfile = ActiveUserProfile(
-                nickname = "테스트유저",
-                region = "서울",
-                profileId = "0USP111222333",
-                sportType = SportType.TENNIS,
-                tierType = TierType.GOLD_1,
-                lp = 123,
-                minLp = 100,
-                maxLp = 500,
-                wins = 10,
-                losses = 7,
-            ),
-            topRankerList = persistentListOf(),
-            matchingCardList = persistentListOf(),
-            matchedUser = null,
-            isNotice = false,
-            selectedTierInfo = TierType.GOLD_1.toTierInfo(),
+        val dummyState = TierInfoContract.State(
+            selectedTierInfoStyle = TierType.GOLD_1.toTierInfoStyle(),
         )
 
         TierInfoScreen(

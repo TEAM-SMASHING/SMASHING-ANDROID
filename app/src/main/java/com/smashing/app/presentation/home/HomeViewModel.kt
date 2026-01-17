@@ -7,9 +7,9 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
+import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.model.rank.UserRankInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
-import com.smashing.app.presentation.home.type.TierInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -26,6 +26,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     init {
         fetchActiveProfile()
+        fetchAllUserProfiles()
         fetchRegionRankerList()
         fetchMatchingCardList()
         fetchMatchedUser()
@@ -79,6 +80,18 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 topRankerList = dummyRegionRankerList.take(5).toImmutableList(),
                 regionRankerList = dummyRegionRankerList.take(30).toImmutableList()
             )
+        }
+    }
+
+    fun fetchAllUserProfiles() = viewModelScope.launch {
+        updateLoadState(HomeUiState.Loading)
+
+        val dummyAllUserProfiles = createDummyAllUserProfiles()
+
+        updateLoadState(HomeUiState.Success)
+
+        _uiState.update { currentState ->
+            currentState.copy(allUserProfiles = dummyAllUserProfiles)
         }
     }
 
@@ -215,13 +228,28 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
-        currentState.copy(loadState = state)
+    private fun createDummyAllUserProfiles(): ImmutableList<UserProfileItem> {
+        return listOf(
+            UserProfileItem(
+                profileId = "0USP111222333",
+                sportCode = SportType.TENNIS,
+                isActive = true,
+            ),
+            UserProfileItem(
+                profileId = "0USP111222333",
+                sportCode = SportType.PING_PONG,
+                isActive = false,
+            ),
+            UserProfileItem(
+                profileId = "0USP111222333",
+                sportCode = SportType.BADMINTON,
+                isActive = false,
+            ),
+        ).toImmutableList()
     }
 
-    fun updateTierInfo(tierInfo: TierInfo) {
-        _uiState.update { currentState ->
-            currentState.copy(selectedTierInfo = tierInfo)
-        }
+
+    private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
+        currentState.copy(loadState = state)
     }
 }

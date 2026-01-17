@@ -37,7 +37,7 @@
     <string name="progress_label">progress</string>
 
     <!--Dropdown -->
-    <string name="dropdown_region_select">지역 선택</string>
+    <string name="dropdown_region_select">내 지역 변경</string>
     <string name="dropdown_winner_select">승자 선택</string>
     <!--SignUp  -->
     <string name="sign_up_next_btn">다음</string>
