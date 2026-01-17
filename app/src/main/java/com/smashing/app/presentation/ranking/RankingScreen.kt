@@ -141,7 +141,7 @@ private fun RankingScreen(
                             rank = user.rank,
                             tier = user.tierType,
                             lp = user.lp,
-                            onClick = {},
+                            onClick = { navigateToProfile(user.userId) },
                             modifier = Modifier
                                 .fillMaxWidth(),
                         )
