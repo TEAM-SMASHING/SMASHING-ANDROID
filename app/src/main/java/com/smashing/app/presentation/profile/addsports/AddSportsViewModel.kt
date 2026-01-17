@@ -2,8 +2,8 @@ package com.smashing.app.presentation.profile.addsports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.common.type.SkillType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.SkillType
+import com.smashing.app.data.type.SportType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.channels.Channel

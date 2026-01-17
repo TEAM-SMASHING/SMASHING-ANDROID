@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -17,16 +18,19 @@ import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
+import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.noticeGraph
+import com.smashing.app.presentation.profile.navigation.navigateToAddSports
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
-import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.write.navigation.navigateToConfirm
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
+import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -136,10 +140,6 @@ private fun MainNavHost(
             innerPadding = innerPadding,
         )
 
-        submitGraph(
-            navigateUp = appState.navController::navigateUp,
-        )
-
         writeGraph(
             navigateToMatching = {
                 appState.navController.navigateToMatching(
@@ -159,4 +159,10 @@ private fun MainNavHost(
             navController = appState.navController,
         )
     }
+}
+
+fun regionGraph(
+    innerPadding: PaddingValues,
+    navController: NavHostController
+) {
 }

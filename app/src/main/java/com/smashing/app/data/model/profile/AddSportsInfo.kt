@@ -1,7 +1,7 @@
 package com.smashing.app.data.model.profile
 
-import com.smashing.app.core.common.type.SkillType
-import com.smashing.app.core.common.type.SportType
+import com.smashing.app.data.type.SkillType
+import com.smashing.app.data.type.SportType
 
 data class AddSportsInfo(
     val selectedSports: List<SportType>,

@@ -19,20 +19,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.R.string.review
-import com.smashing.app.core.common.type.ReviewRatingType
-import com.smashing.app.core.common.type.ReviewTagType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.type.ReviewRatingType
+import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.review.component.ConfirmReviewCard
 import com.smashing.app.presentation.write.confirm.ConfirmContract
 import com.smashing.app.presentation.write.confirm.ConfirmViewModel
 import com.smashing.app.presentation.write.model.MatchPlayer
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.collections.map
 
 
 @Composable

@@ -27,8 +27,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.sign_up_end_btn
 import com.smashing.app.R.string.sign_up_next_btn
-import com.smashing.app.core.common.type.SkillType
-import com.smashing.app.core.common.type.SportType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.progressbar.SmashingProgressBar
@@ -40,6 +38,8 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.data.type.SkillType
+import com.smashing.app.data.type.SportType
 import kotlinx.collections.immutable.persistentListOf
 
 private const val MAX_STEP = 2
