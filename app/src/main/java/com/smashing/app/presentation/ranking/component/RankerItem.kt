@@ -33,8 +33,8 @@ import com.smashing.app.R.drawable.ic_crown
 import com.smashing.app.R.drawable.ic_rank_first
 import com.smashing.app.R.drawable.ic_rank_second
 import com.smashing.app.R.drawable.ic_rank_third
-import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
@@ -62,14 +62,14 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
-            navigateToProfile,
+            navigateToProfile = navigateToProfile,
             modifier = Modifier
                 .align(Alignment.BottomCenter),
         )
         RankerItem(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
-            navigateToProfile,
+            navigateToProfile = navigateToProfile,
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.BottomStart),
@@ -77,7 +77,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
-            navigateToProfile,
+            navigateToProfile = navigateToProfile,
             modifier = Modifier
                 .padding(end = 16.dp)
                 .align(Alignment.BottomEnd),
@@ -184,7 +184,7 @@ private fun RankerItem(
                 //TODO 티어 뱃지 이미지 완료 후 변경 예정
                 if (userRank != null) {
                     Image(
-                        painter = painterResource(id = img_tier_dummy),
+                        painter = painterResource(id = userRank.tierType.img()),
                         contentDescription = null,
                         modifier = Modifier
                             .height(if (rankerType == FIRST) 60.dp else 40.dp)

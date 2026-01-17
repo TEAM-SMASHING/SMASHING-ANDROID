@@ -33,11 +33,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.R.string.ranking_tier_with_lp
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -234,7 +234,7 @@ private fun MyRanking(
 
         //TODO 티어 뱃지 TierType 사용해 이미지 수정 예정
         Image(
-            painter = painterResource(id = img_tier_dummy),
+            painter = painterResource(id = tier.img()),
             contentDescription = null,
             modifier = Modifier
                 .height(40.dp)
