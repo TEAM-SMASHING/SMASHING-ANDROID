@@ -12,7 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 interface MatchingContract {
     @Immutable
     data class State(
-        val selectedType: MatchingType = MatchingType.SEND,
+        val selectedType: MatchingType = MatchingType.RECEIVE,
         val receivedList: ImmutableList<ReceivedMatching> = persistentListOf(),
         val receivedCursor: Cursor = Cursor(),
         val receivedUiState: MatchingUiState = MatchingUiState.Idle,
