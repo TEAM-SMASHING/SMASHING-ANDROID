@@ -3,7 +3,7 @@ package com.smashing.app.presentation.home
 import androidx.compose.runtime.Immutable
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.model.profile.AllUserProfiles
+import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import kotlinx.collections.immutable.ImmutableList
@@ -14,7 +14,7 @@ interface HomeContract {
     data class State(
         val loadState: HomeUiState = HomeUiState.Idle,
         val activeUserProfile: ActiveUserProfile? = null,
-        val allUserProfiles: AllUserProfiles = AllUserProfiles.empty(),
+        val allUserProfiles: ImmutableList<UserProfileItem> = persistentListOf(),
         val topRankerList: ImmutableList<TopUserInfo> = persistentListOf(),
         val matchingCardList: ImmutableList<MatchingCardState.Search> = persistentListOf(),
         val matchedUser: DummyMatchedUser? = null,

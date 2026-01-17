@@ -33,8 +33,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.TierType
-import com.smashing.app.core.designsystem.style.TierInfo
-import com.smashing.app.core.designsystem.style.toTierInfo
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
 
 @Composable
 fun TierInfoRoute(
@@ -55,7 +55,7 @@ fun TierInfoRoute(
 @Composable
 private fun TierInfoScreen(
     uiState: TierInfoContract.State,
-    onClick: (TierInfo) -> Unit,
+    onClick: (TierInfoStyle) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -78,16 +78,16 @@ private fun TierInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(uiState.selectedTierInfo.getImg()),
+                painter = painterResource(uiState.selectedTierInfoStyle.getImg()),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp),
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = uiState.selectedTierInfo.tierName,
+                text = uiState.selectedTierInfoStyle.tierName,
                 style = SmashingTheme.typography.xl.semibold20,
-                color = uiState.selectedTierInfo.getTxtColor(),
+                color = uiState.selectedTierInfoStyle.getTxtColor(),
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -116,12 +116,12 @@ private fun TierInfoScreen(
             ),
         ) {
             items(
-                items = TierInfo.entries,
+                items = TierInfoStyle.entries,
                 key = { it.tierName },
             ) {
                 SmashingChip(
                     text = it.tierName,
-                    style = if (it != uiState.selectedTierInfo) ChipStyle.INACTIVE else ChipStyle.ACTIVE,
+                    style = if (it != uiState.selectedTierInfoStyle) ChipStyle.INACTIVE else ChipStyle.ACTIVE,
                     onClick = { onClick(it) },
                 )
             }
@@ -222,7 +222,7 @@ private fun CommentTag(
 private fun TierInfoScreenPreview() {
     SmashingAndroidTheme {
         val dummyState = TierInfoContract.State(
-            selectedTierInfo = TierType.GOLD_1.toTierInfo(),
+            selectedTierInfoStyle = TierType.GOLD_1.toTierInfoStyle(),
         )
 
         TierInfoScreen(

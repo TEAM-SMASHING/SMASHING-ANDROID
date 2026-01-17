@@ -65,15 +65,15 @@ import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.presentation.home.type.DummyMatchedUser
-import com.smashing.app.core.designsystem.style.TierInfo
-import com.smashing.app.core.designsystem.style.toTierInfo
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
-    navigateToTierInfo: (TierInfo) -> Unit,
+    navigateToTierInfo: (TierInfoStyle) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -84,7 +84,7 @@ fun HomeRoute(
         navigateToNotice = navigateToNotice,
         navigateToRegionChange = navigateToRegionChange,
         navigateToTierInfo = {
-            navigateToTierInfo(uiState.activeUserProfile?.tierType?.toTierInfo() ?: TierInfo.IRON)
+            navigateToTierInfo(uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON)
         },
         modifier = modifier,
     )
@@ -141,7 +141,7 @@ private fun HomeScreen(
         HomeDropdown(
             isExpanded = isDropdownExpanded,
             activeSport = uiState.activeUserProfile.sportType,
-            sportList = uiState.allUserProfiles.allProfiles,
+            sportList = uiState.allUserProfiles.toImmutableList(),
             tierType = uiState.activeUserProfile.tierType,
             lp = uiState.activeUserProfile.lp,
             minLp = uiState.activeUserProfile.minLp,

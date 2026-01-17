@@ -7,7 +7,6 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.model.profile.AllUserProfiles
 import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
@@ -226,28 +225,25 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    private fun createDummyAllUserProfiles(): AllUserProfiles {
-        return AllUserProfiles(
-            allProfiles = listOf(
-                UserProfileItem(
-                    profileId = "0USP111222333",
-                    sportCode = SportType.TENNIS,
-                    isActive = true,
-                ),
-                UserProfileItem(
-                    profileId = "0USP111222333",
-                    sportCode = SportType.PING_PONG,
-                    isActive = false,
-                ),
-                UserProfileItem(
-                    profileId = "0USP111222333",
-                    sportCode = SportType.BADMINTON,
-                    isActive = false,
-                ),
-            ).toImmutableList()
-        )
+    private fun createDummyAllUserProfiles(): ImmutableList<UserProfileItem> {
+        return listOf(
+            UserProfileItem(
+                profileId = "0USP111222333",
+                sportCode = SportType.TENNIS,
+                isActive = true,
+            ),
+            UserProfileItem(
+                profileId = "0USP111222333",
+                sportCode = SportType.PING_PONG,
+                isActive = false,
+            ),
+            UserProfileItem(
+                profileId = "0USP111222333",
+                sportCode = SportType.BADMINTON,
+                isActive = false,
+            ),
+        ).toImmutableList()
     }
-
 
 
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->

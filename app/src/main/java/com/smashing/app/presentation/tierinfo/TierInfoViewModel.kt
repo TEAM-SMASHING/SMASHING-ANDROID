@@ -2,7 +2,10 @@ package com.smashing.app.presentation.tierinfo
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.smashing.app.core.designsystem.style.TierInfo
+import androidx.navigation.toRoute
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.presentation.tierinfo.navigation.TierInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,29 +23,17 @@ class TierInfoViewModel @Inject constructor(
         updateInitialTierInfo(savedStateHandle)
     }
 
-    fun updateTierInfo(tierInfo: TierInfo) {
+    fun updateTierInfo(tierInfoStyle: TierInfoStyle) {
         _uiState.update {
             it.copy(
-                selectedTierInfo = tierInfo,
+                selectedTierInfoStyle = tierInfoStyle,
             )
         }
     }
 
     private fun updateInitialTierInfo(savedStateHandle: SavedStateHandle) {
-        val tierInfoString = savedStateHandle.get<String>("tierInfo")
-            ?: TierInfo.IRON.name
+        val tierInfo = savedStateHandle.toRoute<TierInfo>().tierInfo.toTierInfoStyle()
 
-        val tierInfo = try {
-            TierInfo.valueOf(tierInfoString)
-        } catch (e: IllegalArgumentException) {
-            TierInfo.IRON
-        }
-
-        _uiState.update {
-            it.copy(
-                selectedTierInfo = tierInfo,
-            )
-        }
+        updateTierInfo(tierInfo)
     }
-
 }
