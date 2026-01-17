@@ -22,5 +22,4 @@ class SearchRemoteDataSourceImpl @Inject constructor(
             gender = gender,
             tier = tier,
         )
-
 }
