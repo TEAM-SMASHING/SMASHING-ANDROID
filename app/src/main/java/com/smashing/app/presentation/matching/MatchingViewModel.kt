@@ -7,6 +7,7 @@ import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.matching.ReceivedMatching
 import com.smashing.app.data.model.matching.SentMatching
 import com.smashing.app.data.repository.api.MatchingRepository
+import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.matching.type.MatchingType
@@ -17,9 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,18 +28,13 @@ class MatchingViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(getDummyState())
     val uiState = _uiState.asStateFlow()
 
-    fun selectMatchingType(type: MatchingType) {
-        updateMatchingType(type)
-        when (type) {
-            MatchingType.RECEIVE -> fetchReceivedMatchingList(true)
-            MatchingType.SEND -> fetchSentMatchingList(true)
-            MatchingType.ACCEPTED -> {
-                // fetchAcceptedMatchingList()
-            }
-        }
+    init {
+        fetchReceivedMatchingList(isRefresh = true)
+        fetchSentMatchingList(isRefresh = true)
+        fetchAcceptedMatchingList(isRefresh = true)
     }
 
-    private fun updateMatchingType(type: MatchingType) = _uiState.update {
+    fun updateMatchingType(type: MatchingType) = _uiState.update {
         it.copy(selectedType = type)
     }
 
@@ -57,17 +50,25 @@ class MatchingViewModel @Inject constructor(
         when (uiState.value.selectedType) {
             MatchingType.RECEIVE -> fetchReceivedMatchingList()
             MatchingType.SEND -> fetchSentMatchingList()
-            MatchingType.ACCEPTED -> {}
+            MatchingType.ACCEPTED -> fetchAcceptedMatchingList()
         }
     }
 
     private fun fetchReceivedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
+        val currentState = _uiState.value
+
+        if (!isRefresh) {
+            if (currentState.receivedUiState == MatchingUiState.Loading) return@launch
+            if (!currentState.receivedCursor.hasNext) return@launch
+        }
+
+        _uiState.update { it.copy(receivedUiState = MatchingUiState.Loading) }
+
         matchingRepository.getMeReceivedMatchingList(
-            snapshotAt = if (isRefresh) null else _uiState.value.receivedCursor.snapshotAt,
-            cursor = if (isRefresh) null else _uiState.value.receivedCursor.nextCursor,
+            snapshotAt = if (isRefresh) null else currentState.receivedCursor.snapshotAt,
+            cursor = if (isRefresh) null else currentState.receivedCursor.nextCursor,
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
-            Timber.tag("MatchingViewModel").d("fetchReceivedMatchingList: $cursorPage")
             _uiState.update { state ->
                 state.copy(
                     receivedList = if (isRefresh) {
@@ -76,7 +77,7 @@ class MatchingViewModel @Inject constructor(
                         (state.receivedList + cursorPage.items).toImmutableList()
                     },
                     receivedCursor = cursorPage.cursor,
-                    loadState = if (cursorPage.items.isEmpty() && isRefresh) {
+                    receivedUiState = if (cursorPage.items.isEmpty() && isRefresh) {
                         MatchingUiState.Empty
                     } else {
                         MatchingUiState.Success
@@ -84,17 +85,31 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            Timber.tag("MatchingViewModel").d("fetchReceivedMatchingList: ${throwable.message}")
+            _uiState.update {
+                it.copy(
+                    receivedUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
         }
     }
 
     private fun fetchSentMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
+        val currentState = _uiState.value
+
+        if (!isRefresh) {
+            if (currentState.sentUiState == MatchingUiState.Loading) return@launch
+            if (!currentState.sentCursor.hasNext) return@launch
+        }
+
+        _uiState.update { it.copy(sentUiState = MatchingUiState.Loading) }
+
         matchingRepository.getMeSentMatchingList(
-            snapshotAt = if (isRefresh) null else _uiState.value.sentCursor.snapshotAt,
-            cursor = if (isRefresh) null else _uiState.value.sentCursor.nextCursor,
+            snapshotAt = if (isRefresh) null else currentState.sentCursor.snapshotAt,
+            cursor = if (isRefresh) null else currentState.sentCursor.nextCursor,
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
-            Timber.tag("MatchingViewModel").d("fetchSentMatchingList: $cursorPage")
             _uiState.update { state ->
                 state.copy(
                     sentList = if (isRefresh) {
@@ -103,7 +118,7 @@ class MatchingViewModel @Inject constructor(
                         (state.sentList + cursorPage.items).toImmutableList()
                     },
                     sentCursor = cursorPage.cursor,
-                    loadState = if (cursorPage.items.isEmpty() && isRefresh) {
+                    sentUiState = if (cursorPage.items.isEmpty() && isRefresh) {
                         MatchingUiState.Empty
                     } else {
                         MatchingUiState.Success
@@ -111,7 +126,54 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            Timber.tag("MatchingViewModel").d("fetchSentMatchingList: ${throwable.message}")
+            _uiState.update {
+                it.copy(
+                    sentUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    private fun fetchAcceptedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
+        val currentState = _uiState.value
+
+        if (!isRefresh) {
+            if (currentState.acceptedUiState == MatchingUiState.Loading) return@launch
+            if (!currentState.acceptedCursor.hasNext) return@launch
+        }
+
+        _uiState.update { it.copy(acceptedUiState = MatchingUiState.Loading) }
+
+        matchingRepository.getMeAcceptedMatchingList(
+            snapshotAt = if (isRefresh) null else currentState.acceptedCursor.snapshotAt,
+            cursor = if (isRefresh) null else currentState.acceptedCursor.nextCursor,
+            size = CURSOR_SIZE,
+        ).onSuccess { cursorPage ->
+            _uiState.update { state ->
+                state.copy(
+                    acceptedList = if (isRefresh) {
+                        cursorPage.items.toImmutableList()
+                    } else {
+                        (state.acceptedList + cursorPage.items).toImmutableList()
+                    },
+                    acceptedCursor = cursorPage.cursor,
+                    acceptedUiState = if (cursorPage.items.isEmpty() && isRefresh) {
+                        MatchingUiState.Empty
+                    } else {
+                        MatchingUiState.Success
+                    },
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    acceptedUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
         }
     }
 
@@ -119,103 +181,69 @@ class MatchingViewModel @Inject constructor(
     private fun getDummyState(): MatchingContract.State {
         val dummyAcceptedList = persistentListOf(
             AcceptedMatching(
-                matchingId = "matching_accepted_1",
                 gameId = "game_1",
+                resultStatus = GameResultStatusType.PENDING_RESULT,
+                createdAt = "2025-01-15T10:30:00Z",
                 userId = "user_101",
                 nickname = "스매셔김",
+                openChatUrl = "https://open.kakao.com/o/example1",
                 genderType = GenderType.MALE,
                 tierType = TierType.BRONZE_2,
-                openChatUrl = "https://open.kakao.com/o/example1",
-                isResultBannerBlocked = false,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusDays(1),
+                submitAvailableAt = "2025-01-15T11:30:00Z",
+                remainingSeconds = 3600,
+                isLocked = true,
             ),
             AcceptedMatching(
-                matchingId = "matching_accepted_2",
                 gameId = "game_2",
+                resultStatus = GameResultStatusType.WAITING_CONFIRMATION,
+                createdAt = "2025-01-14T15:20:00Z",
                 userId = "user_102",
                 nickname = "배드민턴왕",
+                openChatUrl = null,
                 genderType = GenderType.FEMALE,
                 tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
+                submitAvailableAt = "2025-01-14T16:20:00Z",
+                remainingSeconds = 0,
+                isLocked = false,
             ),
             AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
+                gameId = "game_3",
+                resultStatus = GameResultStatusType.RESULT_CONFIRMED,
+                createdAt = "2025-01-13T09:00:00Z",
+                userId = "user_103",
+                nickname = "셔틀마스터",
+                openChatUrl = "https://open.kakao.com/o/example3",
+                genderType = GenderType.MALE,
+                tierType = TierType.GOLD_3,
+                submitAvailableAt = "2025-01-13T10:00:00Z",
+                remainingSeconds = 0,
+                isLocked = false,
             ),
             AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
+                gameId = "game_4",
+                resultStatus = GameResultStatusType.PENDING_RESULT,
+                createdAt = "2025-01-12T14:45:00Z",
+                userId = "user_104",
+                nickname = "코트킹",
+                openChatUrl = null,
+                genderType = GenderType.MALE,
+                tierType = TierType.SILVER_2,
+                submitAvailableAt = "2025-01-12T15:45:00Z",
+                remainingSeconds = 2700,
+                isLocked = true,
             ),
             AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
+                gameId = "game_5",
+                resultStatus = GameResultStatusType.RESULT_REJECTED,
+                createdAt = "2025-01-11T11:10:00Z",
+                userId = "user_105",
+                nickname = "스매시퀸",
+                openChatUrl = "https://open.kakao.com/o/example5",
                 genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
-            ),
-            AcceptedMatching(
-                matchingId = "matching_accepted_2",
-                gameId = "game_2",
-                userId = "user_102",
-                nickname = "배드민턴왕",
-                genderType = GenderType.FEMALE,
-                tierType = TierType.SILVER_1,
-                openChatUrl = "https://open.kakao.com/o/example2",
-                isResultBannerBlocked = true,
-                cooldownUntil = OffsetDateTime.now(ZoneOffset.UTC).plusHours(6),
+                tierType = TierType.BRONZE_1,
+                submitAvailableAt = "2025-01-11T12:10:00Z",
+                remainingSeconds = 0,
+                isLocked = false,
             ),
         )
 
@@ -281,18 +309,21 @@ class MatchingViewModel @Inject constructor(
         )
 
         return MatchingContract.State(
-            loadState = MatchingUiState.Success,
             selectedType = MatchingType.ACCEPTED,
-            receivedCursor = Cursor(),
-            sentCursor = Cursor(),
-            acceptedCursor = Cursor(),
             receivedList = dummyReceivedList,
+            receivedCursor = Cursor(),
+            receivedUiState = MatchingUiState.Success,
             sentList = dummySentList,
+            sentCursor = Cursor(),
+            sentUiState = MatchingUiState.Success,
             acceptedList = dummyAcceptedList,
+            acceptedCursor = Cursor(),
+            acceptedUiState = MatchingUiState.Success,
         )
     }
 
     companion object {
-        private const val CURSOR_SIZE = 6L
+        private const val CURSOR_SIZE = 4L
+        private const val TAG = "MatchingViewModel"
     }
 }

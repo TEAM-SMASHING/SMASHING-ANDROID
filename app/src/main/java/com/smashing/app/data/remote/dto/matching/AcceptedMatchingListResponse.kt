@@ -1,0 +1,46 @@
+package com.smashing.app.data.remote.dto.matching
+
+import com.smashing.app.data.type.GameResultStatusType
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class AcceptedMatchingListResponse(
+    @SerialName("gameId")
+    val gameId: String,
+    @SerialName("resultStatus")
+    val resultStatus: GameResultStatusType,
+    @SerialName("createdAt")
+    val createdAt: String,
+    @SerialName("opponent")
+    val opponentSummary: OpponentSummary,
+    @SerialName("submitLock")
+    val submitLock: GameResultSubmitLockDto,
+) {
+    @Serializable
+    data class OpponentSummary(
+        @SerialName("userId")
+        val userId: String,
+        @SerialName("nickname")
+        val nickname: String,
+        @SerialName("openchatUrl")
+        val openChatUrl: String?,
+        @SerialName("gender")
+        val gender: String,
+        @SerialName("tierId")
+        val tierId: Long,
+        @SerialName("tierName")
+        val tierName: String,
+    )
+
+    @Serializable
+    data class GameResultSubmitLockDto(
+        @SerialName("submitAvailableAt")
+        val submitAvailableAt: String,
+        @SerialName("remainingSeconds")
+        val remainingSeconds: Long,
+        @SerialName("isLocked")
+        val isLocked: Boolean,
+    )
+
+}

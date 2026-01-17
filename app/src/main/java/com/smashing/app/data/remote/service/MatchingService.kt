@@ -2,8 +2,10 @@ package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
+import com.smashing.app.data.remote.dto.matching.AcceptedMatchingListResponse
 import com.smashing.app.data.remote.dto.matching.ReceivedMatchingListResponse
 import com.smashing.app.data.remote.dto.matching.SentMatchingListResponse
+import com.smashing.app.data.type.OrderType
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -28,4 +30,16 @@ interface MatchingService {
         @Query("size")
         size: Long?,
     ): BaseResponse<CursorDto<SentMatchingListResponse>>
+
+    @GET("/api/v1/users/me/games/pending-results")
+    suspend fun getMeAcceptedMatchingList(
+        @Query("snapshotAt")
+        snapshotAt: String?,
+        @Query("cursor")
+        cursor: String?,
+        @Query("size")
+        size: Long?,
+        @Query("order")
+        order: OrderType?,
+    ): BaseResponse<CursorDto<AcceptedMatchingListResponse>>
 }
