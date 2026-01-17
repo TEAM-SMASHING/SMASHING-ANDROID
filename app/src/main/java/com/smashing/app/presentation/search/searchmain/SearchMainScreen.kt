@@ -35,10 +35,10 @@ import com.smashing.app.presentation.search.searchmain.component.MatchingSearchF
 import com.smashing.app.presentation.search.searchmain.component.SearchTopBar
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.DEFAULT
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SearchMainRoute(
+    navigateToRegionChange: () -> Unit,
     navigateToNotice: () -> Unit,
     navigateToSearchInput: () -> Unit,
     modifier: Modifier = Modifier,
@@ -49,6 +49,7 @@ fun SearchMainRoute(
 
     SearchMainScreen(
         uiState = uiState,
+        onRegionSelectClick = navigateToRegionChange,
         onRegionDropdownClick = viewModel::updateSelectedRegion,
         onNoticeClick = navigateToNotice,
         onSearchClick = navigateToSearchInput,
@@ -71,6 +72,7 @@ fun SearchMainRoute(
 @Composable
 private fun SearchMainScreen(
     uiState: SearchContract.State,
+    onRegionSelectClick: () -> Unit,
     onRegionDropdownClick: (String) -> Unit,
     onNoticeClick: () -> Unit,
     onSearchClick: () -> Unit,
@@ -105,9 +107,8 @@ private fun SearchMainScreen(
             regionItems = uiState.regionItems,
             onRegionDropdownClick = onRegionDropdownClick,
             onSearchClick = onSearchClick,
-            onRegionSelectClick = {},
+            onRegionSelectClick = onRegionSelectClick,
             onNoticeClick = onNoticeClick,
-            onReginItemClick = {},
         )
 
         Row(
@@ -198,6 +199,7 @@ private fun SearchScreenPreview() {
     SmashingAndroidTheme {
         SearchMainScreen(
             uiState = SearchContract.State(),
+            onRegionSelectClick = {},
             onRegionDropdownClick = {},
             onNoticeClick = {},
             onSearchClick = {},

@@ -28,6 +28,7 @@ fun NavController.navigateToSearchInput(
 
 fun NavGraphBuilder.searchGraph(
     innerPadding: PaddingValues,
+    navigateToRegionChange: () -> Unit,
     navigateToNotice: () -> Unit,
     navigateToSearchInput: () -> Unit,
     navController: NavHostController,
@@ -39,6 +40,7 @@ fun NavGraphBuilder.searchGraph(
             val viewModel = backStackEntry.sharedViewModel<SearchViewModel>(navController)
 
             SearchMainRoute(
+                navigateToRegionChange = navigateToRegionChange,
                 navigateToNotice = navigateToNotice,
                 navigateToSearchInput = navigateToSearchInput,
                 modifier = Modifier,

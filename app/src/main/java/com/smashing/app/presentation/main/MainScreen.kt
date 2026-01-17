@@ -14,6 +14,7 @@ import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
+import com.smashing.app.presentation.home.navigation.navigateToRegionChange
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
@@ -81,6 +82,7 @@ private fun MainNavHost(
 
         searchGraph(
             innerPadding = innerPadding,
+            navigateToRegionChange = appState.navController::navigateToRegionChange,
             navigateToNotice = appState.navController::navigateToNotice,
             navigateToSearchInput = appState.navController::navigateToSearchInput,
             navController = appState.navController,

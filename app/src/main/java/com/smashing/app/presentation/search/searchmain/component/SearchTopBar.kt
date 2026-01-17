@@ -31,7 +31,6 @@ fun SearchTopBar(
     onSearchClick: () -> Unit,
     onRegionSelectClick: () -> Unit,
     onNoticeClick: () -> Unit,
-    onReginItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     //val density = LocalDensity.current
@@ -88,7 +87,6 @@ private fun SearchTopBarPreview() {
             onSearchClick = {},
             onNoticeClick = {},
             onRegionSelectClick = {},
-            onReginItemClick = {},
             modifier = Modifier
                 .background(color = colors.bgCanvas)
         )
