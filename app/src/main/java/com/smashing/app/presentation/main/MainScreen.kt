@@ -28,6 +28,7 @@ import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
+import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -152,6 +153,11 @@ private fun MainNavHost(
         )
 
         regionGraph(
+            innerPadding = innerPadding,
+            navController = appState.navController,
+        )
+
+        tierInfoGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
         )
