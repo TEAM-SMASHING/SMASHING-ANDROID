@@ -55,7 +55,7 @@ private fun SentMatchingListResponse.toSentMatching(): SentMatching {
         userId = receiver.userId,
         nickname = receiver.nickname,
         genderType = GenderType.findByName(receiver.gender),
-        tierType = TierType.findTierType(receiver.tierId),
+        tierType = TierType.findTierType(receiver.tierCode),
         reviewCount = receiver.reviewCount,
         winCount = receiver.winCount,
         loseCount = receiver.loseCount,
