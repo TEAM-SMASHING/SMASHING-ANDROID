@@ -12,5 +12,5 @@ data class SearchMainItemModel(
     val tierId: TierType,
     val wins: Int,
     val losses: Int,
-    val reviews: Int,
+    val reviews: Long,
 )
