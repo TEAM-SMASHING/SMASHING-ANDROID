@@ -1,6 +1,6 @@
 package com.smashing.app.data.model.notification
 
-import com.smashing.app.core.common.type.NotificationType
+import com.smashing.app.data.type.NotificationType
 
 data class NotificationSummary(
     val notificationId: String,

@@ -1,11 +1,13 @@
 package com.smashing.app.presentation.profile.review
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -18,12 +20,15 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
@@ -48,6 +53,7 @@ import com.smashing.app.data.model.profile.Review
 import com.smashing.app.presentation.profile.ProfileContract
 import com.smashing.app.presentation.profile.component.ReviewItem
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ReviewRoute(
@@ -74,6 +80,10 @@ private fun ReviewScreen(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
+    val isReviewEmpty = reviews.isEmpty() &&
+            uiState.reviewRate.run { best == 0 && good == 0 && bad == 0 } &&
+            uiState.tagCount.run { onTime == 0 && goodManner == 0 && fairPlay == 0 && fastResponse == 0 }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,118 +95,143 @@ private fun ReviewScreen(
             topBarType = TopBarType.BACK,
             onClick = onBackClick,
         )
-        LazyColumn(
-            state = lazyListState,
-            modifier = modifier
-                .fillMaxSize()
-                .navigationBarsPadding()
-                .background(color = SmashingTheme.colors.bgCanvas),
-            verticalArrangement = Arrangement.spacedBy(32.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-        ) {
-            item {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = satisfaction_review),
-                        style = SmashingTheme.typography.md.semibold16,
-                        color = SmashingTheme.colors.txtPrimary,
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        if (uiState.reviewRate.best > 0) {
-                            SmashingChip(
-                                text = uiState.reviewRate.best.formatCount(),
-                                style = DISABLED,
-                                icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
-                            )
-                        }
+        if (isReviewEmpty) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .navigationBarsPadding(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            )
+            {
+                Image(
+                    painter = painterResource(id = R.drawable.img_app_icon),
+                    contentDescription = null,
+                )
 
-                        if (uiState.reviewRate.good > 0)
-                            SmashingChip(
-                                text = uiState.reviewRate.good.formatCount(),
-                                style = DISABLED,
-                                icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
-                            )
+                Spacer(Modifier.padding(top = 12.dp))
 
-                        if (uiState.reviewRate.bad > 0) {
-                            SmashingChip(
-                                text = uiState.reviewRate.bad.formatCount(),
-                                style = DISABLED,
-                                icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
-                            )
-                        }
-                    }
-                }
+                Text(
+                    text = "아직 받은 후기가 없어요",
+                    style = SmashingTheme.typography.md.medium16,
+                    color = SmashingTheme.colors.txtSecondary,
+                )
             }
-
-            item {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Text(
-                        text = stringResource(id = short_review),
-                        style = SmashingTheme.typography.md.semibold16,
-                        color = SmashingTheme.colors.txtPrimary,
-                    )
-
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.fillMaxWidth(),
+        } else {
+            LazyColumn(
+                state = lazyListState,
+                modifier = modifier
+                    .fillMaxSize()
+                    .navigationBarsPadding()
+                    .background(color = SmashingTheme.colors.bgCanvas)
+                    .padding(vertical = 330.dp, horizontal = 97.dp),
+                verticalArrangement = Arrangement.spacedBy(32.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+            ) {
+                item {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        if (uiState.tagCount.onTime > 0) {
-                            SmashingChip(
-                                text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime.formatCount()}",
-                                style = DISABLED,
-                            )
-                        }
-
-                        if (uiState.tagCount.goodManner > 0) {
-                            SmashingChip(
-                                text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner.formatCount()}",
-                                style = DISABLED,
-                            )
-                        }
-                        if (uiState.tagCount.fairPlay > 0) {
-                            SmashingChip(
-                                text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay.formatCount()}",
-                                style = DISABLED,
-                            )
-                        }
-                        if (uiState.tagCount.fastResponse > 0) {
-                            SmashingChip(
-                                text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse.formatCount()}",
-                                style = DISABLED,
-                            )
-                        }
-                    }
-                }
-            }
-
-            item {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    Text(
-                        text = stringResource(id = review),
-                        style = SmashingTheme.typography.md.semibold16,
-                        color = SmashingTheme.colors.txtPrimary,
-                    )
-                    Column {
-                        reviews.forEachIndexed { index, review ->
-                            ReviewItem(
-                                review = review,
-                            )
-
-                            if (index < reviews.lastIndex) {
-                                HorizontalDivider(
-                                    modifier = Modifier.padding(vertical = 12.dp),
-                                    thickness = 1.dp,
-                                    color = SmashingTheme.colors.borderPrimary,
+                        Text(
+                            text = stringResource(id = satisfaction_review),
+                            style = SmashingTheme.typography.md.semibold16,
+                            color = SmashingTheme.colors.txtPrimary,
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            if (uiState.reviewRate.best > 0) {
+                                SmashingChip(
+                                    text = uiState.reviewRate.best.formatCount(),
+                                    style = DISABLED,
+                                    icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
                                 )
+                            }
+
+                            if (uiState.reviewRate.good > 0)
+                                SmashingChip(
+                                    text = uiState.reviewRate.good.formatCount(),
+                                    style = DISABLED,
+                                    icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
+                                )
+
+                            if (uiState.reviewRate.bad > 0) {
+                                SmashingChip(
+                                    text = uiState.reviewRate.bad.formatCount(),
+                                    style = DISABLED,
+                                    icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = stringResource(id = short_review),
+                            style = SmashingTheme.typography.md.semibold16,
+                            color = SmashingTheme.colors.txtPrimary,
+                        )
+
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            if (uiState.tagCount.onTime > 0) {
+                                SmashingChip(
+                                    text = "${stringResource(id = on_time_review)} ${uiState.tagCount.onTime.formatCount()}",
+                                    style = DISABLED,
+                                )
+                            }
+
+                            if (uiState.tagCount.goodManner > 0) {
+                                SmashingChip(
+                                    text = "${stringResource(id = good_manner_review)} ${uiState.tagCount.goodManner.formatCount()}",
+                                    style = DISABLED,
+                                )
+                            }
+                            if (uiState.tagCount.fairPlay > 0) {
+                                SmashingChip(
+                                    text = "${stringResource(id = fair_play_review)} ${uiState.tagCount.fairPlay.formatCount()}",
+                                    style = DISABLED,
+                                )
+                            }
+                            if (uiState.tagCount.fastResponse > 0) {
+                                SmashingChip(
+                                    text = "${stringResource(id = fast_response_review)} ${uiState.tagCount.fastResponse.formatCount()}",
+                                    style = DISABLED,
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Text(
+                            text = stringResource(id = review),
+                            style = SmashingTheme.typography.md.semibold16,
+                            color = SmashingTheme.colors.txtPrimary,
+                        )
+                        Column {
+                            reviews.forEachIndexed { index, review ->
+                                ReviewItem(
+                                    review = review,
+                                )
+
+                                if (index < reviews.lastIndex) {
+                                    HorizontalDivider(
+                                        modifier = Modifier.padding(vertical = 12.dp),
+                                        thickness = 1.dp,
+                                        color = SmashingTheme.colors.borderPrimary,
+                                    )
+                                }
                             }
                         }
                     }
@@ -206,15 +241,15 @@ private fun ReviewScreen(
     }
 }
 
-
 @Preview
 @Composable
 private fun ReviewScreenPreview() {
     SmashingAndroidTheme {
+        val emptyState = ProfileContract.State()
         ReviewScreen(
-            uiState = ProfileContract.State(),
+            uiState = emptyState,
             onBackClick = {},
-            reviews = ProfileContract.State().reviews,
+            reviews = persistentListOf(),
         )
     }
 }

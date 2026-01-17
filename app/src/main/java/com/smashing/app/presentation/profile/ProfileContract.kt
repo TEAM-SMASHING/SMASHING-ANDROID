@@ -1,8 +1,8 @@
 package com.smashing.app.presentation.profile
 
 import androidx.compose.runtime.Immutable
-import com.smashing.app.core.common.type.SportType
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.data.model.profile.RatingCount
 import com.smashing.app.data.model.profile.Review
 import com.smashing.app.data.model.profile.TagCount
@@ -16,7 +16,7 @@ interface ProfileContract {
         val loadState: ProfileUiState = ProfileUiState.Idle,
         val profileInfo: UserProfileInfo = UserProfileInfo(
             tierType = TierType.BRONZE_1,
-            mySports = listOf(SportType.PING_PONG),
+            mySports = listOf(SportType.PING_PONG, SportType.TENNIS),
             selectedSport = SportType.PING_PONG,
             lpProgress = 0f,
             minLp = 0,

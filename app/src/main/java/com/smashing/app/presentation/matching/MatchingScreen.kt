@@ -92,6 +92,7 @@ private fun MatchingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = SmashingTheme.colors.bgCanvas)
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

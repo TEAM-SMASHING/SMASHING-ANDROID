@@ -1,6 +1,6 @@
 package com.smashing.app.data.model.rank
 
-import com.smashing.app.core.common.type.TierType
+import com.smashing.app.data.type.TierType
 
 data class TopUserInfo (
     val rank: Int,

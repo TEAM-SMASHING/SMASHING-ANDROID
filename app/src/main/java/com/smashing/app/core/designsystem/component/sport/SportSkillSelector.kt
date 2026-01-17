@@ -11,10 +11,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.drawable.ic_radio_fill
 import com.smashing.app.R.drawable.ic_radio_empty
+import com.smashing.app.R.drawable.ic_radio_fill
 import com.smashing.app.R.string.sign_up_skill_title
 import com.smashing.app.R.string.sign_up_skill_subtitle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -31,7 +27,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.presentation.signup.component.SignUpTitle
-import com.smashing.app.core.common.type.SkillType
+import com.smashing.app.data.type.SkillType
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -39,16 +35,17 @@ fun SportSkillSelector(
     selectedSkill: SkillType?,
     onSkillSelected: (SkillType) -> Unit,
     modifier: Modifier = Modifier,
+    title: String = stringResource(sign_up_skill_title),
+    subTitle: String = stringResource(sign_up_skill_subtitle),
 ) {
-
     val radioList = SkillType.entries.toImmutableList()
 
     Column(
         modifier = modifier.selectableGroup(),
     ) {
         SignUpTitle(
-            title = stringResource(sign_up_skill_title),
-            subTitle = stringResource(sign_up_skill_subtitle),
+            title = title,
+            subTitle = subTitle,
         )
         radioList.forEach { item ->
             Row(
@@ -61,7 +58,7 @@ fun SportSkillSelector(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(
-                        if(selectedSkill == item) ic_radio_fill else ic_radio_empty
+                        if (selectedSkill == item) ic_radio_fill else ic_radio_empty
                     ),
                     contentDescription = null,
                     tint = colors.iconPrimary,

@@ -2,7 +2,7 @@ package com.smashing.app.data.remote.datasource.impl
 
 import com.smashing.app.BuildConfig
 import com.smashing.app.data.remote.datasource.api.KakaoRegionDataSource
-import com.smashing.app.data.remote.dto.region.kakaoRegion.GetKakaoAddressSearchResponse
+import com.smashing.app.data.remote.dto.region.GetKakaoAddressSearchResponse
 import com.smashing.app.data.remote.service.KakaoRegionService
 import javax.inject.Inject
 

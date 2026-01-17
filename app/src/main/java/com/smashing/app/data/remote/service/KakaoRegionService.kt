@@ -1,6 +1,6 @@
 package com.smashing.app.data.remote.service
 
-import com.smashing.app.data.remote.dto.region.kakaoRegion.GetKakaoAddressSearchResponse
+import com.smashing.app.data.remote.dto.region.GetKakaoAddressSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
