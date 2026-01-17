@@ -7,6 +7,8 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
+import com.smashing.app.data.model.profile.AllUserProfiles
+import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.model.rank.TopUserInfo
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +28,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     init {
         fetchActiveProfile()
         fetchTopRankerList()
+        fetchAllUserProfiles()
         fetchMatchingCardList()
         fetchMatchedUser()
     }
@@ -75,6 +78,18 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
         _uiState.update { currentState ->
             currentState.copy(matchedUser = dummyMatchedUser)
+        }
+    }
+
+    fun fetchAllUserProfiles() = viewModelScope.launch {
+        updateLoadState(HomeUiState.Loading)
+
+        val dummyAllUserProfiles = createDummyAllUserProfiles()
+
+        updateLoadState(HomeUiState.Success)
+
+        _uiState.update { currentState ->
+            currentState.copy(allUserProfiles = dummyAllUserProfiles)
         }
     }
 
@@ -210,6 +225,30 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             nickname = "더미하는김에긴닉네임",
         )
     }
+
+    private fun createDummyAllUserProfiles(): AllUserProfiles {
+        return AllUserProfiles(
+            allProfiles = listOf(
+                UserProfileItem(
+                    profileId = "0USP111222333",
+                    sportCode = SportType.TENNIS,
+                    isActive = true,
+                ),
+                UserProfileItem(
+                    profileId = "0USP111222333",
+                    sportCode = SportType.PING_PONG,
+                    isActive = false,
+                ),
+                UserProfileItem(
+                    profileId = "0USP111222333",
+                    sportCode = SportType.BADMINTON,
+                    isActive = false,
+                ),
+            ).toImmutableList()
+        )
+    }
+
+
 
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
         currentState.copy(loadState = state)

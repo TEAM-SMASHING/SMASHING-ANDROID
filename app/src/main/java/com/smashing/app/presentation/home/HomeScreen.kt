@@ -108,15 +108,6 @@ private fun HomeScreen(
     var topBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
-    // 스포츠 리스트 가져오기 (실제로는 ViewModel이나 다른 곳에서 가져와야 함)
-    val sportList = remember {
-        listOf(
-            SportType.TENNIS,
-            SportType.PING_PONG,
-            SportType.BADMINTON,
-        ).toImmutableList()
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -150,7 +141,7 @@ private fun HomeScreen(
         HomeDropdown(
             isExpanded = isDropdownExpanded,
             activeSport = uiState.activeUserProfile.sportType,
-            sportList = sportList,
+            sportList = uiState.allUserProfiles.allProfiles,
             tierType = uiState.activeUserProfile.tierType,
             lp = uiState.activeUserProfile.lp,
             minLp = uiState.activeUserProfile.minLp,

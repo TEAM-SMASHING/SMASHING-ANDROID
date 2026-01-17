@@ -48,6 +48,7 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import kotlinx.collections.immutable.ImmutableList
@@ -57,7 +58,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun HomeDropdown(
     activeSport: SportType,
-    sportList: ImmutableList<SportType>,
+    sportList: ImmutableList<UserProfileItem>,
     tierType: TierType,
     lp: Int,
     minLp: Int,
@@ -155,8 +156,8 @@ fun HomeDropdown(
                 ) {
                     sportList.forEach { sport ->
                         SmashingChip(
-                            text = sport.sportName,
-                            style = if (activeSport == sport) ChipStyle.ACTIVE else ChipStyle.DISABLED,
+                            text = sport.sportCode.sportName,
+                            style = if (sport.isActive) ChipStyle.ACTIVE else ChipStyle.DISABLED,
                             onClick = onSportChipClick,
                         )
                     }
@@ -333,9 +334,21 @@ private fun HomeDropdownPreview() {
             HomeDropdown(
                 activeSport = SportType.TENNIS,
                 sportList = listOf(
-                    SportType.TENNIS,
-                    SportType.PING_PONG,
-                    SportType.BADMINTON,
+                    UserProfileItem(
+                        profileId = "0USP111222333",
+                        sportCode = SportType.TENNIS,
+                        isActive = true,
+                    ),
+                    UserProfileItem(
+                        profileId = "0USP111222333",
+                        sportCode = SportType.PING_PONG,
+                        isActive = false,
+                    ),
+                    UserProfileItem(
+                        profileId = "0USP111222333",
+                        sportCode = SportType.BADMINTON,
+                        isActive = false,
+                    ),
                 ).toImmutableList(),
                 tierType = TierType.GOLD_1,
                 lp = 123,
@@ -348,7 +361,7 @@ private fun HomeDropdownPreview() {
                 onTierClick = {},
                 onDismiss = {},
                 triggerHeight = 50.dp,
-                isExpanded = true, // 프리뷰에서 보이도록 true
+                isExpanded = true,
             )
         }
     }
