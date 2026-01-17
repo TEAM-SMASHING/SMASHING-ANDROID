@@ -183,8 +183,6 @@ private fun RankerItem(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-
-                //TODO 티어 뱃지 이미지 완료 후 변경 예정
                 if (userRank != null) {
                     Image(
                         painter = painterResource(id = userRank.tierType.img()),
