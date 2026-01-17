@@ -37,6 +37,7 @@ import com.smashing.app.R.drawable.img_tier_dummy
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
+import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.type.TierType
@@ -51,6 +52,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun Ranker(
     rankerList: ImmutableList<UserRank>?,
+    navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -60,12 +62,14 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
+            navigateToProfile,
             modifier = Modifier
                 .align(Alignment.BottomCenter),
         )
         RankerItem(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
+            navigateToProfile,
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.BottomStart),
@@ -73,6 +77,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
+            navigateToProfile,
             modifier = Modifier
                 .padding(end = 16.dp)
                 .align(Alignment.BottomEnd),
@@ -84,6 +89,7 @@ fun Ranker(
 private fun RankerItem(
     userRank: UserRank?,
     rankerType: RankerType,
+    navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val backgroundGradation = Brush.verticalGradient(
@@ -93,10 +99,12 @@ private fun RankerItem(
         )
     )
 
-
     Column(
         modifier = modifier
-            .width(IntrinsicSize.Max),
+            .width(IntrinsicSize.Max)
+            .noRippleClickable(
+                onClick = { navigateToProfile(userRank?.userId ?: "") }
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val paddingValues = if (FIRST == rankerType) {
@@ -227,6 +235,7 @@ private fun RankerItemPreview_FirstPlace() {
             lp = 2500,
         ),
         rankerType = FIRST,
+        navigateToProfile = {},
     )
 }
 
@@ -243,6 +252,7 @@ private fun RankerItemPreview_SecondPlace() {
         ),
         rankerType = SECOND,
         modifier = Modifier.padding(horizontal = 8.dp),
+        navigateToProfile = {}
     )
 }
 
@@ -252,7 +262,8 @@ private fun RankerItemPreview_EmptyPlace() {
     RankerItem(
         userRank = null,
         rankerType = SECOND,
-        modifier = Modifier.padding(horizontal = 8.dp)
+        modifier = Modifier.padding(horizontal = 8.dp),
+        navigateToProfile = {}
     )
 }
 
@@ -286,7 +297,8 @@ private fun RankerPreview_AllThree() {
         modifier = Modifier
             .background(
                 color = colors.bgCanvas,
-            )
+            ),
+        navigateToProfile = {},
     )
 }
 
@@ -310,6 +322,7 @@ private fun RankerPreview_FirstAndSecond() {
                 lp = 2450,
             ),
         ).toImmutableList(),
+        navigateToProfile = {},
     )
 }
 
@@ -318,5 +331,6 @@ private fun RankerPreview_FirstAndSecond() {
 private fun RankerPreview_Empty() {
     Ranker(
         rankerList = null,
+        navigateToProfile = {},
     )
 }

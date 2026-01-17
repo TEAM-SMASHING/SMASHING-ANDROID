@@ -52,7 +52,7 @@ import com.smashing.app.data.type.TierType
 @Composable
 fun RankingRoute(
     navigateUp: () -> Unit,
-    navigateToProfile: () -> Unit,
+    navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RankingViewModel = hiltViewModel(),
 ) {
@@ -61,6 +61,7 @@ fun RankingRoute(
     RankingScreen(
         uiState = uiState,
         navigateUp = navigateUp,
+        navigateToProfile = navigateToProfile,
         modifier = modifier,
     )
 }
@@ -69,6 +70,7 @@ fun RankingRoute(
 private fun RankingScreen(
     uiState: RankingContract.State,
     navigateUp: () -> Unit,
+    navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -103,6 +105,7 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
+                navigateToProfile = navigateToProfile,
             )
 
             if (uiState.restRankingList.isNotEmpty()) {
@@ -265,6 +268,7 @@ fun RankingScreenPreview_OnlyFirst() {
             ).toImmutableList(),
         ),
         navigateUp = {},
+        navigateToProfile = {},
     )
 }
 
@@ -304,6 +308,7 @@ fun RankingScreenPreview_TopTen() {
                 ).toImmutableList(),
         ),
         navigateUp = {},
+        navigateToProfile = {},
     )
 }
 
@@ -338,5 +343,6 @@ fun RankingScreenPreview_TopTwenty() {
                 ).toImmutableList()
         ),
         navigateUp = {},
+        navigateToProfile = {},
     )
 }
