@@ -9,6 +9,7 @@ import com.smashing.app.data.repository.api.SearchRepository
 import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,10 @@ class SearchViewModel @Inject constructor(
             .debounce(SEARCH_NETWORK_DEBOUNCE)
             .collectLatest { searchInputText ->
                 if (searchInputText.isEmpty()) {
-                    _uiState.update { it.copy(searchNickNameUsersUiState = SearchUiState.Empty) }
+                    _uiState.update { it.copy(
+                        suggestions = persistentListOf(),
+                        searchNickNameUsersUiState = SearchUiState.Empty,
+                    ) }
                 } else {
                     fetchNickNameUsersList(searchInputText)
                 }
