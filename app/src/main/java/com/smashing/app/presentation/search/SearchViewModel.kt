@@ -9,11 +9,12 @@ import com.smashing.app.data.repository.api.SearchRepository
 import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -29,8 +30,6 @@ class SearchViewModel @Inject constructor(
 
     val searchInputState = TextFieldState()
 
-    val searchInput = TextFieldState()
-
     init {
         fetchRegionUsersList(isRefresh = true)
         updateSearchInputText()
@@ -39,22 +38,12 @@ class SearchViewModel @Inject constructor(
     @OptIn(FlowPreview::class)
     fun updateSearchInputText() = viewModelScope.launch {
         snapshotFlow { searchInputState.text }
-            .collect { searchInputText ->
-                val text = searchInputState.toString()
-
-                if (text.isEmpty()) {
-                    _uiState.update {
-                        it.copy(
-                            suggestions = persistentListOf()
-                        )
-                    }
+            .debounce(SEARCH_NETWORK_DEBOUNCE)
+            .collectLatest { searchInputText ->
+                if (searchInputText.isEmpty()) {
+                    _uiState.update { it.copy(searchNickNameUsersUiState = SearchUiState.Empty) }
                 } else {
-                    // Todo: 검색 api 호출
-                    _uiState.update {
-                        it.copy(
-                            // suggestions = api 응답값
-                        )
-                    }
+                    fetchNickNameUsersList(searchInputText)
                 }
             }
     }
@@ -133,6 +122,29 @@ class SearchViewModel @Inject constructor(
         fetchRegionUsersList(isRefresh = true)
     }
 
+    fun fetchNickNameUsersList(nickname: CharSequence) = viewModelScope.launch {
+
+        _uiState.update { it.copy(searchNickNameUsersUiState = SearchUiState.Loading) }
+
+        searchRepository.getNickNameUsersSearch(nickname = nickname.toString())
+            .onSuccess { result ->
+                _uiState.update {
+                    it.copy(
+                        suggestions = result.toImmutableList(),
+                        searchNickNameUsersUiState = SearchUiState.Success,
+                    )
+                }
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        searchNickNameUsersUiState = SearchUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
+                    )
+                }
+            }
+    }
+
     fun fetchRegionUsersList(isRefresh: Boolean = false) = viewModelScope.launch {
         val currentState = _uiState.value
 
@@ -177,5 +189,6 @@ class SearchViewModel @Inject constructor(
 
     companion object {
         private const val CURSOR_SIZE = 20
+        private const val SEARCH_NETWORK_DEBOUNCE = 500L
     }
 }
