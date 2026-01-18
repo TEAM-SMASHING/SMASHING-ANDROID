@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.presentation.tierinfo.navigation.TierInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +31,7 @@ class TierInfoViewModel @Inject constructor(
     }
 
     private fun updateInitialTierInfo(savedStateHandle: SavedStateHandle) {
-        val tierInfo = savedStateHandle.toRoute<TierInfo>().tierInfo.toTierInfoStyle()
+        val tierInfo = TierInfoStyle.findTierInfoByName(savedStateHandle.toRoute<TierInfo>().tierInfo)
 
         updateTierInfo(tierInfo)
     }

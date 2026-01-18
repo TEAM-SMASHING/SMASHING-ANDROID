@@ -52,6 +52,8 @@ enum class TierInfoStyle(
     companion object {
         private val ID_MAP: Map<String, TierInfoStyle> = TierInfoStyle.entries.associateBy { it.tierKName }
         fun findTierInfo(tierKName: String?): TierInfoStyle? = ID_MAP[tierKName]
+
+        fun findTierInfoByName(name: String): TierInfoStyle = TierInfoStyle.entries.find { it.name == name } ?: IRON
     }
 
     @ReadOnlyComposable
@@ -98,8 +100,4 @@ fun TierType.toTierInfoStyle(): TierInfoStyle {
         TierType.DIAMOND_1 -> TierInfoStyle.DIAMOND
         TierType.CHALLENGER -> TierInfoStyle.CHALLENGER
     }
-}
-
-fun String.toTierInfoStyle(): TierInfoStyle {
-    return TierInfoStyle.entries.find { it.name == this } ?: TierInfoStyle.IRON
 }
