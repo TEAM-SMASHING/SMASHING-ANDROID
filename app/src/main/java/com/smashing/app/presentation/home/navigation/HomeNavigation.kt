@@ -40,8 +40,8 @@ fun NavGraphBuilder.homeGraph(
                 navigateToNotice = navController::navigateToNotice,
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToRanking = navController::navigateToRanking,
-                navigateToTierInfo = { tierInfoStyle ->
-                    navController.navigateToTierInfo(tierInfoStyle.name)
+                navigateToTierInfo = { tierInfoStyle, sportType ->
+                    navController.navigateToTierInfo(tierInfo = tierInfoStyle.name, sportType = sportType.code)
                 },
             )
         }

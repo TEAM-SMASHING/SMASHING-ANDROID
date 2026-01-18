@@ -13,14 +13,15 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToTierInfo(
     tierInfo: String,
+    sportType: String,
     navOptions: NavOptions? = null,
-) = navigate(TierInfo(tierInfo = tierInfo), navOptions)
+) = navigate(SportTierInfo(tierName = tierInfo, sportName = sportType), navOptions)
 
 fun NavGraphBuilder.tierInfoGraph(
     innerPadding: PaddingValues,
     navController: NavController,
 ) {
-    composable<TierInfo> { backStackEntry ->
+    composable<SportTierInfo> { backStackEntry ->
 
         TierInfoRoute(
             modifier = Modifier.padding(innerPadding),
@@ -30,6 +31,7 @@ fun NavGraphBuilder.tierInfoGraph(
 }
 
 @Serializable
-data class TierInfo(
-    val tierInfo: String,
+data class SportTierInfo(
+    val tierName: String,
+    val sportName: String,
 ) : Route
