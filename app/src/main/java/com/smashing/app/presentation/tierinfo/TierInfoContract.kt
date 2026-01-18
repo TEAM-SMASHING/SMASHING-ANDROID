@@ -2,13 +2,16 @@ package com.smashing.app.presentation.tierinfo
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.data.model.rank.TierInfoDetail
+import com.smashing.app.data.type.SportType
 
 interface TierInfoContract {
     @Immutable
     data class State(
         val loadState: TierInfoUiState = TierInfoUiState.Idle,
+        val sportType: SportType = SportType.BADMINTON,
         val selectedTierInfoStyle: TierInfoStyle = TierInfoStyle.IRON,
-
+        val tierInfoDetail: TierInfoDetail? = null,
         )
 }
 

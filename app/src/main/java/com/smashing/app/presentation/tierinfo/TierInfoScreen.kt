@@ -95,13 +95,16 @@ private fun TierInfoScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+
                 //TODO 더미 추가 후 수정 예정
-                TierTag(
-                    tagText = "티어 설명",
-                )
-                TierTag(
-                    tagText = "티어 설명",
-                )
+                if (uiState.tierInfoDetail != null) {
+                    TierTag(
+                        tagText = uiState.tierInfoDetail.progressInfo.percentText,
+                    )
+                    TierTag(
+                        tagText = "실제 기준 ${uiState.tierInfoDetail.progressInfo.levelText}",
+                    )
+                }
             }
         }
 
@@ -144,20 +147,28 @@ private fun TierInfoScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                //TODO 더미 추가 후 수정 예정
-                items(
-                    items = listOf("", "", ""),
+            if (uiState.tierInfoDetail != null) {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    CommentTag(
-                        title = "test",
-                        comment = "test",
-                    )
+                    items(
+                        items = uiState.tierInfoDetail.skills,
+                        key = { it.name }
+                    ) { skill ->
+                        CommentTag(
+                            title = skill.name,
+                            comment = skill.description,
+                        )
+                    }
                 }
+            } else {
+                Spacer(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                )
             }
         }
     }
@@ -185,9 +196,9 @@ private fun TierTag(
 
 @Composable
 private fun CommentTag(
-    title: String,
-    comment: String,
     modifier: Modifier = Modifier,
+    title: String? = "",
+    comment: String? = "",
 ) {
     Column(
         modifier = modifier
@@ -204,13 +215,13 @@ private fun CommentTag(
         horizontalAlignment = Alignment.Start,
     ) {
         Text(
-            text = title,
+            text = title?: "",
             style = SmashingTheme.typography.sm.semibold14,
             color = SmashingTheme.colors.txtPrimary,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = comment,
+            text = comment?:"",
             style = SmashingTheme.typography.xs.medium12,
             color = SmashingTheme.colors.txtSecondary,
         )
