@@ -67,7 +67,7 @@ fun MatchingRoute(
         uiState = uiState,
         navigateToSubmit = navigateToSubmit,
         onLoadMoreMatchingList = viewModel::fetchMatchingList,
-        onTabClick = viewModel::updateMatchingType,
+        onTabClick = viewModel::selectMatchingTab,
         onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
         onReceivedAcceptClick = viewModel::acceptReceivedMatching,
