@@ -47,7 +47,6 @@ private const val MAX_STEP = 2
 @Composable
 fun AddSportsRoute(
     navigateToUser: () -> Unit,
-    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AddSportsViewModel = hiltViewModel(),
 ) {
@@ -70,7 +69,7 @@ fun AddSportsRoute(
         isBtnEnabled = uiState.isBtnEnabled,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
-        onBackClick = navigateUp,
+        onBackClick = navigateToUser,
         modifier = modifier,
         onBtnClick = {
             if (uiState.currentStep < MAX_STEP)
@@ -186,7 +185,7 @@ private fun SignUpScreenPreview() {
             onSportSelected = {},
             selectedSkill = null,
             onSkillSelected = {},
-            onBtnClick = { currentStep ++ },
+            onBtnClick = { currentStep++ },
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

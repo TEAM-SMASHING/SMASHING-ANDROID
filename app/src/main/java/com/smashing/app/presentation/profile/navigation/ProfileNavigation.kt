@@ -57,11 +57,9 @@ fun NavGraphBuilder.profileGraph(
             AddSportsRoute(
                 modifier = Modifier.fillMaxSize(),
                 navigateToUser = navigateUp,
-                navigateUp = navigateUp
-            )
+                )
         }
     }
-
 }
 
 @Serializable
