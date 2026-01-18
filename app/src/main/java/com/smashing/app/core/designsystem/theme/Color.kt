@@ -1,8 +1,5 @@
 package com.smashing.app.core.designsystem.theme
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +7,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -101,6 +101,8 @@ data class SmashingColors(
     val btnBgSecondaryActive: Color,
     val btnBgTertiaryActive: Color,
     val btnBgTertiaryPressed: Color,
+    val btnBgRejected: Color,
+    val btnBgPrimary300: Color,
 
     // Border
     val borderPrimary: Color,
@@ -182,6 +184,8 @@ val defaultSmashingColors = SmashingColors(
     btnBgSecondaryActive = primary200,
     btnBgTertiaryActive = gray600,
     btnBgTertiaryPressed = gray800,
+    btnBgRejected = redSub,
+    btnBgPrimary300 = primary300,
 
     // Border
     borderPrimary = gray700,

@@ -331,6 +331,7 @@ private fun MatchingList(
                         onConfirmClick = { onAcceptedConfirmClick(it.gameId) },
                         onKakaoLinkClick = { onAcceptedKakaoLinkClick(it.openChatUrl) },
                         onCloseClick = { onAcceptedCloseClick(it.gameId) },
+                        gameStatusType = it.resultStatus
                     ),
                     modifier = Modifier.animateItem(
                         fadeInSpec = tween(durationMillis = 300),
