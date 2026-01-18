@@ -78,7 +78,6 @@ class HomeViewModel @Inject constructor(
 
         rankingRepository.getRankingList()
             .onSuccess { rankingData ->
-                Timber.d("Yesssss")
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = HomeUiState.Success,
