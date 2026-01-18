@@ -9,11 +9,11 @@ import androidx.navigation.toRoute
 import com.smashing.app.core.util.TextInputValidator
 import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
+import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
+import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
-import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
-import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.signup.SignUpContract.SignUpUiState
@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 

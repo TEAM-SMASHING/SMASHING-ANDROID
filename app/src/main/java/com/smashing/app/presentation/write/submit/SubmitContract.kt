@@ -20,5 +20,19 @@ interface SubmitContract {
         val selectedRatingTypes: ImmutableSet<ReviewRatingType> = persistentSetOf(),
         val selectedTagTypes: ImmutableSet<ReviewTagType> = persistentSetOf(),
         val reviewText: String = "",
+        val reviewId: String = "",
+        val submitUiState: SubmitUiState = SubmitUiState.Idle,
     )
+
+    sealed interface SideEffect {
+        data object NavigateBack : SideEffect
+        data class ShowError(val message: String) : SideEffect
+    }
+
+    sealed interface SubmitUiState {
+        data object Idle : SubmitUiState
+        data object Loading : SubmitUiState
+        data object Success : SubmitUiState
+        data class Failure(val msg: String) : SubmitUiState
+    }
 }

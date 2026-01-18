@@ -56,7 +56,7 @@ private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 
 @Composable
 fun MatchingRoute(
-    navigateToSubmit: () -> Unit,
+    navigateToSubmit: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -78,7 +78,7 @@ fun MatchingRoute(
 private fun MatchingScreen(
     uiState: MatchingContract.State,
     onLoadMoreMatchingList: () -> Unit,
-    navigateToSubmit: () -> Unit,
+    navigateToSubmit: (String, Boolean) -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
@@ -221,7 +221,7 @@ private fun MatchingList(
     gridState: LazyGridState,
     onLoadMoreMatchingList: () -> Unit,
     onCloseClick: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -286,7 +286,7 @@ private fun MatchingList(
                         genderType = it.genderType,
                         tierType = it.tierType,
                         onProfileClick = {},
-                        onConfirmClick = onConfirmClick,
+                        onConfirmClick = { onConfirmClick(it.gameId, true) },
                         onKakaoLinkClick = {},
                         onCloseClick = onCloseClick,
                     ),
@@ -301,7 +301,7 @@ private fun MatchingList(
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
         MatchingScreen(
-            navigateToSubmit = {},
+            navigateToSubmit = { _, _ -> {}},
             uiState = MatchingContract.State(),
             onTabClick = {},
             onCardCloseClick = {},

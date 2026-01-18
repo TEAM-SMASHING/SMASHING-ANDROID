@@ -16,7 +16,7 @@ fun NavController.navigateToMatching(
 ) = navigate(Matching, navOptions)
 
 fun NavGraphBuilder.matchingGraph(
-    navigateToSubmit: () -> Unit,
+    navigateToSubmit: (String, Boolean) -> Unit,
     innerPadding: PaddingValues,
 ) {
     composable<Matching> {
