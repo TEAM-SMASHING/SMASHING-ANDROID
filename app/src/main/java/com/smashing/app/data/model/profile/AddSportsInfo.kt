@@ -5,5 +5,5 @@ import com.smashing.app.data.type.SportType
 
 data class AddSportsInfo(
     val selectedSports: SportType? = null,
-    val selectedSkill: SkillType?,
+    val selectedSkill: SkillType? = null,
 )
