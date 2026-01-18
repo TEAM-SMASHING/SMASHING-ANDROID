@@ -18,12 +18,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    val searchRepository: SearchRepository
+    private val searchRepository: SearchRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchContract.State())

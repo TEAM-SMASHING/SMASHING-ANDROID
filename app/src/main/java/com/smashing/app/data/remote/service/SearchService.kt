@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface SearchService {
 
-    @GET("/api/v1/users/me/regions/users?")
+    @GET("/api/v1/users/me/regions/users")
     suspend fun getRegionUsersSearch(
         @Query("cursor")
         cursor: String?,
@@ -21,7 +21,7 @@ interface SearchService {
         tier: String?,
     ): BaseResponse<CursorDto<GetRegionUsersSearchResponse>>
 
-    @GET("/api/v1/users/search?")
+    @GET("/api/v1/users/search")
     suspend fun getNickNameUsersSearch(
         @Query("nickname")
         nickname: String,

@@ -24,7 +24,7 @@ enum class GenderInfo(
     );
 
     companion object {
-        val ID_MAP: Map<String, GenderInfo> = GenderInfo.entries.associateBy { it.genderKName }
+        private val ID_MAP: Map<String, GenderInfo> = GenderInfo.entries.associateBy { it.genderKName }
         fun findGenderInfo(genderKName: String?): GenderInfo? = ID_MAP[genderKName]
     }
 }

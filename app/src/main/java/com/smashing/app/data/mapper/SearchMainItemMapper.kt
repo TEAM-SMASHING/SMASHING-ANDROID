@@ -24,7 +24,7 @@ private fun GetRegionUsersSearchResponse.toSearchMainItemModel(): SearchMainItem
         userId = this.userId,
         nickname = this.nickname,
         gender = GenderType.findByName(this.gender),
-        tierCode = TierType.findTierType(this.tierCode),
+        tierType = TierType.findTierType(this.tierCode),
         wins = this.wins,
         losses = this.losses,
         reviews = this.reviews,
