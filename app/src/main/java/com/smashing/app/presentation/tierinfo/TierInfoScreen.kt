@@ -124,7 +124,6 @@ private fun TierInfoScreen(
         ) {
             items(
                 items = TierInfoStyle.entries,
-                key = { it.tierName },
             ) {
                 SmashingChip(
                     text = it.tierName,
@@ -160,7 +159,6 @@ private fun TierInfoScreen(
                     ) {
                         items(
                             items = uiState.tierInfoDetail.skills,
-                            key = { it.name }
                         ) { skill ->
                             CommentTag(
                                 title = skill.name,

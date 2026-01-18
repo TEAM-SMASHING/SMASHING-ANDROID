@@ -29,11 +29,11 @@ interface SportResourceProvider {
 object BadmintonResourceProvider : SportResourceProvider {
     override fun getTierDetail(tier: TierInfoStyle): TierDetailResource = when (tier) {
         TierInfoStyle.IRON -> TierDetailResource(
-            percentRes = R.string.tier_badminton_Iron_percent,
+            percentRes = R.string.tier_badminton_iron_percent,
             skills = listOf(
                 SkillResource(
-                    R.string.skill_badminton_Iron_name,
-                    R.string.skill_badminton_Iron_description
+                    R.string.skill_badminton_iron_name,
+                    R.string.skill_badminton_iron_description
                 ),
             )
         )
@@ -146,11 +146,11 @@ object BadmintonResourceProvider : SportResourceProvider {
 object PingPongResourceProvider : SportResourceProvider {
     override fun getTierDetail(tier: TierInfoStyle): TierDetailResource = when (tier) {
         TierInfoStyle.IRON -> TierDetailResource(
-            percentRes = R.string.tier_pingpong_Iron_percent,
+            percentRes = R.string.tier_pingpong_iron_percent,
             skills = listOf(
                 SkillResource(
-                    R.string.skill_pingpong_Iron_name,
-                    R.string.skill_pingpong_Iron_description
+                    R.string.skill_pingpong_iron_name,
+                    R.string.skill_pingpong_iron_description
                 ),
             )
         )
@@ -263,11 +263,11 @@ object PingPongResourceProvider : SportResourceProvider {
 object TennisResourceProvider : SportResourceProvider {
     override fun getTierDetail(tier: TierInfoStyle): TierDetailResource = when (tier) {
         TierInfoStyle.IRON -> TierDetailResource(
-            percentRes = R.string.tier_tennis_Iron_percent,
+            percentRes = R.string.tier_tennis_iron_percent,
             skills = listOf(
                 SkillResource(
-                    R.string.skill_tennis_Iron_name,
-                    R.string.skill_tennis_Iron_description
+                    R.string.skill_tennis_iron_name,
+                    R.string.skill_tennis_iron_description
                 ),
             )
         )
