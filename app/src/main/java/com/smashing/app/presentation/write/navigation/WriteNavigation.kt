@@ -32,6 +32,7 @@ fun NavController.navigateToConfirmReview(
     navOptions: NavOptions? = null,
 ) = navigate(ConfirmReview, navOptions)
 
+
 fun NavGraphBuilder.writeGraph(
     navigateToMatching: () -> Unit,
     navController: NavHostController,
@@ -69,6 +70,7 @@ fun NavGraphBuilder.writeGraph(
             ConfirmResultRoute(
                 navigateUp = navController::navigateUp,
                 navigateToConfirmReview = navController::navigateToConfirmReview,
+                navigateToMatching = navigateToMatching,
                 viewModel = viewModel,
             )
         }
@@ -82,6 +84,7 @@ fun NavGraphBuilder.writeGraph(
                 viewModel = viewModel,
             )
         }
+
     }
 }
 
@@ -102,3 +105,4 @@ data object ConfirmResult : Route
 
 @Serializable
 data object ConfirmReview : Route
+
