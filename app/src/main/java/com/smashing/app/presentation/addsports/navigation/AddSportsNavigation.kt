@@ -21,7 +21,7 @@ fun NavGraphBuilder.addSportsGraph(
     composable<AddSports> {
         AddSportsRoute(
             modifier = Modifier.fillMaxSize(),
-            navigateToUser = navigateUp,
+            navigateUp = navigateUp,
         )
     }
 }

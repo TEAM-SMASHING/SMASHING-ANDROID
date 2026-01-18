@@ -46,7 +46,7 @@ private const val MAX_STEP = 2
 
 @Composable
 fun AddSportsRoute(
-    navigateToUser: () -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AddSportsViewModel = hiltViewModel(),
 ) {
@@ -57,7 +57,7 @@ fun AddSportsRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is AddSportsUiState.AddSportsSideEffect.NavigateToSports -> navigateToUser()
+                    is AddSportsUiState.AddSportsSideEffect.NavigateToSports -> navigateUp()
                 }
             }
     }
@@ -69,7 +69,7 @@ fun AddSportsRoute(
         isBtnEnabled = uiState.isBtnEnabled,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
-        onBackClick = navigateToUser,
+        onBackClick = navigateUp,
         modifier = modifier,
         onBtnClick = {
             if (uiState.currentStep < MAX_STEP)
