@@ -161,8 +161,8 @@ class SearchViewModel @Inject constructor(
         searchRepository.getRegionUsersSearch(
             cursor = if (isRefresh) null else currentState.searchRegionUsersCursor.nextCursor,
             size = CURSOR_SIZE,
-            gender = _uiState.value.selectedGenderItem?.genderName,
-            tier = _uiState.value.selectedTierItem?.name,
+            gender = currentState.selectedGenderItem?.genderName,
+            tier = currentState.selectedTierItem?.name,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
                 state.copy(
