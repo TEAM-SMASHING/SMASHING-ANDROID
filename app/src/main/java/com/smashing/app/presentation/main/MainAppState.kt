@@ -26,7 +26,7 @@ class MainAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope,
 ) {
-    val startDestination = Login
+    val startDestination = Home
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }
