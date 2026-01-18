@@ -12,10 +12,10 @@ import com.smashing.app.presentation.tierinfo.TierInfoRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToTierInfo(
-    tierInfo: String,
-    sportType: String,
+    tierName: String,
+    sportName: String,
     navOptions: NavOptions? = null,
-) = navigate(SportTierInfo(tierName = tierInfo, sportName = sportType), navOptions)
+) = navigate(SportTierInfo(tierName = tierName, sportName = sportName), navOptions)
 
 fun NavGraphBuilder.tierInfoGraph(
     innerPadding: PaddingValues,
