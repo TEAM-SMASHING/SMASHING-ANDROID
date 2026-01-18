@@ -69,15 +69,16 @@ fun MatchingRoute(
         navigateToSubmit = navigateToSubmit,
         onLoadMoreMatchingList = viewModel::fetchMatchingList,
         onTabClick = viewModel::selectMatchingTab,
-        onCardCloseClick = viewModel::showDialogVisible,
         onDialogDismissClick = viewModel::hideDialogVisible,
         onReceivedAcceptClick = viewModel::acceptReceivedMatching,
         onProfileClick = { userId -> /* TODO: Navigate to profile */ },
-        onSentCloseClick = viewModel::deleteSentMatching,
+        onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
         onReceivedSkipClick = viewModel::rejectReceivedMatching,
         onAcceptedConfirmClick = { gameId -> navigateToSubmit() },
         onAcceptedKakaoLinkClick = { url -> /* TODO: Open Kakao link */ },
-        onAcceptedCloseClick = { gameId -> /* TODO: Cancel accepted matching */ },
+        onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
+        onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
+        onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
         modifier = modifier,
     )
 }
@@ -88,7 +89,6 @@ private fun MatchingScreen(
     onLoadMoreMatchingList: () -> Unit,
     navigateToSubmit: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
-    onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
     onReceivedAcceptClick: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -98,6 +98,8 @@ private fun MatchingScreen(
     onAcceptedConfirmClick: (String) -> Unit = {},
     onAcceptedKakaoLinkClick: (String?) -> Unit = {},
     onAcceptedCloseClick: (String) -> Unit = {},
+    onConfirmDeleteSentMatching: () -> Unit = {},
+    onConfirmDeleteAcceptedMatching: () -> Unit = {},
 ) {
     val gridState = rememberLazyGridState()
 
@@ -206,9 +208,7 @@ private fun MatchingScreen(
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
-                        onConfirmClick = {
-                            // TODO 취소하기 로직
-                        },
+                        onConfirmClick = onConfirmDeleteSentMatching,
                         onDismissClick = onDialogDismissClick,
                         onDismissRequest = onDialogDismissClick,
                     )
@@ -221,9 +221,7 @@ private fun MatchingScreen(
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
-                        onConfirmClick = {
-                            // TODO 취소하기 로직
-                        },
+                        onConfirmClick = onConfirmDeleteAcceptedMatching,
                         onDismissClick = onDialogDismissClick,
                         onDismissRequest = onDialogDismissClick,
                     )
@@ -350,12 +348,11 @@ private fun MatchingList(
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
         MatchingScreen(
-            navigateToSubmit = {},
             uiState = MatchingContract.State(),
-            onTabClick = {},
-            onCardCloseClick = {},
-            onDialogDismissClick = {},
             onLoadMoreMatchingList = {},
+            navigateToSubmit = {},
+            onTabClick = {},
+            onDialogDismissClick = {},
             onReceivedAcceptClick = {},
             onProfileClick = {},
             onSentCloseClick = {},
@@ -363,6 +360,8 @@ private fun MatchingScreenPreview() {
             onAcceptedConfirmClick = {},
             onAcceptedKakaoLinkClick = {},
             onAcceptedCloseClick = {},
+            onConfirmDeleteSentMatching = {},
+            onConfirmDeleteAcceptedMatching = {},
             modifier = Modifier
                 .background(Color.Black),
         )
