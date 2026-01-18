@@ -38,7 +38,6 @@ import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
 @Composable
 fun SearchMainRoute(
     navigateToRegionChange: () -> Unit,
-    navigateToNotice: () -> Unit,
     navigateToSearchInput: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
@@ -50,7 +49,6 @@ fun SearchMainRoute(
         uiState = uiState,
         onRegionSelectClick = navigateToRegionChange,
         onRegionDropdownClick = viewModel::updateSelectedRegion,
-        onNoticeClick = navigateToNotice,
         onSearchClick = navigateToSearchInput,
         onProfileClick = {},
         onTierItemClick = viewModel::updateSelectedTierItem,
@@ -73,7 +71,6 @@ private fun SearchMainScreen(
     uiState: SearchContract.State,
     onRegionSelectClick: () -> Unit,
     onRegionDropdownClick: (String) -> Unit,
-    onNoticeClick: () -> Unit,
     onSearchClick: () -> Unit,
     onProfileClick: () -> Unit,
     onTierItemClick: (String) -> Unit,
@@ -107,7 +104,6 @@ private fun SearchMainScreen(
             onRegionDropdownClick = onRegionDropdownClick,
             onSearchClick = onSearchClick,
             onRegionSelectClick = onRegionSelectClick,
-            onNoticeClick = onNoticeClick,
         )
 
         Row(
@@ -200,7 +196,6 @@ private fun SearchScreenPreview() {
             uiState = SearchContract.State(),
             onRegionSelectClick = {},
             onRegionDropdownClick = {},
-            onNoticeClick = {},
             onSearchClick = {},
             onProfileClick = {},
             onTierItemClick = {},
