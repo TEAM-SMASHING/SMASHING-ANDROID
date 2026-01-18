@@ -79,22 +79,18 @@ private fun AllReviewScreen(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    val isReviewEmpty = reviews.isEmpty() &&
-            uiState.gameReviewResult.run { bestCount == 0L && goodCount == 0L && badCount == 0L } &&
-            uiState.gameReviewResult.run { onTimeCount == 0L && goodMannerCount == 0L && fairPlayCount == 0L && fastResponseCount == 0L }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas),
-        ) {
+    ) {
         SmashingDefaultTopBar(
             modifier = Modifier.statusBarsPadding(),
             title = stringResource(receive_review),
             topBarType = TopBarType.BACK,
             onClick = onBackClick,
         )
-        if (isReviewEmpty) {
+        if (uiState.isReviewEmpty) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()

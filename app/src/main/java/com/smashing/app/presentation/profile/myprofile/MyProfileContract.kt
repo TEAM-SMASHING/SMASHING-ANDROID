@@ -17,7 +17,10 @@ interface MyProfileContract {
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
-    )
+    ){
+        val isReviewEmpty: Boolean
+        get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
+    }
 }
 
 sealed interface MyProfileUiState {
