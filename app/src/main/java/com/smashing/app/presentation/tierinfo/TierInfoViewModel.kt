@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
-import com.smashing.app.data.model.rank.TierSkill
 import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.findSportType
+import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportName
 import com.smashing.app.presentation.tierinfo.navigation.SportTierInfo
 import com.smashing.app.presentation.tierinfo.util.TierInfoProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,21 +43,7 @@ class TierInfoViewModel @Inject constructor(
     }
 
     fun updateTierInfoDetail(sportType: SportType, selectedTierInfoStyle: TierInfoStyle) {
-        val baseTierInfoDetail = tierInfoProvider.getTierInfoDetail(sportType, selectedTierInfoStyle)
-
-        val tierInfoDetail = if (selectedTierInfoStyle == TierInfoStyle.CHALLENGER) {
-            val challengerMessage = tierInfoProvider.getChallengerNoUpgradeMessage()
-            baseTierInfoDetail.copy(
-                skills = listOf(
-                    TierSkill(
-                        name = challengerMessage,
-                        description = "",
-                    )
-                )
-            )
-        } else {
-            baseTierInfoDetail
-        }
+        val tierInfoDetail = tierInfoProvider.getTierInfoDetail(sportType, selectedTierInfoStyle)
 
         _uiState.update {
             it.copy(
@@ -70,7 +55,7 @@ class TierInfoViewModel @Inject constructor(
     private fun updateInitialInfo(savedStateHandle: SavedStateHandle) {
         val route = savedStateHandle.toRoute<SportTierInfo>()
         val tierInfo = route.tierName.toTierInfoStyle()
-        val sportType = route.sportName.findSportType()
+        val sportType = findSportTypeToSportName(route.sportName)
 
         updateSportType(sportType)
         updateTierInfo(tierInfo)

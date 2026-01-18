@@ -6,8 +6,8 @@ data class TierSkill(
 )
 
 data class TierProgressInfo(
-    val percentText: String,
-    val levelText: String,
+    val percentText: String?,
+    val levelText: String?,
 )
 
 data class TierInfoDetail(
