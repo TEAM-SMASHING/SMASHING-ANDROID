@@ -30,7 +30,6 @@ fun SearchTopBar(
     onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onRegionSelectClick: () -> Unit,
-    onNoticeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -58,16 +57,6 @@ fun SearchTopBar(
             modifier = Modifier
                 .noRippleClickable(onClick = onSearchClick)
         )
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        Icon(
-            imageVector = ImageVector.vectorResource(ic_bell),
-            contentDescription = null,
-            tint = colors.iconPrimary,
-            modifier = Modifier
-                .noRippleClickable(onClick = onNoticeClick)
-        )
     }
 }
 
@@ -81,7 +70,6 @@ private fun SearchTopBarPreview() {
             regionItems = persistentListOf("양천구", "강서구", "장신구"),
             onRegionDropdownClick = {},
             onSearchClick = {},
-            onNoticeClick = {},
             onRegionSelectClick = {},
             modifier = Modifier
                 .background(color = colors.bgCanvas)

@@ -26,16 +26,40 @@ class MatchingViewModel @Inject constructor(
         fetchAcceptedMatchingList(isRefresh = true)
     }
 
+    // TODO SSE 연결 후 수정 예정
+    fun selectMatchingTab(type: MatchingType) {
+        updateMatchingType(type)
+        when (type) {
+            MatchingType.RECEIVE -> fetchReceivedMatchingList(true)
+            MatchingType.SEND -> fetchSentMatchingList(true)
+            MatchingType.ACCEPTED -> fetchAcceptedMatchingList(true)
+        }
+    }
+
     fun updateMatchingType(type: MatchingType) = _uiState.update {
         it.copy(selectedType = type)
     }
 
-    fun showDialogVisible() = _uiState.update {
-        it.copy(isDialogVisible = true)
+    fun showDeleteSentMatchingDialog(matchingId: String) = _uiState.update {
+        it.copy(
+            isDialogVisible = true,
+            selectedMatchingId = matchingId,
+        )
+    }
+
+    fun showDeleteAcceptedMatchingDialog(gameId: String) = _uiState.update {
+        it.copy(
+            isDialogVisible = true,
+            selectedGameId = gameId,
+        )
     }
 
     fun hideDialogVisible() = _uiState.update {
-        it.copy(isDialogVisible = false)
+        it.copy(
+            isDialogVisible = false,
+            selectedMatchingId = null,
+            selectedGameId = null,
+        )
     }
 
     fun fetchMatchingList() {
@@ -62,18 +86,13 @@ class MatchingViewModel @Inject constructor(
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
+                val updatedList = if (isRefresh) cursorPage.items.toImmutableList()
+                else (state.receivedList + cursorPage.items).toImmutableList()
+
                 state.copy(
-                    receivedList = if (isRefresh) {
-                        cursorPage.items.toImmutableList()
-                    } else {
-                        (state.receivedList + cursorPage.items).toImmutableList()
-                    },
+                    receivedList = updatedList,
                     receivedCursor = cursorPage.cursor,
-                    receivedUiState = if (cursorPage.items.isEmpty() && isRefresh) {
-                        MatchingUiState.Empty
-                    } else {
-                        MatchingUiState.Success
-                    },
+                    receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
                 )
             }
         }.onFailure { throwable ->
@@ -103,18 +122,13 @@ class MatchingViewModel @Inject constructor(
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
+                val updatedList = if (isRefresh) cursorPage.items.toImmutableList()
+                else (state.sentList + cursorPage.items).toImmutableList()
+
                 state.copy(
-                    sentList = if (isRefresh) {
-                        cursorPage.items.toImmutableList()
-                    } else {
-                        (state.sentList + cursorPage.items).toImmutableList()
-                    },
+                    sentList = updatedList,
                     sentCursor = cursorPage.cursor,
-                    sentUiState = if (cursorPage.items.isEmpty() && isRefresh) {
-                        MatchingUiState.Empty
-                    } else {
-                        MatchingUiState.Success
-                    },
+                    sentUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
                 )
             }
         }.onFailure { throwable ->
@@ -144,18 +158,13 @@ class MatchingViewModel @Inject constructor(
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
+                val updatedList = if (isRefresh) cursorPage.items.toImmutableList()
+                else (state.acceptedList + cursorPage.items).toImmutableList()
+
                 state.copy(
-                    acceptedList = if (isRefresh) {
-                        cursorPage.items.toImmutableList()
-                    } else {
-                        (state.acceptedList + cursorPage.items).toImmutableList()
-                    },
+                    acceptedList = updatedList,
                     acceptedCursor = cursorPage.cursor,
-                    acceptedUiState = if (cursorPage.items.isEmpty() && isRefresh) {
-                        MatchingUiState.Empty
-                    } else {
-                        MatchingUiState.Success
-                    },
+                    acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
                 )
             }
         }.onFailure { throwable ->
@@ -167,6 +176,94 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun acceptReceivedMatching(
+        matchingId: String,
+    ) = viewModelScope.launch {
+        matchingRepository.postAcceptedMatching(
+            matchingId = matchingId,
+        ).onSuccess {
+            _uiState.update { currentState ->
+                val updatedList = currentState.receivedList
+                    .filter { it.matchingId != matchingId }
+                    .toImmutableList()
+                currentState.copy(
+                    receivedList = updatedList,
+                    receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                )
+            }
+
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    receivedUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    fun rejectReceivedMatching(
+        matchingId: String,
+    ) = viewModelScope.launch {
+        matchingRepository.postRejectMatching(
+            matchingId = matchingId,
+        ).onSuccess {
+            _uiState.update { currentState ->
+                val updatedList = currentState.receivedList
+                    .filter { it.matchingId != matchingId }
+                    .toImmutableList()
+                currentState.copy(
+                    receivedList = updatedList,
+                    receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    receivedUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    fun deleteSentMatching() = viewModelScope.launch {
+        val matchingId = _uiState.value.selectedMatchingId ?: return@launch
+        hideDialogVisible()
+
+        matchingRepository.deleteSentMatching(
+            matchingId = matchingId,
+        ).onSuccess {
+            _uiState.update { currentState ->
+                val updatedList = currentState.sentList
+                    .filter { it.matchingId != matchingId }
+                    .toImmutableList()
+                currentState.copy(
+                    sentList = updatedList,
+                    sentUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    sentUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    fun confirmDeleteAcceptedMatching() = viewModelScope.launch {
+        val gameId = _uiState.value.selectedGameId ?: return@launch
+        hideDialogVisible()
+        
+        // TODO: API 구현 후 연결
+        // matchingRepository.deleteAcceptedMatching(gameId)
     }
 
     companion object {

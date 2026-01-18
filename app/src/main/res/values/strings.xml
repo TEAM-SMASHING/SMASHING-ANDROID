@@ -60,7 +60,6 @@
     <string name="sign_up_finish_title">환영합니다!</string>
     <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
 
-
     <!--Home  -->
     <string name="home_no_matching">아직 확정된 매칭이 없어요.\n지금 바로 매칭을 신청해보세요!</string>
     <string name="home_all_text">모두 보기</string>
@@ -331,11 +330,16 @@
     <string name="fast_response_review">응답이 빨라요</string>
     <string name="satisfaction_review">만족도</string>
     <string name="profile_rate_percent">%d%%</string>
-
     <!--Submit  -->
     <string name="submit_matching_result">매칭 결과 작성</string>
     <string name="submit_title">경기 결과를 작성해주세요</string>
     <string name="submit_description">악의적인 결과 작성 시 활동이 제한될 수 있어요</string>
     <string name="submit_winner">승자</string>
     <string name="submit_score">스코어</string>
+    <!--Confirm  -->
+    <string name="confirm_result">결과 확인</string>
+    <string name="confirm_result_title">경기 결과를 확인해주세요</string>
+
+
+
 </resources>

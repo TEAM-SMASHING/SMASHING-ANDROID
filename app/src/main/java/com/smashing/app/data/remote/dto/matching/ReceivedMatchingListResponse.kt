@@ -26,8 +26,6 @@ data class ReceivedMatchingListResponse(
         val reviewCount: Long,
         @SerialName("tierCode")
         val tierCode: String,
-        @SerialName("tierName")
-        val tierName: String,
         @SerialName("wins")
         val winCount: Int,
         @SerialName("losses")

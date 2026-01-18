@@ -47,9 +47,9 @@ import com.smashing.app.core.extension.noRippleClickable
 fun SmashingChip(
     style: ChipStyle,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = { },
     text: String? = null,
     icon: ImageVector? = null,
+    onClick: () -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -60,7 +60,7 @@ fun SmashingChip(
                 color = style.borderColor(),
                 shape = RoundedCornerShape(999.dp),
             )
-            .noRippleClickable(onClick = onClick, isEnabled = style != DISABLED)
+            .noRippleClickable(onClick = onClick)
             .padding(
                 horizontal = 16.dp,
                 vertical = if (icon != null) 8.dp else 10.dp,
