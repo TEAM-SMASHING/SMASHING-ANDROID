@@ -27,6 +27,9 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.extension.onBottomReached
+import com.smashing.app.presentation.matching.MatchingUiState
+import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
@@ -47,6 +50,7 @@ fun SearchMainRoute(
 
     SearchMainScreen(
         uiState = uiState,
+        onLoadMoreSearchList = viewModel::fetchRegionUsersList,
         onRegionSelectClick = navigateToRegionChange,
         onRegionDropdownClick = viewModel::updateSelectedRegion,
         onSearchClick = navigateToSearchInput,
@@ -69,6 +73,7 @@ fun SearchMainRoute(
 @Composable
 private fun SearchMainScreen(
     uiState: SearchContract.State,
+    onLoadMoreSearchList: () -> Unit,
     onRegionSelectClick: () -> Unit,
     onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
@@ -91,6 +96,8 @@ private fun SearchMainScreen(
     LaunchedEffect(uiState.searchList) {
         listState.scrollToItem(0)
     }
+
+    val currentIsLoading = uiState.searchRegionUsersUiState is SearchContract.SearchUiState.Loading
 
     Column(
         modifier = modifier
@@ -153,6 +160,12 @@ private fun SearchMainScreen(
         }
 
         if(uiState.searchList.isNotEmpty()) {
+            listState.onBottomReached(
+                threshold = 3,
+                onLoadMore = onLoadMoreSearchList,
+                isLoading = currentIsLoading,
+            )
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = modifier
@@ -163,7 +176,6 @@ private fun SearchMainScreen(
             ) {
                 items(
                     items = uiState.searchList,
-                    key = { it.userId },
                 ) {
                     MatchingCard(
                         cardState = MatchingCardState.Search(
@@ -194,6 +206,7 @@ private fun SearchScreenPreview() {
     SmashingAndroidTheme {
         SearchMainScreen(
             uiState = SearchContract.State(),
+            onLoadMoreSearchList = {},
             onRegionSelectClick = {},
             onRegionDropdownClick = {},
             onSearchClick = {},
