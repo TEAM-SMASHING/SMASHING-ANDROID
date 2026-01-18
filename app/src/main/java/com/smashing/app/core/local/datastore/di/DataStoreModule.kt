@@ -14,12 +14,20 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
     private const val TOKEN_PREFERENCE_NAME = "token_preference"
+    private const val USER_PREFERENCE_NAME = "user_preference"
 
     private val Context.tokenDataStore by preferencesDataStore(TOKEN_PREFERENCE_NAME)
+    private val Context.userDataStore by preferencesDataStore(USER_PREFERENCE_NAME)
 
     @TokenDataStore
     @Provides
     fun provideTokenDataStore(
         @ApplicationContext context: Context,
     ): DataStore<Preferences> = context.tokenDataStore
+
+    @UserDataStore
+    @Provides
+    fun provideUserDataStore(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> = context.userDataStore
 }
