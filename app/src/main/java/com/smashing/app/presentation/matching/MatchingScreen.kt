@@ -79,7 +79,6 @@ private fun MatchingScreen(
     uiState: MatchingContract.State,
     onLoadMoreMatchingList: () -> Unit,
     navigateToSubmit: () -> Unit,
-    navigateToConfirm: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
@@ -304,7 +303,6 @@ private fun MatchingScreenPreview() {
         MatchingScreen(
             navigateToSubmit = {},
             uiState = MatchingContract.State(),
-            navigateToConfirm = {},
             onTabClick = {},
             onCardCloseClick = {},
             onDialogDismissClick = {},
