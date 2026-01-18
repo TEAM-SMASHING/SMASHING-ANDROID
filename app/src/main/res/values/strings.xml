@@ -70,11 +70,11 @@
 
     <!-- ========== Badminton Tier Info ========== -->
     <!-- Tier Info: Badminton - Iron -->
-    <string name="tier_badminton_Iron_percent">상위 100%</string>
+    <string name="tier_badminton_iron_percent">상위 100%</string>
 
     <!-- Skills: Badminton - Iron -->
-    <string name="skill_badminton_Iron_name">클리어</string>
-    <string name="skill_badminton_Iron_description">코트 뒤쪽으로 높고 길게 보내 상대를 뒤로 밀어내는 기본 스트로크</string>
+    <string name="skill_badminton_iron_name">클리어</string>
+    <string name="skill_badminton_iron_description">코트 뒤쪽으로 높고 길게 보내 상대를 뒤로 밀어내는 기본 스트로크</string>
 
 
     <!-- Tier Info: Badminton - Bronze -->
@@ -144,11 +144,11 @@
     <!-- ========== Ping Pong Tier Info ========== -->
 
     <!-- Tier Info: Ping Pong - Iron -->
-    <string name="tier_pingpong_Iron_percent">상위 100%</string>
+    <string name="tier_pingpong_iron_percent">상위 100%</string>
 
     <!-- Skills: Ping Pong - Iron -->
-    <string name="skill_pingpong_Iron_name">당신은 가공되지 않은 원석입니다.</string>
-    <string name="skill_pingpong_Iron_description">지금 바로 상대를 찾아 승급에 도전해 보세요!</string>
+    <string name="skill_pingpong_iron_name">당신은 가공되지 않은 원석입니다.</string>
+    <string name="skill_pingpong_iron_description">지금 바로 상대를 찾아 승급에 도전해 보세요!</string>
 
     <!-- Tier Info: Ping Pong - Bronze -->
     <string name="tier_pingpong_bronze_percent">상위 80%</string>
@@ -217,11 +217,11 @@
     <!-- ========== Tennis Tier Info ========== -->
 
     <!-- Tier Info: Tennis - Iron -->
-    <string name="tier_tennis_Iron_percent">상위 100%</string>
+    <string name="tier_tennis_iron_percent">상위 100%</string>
 
     <!-- Skills: Tennis - Iron -->
-    <string name="skill_tennis_Iron_name">포핸드 스트로크</string>
-    <string name="skill_tennis_Iron_description">기본 자세로 공을 넘기며 랠리를 이어갈 수 있는 수준</string>
+    <string name="skill_tennis_iron_name">포핸드 스트로크</string>
+    <string name="skill_tennis_iron_description">기본 자세로 공을 넘기며 랠리를 이어갈 수 있는 수준</string>
 
     <!-- Tier Info: Tennis - Bronze -->
     <string name="tier_tennis_bronze_percent">상위 60%</string>
