@@ -34,7 +34,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.write.component.WriteResultContent
-import kotlinx.collections.immutable.persistentListOf
+import com.smashing.app.presentation.write.confirm.type.ConfirmDenyReason
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ConfirmResultRoute(
@@ -78,12 +79,8 @@ private fun ConfirmResultScreen(
 ) {
     var showExitBottomSheet by remember { mutableStateOf(false) }
     var selectedReason by remember { mutableStateOf("") }
-    val bottomSheetItems = persistentListOf(
-        "승자가 잘못됐어요",
-        "스코어가 잘못됐어요",
-        "승자와 스코어가 모두 잘못됐어요",
-        "아직 진행하지 않은 경기에요",
-    )
+    val bottomSheetItems = ConfirmDenyReason.entries.map { it.description }.toPersistentList()
+
 
     Column(
         modifier = modifier
