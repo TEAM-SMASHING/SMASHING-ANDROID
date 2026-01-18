@@ -63,4 +63,19 @@ class MatchingRepositoryImpl @Inject constructor(
         ).requireData()
     }
 
+    override suspend fun deleteSentMatching(
+        matchingId: String,
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.deleteSentMatching(
+            matchingId = matchingId,
+        ).requireData()
+    }
+
+    override suspend fun postRejectMatching(
+        matchingId: String,
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.postRejectMatching(
+            matchingId = matchingId,
+        ).requireData()
+    }
 }

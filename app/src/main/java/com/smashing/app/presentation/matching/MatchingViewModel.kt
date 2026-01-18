@@ -187,7 +187,7 @@ class MatchingViewModel @Inject constructor(
         ).onSuccess {
             _uiState.update { currentState ->
                 currentState.copy(
-                    receivedList = _uiState.value.receivedList
+                    receivedList = currentState.receivedList
                         .filter { it.matchingId != matchingId }
                         .toImmutableList()
                 )
@@ -195,7 +195,55 @@ class MatchingViewModel @Inject constructor(
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    acceptedUiState = MatchingUiState.Failure(
+                    receivedUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    fun rejectReceivedMatching(
+        matchingId: String,
+    ) = viewModelScope.launch {
+        matchingRepository.postRejectMatching(
+            matchingId = matchingId,
+        ).onSuccess {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    receivedList = currentState.receivedList
+                        .filter { it.matchingId != matchingId }
+                        .toImmutableList()
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    receivedUiState = MatchingUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    fun deleteSentMatching(
+        matchingId: String,
+    ) = viewModelScope.launch {
+        matchingRepository.deleteSentMatching(
+            matchingId = matchingId,
+        ).onSuccess {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    sentList = currentState.sentList
+                        .filter { it.matchingId != matchingId }
+                        .toImmutableList()
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    sentUiState = MatchingUiState.Failure(
                         throwable.message ?: "Unknown error"
                     )
                 )

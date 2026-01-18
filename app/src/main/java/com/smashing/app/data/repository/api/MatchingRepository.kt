@@ -29,4 +29,12 @@ interface MatchingRepository {
     suspend fun postAcceptedMatching(
         matchingId: String,
     ): Result<Unit>
+
+    suspend fun deleteSentMatching(
+        matchingId: String,
+    ): Result<Unit>
+
+    suspend fun postRejectMatching(
+        matchingId: String,
+    ): Result<Unit>
 }

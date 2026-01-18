@@ -54,4 +54,16 @@ class MatchingRemoteDataSourceImpl @Inject constructor(
     ): BaseResponse<Unit> = matchingService.postAcceptedMatching(
         matchingId = matchingId,
     )
+
+    override suspend fun deleteSentMatching(
+        matchingId: String,
+    ): BaseResponse<Unit> = matchingService.deleteSentMatching(
+        matchingId = matchingId,
+    )
+
+    override suspend fun postRejectMatching(
+        matchingId: String,
+    ): BaseResponse<Unit> = matchingService.postRejectMatching(
+        matchingId = matchingId,
+    )
 }

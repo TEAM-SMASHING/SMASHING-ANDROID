@@ -31,4 +31,11 @@ interface MatchingRemoteDataSource {
         matchingId: String,
     ): BaseResponse<Unit>
 
+    suspend fun deleteSentMatching(
+        matchingId: String,
+    ): BaseResponse<Unit>
+
+    suspend fun postRejectMatching(
+        matchingId: String,
+    ): BaseResponse<Unit>
 }

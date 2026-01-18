@@ -6,6 +6,7 @@ import com.smashing.app.data.remote.dto.matching.AcceptedMatchingListResponse
 import com.smashing.app.data.remote.dto.matching.ReceivedMatchingListResponse
 import com.smashing.app.data.remote.dto.matching.SentMatchingListResponse
 import com.smashing.app.data.type.OrderType
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -47,6 +48,18 @@ interface MatchingService {
 
     @POST("/api/v1/matchings/{matchingId}/accept")
     suspend fun postAcceptedMatching(
+        @Path("matchingId")
+        matchingId: String,
+    ): BaseResponse<Unit>
+
+    @DELETE("/api/v1/matchings/{matchingId}")
+    suspend fun deleteSentMatching(
+        @Path("matchingId")
+        matchingId: String,
+    ): BaseResponse<Unit>
+
+    @POST("/api/v1/matchings/{matchingId}/reject")
+    suspend fun postRejectMatching(
         @Path("matchingId")
         matchingId: String,
     ): BaseResponse<Unit>
