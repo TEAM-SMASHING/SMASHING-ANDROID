@@ -22,7 +22,7 @@ fun NavGraphBuilder.regionGraph(
     composable<Region> {
         RegionRoute(
             modifier = Modifier.padding(innerPadding),
-            navigateToRegionChange = { region ->
+            navigateToBackStack = { region ->
                 navController.setRegionResult(region)
                 navController.navigateUp()
             },

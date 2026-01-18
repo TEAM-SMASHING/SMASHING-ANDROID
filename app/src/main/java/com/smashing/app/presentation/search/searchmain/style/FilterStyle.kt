@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search.style
+package com.smashing.app.presentation.search.searchmain.style
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable

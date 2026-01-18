@@ -12,4 +12,5 @@ data class SentMatching(
     val reviewCount: Long,
     val winCount: Int,
     val loseCount: Int,
+    val createdAt: String,
 )

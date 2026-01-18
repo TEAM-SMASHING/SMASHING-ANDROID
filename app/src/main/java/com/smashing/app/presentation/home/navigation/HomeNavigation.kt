@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.home.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -13,9 +12,11 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.ranking.navigation.navigateToRanking
 import com.smashing.app.presentation.region.navigation.getRegionResult
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.removeRegionResult
+import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(
@@ -35,9 +36,13 @@ fun NavGraphBuilder.homeGraph(
     ) {
         composable<HomeUser> {
             HomeRoute(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier,
                 navigateToNotice = navController::navigateToNotice,
                 navigateToRegionChange = navController::navigateToRegionChange,
+                navigateToRanking = navController::navigateToRanking,
+                navigateToTierInfo = { tierInfoStyle ->
+                    navController.navigateToTierInfo(tierInfoStyle.name)
+                },
             )
         }
 
@@ -45,7 +50,7 @@ fun NavGraphBuilder.homeGraph(
             val savedStateHandle = backStackEntry.savedStateHandle
 
             RegionChangeRoute(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier,
                 navigateToRegion = navController::navigateToRegion,
                 navigateUp = navController::navigateUp,
                 regionResult = savedStateHandle.getRegionResult(),

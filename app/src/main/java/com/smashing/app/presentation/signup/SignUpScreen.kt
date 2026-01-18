@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.signup
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,8 +46,8 @@ import com.smashing.app.presentation.signup.component.location.SignUpLocation
 import com.smashing.app.presentation.signup.component.nickname.SignUpNickName
 import com.smashing.app.core.designsystem.component.sport.SportSelector
 import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
-import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
+import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
 import kotlinx.collections.immutable.persistentListOf
 
@@ -54,12 +55,22 @@ private const val MAX_STEP = 6
 
 @Composable
 fun SignUpRoute(
+    regionResult: Region?,
+    onRegionResultConsumed: () -> Unit,
+    navigateToRegion: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(regionResult) {
+        if (regionResult != null) {
+            viewModel.updateSelectedRegion(regionResult)
+            onRegionResultConsumed()
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -81,7 +92,8 @@ fun SignUpRoute(
         onGenderSelected = viewModel::updateSelectedGender,
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
-        onBackClick = {},
+        onAddressClick = navigateToRegion,
+        onBackClick = viewModel::deleteCurrentStep,
         modifier = modifier,
         onBtnClick = {
             if (uiState.currentStep < MAX_STEP + 1)
@@ -105,11 +117,16 @@ private fun SignUpScreen(
     onGenderSelected: (GenderType) -> Unit,
     onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
+    onAddressClick:() -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
+
+    BackHandler (enabled = uiState.currentStep > 0){
+        onBackClick()
+    }
 
     Column(
         modifier = modifier
@@ -174,8 +191,16 @@ private fun SignUpScreen(
                         onSkillSelected = onSkillSelected,
                     )
 
-                    else -> SignUpLocation(
-                        onAddressClick = {},
+                    6 -> SignUpLocation(
+                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
+                        isAddressExist = if (uiState.selectedRegion != null) true else false,
+                        onAddressClick = onAddressClick,
+                    )
+
+                    else -> SignUpNickName(
+                        nickNameState = nickNameState,
+                        nickNameErrorText = uiState.nickNameErrorText,
+                        nickNameConfirmText = uiState.nickNameConfirmText,
                     )
                 }
             } else {
@@ -221,6 +246,7 @@ private fun SignUpScreenPreview() {
             onSportSelected = {},
             selectedSkill = null,
             onSkillSelected = {},
+            onAddressClick = {},
             onBackClick = {},
             onBtnClick = { currentStep = currentStep + 1 },
             modifier = Modifier.background(color = colors.bgCanvas),

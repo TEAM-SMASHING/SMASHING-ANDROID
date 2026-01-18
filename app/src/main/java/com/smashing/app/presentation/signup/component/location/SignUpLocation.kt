@@ -2,7 +2,6 @@ package com.smashing.app.presentation.signup.component.location
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,15 +21,14 @@ import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.presentation.signup.component.SignUpTitle
 import com.smashing.app.R.string.sign_up_location_title
 import com.smashing.app.R.string.sign_up_location_subtitle
-import com.smashing.app.R.string.sign_up_location_placeholder
 
 
 @Composable
 fun SignUpLocation(
+    addressText: String ,
+    isAddressExist: Boolean,
     onAddressClick: () -> Unit,
     modifier: Modifier = Modifier,
-    addressText: String = stringResource(sign_up_location_placeholder),
-    isAddressExist: Boolean = false,
 ) {
     Column(
         modifier = modifier,
@@ -71,8 +69,10 @@ fun SignUpLocation(
 private fun SignUpLocationPreview() {
     SmashingAndroidTheme {
         SignUpLocation(
+            addressText = "주소를 검색해주세요",
+            isAddressExist = false,
             onAddressClick = {},
-            modifier = Modifier.background(color = colors.bgCanvas),
+            modifier = Modifier.background(color = colors.bgCanvas)
         )
     }
 }

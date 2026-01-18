@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -25,9 +24,13 @@ import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.navigateToAddSports
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
+import com.smashing.app.presentation.ranking.navigation.rankingGraph
+import com.smashing.app.presentation.region.navigation.navigateToRegion
+import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
+import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
 import com.smashing.app.presentation.write.navigation.navigateToConfirm
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import com.smashing.app.presentation.write.navigation.writeGraph
@@ -79,7 +82,7 @@ private fun MainNavHost(
         )
 
         searchGraph(
-            innerPadding = innerPadding,
+            navController = appState.navController,
         )
 
         matchingGraph(
@@ -122,6 +125,16 @@ private fun MainNavHost(
         )
 
         signUpGraph(
+            navigateToRegion = {
+                appState.navController.navigateToRegion(
+                    navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    },
+                )
+            },
             navigateToHome = {
                 appState.navController.navigateToHome(
                     navOptions = navOptions {
@@ -158,11 +171,15 @@ private fun MainNavHost(
             innerPadding = innerPadding,
             navController = appState.navController,
         )
-    }
-}
 
-fun regionGraph(
-    innerPadding: PaddingValues,
-    navController: NavHostController
-) {
+        rankingGraph(
+            innerPadding = innerPadding,
+            navigateUp = appState.navController::navigateUp,
+        )
+
+        tierInfoGraph(
+            innerPadding = innerPadding,
+            navController = appState.navController,
+        )
+    }
 }
