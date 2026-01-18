@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.profile.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -12,7 +11,6 @@ import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.profile.myprofile.ProfileRoute
-import com.smashing.app.presentation.addsports.AddSportsRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import kotlinx.serialization.Serializable
 
@@ -24,10 +22,6 @@ fun NavController.navigateToReview(
     navOptions: NavOptions? = null,
 ) = navigate(Review, navOptions)
 
-
-fun NavController.navigateToAddSports(
-    navOptions: NavOptions? = null,
-) = navigate(AddSports, navOptions)
 
 fun NavGraphBuilder.profileGraph(
     navigateUp: () -> Unit,
@@ -53,12 +47,7 @@ fun NavGraphBuilder.profileGraph(
                 navigateUp = navigateUp,
             )
         }
-        composable<AddSports> {
-            AddSportsRoute(
-                modifier = Modifier.fillMaxSize(),
-                navigateToUser = navigateUp,
-                )
-        }
+
     }
 }
 
@@ -70,8 +59,5 @@ data object ProfileUser : MainTabRoute
 
 @Serializable
 data object Review : Route
-
-@Serializable
-data object AddSports : Route
 
 
