@@ -186,12 +186,19 @@ class MatchingViewModel @Inject constructor(
             matchingId = matchingId,
         ).onSuccess {
             _uiState.update { currentState ->
+                val updatedList = currentState.receivedList
+                    .filter { it.matchingId != matchingId }
+                    .toImmutableList()
                 currentState.copy(
-                    receivedList = currentState.receivedList
-                        .filter { it.matchingId != matchingId }
-                        .toImmutableList()
+                    receivedList = updatedList,
+                    receivedUiState = if (updatedList.isEmpty()) {
+                        MatchingUiState.Empty
+                    } else {
+                        MatchingUiState.Success
+                    }
                 )
             }
+
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
@@ -210,10 +217,16 @@ class MatchingViewModel @Inject constructor(
             matchingId = matchingId,
         ).onSuccess {
             _uiState.update { currentState ->
+                val updatedList = currentState.receivedList
+                    .filter { it.matchingId != matchingId }
+                    .toImmutableList()
                 currentState.copy(
-                    receivedList = currentState.receivedList
-                        .filter { it.matchingId != matchingId }
-                        .toImmutableList()
+                    receivedList = updatedList,
+                    receivedUiState = if (updatedList.isEmpty()) {
+                        MatchingUiState.Empty
+                    } else {
+                        MatchingUiState.Success
+                    }
                 )
             }
         }.onFailure { throwable ->
@@ -234,10 +247,16 @@ class MatchingViewModel @Inject constructor(
             matchingId = matchingId,
         ).onSuccess {
             _uiState.update { currentState ->
+                val updatedList = currentState.sentList
+                    .filter { it.matchingId != matchingId }
+                    .toImmutableList()
                 currentState.copy(
-                    sentList = currentState.sentList
-                        .filter { it.matchingId != matchingId }
-                        .toImmutableList()
+                    sentList = updatedList,
+                    sentUiState = if (updatedList.isEmpty()) {
+                        MatchingUiState.Empty
+                    } else {
+                        MatchingUiState.Success
+                    }
                 )
             }
         }.onFailure { throwable ->

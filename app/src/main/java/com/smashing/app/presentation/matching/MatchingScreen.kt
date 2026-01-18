@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.matching
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -72,8 +73,8 @@ fun MatchingRoute(
         onDialogDismissClick = viewModel::hideDialogVisible,
         onReceivedAcceptClick = viewModel::acceptReceivedMatching,
         onProfileClick = { userId -> /* TODO: Navigate to profile */ },
-        onSentCloseClick = { matchingId -> /* TODO: Cancel sent matching */ },
-        onReceivedSkipClick = { matchingId -> /* TODO: Skip received matching */ },
+        onSentCloseClick = viewModel::deleteSentMatching,
+        onReceivedSkipClick = viewModel::rejectReceivedMatching,
         onAcceptedConfirmClick = { gameId -> navigateToSubmit() },
         onAcceptedKakaoLinkClick = { url -> /* TODO: Open Kakao link */ },
         onAcceptedCloseClick = { gameId -> /* TODO: Cancel accepted matching */ },
@@ -269,7 +270,10 @@ private fun MatchingList(
         modifier = modifier,
     ) {
         when (uiState.selectedType) {
-            MatchingType.RECEIVE -> items(uiState.receivedList) {
+            MatchingType.RECEIVE -> items(
+                items = uiState.receivedList,
+                key = { it.matchingId }
+            ) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
                         userId = it.userId,
@@ -283,10 +287,18 @@ private fun MatchingList(
                         onSkipClick = { onReceivedSkipClick(it.matchingId) },
                         onAcceptClick = { onReceivedAcceptClick(it.matchingId) },
                     ),
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = tween(durationMillis = 300),
+                        fadeOutSpec = tween(durationMillis = 300),
+                        placementSpec = tween(durationMillis = 300),
+                    ),
                 )
             }
 
-            MatchingType.SEND -> items(uiState.sentList) {
+            MatchingType.SEND -> items(
+                items = uiState.sentList,
+                key = { it.matchingId }
+            ) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
                         userId = it.userId,
@@ -299,10 +311,18 @@ private fun MatchingList(
                         loseCount = it.loseCount,
                         reviewCount = it.reviewCount,
                     ),
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = tween(durationMillis = 300),
+                        fadeOutSpec = tween(durationMillis = 300),
+                        placementSpec = tween(durationMillis = 300),
+                    ),
                 )
             }
 
-            MatchingType.ACCEPTED -> items(uiState.acceptedList) {
+            MatchingType.ACCEPTED -> items(
+                items = uiState.acceptedList,
+                key = { it.gameId }
+            ) {
                 MatchingCard(
                     cardState = MatchingCardState.Confirm(
                         userId = it.userId,
@@ -313,6 +333,11 @@ private fun MatchingList(
                         onConfirmClick = { onAcceptedConfirmClick(it.gameId) },
                         onKakaoLinkClick = { onAcceptedKakaoLinkClick(it.openChatUrl) },
                         onCloseClick = { onAcceptedCloseClick(it.gameId) },
+                    ),
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = tween(durationMillis = 300),
+                        fadeOutSpec = tween(durationMillis = 300),
+                        placementSpec = tween(durationMillis = 300),
                     ),
                 )
             }
