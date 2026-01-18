@@ -23,7 +23,6 @@ fun NavGraphBuilder.matchingGraph(
     composable<Matching> {
         MatchingRoute(
             navigateToSubmit = navigateToSubmit,
-            navigateToConfirm = navigateToConfirm,
             modifier = Modifier.padding(innerPadding),
         )
     }

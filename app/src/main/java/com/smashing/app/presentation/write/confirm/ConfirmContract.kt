@@ -14,8 +14,8 @@ interface ConfirmContract {
     data class State(
         val submitter: MatchPlayer = MatchPlayer("", ""),
         val receiver: MatchPlayer = MatchPlayer("", ""),
-        val submitterScore: Int = 3,
-        val receiverScore: Int = 1,
+        val submitterScore: Int = 0,
+        val receiverScore: Int = 0,
         val winner: MatchPlayer? = null,
         val loser: MatchPlayer? = null,
         val isButtonEnabled: Boolean = false,
@@ -26,10 +26,7 @@ interface ConfirmContract {
         val rating: String = "",
         val reviewerNickname: String = "",
         val revieweeNickname: String = "",
-        val tag: ImmutableList<String> = persistentListOf(
-            "FAIR_PLAY",
-            "GOOD_MANNER"
-        ),
+        val tag: ImmutableList<String> = persistentListOf(),
         val content: String? = null,
     )
 }
