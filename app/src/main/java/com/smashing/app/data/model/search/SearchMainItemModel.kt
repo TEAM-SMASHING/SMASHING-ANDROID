@@ -9,8 +9,8 @@ data class SearchMainItemModel(
     val userId: String,
     val nickname: String,
     val gender: GenderType,
-    val tierId: TierType,
+    val tierType: TierType,
     val wins: Int,
     val losses: Int,
-    val reviews: Int,
+    val reviews: Long,
 )
