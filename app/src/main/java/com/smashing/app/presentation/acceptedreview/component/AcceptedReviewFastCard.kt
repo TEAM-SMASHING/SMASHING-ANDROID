@@ -18,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,7 +35,7 @@ fun ReviewFastCard(
     iconId: Int,
     rating: String,
     reviewText: String?,
-    nickname:String,
+    nickname: String,
     tag: ImmutableList<String>,
     modifier: Modifier = Modifier
 ) {
@@ -52,8 +54,8 @@ fun ReviewFastCard(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ReviewHeader(
-            iconId= iconId,
-            rating= rating,
+            iconId = iconId,
+            rating = rating,
         )
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -72,7 +74,7 @@ fun ReviewFastCard(
 
         if (isEmptyReview) {
             Text(
-                text = nickname+"님이 구체적인 후기는 남기지 않았어요",
+                text = nickname + "님이 구체적인 후기는 남기지 않았어요",
                 style = SmashingTheme.typography.md.regular16,
                 color = SmashingTheme.colors.txtTertiary,
                 textAlign = TextAlign.Center
@@ -115,10 +117,10 @@ private fun ReviewHeader(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Icon(
-            painter = painterResource(id = iconId),
+            imageVector = (ImageVector.vectorResource(id = iconId)),
+            modifier = Modifier.size(72.dp),
             contentDescription = null,
             tint = Color.Unspecified,
-            modifier = Modifier.size(72.dp)
         )
         Text(
             text = rating,
