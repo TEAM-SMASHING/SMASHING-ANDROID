@@ -1,7 +1,5 @@
 package com.smashing.app.data.type
 
-import com.smashing.app.data.type.SportType.PING_PONG
-
 enum class SportType(
     val id: Long,
     val sportName: String,
@@ -25,9 +23,7 @@ enum class SportType(
 
     companion object {
         fun findSportType(sportId: Long): SportType = entries.find { it.id == sportId } ?: PING_PONG
+        fun findSportTypeToSportName(sportName: String): SportType = entries.find { it.sportName == sportName } ?: PING_PONG
+        fun findSportTypeToSportCode(sportCode: String): SportType = entries.find { it.code == sportCode } ?: PING_PONG
     }
-}
-
-fun String.findSportType(): SportType {
-    return SportType.entries.find { it.code == this || it.sportName == this } ?: PING_PONG
 }
