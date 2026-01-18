@@ -278,23 +278,19 @@ class MatchingViewModel @Inject constructor(
     fun handleAcceptedMatchingClick(matching: AcceptedMatching) = viewModelScope.launch {
         when (matching.resultStatus) {
             GameResultStatusType.PENDING_RESULT -> {
-                // 결과 작성하기 (첫 제출)
                 Timber.tag(TAG).d("결과 작성하기 - gameId: ${matching.gameId}")
                 _sideEffect.emit(SideEffect.NavigateToSubmit(matching.gameId))
             }
             GameResultStatusType.RESULT_REJECTED -> {
-                // 결과 반려 -> 재제출 (Confirm 화면)
                 Timber.tag(TAG).d("결과 재제출 - gameId: ${matching.gameId}")
                 _sideEffect.emit(SideEffect.NavigateToConfirm(matching.gameId))
             }
             GameResultStatusType.WAITING_CONFIRMATION -> {
-                // 결과 확인 (Confirm 화면)
                 Timber.tag(TAG).d("결과 확인 - gameId: ${matching.gameId}")
                 _sideEffect.emit(SideEffect.NavigateToConfirm(matching.gameId))
             }
             GameResultStatusType.CANCELED,
             GameResultStatusType.RESULT_CONFIRMED -> {
-                // 매칭 취소 대기, 결과 확인 완료 -> 클릭 불가
                 Timber.tag(TAG).d("클릭 불가 상태 - status: ${matching.resultStatus}, gameId: ${matching.gameId}")
             }
             GameResultStatusType.UNKNOWN -> {
