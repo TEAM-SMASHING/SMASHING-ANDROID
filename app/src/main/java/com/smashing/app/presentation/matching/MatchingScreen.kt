@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +51,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
+import com.smashing.app.core.extension.openUrl
+import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
 
@@ -64,6 +67,7 @@ fun MatchingRoute(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
@@ -85,7 +89,7 @@ fun MatchingRoute(
         onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
         onReceivedSkipClick = viewModel::rejectReceivedMatching,
         onAcceptedMatchingClick = viewModel::handleAcceptedMatchingClick,
-        onAcceptedKakaoLinkClick = { url -> /* TODO: Open Kakao link */ },
+        onAcceptedKakaoLinkClick = { kakaoLink -> context.openUrl(kakaoLink) },
         onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
         onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
         onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
@@ -104,7 +108,7 @@ private fun MatchingScreen(
     onProfileClick: (String) -> Unit = {},
     onSentCloseClick: (String) -> Unit = {},
     onReceivedSkipClick: (String) -> Unit = {},
-    onAcceptedMatchingClick: (com.smashing.app.data.model.matching.AcceptedMatching) -> Unit = {},
+    onAcceptedMatchingClick: (AcceptedMatching) -> Unit = {},
     onAcceptedKakaoLinkClick: (String?) -> Unit = {},
     onAcceptedCloseClick: (String) -> Unit = {},
     onConfirmDeleteSentMatching: () -> Unit = {},
@@ -251,7 +255,7 @@ private fun MatchingList(
     onSentCloseClick: (String) -> Unit,
     onReceivedSkipClick: (String) -> Unit,
     onReceivedAcceptClick: (String) -> Unit,
-    onAcceptedMatchingClick: (com.smashing.app.data.model.matching.AcceptedMatching) -> Unit,
+    onAcceptedMatchingClick: (AcceptedMatching) -> Unit,
     onAcceptedKakaoLinkClick: (String?) -> Unit,
     onAcceptedCloseClick: (String) -> Unit,
     modifier: Modifier = Modifier,
