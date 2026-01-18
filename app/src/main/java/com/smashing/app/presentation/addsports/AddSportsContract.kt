@@ -9,14 +9,15 @@ class AddSportsContract {
         val currentStep: Int = 1,
         val loadState: AddSportsUiState = AddSportsUiState.Idle,
         val addSportsInfo: AddSportsInfo = AddSportsInfo(
-            selectedSports = emptyList(),
+            selectedSports = null,
             selectedSkill = null,
         )
     ) {
         val isBtnEnabled: Boolean
             get() = when (currentStep) {
-                1 -> addSportsInfo.selectedSports.isNotEmpty()
+                1 -> addSportsInfo.selectedSports != null
                 2 -> addSportsInfo.selectedSkill != null
+
                 else -> false
             }
     }

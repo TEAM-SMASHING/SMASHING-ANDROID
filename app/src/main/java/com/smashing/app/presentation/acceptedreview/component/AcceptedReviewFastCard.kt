@@ -33,6 +33,7 @@ fun ReviewFastCard(
     iconId: Int,
     rating: String,
     reviewText: String?,
+    nickname:String,
     tag: ImmutableList<String>,
     modifier: Modifier = Modifier
 ) {
@@ -51,8 +52,8 @@ fun ReviewFastCard(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ReviewHeader(
-            iconId,
-            rating
+            iconId= iconId,
+            rating= rating,
         )
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -71,7 +72,7 @@ fun ReviewFastCard(
 
         if (isEmptyReview) {
             Text(
-                text = "님이 구체적인 후기는 남기지 않았어요",
+                text = nickname+"님이 구체적인 후기는 남기지 않았어요",
                 style = SmashingTheme.typography.md.regular16,
                 color = SmashingTheme.colors.txtTertiary,
                 textAlign = TextAlign.Center
@@ -137,6 +138,7 @@ private fun ReviewCheckCardPreview() {
             reviewText = "요즘은 두바이 쫀득쿠키가 유행이에요 맛있어요 근데 너무 비싸요 그치만 그 값을 해요 근데 비싸요  날씨가 너무 추워요 내일 눈이 와여 오늘은 새해에요 왜 벌써 2026인거죠 올해 태어난 사람은 2105년에 팔순이에요",
             tag = persistentListOf("승패를 깔끔하게 인정해요", "응답이 빨라요", "시간 약속을 잘 지켜요"),
             iconId = R.drawable.ic_crown,
+            nickname = "밤이달이",
         )
 
         ReviewFastCard(
@@ -144,6 +146,7 @@ private fun ReviewCheckCardPreview() {
             reviewText = null,
             tag = persistentListOf("승패를 깔끔하게 인정해요", "응답이 빨라요"),
             iconId = R.drawable.ic_crown,
+            nickname = "밤이달이",
         )
     }
 }
@@ -158,6 +161,7 @@ private fun ReviewCheckCardPreview2() {
             reviewText = "매너가 좋으셨습니다. 다음에 또 해요!",
             tag = persistentListOf(),
             iconId = R.drawable.ic_crown,
+            nickname = "밤이달이",
         )
 
         ReviewFastCard(
@@ -165,6 +169,7 @@ private fun ReviewCheckCardPreview2() {
             reviewText = "",
             tag = persistentListOf(),
             iconId = R.drawable.ic_crown,
+            nickname = "밤이달이",
         )
     }
 }

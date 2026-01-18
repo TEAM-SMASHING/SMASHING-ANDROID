@@ -65,7 +65,7 @@ fun AddSportsRoute(
 
     AddSportScreen(
         uiState = uiState,
-        selectedSport = uiState.addSportsInfo.selectedSports.firstOrNull(),
+        selectedSport = uiState.addSportsInfo.selectedSports,
         selectedSkill = uiState.addSportsInfo.selectedSkill,
         isBtnEnabled = uiState.isBtnEnabled,
         onSportSelected = viewModel::updateSelectedSport,
