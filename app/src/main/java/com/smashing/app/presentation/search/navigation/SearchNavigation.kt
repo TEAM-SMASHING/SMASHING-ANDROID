@@ -38,7 +38,6 @@ fun NavGraphBuilder.searchGraph(
 
             SearchMainRoute(
                 navigateToRegionChange = navController::navigateToRegionChange,
-                navigateToNotice = navController::navigateToNotice,
                 navigateToSearchInput = navController::navigateToSearchInput,
                 viewModel = viewModel,
             )

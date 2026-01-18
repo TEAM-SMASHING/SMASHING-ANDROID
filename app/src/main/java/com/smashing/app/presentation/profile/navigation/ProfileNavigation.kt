@@ -10,8 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.presentation.profile.ProfileRoute
-import com.smashing.app.presentation.profile.review.ReviewRoute
+import com.smashing.app.presentation.profile.myprofile.ProfileRoute
+import com.smashing.app.presentation.profile.review.AllReviewRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToProfile(
@@ -22,9 +22,11 @@ fun NavController.navigateToReview(
     navOptions: NavOptions? = null,
 ) = navigate(Review, navOptions)
 
+
 fun NavGraphBuilder.profileGraph(
     navigateUp: () -> Unit,
     navigateToReview: () -> Unit,
+    navigateToAddSports: () -> Unit,
     innerPadding: PaddingValues,
     updateBottomBar: (Boolean) -> Unit,
 ) {
@@ -33,20 +35,20 @@ fun NavGraphBuilder.profileGraph(
     ) {
         composable<ProfileUser> {
             ProfileRoute(
-                navigateToSportAdd = {},
+                navigateToSportAdd = navigateToAddSports,
                 navigateToTierGuide = {},
-                navigateToReviews = navigateToReview,
-                updateBottomBar = updateBottomBar
+                navigateToReview = navigateToReview,
+                updateBottomBar = updateBottomBar,
             )
         }
         composable<Review> {
-            ReviewRoute(
+            AllReviewRoute(
                 modifier = Modifier.padding(innerPadding),
                 navigateUp = navigateUp,
             )
         }
-    }
 
+    }
 }
 
 @Serializable
@@ -57,3 +59,5 @@ data object ProfileUser : MainTabRoute
 
 @Serializable
 data object Review : Route
+
+

@@ -43,7 +43,7 @@ fun SearchInputRoute(
     SearchInputScreen(
         uiState = uiState,
         items = uiState.suggestions,
-        searchState = viewModel.searchInput,
+        searchState = viewModel.searchInputState,
         onBackClick = navigateToSearchMain,
         onSuggestionItemClick = {},
         modifier = modifier,

@@ -16,13 +16,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.extension.toFriendlyString
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.data.model.profile.Review
+import com.smashing.app.data.model.review.GameReview
 
 @Composable
 fun ReviewItem(
-    review: Review,
+    review: GameReview,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -47,7 +46,7 @@ fun ReviewItem(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = review.confirmedAt.toFriendlyString(),
+                    text = review.createdAt,
                     style = SmashingTheme.typography.xs.medium12,
                     color = SmashingTheme.colors.txtTertiary,
                 )

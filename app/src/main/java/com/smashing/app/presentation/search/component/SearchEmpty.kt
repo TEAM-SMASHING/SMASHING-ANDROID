@@ -40,12 +40,12 @@ fun SearchEmpty(
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "검색 결과가 없습니다",
+            text = title,
             color = colors.txtSecondary,
             style = typography.lg.semibold18,
         )
         Text(
-            text = "다른 검색어를 입력해보세요",
+            text = subTitle,
             color = colors.txtTertiary,
             style = typography.sm.medium14,
         )

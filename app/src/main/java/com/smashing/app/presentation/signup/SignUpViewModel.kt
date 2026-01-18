@@ -83,7 +83,7 @@ class SignUpViewModel @Inject constructor(
     fun updateNickNameErrorText() = viewModelScope.launch {
         snapshotFlow { nickNameState.text }
             .debounce(NETWORK_DEBOUNCE)
-            .collect { nickNameText ->
+            .collectLatest { nickNameText ->
                 val text = nickNameText.toString()
                 val isNickNameValid = TextInputValidator.isTextInputValid(text)
 
@@ -214,10 +214,10 @@ class SignUpViewModel @Inject constructor(
     }
 
     companion object SignUpConstants {
-        const val NETWORK_DEBOUNCE = 500L
-        const val INVALID_NICKNAME_FORMAT = "특수문자는 사용할 수 없습니다."
-        const val VALID_NICKNAME_FORMAT = "사용 가능한 닉네임입니다."
-        const val DUPLICATE_NICKNAME = "이미 존재하는 닉네임입니다."
-        const val INVALID_OPEN_CHAT_FORMAT = "유효하지 않은 링크입니다."
+        private const val NETWORK_DEBOUNCE = 500L
+        private const val INVALID_NICKNAME_FORMAT = "특수문자는 사용할 수 없습니다."
+        private const val VALID_NICKNAME_FORMAT = "사용 가능한 닉네임입니다."
+        private const val DUPLICATE_NICKNAME = "이미 존재하는 닉네임입니다."
+        private const val INVALID_OPEN_CHAT_FORMAT = "유효하지 않은 링크입니다."
     }
 }
