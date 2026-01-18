@@ -22,10 +22,6 @@ class UserProfileContract {
         val isCompeteButtonEnabled: Boolean = false,
     )
 }
-//        val userAllProfile: ImmutableList<UserAllProfile> = persistentListOf(),
-//        val isMatchingRequest: Boolean = true,
-//        val isCompeteButtonEnabled: Boolean = false,
-//        val reviews: List<AllReview> = emptyList(),
 
 
 sealed interface UserProfileUiState {
