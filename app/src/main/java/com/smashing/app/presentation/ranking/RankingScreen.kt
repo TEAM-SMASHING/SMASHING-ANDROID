@@ -140,7 +140,7 @@ private fun RankingScreen(
                             userId = user.userId,
                             nickname = user.nickname,
                             rank = user.rank,
-                            tier = user.tierType,
+                            tier = user.tier,
                             lp = user.lp,
                             onClick = { navigateToProfile(user.userId) },
                             modifier = Modifier
@@ -253,7 +253,7 @@ fun RankingScreenPreview_OnlyFirst() {
                     userId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
-                    tierType = TierType.CHALLENGER,
+                    tier = TierType.CHALLENGER,
                     lp = 2500,
                 ),
             ).toImmutableList(),
@@ -262,7 +262,7 @@ fun RankingScreenPreview_OnlyFirst() {
                     userId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
-                    tierType = TierType.CHALLENGER,
+                    tier = TierType.CHALLENGER,
                     lp = 2500,
                 ),
             ).toImmutableList(),
@@ -272,77 +272,77 @@ fun RankingScreenPreview_OnlyFirst() {
     )
 }
 
-@Composable
-@Preview(backgroundColor = 0xFF000000, showBackground = true)
-fun RankingScreenPreview_TopTen() {
-    RankingScreen(
-        uiState = RankingContract.State(
-            totalRankingList =
-                listOf(
-                    UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
-                    UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
-                    UserRank("user3", "3위 유저", 3, TierType.CHALLENGER, 2400),
-                    UserRank("user4", "4위 유저", 4, TierType.DIAMOND_1, 2350),
-                    UserRank("user5", "5위 유저", 5, TierType.DIAMOND_1, 2300),
-                    UserRank("user6", "6위 유저", 6, TierType.DIAMOND_2, 2250),
-                    UserRank("user7", "7위 유저", 7, TierType.DIAMOND_2, 2200),
-                    UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
-                    UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
-                    UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
-                ).toImmutableList(),
-            topRankingList =
-                listOf(
-                    UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
-                    UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
-                    UserRank("user3", "3위 유저", 3, TierType.CHALLENGER, 2400),
-                ).toImmutableList(),
-            restRankingList =
-                listOf(
-                    UserRank("user4", "4위 유저", 4, TierType.DIAMOND_1, 2350),
-                    UserRank("user5", "5위 유저", 5, TierType.DIAMOND_1, 2300),
-                    UserRank("user6", "6위 유저", 6, TierType.DIAMOND_2, 2250),
-                    UserRank("user7", "7위 유저", 7, TierType.DIAMOND_2, 2200),
-                    UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
-                    UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
-                    UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
-                ).toImmutableList(),
-        ),
-        navigateUp = {},
-        navigateToProfile = {},
-    )
-}
-
-
-@Composable
-@Preview(backgroundColor = 0xFF000000, showBackground = true)
-fun RankingScreenPreview_TopTwenty() {
-    RankingScreen(
-        uiState = RankingContract.State(
-            totalRankingList =
-                listOf(
-                    UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
-                    UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
-                    UserRank("user3", "3위 유저", 3, TierType.CHALLENGER, 2400),
-                    UserRank("user4", "4위 유저", 4, TierType.DIAMOND_1, 2350),
-                    UserRank("user5", "5위 유저", 5, TierType.DIAMOND_1, 2300),
-                    UserRank("user6", "6위 유저", 6, TierType.DIAMOND_2, 2250),
-                    UserRank("user7", "7위 유저", 7, TierType.DIAMOND_2, 2200),
-                    UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
-                    UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
-                    UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
-                    UserRank("user11", "11위 유저", 11, TierType.PLATINUM_3, 2000),
-                    UserRank("user12", "12위 유저", 12, TierType.GOLD_1, 1950),
-                    UserRank("user13", "13위 유저", 13, TierType.GOLD_2, 1900),
-                    UserRank("user14", "14위 유저", 14, TierType.GOLD_3, 1850),
-                    UserRank("user15", "15위 유저", 15, TierType.SILVER_1, 1800),
-                    UserRank("user16", "16위 유저", 16, TierType.SILVER_2, 1750),
-                    UserRank("user17", "17위 유저", 17, TierType.SILVER_3, 1700),
-                    UserRank("user18", "18위 유저", 18, TierType.BRONZE_1, 1650),
-                    UserRank("user19", "19위 유저", 19, TierType.BRONZE_2, 1600),
-                    UserRank("user20", "20위 유저", 20, TierType.BRONZE_3, 1550),
-                ).toImmutableList()
-        ),
-        navigateUp = {},
-        navigateToProfile = {},
-    )
-}
+//@Composable
+//@Preview(backgroundColor = 0xFF000000, showBackground = true)
+//fun RankingScreenPreview_TopTen() {
+//    RankingScreen(
+//        uiState = RankingContract.State(
+//            totalRankingList =
+//                listOf(
+//                    UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
+//                    UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
+//                    UserRank("user3", "3위 유저", 3, TierType.CHALLENGER, 2400),
+//                    UserRank("user4", "4위 유저", 4, TierType.DIAMOND_1, 2350),
+//                    UserRank("user5", "5위 유저", 5, TierType.DIAMOND_1, 2300),
+//                    UserRank("user6", "6위 유저", 6, TierType.DIAMOND_2, 2250),
+//                    UserRank("user7", "7위 유저", 7, TierType.DIAMOND_2, 2200),
+//                    UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
+//                    UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
+//                    UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
+//                ).toImmutableList(),
+//            topRankingList =
+//                listOf(
+//                    UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
+//                    UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
+//                    UserRank("user3", "3위 유저", 3, TierType.CHALLENGER, 2400),
+//                ).toImmutableList(),
+//            restRankingList =
+//                listOf(
+//                    UserRank("user4", "4위 유저", 4, TierType.DIAMOND_1, 2350),
+//                    UserRank("user5", "5위 유저", 5, TierType.DIAMOND_1, 2300),
+//                    UserRank("user6", "6위 유저", 6, TierType.DIAMOND_2, 2250),
+//                    UserRank("user7", "7위 유저", 7, TierType.DIAMOND_2, 2200),
+//                    UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
+//                    UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
+//                    UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
+//                ).toImmutableList(),
+//        ),
+//        navigateUp = {},
+//        navigateToProfile = {},
+//    )
+//}
+//
+//
+//@Composable
+//@Preview(backgroundColor = 0xFF000000, showBackground = true)
+//fun RankingScreenPreview_TopTwenty() {
+//    RankingScreen(
+//        uiState = RankingContract.State(
+//            totalRankingList =
+//                listOf(
+//                    UserRank("user1", "1위 유저", 1, TierType.CHALLENGER, 2500),
+//                    UserRank("user2", "2위 유저", 2, TierType.CHALLENGER, 2450),
+//                    UserRank("user3", "3위 유저", 3, TierType.CHALLENGER, 2400),
+//                    UserRank("user4", "4위 유저", 4, TierType.DIAMOND_1, 2350),
+//                    UserRank("user5", "5위 유저", 5, TierType.DIAMOND_1, 2300),
+//                    UserRank("user6", "6위 유저", 6, TierType.DIAMOND_2, 2250),
+//                    UserRank("user7", "7위 유저", 7, TierType.DIAMOND_2, 2200),
+//                    UserRank("user8", "8위 유저", 8, TierType.DIAMOND_3, 2150),
+//                    UserRank("user9", "9위 유저", 9, TierType.PLATINUM_1, 2100),
+//                    UserRank("user10", "10위 유저", 10, TierType.PLATINUM_2, 2050),
+//                    UserRank("user11", "11위 유저", 11, TierType.PLATINUM_3, 2000),
+//                    UserRank("user12", "12위 유저", 12, TierType.GOLD_1, 1950),
+//                    UserRank("user13", "13위 유저", 13, TierType.GOLD_2, 1900),
+//                    UserRank("user14", "14위 유저", 14, TierType.GOLD_3, 1850),
+//                    UserRank("user15", "15위 유저", 15, TierType.SILVER_1, 1800),
+//                    UserRank("user16", "16위 유저", 16, TierType.SILVER_2, 1750),
+//                    UserRank("user17", "17위 유저", 17, TierType.SILVER_3, 1700),
+//                    UserRank("user18", "18위 유저", 18, TierType.BRONZE_1, 1650),
+//                    UserRank("user19", "19위 유저", 19, TierType.BRONZE_2, 1600),
+//                    UserRank("user20", "20위 유저", 20, TierType.BRONZE_3, 1550),
+//                ).toImmutableList()
+//        ),
+//        navigateUp = {},
+//        navigateToProfile = {},
+//    )
+//}
