@@ -19,6 +19,7 @@ import com.smashing.app.R.drawable.ic_tennis
 import com.smashing.app.R.string.sign_up_sport_subtitle
 import com.smashing.app.R.string.sign_up_sport_title
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
+import com.smashing.app.core.designsystem.mapper.icon
 import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
@@ -54,12 +55,8 @@ fun SportSelector(
                     text = item.sportName,
                     style = if (selectedSport == item) ChipStyle.ACTIVE else ChipStyle.INACTIVE,
                     onClick = { onSportSelected(item) },
-                    icon = when (item) {
-                        SportType.BADMINTON -> ImageVector.vectorResource(ic_badminton)
-                        SportType.PING_PONG -> ImageVector.vectorResource(ic_pingpong)
-                        SportType.TENNIS -> ImageVector.vectorResource(ic_tennis)
-                    },
-                )
+                    icon = ImageVector.vectorResource(item.icon()),
+                    )
 
                 if (index != items.lastIndex) {
                     Spacer(modifier = Modifier.width(10.dp))
