@@ -18,7 +18,7 @@ object ConvertTimeProvider {
         val years = ChronoUnit.YEARS.between(createdTime, now)
 
         val convertedTime = when {
-            minutes < 1 -> ""
+            minutes < 1 -> "방금 전"
             minutes < 60 -> "${minutes}분 전"
             hours < 24 -> "${hours}시간 전"
             days < 7 -> "${days}일 전"

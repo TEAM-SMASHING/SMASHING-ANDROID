@@ -50,10 +50,13 @@ import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.presentation.profile.component.ReviewItem
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract
+import com.smashing.app.presentation.search.SearchContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -68,6 +71,7 @@ fun AllReviewRoute(
     AllReviewScreen(
         modifier = modifier,
         uiState = uiState,
+        onLoadMoreReviewList = viewModel::fetchProfileReview,
         onBackClick = navigateUp,
         reviews = uiState.gameReview,
     )
@@ -76,12 +80,15 @@ fun AllReviewRoute(
 
 @Composable
 private fun AllReviewScreen(
-    uiState: MyProfileContract.State,
+    uiState: UserProfileContract.State,
     reviews: ImmutableList<GameReview>,
+    onLoadMoreReviewList: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
+    val currentIsLoading = uiState.userProfileUiState is SearchContract.SearchUiState.Loading
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -116,6 +123,12 @@ private fun AllReviewScreen(
                 )
             }
         } else {
+            lazyListState.onBottomReached(
+                threshold = 3,
+                onLoadMore = onLoadMoreReviewList,
+                isLoading = currentIsLoading,
+            )
+
             LazyColumn(
                 state = lazyListState,
                 modifier = Modifier
@@ -124,6 +137,8 @@ private fun AllReviewScreen(
                     .navigationBarsPadding(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
             ) {
+
+
                 item {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -240,9 +255,10 @@ private fun AllReviewScreen(
 @Composable
 private fun ReviewScreenPreview() {
     SmashingAndroidTheme {
-        val emptyState = MyProfileContract.State()
+        val emptyState = UserProfileContract.State()
         AllReviewScreen(
             uiState = emptyState,
+            onLoadMoreReviewList = {},
             onBackClick = {},
             reviews = persistentListOf(),
         )
@@ -297,13 +313,14 @@ private fun AllReviewScreenPopulatedPreview() {
                 content = "즐거운 경기였습니다.",
             )
         )
-        val populatedState = MyProfileContract.State(
+        val populatedState = UserProfileContract.State(
             gameReviewResult = dummyResult,
             gameReview = dummyReviews
         )
         AllReviewScreen(
             uiState = populatedState,
             reviews = dummyReviews,
+            onLoadMoreReviewList = {},
             onBackClick = {},
         )
     }
