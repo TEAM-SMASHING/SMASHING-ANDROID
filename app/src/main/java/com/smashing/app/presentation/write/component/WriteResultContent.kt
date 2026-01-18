@@ -17,13 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.smashing.app.R
 import com.smashing.app.R.string.asterisk_label
 import com.smashing.app.R.string.score_separator
 import com.smashing.app.R.string.submit_score
 import com.smashing.app.R.string.submit_title
 import com.smashing.app.R.string.submit_winner
 import com.smashing.app.R.string.zero_label
+import com.smashing.app.R.string.submit_description
 import com.smashing.app.core.designsystem.component.dropdown.SmashingWinnerDropdown
 import com.smashing.app.core.designsystem.component.textfield.ScoreInputTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -44,7 +44,10 @@ fun WriteResultContent(
     onWinnerSelected: (String) -> Unit,
     onLeftDoneClick: (Int) -> Unit,
     onRightDoneClick: (Int) -> Unit,
+    isTextFieldsEnabled: Boolean = true,
     modifier: Modifier = Modifier,
+    title: String = stringResource(submit_title),
+    subTitle: String = stringResource(submit_description),
 ) {
     val dropDownList = persistentListOf(
         submitter.name,
@@ -56,13 +59,13 @@ fun WriteResultContent(
             .padding(horizontal = 16.dp),
     ) {
         Text(
-            text = stringResource(submit_title),
+            text = title,
             color = SmashingTheme.colors.txtPrimary,
             style = SmashingTheme.typography.xl.semibold20,
         )
 
         Text(
-            text = stringResource(R.string.submit_description),
+            text = subTitle,
             color = SmashingTheme.colors.txtTertiary,
             style = SmashingTheme.typography.sm.medium14,
         )
@@ -87,6 +90,7 @@ fun WriteResultContent(
                 selectedItem = winner?.name,
                 items = dropDownList,
                 onClick = onWinnerSelected,
+                enabled = isTextFieldsEnabled,
                 modifier = Modifier.constrainAs(winnerDropdown) {
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
@@ -123,6 +127,7 @@ fun WriteResultContent(
                     onDoneClick = {
                         onLeftDoneClick(leftTextFieldState.intValue)
                     },
+                    isEnabled = isTextFieldsEnabled,
                 )
 
                 Text(
@@ -141,6 +146,7 @@ fun WriteResultContent(
                     onDoneClick = {
                         onRightDoneClick(rightTextFieldState.intValue)
                     },
+                    isEnabled = isTextFieldsEnabled,
                 )
             }
 
@@ -185,8 +191,8 @@ private fun WriteResultPreview() {
         WriteResultContent(
             submitter = MatchPlayer("Submitter", "1"),
             receiver = MatchPlayer("Receiver", "2"),
-            submitterScore = 0,
-            receiverScore = 0,
+            submitterScore = 4,
+            receiverScore = 5,
             winner = null,
             leftTextFieldState = TextFieldState(),
             rightTextFieldState = TextFieldState(),

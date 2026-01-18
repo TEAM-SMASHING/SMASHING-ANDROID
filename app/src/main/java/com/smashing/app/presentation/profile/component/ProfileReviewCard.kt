@@ -31,20 +31,20 @@ import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.extension.formatCount
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.data.model.profile.Review
-import com.smashing.app.presentation.profile.ProfileContract
+import com.smashing.app.data.model.review.GameReview
+import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 private const val REVIEW_ITEM_COUNT = 3
 
 @Composable
-fun ProfileReviewCard(
-    reviews: ImmutableList<Review>,
-    excellentCount: Int,
-    goodCount: Int,
-    badCount: Int,
+fun ReviewCard(
+    reviews: ImmutableList<GameReview>,
+    bestCount: Long,
+    goodCount: Long,
+    badCount: Long,
     modifier: Modifier = Modifier,
     onViewAllReviewClick: () -> Unit = {},
 ) {
@@ -78,9 +78,9 @@ fun ProfileReviewCard(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            if (excellentCount > 0) {
+            if (bestCount > 0) {
                 SmashingChip(
-                    text = excellentCount.formatCount(),
+                    text = bestCount.toString(),
                     style = DISABLED,
                     icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
                 )
@@ -88,7 +88,7 @@ fun ProfileReviewCard(
 
             if (goodCount > 0) {
                 SmashingChip(
-                    text = goodCount.formatCount(),
+                    text = goodCount.toString(),
                     style = DISABLED,
                     icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
                 )
@@ -96,7 +96,7 @@ fun ProfileReviewCard(
 
             if (badCount > 0) {
                 SmashingChip(
-                    text = badCount.formatCount(),
+                    text = badCount.toString(),
                     style = DISABLED,
                     icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
                 )
@@ -105,18 +105,29 @@ fun ProfileReviewCard(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Column {
-            reviews.take(3).forEachIndexed { index, review ->
-                ReviewItem(
-                    review = review,
-                )
+        if (reviews.isEmpty()) {
+            Text(
+                text = "아직 받은 후기가 없어요",
+                style = SmashingTheme.typography.sm.regular14,
+                color = SmashingTheme.colors.txtPrimary,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
 
-                if (index < REVIEW_ITEM_COUNT - 1) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 12.dp),
-                        thickness = 1.dp,
-                        color = SmashingTheme.colors.borderPrimary,
+        } else {
+            Column {
+                reviews.take(3).forEachIndexed { index, review ->
+                    ReviewItem(
+                        review = review,
                     )
+
+                    if (index < REVIEW_ITEM_COUNT - 1) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            thickness = 1.dp,
+                            color = SmashingTheme.colors.borderPrimary,
+                        )
+                    }
                 }
             }
         }
@@ -127,12 +138,14 @@ fun ProfileReviewCard(
 @Composable
 private fun ProfileReviewCardPreview() {
     SmashingAndroidTheme {
+        val state = MyProfileContract.State()
         Box(modifier = Modifier.padding(16.dp)) {
-            ProfileReviewCard(
-                reviews = ProfileContract.State().reviews,
-                excellentCount = ProfileContract.State().reviewRate.best,
-                goodCount = ProfileContract.State().reviewRate.good,
-                badCount = ProfileContract.State().reviewRate.bad,
+            ReviewCard(
+                reviews = persistentListOf(),
+                bestCount = state.gameReviewResult.bestCount,
+                goodCount = state.gameReviewResult.goodCount,
+                badCount = state.gameReviewResult.badCount,
+                onViewAllReviewClick = {},
             )
         }
     }
