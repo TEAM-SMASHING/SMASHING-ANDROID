@@ -50,7 +50,7 @@ fun UserProfileRoute(
 
     UserProfileScreen(
         uiState = uiState,
-        onYesClick = viewModel::onYseClick,
+        onYesClick = viewModel::onYesClick,
         onNoClick = viewModel::onNoClick,
         onReviewClick = navigateToReview,
         updateBottomBar = {},

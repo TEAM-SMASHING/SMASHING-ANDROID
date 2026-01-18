@@ -74,7 +74,7 @@ class UserProfileViewModel @Inject constructor(
         )
     }
 
-    fun onYseClick() {
+    fun onYesClick() {
         viewModelScope.launch {
             // TODO: 매칭 수락 API 호출
             _uiState.update {
