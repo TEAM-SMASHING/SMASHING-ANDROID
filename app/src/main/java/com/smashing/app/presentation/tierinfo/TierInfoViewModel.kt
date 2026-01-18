@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.core.designsystem.style.TierInfoStyle.Companion.findTierInfoByName
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportName
 import com.smashing.app.presentation.tierinfo.navigation.SportTierInfo
@@ -54,7 +54,7 @@ class TierInfoViewModel @Inject constructor(
 
     private fun updateInitialInfo(savedStateHandle: SavedStateHandle) {
         val route = savedStateHandle.toRoute<SportTierInfo>()
-        val tierInfo = route.tierName.toTierInfoStyle()
+        val tierInfo = findTierInfoByName(route.tierName)
         val sportType = findSportTypeToSportName(route.sportName)
 
         updateSportType(sportType)
