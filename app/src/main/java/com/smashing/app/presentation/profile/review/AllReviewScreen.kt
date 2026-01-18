@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -80,7 +81,7 @@ private fun AllReviewScreen(
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas),
     ) {
@@ -115,7 +116,7 @@ private fun AllReviewScreen(
         } else {
             LazyColumn(
                 state = lazyListState,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .background(color = SmashingTheme.colors.bgCanvas)
                     .navigationBarsPadding(),
@@ -203,31 +204,25 @@ private fun AllReviewScreen(
                         }
                     }
                 }
-
                 item {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        Text(
-                            text = stringResource(id = review),
-                            style = SmashingTheme.typography.md.semibold16,
-                            color = SmashingTheme.colors.txtPrimary,
-                        )
-                        Column {
-                            reviews.forEachIndexed { index, review ->
-                                ReviewItem(
-                                    review = review,
-                                )
+                    Text(
+                        text = stringResource(id = review),
+                        style = SmashingTheme.typography.md.semibold16,
+                        color = SmashingTheme.colors.txtPrimary,
+                    )
+                }
+                
+                itemsIndexed(reviews) { index, review ->
+                    ReviewItem(
+                        review = review,
+                    )
 
-                                if (index < reviews.lastIndex) {
-                                    HorizontalDivider(
-                                        modifier = Modifier.padding(vertical = 12.dp),
-                                        thickness = 1.dp,
-                                        color = SmashingTheme.colors.borderPrimary,
-                                    )
-                                }
-                            }
-                        }
+                    if (index < reviews.lastIndex) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            thickness = 1.dp,
+                            color = SmashingTheme.colors.borderPrimary,
+                        )
                     }
                 }
             }
@@ -244,6 +239,46 @@ private fun ReviewScreenPreview() {
             uiState = emptyState,
             onBackClick = {},
             reviews = persistentListOf(),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun AllReviewScreenPopulatedPreview() {
+    SmashingAndroidTheme {
+        val dummyResult = com.smashing.app.data.model.review.GameReviewResult(
+            bestCount = 15,
+            goodCount = 8,
+            badCount = 0,
+            onTimeCount = 10,
+            goodMannerCount = 12,
+            fairPlayCount = 5,
+            fastResponseCount = 20
+        )
+
+        val dummyReviews = persistentListOf(
+            GameReview(
+                // 예시: id = 1L, content = "매너가 정말 좋으세요!", createdAt = "2024.01.18", writerName = "스매싱고수"
+                // 실제 필드를 여기에 작성하세요
+            ),
+            GameReview(
+                // 예시: id = 2L, content = "시간 약속을 잘 지키십니다.", createdAt = "2024.01.17", writerName = "테니스왕"
+                // 실제 필드를 여기에 작성하세요
+            ),
+            GameReview(
+                // 예시: id = 3L, content = "즐거운 경기였습니다.", createdAt = "2024.01.15", writerName = "랠리장인"
+                // 실제 필드를 여기에 작성하세요
+            )
+        )
+        val populatedState = MyProfileContract.State(
+            gameReviewResult = dummyResult,
+            gameReview = dummyReviews
+        )
+        AllReviewScreen(
+            uiState = populatedState,
+            reviews = dummyReviews, // 여기에 더미 리스트 전달
+            onBackClick = {},
         )
     }
 }
