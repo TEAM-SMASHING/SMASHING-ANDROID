@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -50,6 +51,7 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.model.review.GameReview
+import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.presentation.profile.component.ReviewItem
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import kotlinx.collections.immutable.ImmutableList
@@ -120,7 +122,6 @@ private fun AllReviewScreen(
                     .fillMaxSize()
                     .background(color = SmashingTheme.colors.bgCanvas)
                     .navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(32.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp),
             ) {
                 item {
@@ -160,6 +161,7 @@ private fun AllReviewScreen(
                         }
                     }
                 }
+                item { Spacer(modifier = Modifier.height(32.dp)) }
 
                 item {
                     Column(
@@ -204,6 +206,8 @@ private fun AllReviewScreen(
                         }
                     }
                 }
+                item { Spacer(modifier = Modifier.height(32.dp)) }
+
                 item {
                     Text(
                         text = stringResource(id = review),
@@ -211,7 +215,9 @@ private fun AllReviewScreen(
                         color = SmashingTheme.colors.txtPrimary,
                     )
                 }
-                
+
+                item { Spacer(modifier = Modifier.height(8.dp)) }
+
                 itemsIndexed(reviews) { index, review ->
                     ReviewItem(
                         review = review,
@@ -247,7 +253,7 @@ private fun ReviewScreenPreview() {
 @Composable
 private fun AllReviewScreenPopulatedPreview() {
     SmashingAndroidTheme {
-        val dummyResult = com.smashing.app.data.model.review.GameReviewResult(
+        val dummyResult = GameReviewResult(
             bestCount = 15,
             goodCount = 8,
             badCount = 0,
@@ -259,16 +265,36 @@ private fun AllReviewScreenPopulatedPreview() {
 
         val dummyReviews = persistentListOf(
             GameReview(
-                // 예시: id = 1L, content = "매너가 정말 좋으세요!", createdAt = "2024.01.18", writerName = "스매싱고수"
-                // 실제 필드를 여기에 작성하세요
+                gameReviewId = "1",
+                opponentNickname = "닝닝",
+                createdAt = "2일 전",
+                content = "즐거운 경기였습니다.",
             ),
             GameReview(
-                // 예시: id = 2L, content = "시간 약속을 잘 지키십니다.", createdAt = "2024.01.17", writerName = "테니스왕"
-                // 실제 필드를 여기에 작성하세요
+                gameReviewId = "1",
+                opponentNickname = "닝닝",
+                createdAt = "2일 전",
+                content = "즐거운 경기였습니다.",
+
+                ),
+            GameReview(
+                gameReviewId = "1",
+                opponentNickname = "닝닝",
+                createdAt = "2일 전",
+                content = "즐거운 경기였습니다.",
             ),
             GameReview(
-                // 예시: id = 3L, content = "즐거운 경기였습니다.", createdAt = "2024.01.15", writerName = "랠리장인"
-                // 실제 필드를 여기에 작성하세요
+                gameReviewId = "1",
+                opponentNickname = "닝닝",
+                createdAt = "2일 전",
+                content = "즐거운 경기였습니다.",
+            ),
+
+            GameReview(
+                gameReviewId = "1",
+                opponentNickname = "닝닝",
+                createdAt = "2일 전",
+                content = "즐거운 경기였습니다.",
             )
         )
         val populatedState = MyProfileContract.State(
@@ -277,7 +303,7 @@ private fun AllReviewScreenPopulatedPreview() {
         )
         AllReviewScreen(
             uiState = populatedState,
-            reviews = dummyReviews, // 여기에 더미 리스트 전달
+            reviews = dummyReviews,
             onBackClick = {},
         )
     }
