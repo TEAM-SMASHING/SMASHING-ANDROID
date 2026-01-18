@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
-    // private val userRepository: UserRepository // 실제 데이터 호출 시 필요
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(getDummyState())
 

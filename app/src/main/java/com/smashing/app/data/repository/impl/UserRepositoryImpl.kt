@@ -4,14 +4,14 @@ import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.mapper.review.toGameReviewList
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.review.GameReview
-import com.smashing.app.data.remote.datasource.api.ReviewRemoteDataSource
+import com.smashing.app.data.remote.datasource.api.UserRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
-import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.data.repository.api.UserRepository
 import javax.inject.Inject
 
-class ReviewRepositoryImpl @Inject constructor(
-    private val reviewRemoteDataSource: ReviewRemoteDataSource,
-) : ReviewRepository {
+class UserRepositoryImpl @Inject constructor(
+    private val userRemoteDataSource: UserRemoteDataSource,
+) : UserRepository {
 
     override suspend fun getUserRecentList(
         userId: String,
@@ -20,7 +20,7 @@ class ReviewRepositoryImpl @Inject constructor(
         size: Int?
     ): Result<CursorPage<GameReview>> =
         suspendRunCatching {
-            reviewRemoteDataSource.getUserRecentList(
+            userRemoteDataSource.getUserRecentList(
                 userId = userId,
                 sportCode = sportCode,
                 cursor = cursor,

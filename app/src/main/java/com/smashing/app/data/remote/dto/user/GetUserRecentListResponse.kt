@@ -1,4 +1,4 @@
-package com.smashing.app.data.remote.dto.review
+package com.smashing.app.data.remote.dto.user
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName

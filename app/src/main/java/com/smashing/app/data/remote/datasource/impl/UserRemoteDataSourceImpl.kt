@@ -1,15 +1,15 @@
 package com.smashing.app.data.remote.datasource.impl
 
-import com.smashing.app.data.remote.datasource.api.ReviewRemoteDataSource
+import com.smashing.app.data.remote.datasource.api.UserRemoteDataSource
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
-import com.smashing.app.data.remote.dto.review.GetUserRecentListResponse
+import com.smashing.app.data.remote.dto.user.GetUserRecentListResponse
 import com.smashing.app.data.remote.service.ReviewService
 import javax.inject.Inject
 
-class ReviewRemoteDataSourceImpl @Inject constructor(
+class UserRemoteDataSourceImpl @Inject constructor(
     private val reviewService: ReviewService,
-) : ReviewRemoteDataSource {
+) : UserRemoteDataSource {
 
     override suspend fun getUserRecentList(
         userId: String,

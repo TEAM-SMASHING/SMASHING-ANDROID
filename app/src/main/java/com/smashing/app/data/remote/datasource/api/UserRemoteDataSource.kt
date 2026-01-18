@@ -2,9 +2,9 @@ package com.smashing.app.data.remote.datasource.api
 
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
-import com.smashing.app.data.remote.dto.review.GetUserRecentListResponse
+import com.smashing.app.data.remote.dto.user.GetUserRecentListResponse
 
-interface ReviewRemoteDataSource {
+interface UserRemoteDataSource {
     suspend fun getUserRecentList(
         userId: String,
         sportCode: String?,

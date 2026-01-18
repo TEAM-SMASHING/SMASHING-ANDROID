@@ -5,6 +5,6 @@ import java.time.LocalDateTime
 data class GameReview(
     val gameReviewId: String,
     val opponentNickname: String,
-    val createdAt: LocalDateTime,
+    val createdAt: String,
     val content: String?,
 )

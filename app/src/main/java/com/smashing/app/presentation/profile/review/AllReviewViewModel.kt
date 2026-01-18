@@ -2,6 +2,7 @@ package com.smashing.app.presentation.profile.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import com.smashing.app.presentation.profile.myprofile.MyProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllReviewViewModel @Inject constructor(
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyProfileContract.State())
