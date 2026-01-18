@@ -32,10 +32,6 @@ fun NavController.navigateToConfirmReview(
     navOptions: NavOptions? = null,
 ) = navigate(ConfirmReview, navOptions)
 
-fun NavController.navigateToReviewFast(
-    navOptions: NavOptions? = null,
-) = navigate(ReviewFast, navOptions)
-
 
 fun NavGraphBuilder.writeGraph(
     navigateToMatching: () -> Unit,
@@ -110,5 +106,3 @@ data object ConfirmResult : Route
 @Serializable
 data object ConfirmReview : Route
 
-@Serializable
-data object ReviewFast : Route
