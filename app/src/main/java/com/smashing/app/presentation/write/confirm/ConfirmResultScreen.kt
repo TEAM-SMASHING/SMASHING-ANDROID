@@ -34,7 +34,7 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.write.component.WriteResultContent
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyReason
+import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -79,7 +79,7 @@ private fun ConfirmResultScreen(
 ) {
     var showExitBottomSheet by remember { mutableStateOf(false) }
     var selectedReason by remember { mutableStateOf("") }
-    val bottomSheetItems = ConfirmDenyReason.entries.map { it.description }.toPersistentList()
+    val bottomSheetItems = ConfirmDenyType.entries.map { it.description }.toPersistentList()
 
 
     Column(
