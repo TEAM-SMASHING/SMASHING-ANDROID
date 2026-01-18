@@ -2,14 +2,20 @@ package com.smashing.app.presentation.matching
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.repository.api.MatchingRepository
+import com.smashing.app.data.type.GameResultStatusType
+import com.smashing.app.presentation.matching.MatchingContract.SideEffect
 import com.smashing.app.presentation.matching.type.MatchingType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +25,9 @@ class MatchingViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(MatchingContract.State())
     val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<MatchingContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         fetchReceivedMatchingList(isRefresh = true)
@@ -264,6 +273,34 @@ class MatchingViewModel @Inject constructor(
         
         // TODO: API 구현 후 연결
         // matchingRepository.deleteAcceptedMatching(gameId)
+    }
+
+    fun handleAcceptedMatchingClick(matching: AcceptedMatching) = viewModelScope.launch {
+        when (matching.resultStatus) {
+            GameResultStatusType.PENDING_RESULT -> {
+                // 결과 작성하기 (첫 제출)
+                Timber.tag(TAG).d("결과 작성하기 - gameId: ${matching.gameId}")
+                _sideEffect.emit(SideEffect.NavigateToSubmit(matching.gameId))
+            }
+            GameResultStatusType.RESULT_REJECTED -> {
+                // 결과 반려 -> 재제출 (Confirm 화면)
+                Timber.tag(TAG).d("결과 재제출 - gameId: ${matching.gameId}")
+                _sideEffect.emit(SideEffect.NavigateToConfirm(matching.gameId))
+            }
+            GameResultStatusType.WAITING_CONFIRMATION -> {
+                // 결과 확인 (Confirm 화면)
+                Timber.tag(TAG).d("결과 확인 - gameId: ${matching.gameId}")
+                _sideEffect.emit(SideEffect.NavigateToConfirm(matching.gameId))
+            }
+            GameResultStatusType.CANCELED,
+            GameResultStatusType.RESULT_CONFIRMED -> {
+                // 매칭 취소 대기, 결과 확인 완료 -> 클릭 불가
+                Timber.tag(TAG).d("클릭 불가 상태 - status: ${matching.resultStatus}, gameId: ${matching.gameId}")
+            }
+            GameResultStatusType.UNKNOWN -> {
+                Timber.tag(TAG).e("알 수 없는 상태 - gameId: ${matching.gameId}")
+            }
+        }
     }
 
     companion object {
