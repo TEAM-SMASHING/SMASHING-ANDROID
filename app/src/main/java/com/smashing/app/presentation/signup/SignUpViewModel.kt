@@ -182,7 +182,9 @@ class SignUpViewModel @Inject constructor(
         val selectedGender = _uiState.value.selectedGender
         val selectedSport = _uiState.value.selectedSport
         val selectedSkill = _uiState.value.selectedSkill
-        if (selectedGender != null && selectedSport != null && selectedSkill != null) {
+        val selectedRegion = _uiState.value.selectedRegion
+        if (selectedGender != null && selectedSport != null
+            && selectedSkill != null && selectedRegion != null) {
             val request = PostSignUpRequest(
                 kakaoId = kakaoId,
                 nickname = nickNameState.text.toString(),
@@ -190,7 +192,7 @@ class SignUpViewModel @Inject constructor(
                 openChatUrl = openChatState.text.toString(),
                 sportCode = selectedSport.code,
                 experienceRange = selectedSkill.skillCode,
-                region = _uiState.value.selectedRegion.toString(),
+                region = selectedRegion.districtName,
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {

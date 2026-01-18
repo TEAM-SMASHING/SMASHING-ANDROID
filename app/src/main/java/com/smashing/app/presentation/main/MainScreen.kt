@@ -14,21 +14,24 @@ import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
+import com.smashing.app.presentation.home.navigation.navigateToRegionChange
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
-import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
+import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.regionGraph
+import com.smashing.app.presentation.search.navigation.navigateToSearchInput
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
+import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -79,7 +82,7 @@ private fun MainNavHost(
         )
 
         searchGraph(
-            innerPadding = innerPadding,
+            navController = appState.navController,
         )
 
         matchingGraph(
@@ -163,6 +166,16 @@ private fun MainNavHost(
         )
 
         regionGraph(
+            innerPadding = innerPadding,
+            navController = appState.navController,
+        )
+
+        rankingGraph(
+            innerPadding = innerPadding,
+            navigateUp = appState.navController::navigateUp,
+        )
+
+        tierInfoGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
         )

@@ -31,7 +31,7 @@ android {
         buildConfigField("String", "BASE_URL", properties.getProperty("base.url"))
         buildConfigField("String", "KAKAO_API_KEY", properties.getProperty("kakao.api.key"))
         buildConfigField("String", "KAKAO_BASE_URL", properties.getProperty("kakao.base.url"))
-        buildConfigField("String", "KAKAO_APP_KEY", "${properties.getProperty("kakao.app.key")}")
+        buildConfigField("String", "KAKAO_APP_KEY", "\"${properties.getProperty("kakao.app.key")}\"")
 
         manifestPlaceholders["KAKAO_APP_KEY"] = properties.getProperty("kakao.app.key")
     }
