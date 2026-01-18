@@ -68,8 +68,9 @@ class TierInfoViewModel @Inject constructor(
     }
 
     private fun updateInitialInfo(savedStateHandle: SavedStateHandle) {
-        val tierInfo = savedStateHandle.toRoute<SportTierInfo>().tierName.toTierInfoStyle()
-        val sportType = savedStateHandle.toRoute<SportTierInfo>().sportName.findSportType()
+        val route = savedStateHandle.toRoute<SportTierInfo>()
+        val tierInfo = route.tierName.toTierInfoStyle()
+        val sportType = route.sportName.findSportType()
 
         updateSportType(sportType)
         updateTierInfo(tierInfo)
