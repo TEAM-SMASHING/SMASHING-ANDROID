@@ -15,5 +15,5 @@ data class AcceptedMatching(
     val tierType: TierType,
     val submitAvailableAt: String,
     val remainingSeconds: Long,
-    val isLocked: Boolean,
+    val isSubmitLocked: Boolean,
 )

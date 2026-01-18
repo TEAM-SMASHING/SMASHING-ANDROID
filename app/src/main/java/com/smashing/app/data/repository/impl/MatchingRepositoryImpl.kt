@@ -55,4 +55,27 @@ class MatchingRepositoryImpl @Inject constructor(
         ).requireData().toAcceptedMatchingList()
     }
 
+    override suspend fun postAcceptedMatching(
+        matchingId: String,
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.postAcceptedMatching(
+            matchingId = matchingId,
+        )
+    }
+
+    override suspend fun deleteSentMatching(
+        matchingId: String,
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.deleteSentMatching(
+            matchingId = matchingId,
+        )
+    }
+
+    override suspend fun postRejectMatching(
+        matchingId: String,
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.postRejectMatching(
+            matchingId = matchingId,
+        )
+    }
 }

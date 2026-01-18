@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.matching
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -67,9 +68,17 @@ fun MatchingRoute(
         uiState = uiState,
         navigateToSubmit = navigateToSubmit,
         onLoadMoreMatchingList = viewModel::fetchMatchingList,
-        onTabClick = viewModel::updateMatchingType,
-        onCardCloseClick = viewModel::showDialogVisible,
+        onTabClick = viewModel::selectMatchingTab,
         onDialogDismissClick = viewModel::hideDialogVisible,
+        onReceivedAcceptClick = viewModel::acceptReceivedMatching,
+        onProfileClick = { userId -> /* TODO: Navigate to profile */ },
+        onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
+        onReceivedSkipClick = viewModel::rejectReceivedMatching,
+        onAcceptedConfirmClick = { gameId -> navigateToSubmit() },
+        onAcceptedKakaoLinkClick = { url -> /* TODO: Open Kakao link */ },
+        onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
+        onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
+        onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
         modifier = modifier,
     )
 }
@@ -80,9 +89,17 @@ private fun MatchingScreen(
     onLoadMoreMatchingList: () -> Unit,
     navigateToSubmit: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
-    onCardCloseClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
+    onReceivedAcceptClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onProfileClick: (String) -> Unit = {},
+    onSentCloseClick: (String) -> Unit = {},
+    onReceivedSkipClick: (String) -> Unit = {},
+    onAcceptedConfirmClick: (String) -> Unit = {},
+    onAcceptedKakaoLinkClick: (String?) -> Unit = {},
+    onAcceptedCloseClick: (String) -> Unit = {},
+    onConfirmDeleteSentMatching: () -> Unit = {},
+    onConfirmDeleteAcceptedMatching: () -> Unit = {},
 ) {
     val gridState = rememberLazyGridState()
 
@@ -167,9 +184,14 @@ private fun MatchingScreen(
                     MatchingList(
                         uiState = uiState,
                         gridState = gridState,
-                        onCloseClick = onCardCloseClick,
-                        onConfirmClick = navigateToSubmit,
                         onLoadMoreMatchingList = onLoadMoreMatchingList,
+                        onProfileClick = onProfileClick,
+                        onSentCloseClick = onSentCloseClick,
+                        onReceivedSkipClick = onReceivedSkipClick,
+                        onReceivedAcceptClick = onReceivedAcceptClick,
+                        onAcceptedConfirmClick = onAcceptedConfirmClick,
+                        onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
+                        onAcceptedCloseClick = onAcceptedCloseClick,
                     )
                 }
 
@@ -186,9 +208,7 @@ private fun MatchingScreen(
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
-                        onConfirmClick = {
-                            // TODO 취소하기 로직
-                        },
+                        onConfirmClick = onConfirmDeleteSentMatching,
                         onDismissClick = onDialogDismissClick,
                         onDismissRequest = onDialogDismissClick,
                     )
@@ -201,9 +221,7 @@ private fun MatchingScreen(
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
-                        onConfirmClick = {
-                            // TODO 취소하기 로직
-                        },
+                        onConfirmClick = onConfirmDeleteAcceptedMatching,
                         onDismissClick = onDialogDismissClick,
                         onDismissRequest = onDialogDismissClick,
                     )
@@ -220,8 +238,13 @@ private fun MatchingList(
     uiState: MatchingContract.State,
     gridState: LazyGridState,
     onLoadMoreMatchingList: () -> Unit,
-    onCloseClick: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onProfileClick: (String) -> Unit,
+    onSentCloseClick: (String) -> Unit,
+    onReceivedSkipClick: (String) -> Unit,
+    onReceivedAcceptClick: (String) -> Unit,
+    onAcceptedConfirmClick: (String) -> Unit,
+    onAcceptedKakaoLinkClick: (String?) -> Unit,
+    onAcceptedCloseClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -245,23 +268,10 @@ private fun MatchingList(
         modifier = modifier,
     ) {
         when (uiState.selectedType) {
-            MatchingType.SEND -> items(uiState.sentList) {
-                MatchingCard(
-                    cardState = MatchingCardState.Send(
-                        userId = it.userId,
-                        nickname = it.nickname,
-                        genderType = it.genderType,
-                        tierType = it.tierType,
-                        onProfileClick = {},
-                        onCloseClick = onCloseClick,
-                        winCount = it.winCount,
-                        loseCount = it.loseCount,
-                        reviewCount = it.reviewCount,
-                    ),
-                )
-            }
-
-            MatchingType.RECEIVE -> items(uiState.receivedList) {
+            MatchingType.RECEIVE -> items(
+                items = uiState.receivedList,
+                key = { it.matchingId }
+            ) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
                         userId = it.userId,
@@ -271,24 +281,61 @@ private fun MatchingList(
                         winCount = it.winCount,
                         loseCount = it.loseCount,
                         reviewCount = it.reviewCount,
-                        onProfileClick = {},
-                        onSkipClick = {},
-                        onAcceptClick = {},
+                        onProfileClick = { onProfileClick(it.userId) },
+                        onSkipClick = { onReceivedSkipClick(it.matchingId) },
+                        onAcceptClick = { onReceivedAcceptClick(it.matchingId) },
+                    ),
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = tween(durationMillis = 300),
+                        fadeOutSpec = tween(durationMillis = 300),
+                        placementSpec = tween(durationMillis = 300),
                     ),
                 )
             }
 
-            MatchingType.ACCEPTED -> items(uiState.acceptedList) {
+            MatchingType.SEND -> items(
+                items = uiState.sentList,
+                key = { it.matchingId }
+            ) {
+                MatchingCard(
+                    cardState = MatchingCardState.Send(
+                        userId = it.userId,
+                        nickname = it.nickname,
+                        genderType = it.genderType,
+                        tierType = it.tierType,
+                        onProfileClick = { onProfileClick(it.userId) },
+                        onCloseClick = { onSentCloseClick(it.matchingId) },
+                        winCount = it.winCount,
+                        loseCount = it.loseCount,
+                        reviewCount = it.reviewCount,
+                    ),
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = tween(durationMillis = 300),
+                        fadeOutSpec = tween(durationMillis = 300),
+                        placementSpec = tween(durationMillis = 300),
+                    ),
+                )
+            }
+
+            MatchingType.ACCEPTED -> items(
+                items = uiState.acceptedList,
+                key = { it.gameId }
+            ) {
                 MatchingCard(
                     cardState = MatchingCardState.Confirm(
                         userId = it.userId,
                         nickname = it.nickname,
                         genderType = it.genderType,
                         tierType = it.tierType,
-                        onProfileClick = {},
-                        onConfirmClick = onConfirmClick,
-                        onKakaoLinkClick = {},
-                        onCloseClick = onCloseClick,
+                        onProfileClick = { onProfileClick(it.userId) },
+                        onConfirmClick = { onAcceptedConfirmClick(it.gameId) },
+                        onKakaoLinkClick = { onAcceptedKakaoLinkClick(it.openChatUrl) },
+                        onCloseClick = { onAcceptedCloseClick(it.gameId) },
+                    ),
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = tween(durationMillis = 300),
+                        fadeOutSpec = tween(durationMillis = 300),
+                        placementSpec = tween(durationMillis = 300),
                     ),
                 )
             }
@@ -301,12 +348,20 @@ private fun MatchingList(
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
         MatchingScreen(
-            navigateToSubmit = {},
             uiState = MatchingContract.State(),
-            onTabClick = {},
-            onCardCloseClick = {},
-            onDialogDismissClick = {},
             onLoadMoreMatchingList = {},
+            navigateToSubmit = {},
+            onTabClick = {},
+            onDialogDismissClick = {},
+            onReceivedAcceptClick = {},
+            onProfileClick = {},
+            onSentCloseClick = {},
+            onReceivedSkipClick = {},
+            onAcceptedConfirmClick = {},
+            onAcceptedKakaoLinkClick = {},
+            onAcceptedCloseClick = {},
+            onConfirmDeleteSentMatching = {},
+            onConfirmDeleteAcceptedMatching = {},
             modifier = Modifier
                 .background(Color.Black),
         )

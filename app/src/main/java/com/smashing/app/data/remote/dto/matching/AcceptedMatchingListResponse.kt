@@ -13,8 +13,12 @@ data class AcceptedMatchingListResponse(
     val createdAt: String,
     @SerialName("opponent")
     val opponentSummary: OpponentSummary,
-    @SerialName("submitLock")
-    val submitLock: GameResultSubmitLockDto,
+    @SerialName("submitAvailableAt")
+    val submitAvailableAt: String,
+    @SerialName("remainingSeconds")
+    val remainingSeconds: Long,
+    @SerialName("isSubmitLocked")
+    val isSubmitLocked: Boolean,
 ) {
     @Serializable
     data class OpponentSummary(
@@ -28,18 +32,5 @@ data class AcceptedMatchingListResponse(
         val gender: String,
         @SerialName("tierCode")
         val tierCode: String,
-        @SerialName("tierName")
-        val tierName: String,
     )
-
-    @Serializable
-    data class GameResultSubmitLockDto(
-        @SerialName("submitAvailableAt")
-        val submitAvailableAt: String,
-        @SerialName("remainingSeconds")
-        val remainingSeconds: Long,
-        @SerialName("isLocked")
-        val isLocked: Boolean,
-    )
-
 }
