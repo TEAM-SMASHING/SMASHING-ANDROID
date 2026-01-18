@@ -88,7 +88,6 @@ fun ProfileTierBox(
                 if (onAddSportClick != null) {
                     SmashingChip(
                         style = ChipStyle.DISABLED,
-                        onClick = onAddSportClick,
                         icon = ImageVector.vectorResource(id = ic_plus),
                         modifier = Modifier.clickable { onAddSportClick() },
                     )
