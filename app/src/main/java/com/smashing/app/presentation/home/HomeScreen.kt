@@ -73,7 +73,7 @@ import kotlinx.collections.immutable.toImmutableList
 fun HomeRoute(
     navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
-    navigateToTierInfo: (TierInfoStyle) -> Unit,
+    navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToRanking: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -86,7 +86,8 @@ fun HomeRoute(
         navigateToRegionChange = navigateToRegionChange,
         navigateToTierInfo = {
             navigateToTierInfo(
-                uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON
+                uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON,
+                uiState.activeUserProfile?.sportType ?: SportType.BADMINTON,
             )
         },
         navigateToRanking = navigateToRanking,
