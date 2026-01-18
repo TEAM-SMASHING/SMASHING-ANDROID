@@ -9,6 +9,7 @@ import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.model.rank.UserRank
+import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -17,10 +18,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val rankingRepository: RankingRepository,
+
+    ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
 
@@ -71,16 +76,20 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     fun fetchRegionRankerList() = viewModelScope.launch {
         updateLoadState(HomeUiState.Loading)
 
-        val dummyRegionRankerList = createDummyTopRankerList()
-
-        updateLoadState(HomeUiState.Success)
-
-        _uiState.update { currentState ->
-            currentState.copy(
-                topRankerList = dummyRegionRankerList.take(5).toImmutableList(),
-                regionRankerList = dummyRegionRankerList.take(30).toImmutableList()
-            )
-        }
+        rankingRepository.getRankingList()
+            .onSuccess { rankingData ->
+                Timber.d("Yesssss")
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = HomeUiState.Success,
+                        topRankerList = rankingData.topUsers.take(5).toImmutableList(),
+                        regionRankerList = rankingData.topUsers.toImmutableList(),
+                    )
+                }
+            }
+            .onFailure { throwable ->
+                updateLoadState(HomeUiState.Failure(throwable.message ?: "Unknown error"))
+            }
     }
 
     fun fetchAllUserProfiles() = viewModelScope.launch {
