@@ -27,7 +27,9 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
-import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.core.extension.onBottomReached
+import com.smashing.app.presentation.matching.MatchingUiState
+import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
@@ -39,7 +41,6 @@ import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
 @Composable
 fun SearchMainRoute(
     navigateToRegionChange: () -> Unit,
-    navigateToNotice: () -> Unit,
     navigateToSearchInput: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
@@ -49,9 +50,9 @@ fun SearchMainRoute(
 
     SearchMainScreen(
         uiState = uiState,
+        onLoadMoreSearchList = viewModel::fetchRegionUsersList,
         onRegionSelectClick = navigateToRegionChange,
         onRegionDropdownClick = viewModel::updateSelectedRegion,
-        onNoticeClick = navigateToNotice,
         onSearchClick = navigateToSearchInput,
         onProfileClick = {},
         onTierItemClick = viewModel::updateSelectedTierItem,
@@ -72,9 +73,9 @@ fun SearchMainRoute(
 @Composable
 private fun SearchMainScreen(
     uiState: SearchContract.State,
+    onLoadMoreSearchList: () -> Unit,
     onRegionSelectClick: () -> Unit,
     onRegionDropdownClick: (String) -> Unit,
-    onNoticeClick: () -> Unit,
     onSearchClick: () -> Unit,
     onProfileClick: () -> Unit,
     onTierItemClick: (String) -> Unit,
@@ -96,6 +97,8 @@ private fun SearchMainScreen(
         listState.scrollToItem(0)
     }
 
+    val currentIsLoading = uiState.searchRegionUsersUiState is SearchContract.SearchUiState.Loading
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -108,7 +111,6 @@ private fun SearchMainScreen(
             onRegionDropdownClick = onRegionDropdownClick,
             onSearchClick = onSearchClick,
             onRegionSelectClick = onRegionSelectClick,
-            onNoticeClick = onNoticeClick,
         )
 
         Row(
@@ -136,7 +138,7 @@ private fun SearchMainScreen(
                 onDismissRequest = onTierBottomSheetClose,
                 title = "티어",
                 items = uiState.tierBottomSheetList,
-                selectedItem = "${uiState.selectedTierItem}",
+                selectedItem = uiState.selectedTierItem?.tierKName ?: "",
                 contentToBtnPadding = 4.dp,
                 btnText = "적용하기",
                 onItemClick = onTierItemClick,
@@ -149,7 +151,7 @@ private fun SearchMainScreen(
                 onDismissRequest = onGenderBottomSheetClose,
                 title = "성별",
                 items = uiState.genderBottomSheetList,
-                selectedItem = "${uiState.selectedGenderItem}",
+                selectedItem = uiState.selectedGenderItem?.genderKName ?: "",
                 contentToBtnPadding = 4.dp,
                 btnText = "적용하기",
                 onItemClick = onGenderItemClick,
@@ -158,6 +160,12 @@ private fun SearchMainScreen(
         }
 
         if(uiState.searchList.isNotEmpty()) {
+            listState.onBottomReached(
+                threshold = 3,
+                onLoadMore = onLoadMoreSearchList,
+                isLoading = currentIsLoading,
+            )
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = modifier
@@ -168,18 +176,17 @@ private fun SearchMainScreen(
             ) {
                 items(
                     items = uiState.searchList,
-                    key = { it.userId },
                 ) {
                     MatchingCard(
                         cardState = MatchingCardState.Search(
                             userId = it.userId,
                             nickname = it.nickname,
                             genderType = it.gender,
-                            tierType = it.tierId,
+                            tierType = it.tierType,
                             onProfileClick = onProfileClick,
                             winCount = it.wins,
                             loseCount = it.losses,
-                            reviewCount = it.reviews.toLong(),
+                            reviewCount = it.reviews,
                         )
                     )
                 }
@@ -199,9 +206,9 @@ private fun SearchScreenPreview() {
     SmashingAndroidTheme {
         SearchMainScreen(
             uiState = SearchContract.State(),
+            onLoadMoreSearchList = {},
             onRegionSelectClick = {},
             onRegionDropdownClick = {},
-            onNoticeClick = {},
             onSearchClick = {},
             onProfileClick = {},
             onTierItemClick = {},

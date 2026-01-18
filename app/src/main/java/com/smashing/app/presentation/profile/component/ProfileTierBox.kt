@@ -1,6 +1,7 @@
-package com.smashing.app.presentation.profile.user.component
+package com.smashing.app.presentation.profile.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,23 +40,25 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
-
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ProfileTierBox(
     tierType: TierType,
-    sports: List<SportType>,
+    sportProfileList: ImmutableList<SportProfile>,
     tierIconResId: Int,
     progress: Float,
     lpStatus: Int,
     totalLp: Int,
-    onTierInfoClick: () -> Unit,
-    selectedSport: SportType,
-    onSportClick: (SportType) -> Unit,
-    onAddSportClick: () -> Unit,
+    selectedProfileId: String,
     modifier: Modifier = Modifier,
+    onTierInfoClick: (() -> Unit)? = null,
+    onAddSportClick: (() -> Unit)? = null,
+    onSportClick: ((String) -> Unit)? = null,
 ) {
     Box(
         modifier = modifier
@@ -70,26 +74,30 @@ fun ProfileTierBox(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                sports.forEach { sport ->
-                    val isSelected = sport == selectedSport
+                sportProfileList.forEach { sport ->
+                    val isSelected = sport.profileId == selectedProfileId
+
                     SmashingChip(
-                        text = sport.sportName,
+                        text = sport.sportType.sportName,
                         style = if (isSelected) ChipStyle.ACTIVE else ChipStyle.DISABLED,
-                        onClick = { onSportClick(sport) },
+                        onClick = { onSportClick?.invoke(sport.profileId) },
                     )
+
                     Spacer(modifier = Modifier.width(7.dp))
                 }
 
-                SmashingChip(
-                    style = ChipStyle.DISABLED,
-                    onClick = onAddSportClick,
-                    icon = ImageVector.vectorResource(id = ic_plus),
-                )
+                if (onAddSportClick != null) {
+                    SmashingChip(
+                        style = ChipStyle.DISABLED,
+                        icon = ImageVector.vectorResource(id = ic_plus),
+                        onClick = onAddSportClick,
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(30.dp))
 
             Icon(
-                imageVector = ImageVector.vectorResource(id = tierIconResId),
+                painter = painterResource(id = tierIconResId),
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier
@@ -142,22 +150,23 @@ fun ProfileTierBox(
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-
-            SmashingBaseButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(tier_description),
-                textStyle = SmashingTheme.typography.lg.semibold18,
-                onClick = onTierInfoClick,
-                buttonColor = SmashingBtnColor(
-                    backgroundColor = SmashingTheme.colors.tierDiamondBg,
-                    textColor = SmashingTheme.colors.txtEmphasis,
-                    disabledBackgroundColor = SmashingTheme.colors.tierDiamondBg,
-                    disabledTextColor = SmashingTheme.colors.txtEmphasis,
-                ),
-                contentPadding = PaddingValues(vertical = 10.dp),
-                shape = RoundedCornerShape(8.dp),
-                isRippleEnabled = false,
-            )
+            if (onTierInfoClick != null) {
+                SmashingBaseButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(tier_description),
+                    textStyle = SmashingTheme.typography.lg.semibold18,
+                    onClick = onTierInfoClick,
+                    buttonColor = SmashingBtnColor(
+                        backgroundColor = SmashingTheme.colors.tierDiamondBg,
+                        textColor = SmashingTheme.colors.txtEmphasis,
+                        disabledBackgroundColor = SmashingTheme.colors.tierDiamondBg,
+                        disabledTextColor = SmashingTheme.colors.txtEmphasis,
+                    ),
+                    contentPadding = PaddingValues(vertical = 10.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    isRippleEnabled = false,
+                )
+            }
         }
     }
 }
@@ -168,7 +177,23 @@ private fun ProfileTierBoxPreview() {
     SmashingAndroidTheme {
         ProfileTierBox(
             tierType = TierType.GOLD_1,
-            sports = listOf(SportType.PING_PONG, SportType.TENNIS),
+            sportProfileList = persistentListOf(
+                SportProfile(
+                    profileId = "1",
+                    sportType = SportType.PING_PONG,
+                    isActive = true,
+                ),
+                SportProfile(
+                    profileId = "1",
+                    sportType = SportType.PING_PONG,
+                    isActive = false,
+                ),
+                SportProfile(
+                    profileId = "1",
+                    sportType = SportType.PING_PONG,
+                    isActive = false,
+                ),
+            ),
             tierIconResId = ic_fake_red,
             progress = 0.4f,
             lpStatus = 100,
@@ -176,7 +201,7 @@ private fun ProfileTierBoxPreview() {
             onTierInfoClick = {},
             onAddSportClick = {},
             onSportClick = {},
-            selectedSport = SportType.PING_PONG,
+            selectedProfileId = "",
         )
     }
 }

@@ -23,7 +23,14 @@ interface MatchingContract {
         val acceptedCursor: Cursor = Cursor(),
         val acceptedUiState: MatchingUiState = MatchingUiState.Idle,
         val isDialogVisible: Boolean = false,
+        val selectedMatchingId: String? = null,
+        val selectedGameId: String? = null,
     )
+
+    sealed interface SideEffect {
+        data class NavigateToSubmit(val gameId: String) : SideEffect
+        data class NavigateToConfirm(val gameId: String) : SideEffect
+    }
 }
 
 sealed interface MatchingUiState {

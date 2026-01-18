@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.profile.user.component
+package com.smashing.app.presentation.profile.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +26,10 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.string.record_label
 import com.smashing.app.R.string.review
 import com.smashing.app.core.designsystem.component.badge.TierBadge
+import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.mapper.icon20
+import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.util.ProfileImageProvider
@@ -41,8 +43,9 @@ fun UserProfileCard(
     gender: GenderType,
     winCount: Int,
     loseCount: Int,
-    reviewCount: Int,
+    reviewCount: Long,
     modifier: Modifier = Modifier,
+    onCompeteClick: (() -> Unit)? = null
 ) {
 
     Column(
@@ -108,6 +111,19 @@ fun UserProfileCard(
                 value = "$reviewCount",
             )
         }
+
+        if (onCompeteClick != null) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            SmashingButton(
+                buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
+                text = "경쟁 신청하기",
+                onClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+            )
+        }
     }
 }
 
@@ -146,6 +162,7 @@ private fun UserProfileCardPreview() {
             winCount = 254,
             loseCount = 38,
             reviewCount = 32,
+
         )
     }
 }

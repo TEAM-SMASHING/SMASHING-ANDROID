@@ -18,16 +18,13 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToSubmit(
     gameId: String,
-    isAttempt: Boolean,
     navOptions: NavOptions? = null,
-) = navigate(Submit(
-    gameId = gameId,
-    isAttempt = isAttempt,
-), navOptions)
+) = navigate(Submit(gameId = gameId), navOptions)
 
 fun NavController.navigateToConfirm(
+    gameId: String,
     navOptions: NavOptions? = null,
-) = navigate(Confirm, navOptions)
+) = navigate(Confirm(gameId = gameId), navOptions)
 
 fun NavController.navigateToSubmitReview(
     navOptions: NavOptions? = null,
@@ -36,6 +33,7 @@ fun NavController.navigateToSubmitReview(
 fun NavController.navigateToConfirmReview(
     navOptions: NavOptions? = null,
 ) = navigate(ConfirmReview, navOptions)
+
 
 fun NavGraphBuilder.writeGraph(
     navigateToMatching: () -> Unit,
@@ -74,6 +72,7 @@ fun NavGraphBuilder.writeGraph(
             ConfirmResultRoute(
                 navigateUp = navController::navigateUp,
                 navigateToConfirmReview = navController::navigateToConfirmReview,
+                navigateToMatching = navigateToMatching,
                 viewModel = viewModel,
             )
         }
@@ -87,23 +86,25 @@ fun NavGraphBuilder.writeGraph(
                 viewModel = viewModel,
             )
         }
+
     }
 }
 
 @Serializable
 data class Submit(
     val gameId: String,
-    val isAttempt: Boolean,
 ) : Route
 
 @Serializable
-data object SubmitResult: Route
+data object SubmitResult : Route
 
 @Serializable
 data object SubmitReview : Route
 
 @Serializable
-data object Confirm : Route
+data class Confirm(
+    val gameId: String,
+) : Route
 
 @Serializable
 data object ConfirmResult : Route

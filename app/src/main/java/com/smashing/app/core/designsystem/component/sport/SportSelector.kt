@@ -13,6 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R.drawable.ic_badminton
+import com.smashing.app.R.drawable.ic_pingpong
+import com.smashing.app.R.drawable.ic_tennis
 import com.smashing.app.R.string.sign_up_sport_subtitle
 import com.smashing.app.R.string.sign_up_sport_title
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
@@ -32,13 +35,15 @@ fun SportSelector(
     selectedSport: SportType?,
     onSportSelected: (SportType) -> Unit,
     modifier: Modifier = Modifier,
+    title: String = stringResource(sign_up_sport_title),
+    subTitle: String = stringResource(sign_up_sport_subtitle),
 ) {
     Column(
         modifier = modifier,
     ) {
         SignUpTitle(
-            title = stringResource(sign_up_sport_title),
-            subTitle = stringResource(sign_up_sport_subtitle),
+            title = title,
+            subTitle = subTitle,
         )
 
         Row(
@@ -51,7 +56,7 @@ fun SportSelector(
                     style = if (selectedSport == item) ChipStyle.ACTIVE else ChipStyle.INACTIVE,
                     onClick = { onSportSelected(item) },
                     icon = ImageVector.vectorResource(item.icon()),
-                )
+                    )
 
                 if (index != items.lastIndex) {
                     Spacer(modifier = Modifier.width(10.dp))

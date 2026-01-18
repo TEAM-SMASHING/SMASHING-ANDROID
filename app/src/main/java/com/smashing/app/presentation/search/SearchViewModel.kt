@@ -4,20 +4,25 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.TierType
-import com.smashing.app.data.model.search.SearchMainItemModel
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.data.repository.api.SearchRepository
+import com.smashing.app.presentation.search.SearchContract.SearchUiState
+import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+    private val searchRepository: SearchRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchContract.State())
@@ -25,32 +30,23 @@ class SearchViewModel @Inject constructor(
 
     val searchInputState = TextFieldState()
 
-    val searchInput = TextFieldState()
-
     init {
-        getDummyList()
+        fetchRegionUsersList(isRefresh = true)
         updateSearchInputText()
     }
 
     @OptIn(FlowPreview::class)
     fun updateSearchInputText() = viewModelScope.launch {
         snapshotFlow { searchInputState.text }
-            .collect { searchInputText ->
-                val text = searchInputState.toString()
-
-                if (text.isEmpty()) {
-                    _uiState.update {
-                        it.copy(
-                            suggestions = persistentListOf()
-                        )
-                    }
+            .debounce(SEARCH_NETWORK_DEBOUNCE)
+            .collectLatest { searchInputText ->
+                if (searchInputText.isEmpty()) {
+                    _uiState.update { it.copy(
+                        suggestions = persistentListOf(),
+                        searchNickNameUsersUiState = SearchUiState.Empty,
+                    ) }
                 } else {
-                    // Todo: 검색 api 호출
-                    _uiState.update {
-                        it.copy(
-                            // suggestions = api 응답값
-                        )
-                    }
+                    fetchNickNameUsersList(searchInputText)
                 }
             }
     }
@@ -73,17 +69,19 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedTierItem(tierItem: String?) =
         _uiState.update {
-            it.copy(selectedTierItem = tierItem)
+            it.copy(selectedTierItem = TierInfoStyle.findTierInfo(tierItem))
         }
 
     fun applyTierItem() {
-        updateCurrentTierText(_uiState.value.selectedTierItem)
+        updateCurrentTierText(_uiState.value.selectedTierItem?.tierKName)
+        fetchRegionUsersList(isRefresh = true)
         closeTierBottomSheet()
     }
 
     fun clearFilterTier() {
         updateCurrentTierText(null)
         updateSelectedTierItem(null)
+        fetchRegionUsersList(isRefresh = true)
     }
 
     fun updateCurrentTierText(tierText: String?) =
@@ -105,7 +103,7 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedGenderItem(genderItem: String?) =
         _uiState.update {
-            it.copy(selectedGenderItem = genderItem)
+            it.copy(selectedGenderItem = GenderInfo.findGenderInfo(genderItem))
         }
 
     fun updateCurrentGenderText(genderText: String?) =
@@ -116,113 +114,84 @@ class SearchViewModel @Inject constructor(
         }
 
     fun applyGenderItem() {
-        updateCurrentGenderText(_uiState.value.selectedGenderItem)
+        updateCurrentGenderText(_uiState.value.selectedGenderItem?.genderKName)
+        fetchRegionUsersList(isRefresh = true)
         closeGenderBottomSheet()
     }
 
     fun clearFilterGender() {
         updateCurrentGenderText(null)
         updateSelectedGenderItem(null)
+        fetchRegionUsersList(isRefresh = true)
     }
 
-    // TODO 더미 데이터 삭제 예정
-    private fun getDummyList() {
-        _uiState.update {
-            it.copy(
-                searchList =
-                    persistentListOf(
-                        SearchMainItemModel(
-                            userId = "search_userId_1",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.FEMALE,
-                            tierId = TierType.GOLD_1,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_2",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.FEMALE,
-                            tierId = TierType.BRONZE_1,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_3",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.MALE,
-                            tierId = TierType.BRONZE_1,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_4",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.MALE,
-                            tierId = TierType.CHALLENGER,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_5",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.FEMALE,
-                            tierId = TierType.GOLD_1,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_6",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.FEMALE,
-                            tierId = TierType.GOLD_1,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_7",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.MALE,
-                            tierId = TierType.CHALLENGER,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_8",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.FEMALE,
-                            tierId = TierType.GOLD_1,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_9",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.FEMALE,
-                            tierId = TierType.SILVER_2,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
-                        SearchMainItemModel(
-                            userId = "search_userId_10",
-                            nickname = "하나둘셋넷다여칠팔구",
-                            gender = GenderType.FEMALE,
-                            tierId = TierType.GOLD_1,
-                            wins = 254,
-                            losses = 38,
-                            reviews = 32,
-                        ),
+    fun fetchNickNameUsersList(nickname: CharSequence) = viewModelScope.launch {
+
+        _uiState.update { it.copy(searchNickNameUsersUiState = SearchUiState.Loading) }
+
+        searchRepository.getNickNameUsersSearch(nickname = nickname.toString())
+            .onSuccess { result ->
+                _uiState.update {
+                    it.copy(
+                        suggestions = result.toImmutableList(),
+                        searchNickNameUsersUiState = SearchUiState.Success,
                     )
-            )
+                }
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        searchNickNameUsersUiState = SearchUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
+                    )
+                }
+            }
+    }
+
+    fun fetchRegionUsersList(isRefresh: Boolean = false) = viewModelScope.launch {
+        val currentState = _uiState.value
+
+        if (!isRefresh) {
+            if (currentState.searchRegionUsersUiState == SearchUiState.Loading) return@launch
+            if (!currentState.searchRegionUsersCursor.hasNext) return@launch
         }
+
+        _uiState.update { it.copy(searchRegionUsersUiState = SearchUiState.Loading) }
+
+        searchRepository.getRegionUsersSearch(
+            cursor = if (isRefresh) null else currentState.searchRegionUsersCursor.nextCursor,
+            size = CURSOR_SIZE,
+            gender = currentState.selectedGenderItem?.genderName,
+            tier = currentState.selectedTierItem?.name,
+        ).onSuccess { cursorPage ->
+            _uiState.update { state ->
+                state.copy(
+                    searchList = if (isRefresh) {
+                        cursorPage.items.toImmutableList()
+                    } else {
+                        (state.searchList + cursorPage.items).toImmutableList()
+                    },
+                    searchRegionUsersCursor = cursorPage.cursor,
+                    searchRegionUsersUiState = if (cursorPage.items.isEmpty() && isRefresh) {
+                        SearchUiState.Empty
+                    } else {
+                        SearchUiState.Success
+                    },
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.copy(
+                    searchRegionUsersUiState = SearchUiState.Failure(
+                        throwable.message ?: "Unknown error"
+                    )
+                )
+            }
+        }
+    }
+
+    companion object {
+        private const val CURSOR_SIZE = 20
+        private const val SEARCH_NETWORK_DEBOUNCE = 500L
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.core.designsystem.component.appicon.AppIcon
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle
@@ -95,20 +96,26 @@ private fun TierInfoScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                //TODO 더미 추가 후 수정 예정
-                TierTag(
-                    tagText = "티어 설명",
-                )
-                TierTag(
-                    tagText = "티어 설명",
-                )
+
+                if (uiState.tierInfoDetail?.progressInfo != null) {
+                    if (!uiState.tierInfoDetail.progressInfo.percentText.isNullOrBlank()) {
+                        TierTag(
+                            tagText = uiState.tierInfoDetail.progressInfo.percentText,
+                        )
+                    }
+                    if (!uiState.tierInfoDetail.progressInfo.levelText.isNullOrBlank()) {
+                        TierTag(
+                            tagText = "실제 기준 ${uiState.tierInfoDetail.progressInfo.levelText}",
+                        )
+                    }
+                }
+
             }
         }
 
         Spacer(modifier = Modifier.height(28.dp))
 
         LazyRow(
-            modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(
@@ -117,7 +124,6 @@ private fun TierInfoScreen(
         ) {
             items(
                 items = TierInfoStyle.entries,
-                key = { it.tierName },
             ) {
                 SmashingChip(
                     text = it.tierName,
@@ -135,27 +141,48 @@ private fun TierInfoScreen(
                 .padding(
                     horizontal = 16.dp,
                 ),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = "승급을 위해 아래의 기술들을 연마해보세요",
-                style = SmashingTheme.typography.sm.semibold14,
-                color = SmashingTheme.colors.txtPrimary,
-            )
+            if (uiState.selectedTierInfoStyle != TierInfoStyle.CHALLENGER && uiState.selectedTierInfoStyle != TierInfoStyle.IRON) {
+                Text(
+                    text = "승급을 위해 아래의 기술들을 연마해보세요",
+                    style = SmashingTheme.typography.sm.semibold14,
+                    color = SmashingTheme.colors.txtPrimary,
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                //TODO 더미 추가 후 수정 예정
-                items(
-                    items = listOf("", "", ""),
+                Spacer(modifier = Modifier.height(8.dp))
+                if (uiState.tierInfoDetail != null) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        items(
+                            items = uiState.tierInfoDetail.skills,
+                        ) { skill ->
+                            CommentTag(
+                                title = skill.name,
+                                comment = skill.description,
+                            )
+                        }
+                    }
+                } else {
+                    Spacer(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                    )
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .weight(1f),
                 ) {
-                    CommentTag(
-                        title = "test",
-                        comment = "test",
+                    Spacer(modifier = Modifier.height(52.dp))
+                    AppIcon(
+                        title = uiState.tierInfoDetail?.skills?.firstOrNull()?.name,
+                        subtitle = uiState.tierInfoDetail?.skills?.firstOrNull()?.description,
+                        isFilled = if (uiState.selectedTierInfoStyle == TierInfoStyle.CHALLENGER) true else false,
                     )
                 }
             }
@@ -185,9 +212,9 @@ private fun TierTag(
 
 @Composable
 private fun CommentTag(
-    title: String,
-    comment: String,
     modifier: Modifier = Modifier,
+    title: String? = "",
+    comment: String? = "",
 ) {
     Column(
         modifier = modifier
@@ -204,13 +231,13 @@ private fun CommentTag(
         horizontalAlignment = Alignment.Start,
     ) {
         Text(
-            text = title,
+            text = title ?: "",
             style = SmashingTheme.typography.sm.semibold14,
             color = SmashingTheme.colors.txtPrimary,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = comment,
+            text = comment ?: "",
             style = SmashingTheme.typography.xs.medium12,
             color = SmashingTheme.colors.txtSecondary,
         )

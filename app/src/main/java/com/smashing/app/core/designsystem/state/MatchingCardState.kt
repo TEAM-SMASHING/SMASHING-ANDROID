@@ -1,6 +1,7 @@
 package com.smashing.app.core.designsystem.state
 
 import androidx.compose.runtime.Stable
+import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
 
@@ -89,6 +90,7 @@ sealed interface MatchingCardState {
         override val tierType: TierType,
         override val onProfileClick: () -> Unit,
         override val onCloseClick: (() -> Unit),
+        val gameStatusType: GameResultStatusType,
         val onKakaoLinkClick: () -> Unit,
         val onConfirmClick: () -> Unit,
     ) : Closable

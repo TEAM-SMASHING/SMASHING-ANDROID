@@ -12,6 +12,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.presentation.addsports.navigation.addSportsGraph
+import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
@@ -30,6 +32,7 @@ import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
+import com.smashing.app.presentation.write.navigation.navigateToConfirm
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -86,6 +89,7 @@ private fun MainNavHost(
         matchingGraph(
             innerPadding = innerPadding,
             navigateToSubmit = appState.navController::navigateToSubmit,
+            navigateToConfirm = appState.navController::navigateToConfirm,
         )
 
         profileGraph(
@@ -93,6 +97,7 @@ private fun MainNavHost(
             navigateUp = appState.navController::navigateUp,
             navigateToReview = appState.navController::navigateToReview,
             updateBottomBar = appState::updateBottomBarVisible,
+            navigateToAddSports = appState.navController::navigateToAddSports,
         )
 
         loginGraph(
@@ -176,6 +181,9 @@ private fun MainNavHost(
         tierInfoGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
+        )
+        addSportsGraph(
+            navigateUp = appState.navController::navigateUp,
         )
     }
 }

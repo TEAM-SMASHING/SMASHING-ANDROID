@@ -2,8 +2,8 @@ package com.smashing.app.presentation.profile.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.presentation.profile.ProfileContract
-import com.smashing.app.presentation.profile.ProfileUiState
+import com.smashing.app.presentation.profile.myprofile.MyProfileContract
+import com.smashing.app.presentation.profile.myprofile.MyProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,11 +14,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ReviewViewModel @Inject constructor(
+class AllReviewViewModel @Inject constructor(
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ProfileContract.State())
-    val uiState: StateFlow<ProfileContract.State> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(MyProfileContract.State())
+    val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
 
     init {
         fetchProfileData()
@@ -26,7 +26,7 @@ class ReviewViewModel @Inject constructor(
 
     private fun fetchProfileData() {
         viewModelScope.launch {
-            _uiState.update { it.copy(loadState = ProfileUiState.Loading) }
+            _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
 
             try {
                 // TODO: 실제 API 호출 (delay로 시뮬레이션)
@@ -34,7 +34,7 @@ class ReviewViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 _uiState.update {
-                    it.copy(loadState = ProfileUiState.Failure(e.message ?: "Unknown Error"))
+                    it.copy(loadState = MyProfileUiState.Failure(e.message ?: "Unknown Error"))
                 }
             }
         }
