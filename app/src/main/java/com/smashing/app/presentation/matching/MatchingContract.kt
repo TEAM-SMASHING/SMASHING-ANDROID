@@ -26,6 +26,11 @@ interface MatchingContract {
         val selectedMatchingId: String? = null,
         val selectedGameId: String? = null,
     )
+
+    sealed interface SideEffect {
+        data class NavigateToSubmit(val gameId: String) : SideEffect
+        data class NavigateToConfirm(val gameId: String) : SideEffect
+    }
 }
 
 sealed interface MatchingUiState {

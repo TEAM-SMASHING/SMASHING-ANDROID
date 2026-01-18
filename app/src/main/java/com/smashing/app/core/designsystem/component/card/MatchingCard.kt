@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +26,6 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_close_sm
 import com.smashing.app.R.drawable.ic_link
 import com.smashing.app.R.string.accept
-import com.smashing.app.R.string.matching_write
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.state.MatchingCardState.Confirm
@@ -33,9 +33,12 @@ import com.smashing.app.core.designsystem.state.MatchingCardState.Receive
 import com.smashing.app.core.designsystem.state.MatchingCardState.Search
 import com.smashing.app.core.designsystem.state.MatchingCardState.Send
 import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.style.getMatchButtonColor
+import com.smashing.app.core.designsystem.style.getMatchButtonTitle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
 
@@ -121,6 +124,7 @@ fun MatchingCard(
                         color = SmashingTheme.colors.txtKakaoLinkGray,
                         style = SmashingTheme.typography.xs.regular12,
                         textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.noRippleClickable(onClick = cardState.onKakaoLinkClick),
                     )
 
                     Icon(
@@ -131,14 +135,18 @@ fun MatchingCard(
                 }
 
                 SmashingBaseButton(
-                    text = stringResource(matching_write),
+                    text = cardState.gameStatusType.getMatchButtonTitle(),
                     textStyle = SmashingTheme.typography.sm.medium14,
                     onClick = cardState.onConfirmClick,
-                    buttonColor = ButtonStyle.SECONDARY.getButtonColor(),
+                    buttonColor = cardState.gameStatusType.getMatchButtonColor(),
                     contentPadding = PaddingValues(
-                        vertical = 3.dp,
-                        horizontal = 20.dp,
+                        vertical = 4.dp,
                     ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 11.dp,
+                        ),
                     shape = RoundedCornerShape(4.dp),
                 )
             }
@@ -237,6 +245,7 @@ private fun MatchingCardPreview() {
                         onKakaoLinkClick = {},
                         onCloseClick = {},
                         onConfirmClick = {},
+                        gameStatusType = GameResultStatusType.PENDING_RESULT,
                     ),
                 )
 
