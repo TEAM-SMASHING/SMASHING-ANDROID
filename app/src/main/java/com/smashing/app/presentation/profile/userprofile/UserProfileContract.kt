@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.profile.userprofile
 
 import androidx.compose.runtime.Immutable
+import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.model.review.GameReview
@@ -17,10 +18,15 @@ class UserProfileContract {
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
-        val userId: String? = "",
+        val userId: String = "",
         val isMatchingRequest: Boolean = true,
         val isCompeteButtonEnabled: Boolean = false,
-    )
+        val userProfileUiState: UserProfileUiState = UserProfileUiState.Idle,
+        val userProfileCursor: Cursor = Cursor(),
+    ){
+        val isReviewEmpty: Boolean
+            get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
+    }
 }
 
 
