@@ -4,9 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.model.MatchPlayer
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 
 interface SubmitContract {
@@ -24,10 +22,11 @@ interface SubmitContract {
         val reviewText: String = "",
         val reviewId: String = "",
         val submitUiState: SubmitUiState = SubmitUiState.Idle,
+        val isResubmitDialogVisible: Boolean = false,
     )
 
     sealed interface SideEffect {
-        data object NavigateBack : SideEffect
+        data object NavigateToMatching : SideEffect
     }
 
     sealed interface SubmitUiState {

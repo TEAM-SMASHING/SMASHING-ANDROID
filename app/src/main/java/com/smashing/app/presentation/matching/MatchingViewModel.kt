@@ -1,11 +1,14 @@
 package com.smashing.app.presentation.matching
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.MatchingContract.SideEffect
+import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.type.MatchingType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -20,10 +23,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MatchingViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MatchingContract.State())
+    private val initTab = savedStateHandle.toRoute<Matching>().initTab
+    
+    private val _uiState = MutableStateFlow(
+        MatchingContract.State(selectedType = initTab)
+    )
     val uiState = _uiState.asStateFlow()
 
     private val _sideEffect = MutableSharedFlow<MatchingContract.SideEffect>()

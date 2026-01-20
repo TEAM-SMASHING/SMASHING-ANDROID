@@ -33,6 +33,7 @@ class SubmitViewModel @Inject constructor(
     private val gameId = submitRoute.gameId
     private val opponentUserId = submitRoute.opponentUserId
     private val opponentNickname = submitRoute.opponentNickname
+    val isFirstAttempt = submitRoute.isFirstAttempt
     
     private val _uiState = MutableStateFlow(SubmitContract.State())
     val uiState = _uiState.asStateFlow()
@@ -121,6 +122,10 @@ class SubmitViewModel @Inject constructor(
         state.copy(selectedTagList = updatedTags.toImmutableSet())
     }
 
+    fun showResubmitDialog() = _uiState.update { it.copy(isResubmitDialogVisible = true) }
+    
+    fun hideResubmitDialog() = _uiState.update { it.copy(isResubmitDialogVisible = false) }
+
     fun submitGame() = viewModelScope.launch {
         val state = _uiState.value
         val winner = state.winner
@@ -130,13 +135,14 @@ class SubmitViewModel @Inject constructor(
 
         _uiState.update { it.copy(submitUiState = SubmitContract.SubmitUiState.Loading) }
 
-        val review = state.selectedRating?.let { rating ->
-            PostGameSubmissionRequest.Review(
-                rating = rating.name,
-                content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
-                tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() }
-            )
-        }
+        val review = if (!isFirstAttempt) null else
+            state.selectedRating?.let { rating ->
+                PostGameSubmissionRequest.Review(
+                    rating = rating.name,
+                    content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
+                    tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() }
+                )
+            }
 
         val request = PostGameSubmissionRequest(
             winnerUserId = winner.userId,
@@ -150,11 +156,19 @@ class SubmitViewModel @Inject constructor(
             gameId = gameId,
             request = request,
         ).onSuccess { reviewId ->
-            _uiState.update { it.copy(submitUiState = SubmitContract.SubmitUiState.Success) }
-            _sideEffect.emit(SideEffect.NavigateBack)
+            _uiState.update { 
+                it.copy(
+                    submitUiState = SubmitContract.SubmitUiState.Success,
+                    isResubmitDialogVisible = false
+                )
+            }
+            _sideEffect.emit(SideEffect.NavigateToMatching)
         }.onFailure { throwable ->
             _uiState.update {
-                it.copy(submitUiState = SubmitContract.SubmitUiState.Failure("${throwable.message}"))
+                it.copy(
+                    submitUiState = SubmitContract.SubmitUiState.Failure("${throwable.message}"),
+                    isResubmitDialogVisible = false
+                )
             }
         }
     }

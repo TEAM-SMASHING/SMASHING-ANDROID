@@ -53,7 +53,7 @@ fun SubmitReviewRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is SubmitContract.SideEffect.NavigateBack -> navigateUp()
+                    is SubmitContract.SideEffect.NavigateToMatching -> navigateToMatching()
                    
                 }
             }
