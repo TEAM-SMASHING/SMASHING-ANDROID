@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.Profile.User
+package com.smashing.app.data.di.User
 
 import com.smashing.app.data.remote.service.ReviewService
 import dagger.Module
