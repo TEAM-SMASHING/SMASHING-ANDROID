@@ -7,8 +7,10 @@ import com.smashing.app.data.model.my.UserProfileItem
 import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.AllProfileDto
+import com.smashing.app.data.remote.dto.my.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
 import com.smashing.app.data.remote.dto.my.MyPageData
 import com.smashing.app.data.type.GenderType
@@ -84,6 +86,18 @@ fun AddSportsInfo.toRequest():
         experienceRange = this.selectedSkill?.skillCode ?: "LT_3_MONTHS",
     )
 }
+
+fun GetMyRecentReviewStatsResponse.toGameReviewResult(): GameReviewResult =
+    GameReviewResult(
+        bestCount = this.ratingCounts.best,
+        goodCount = this.ratingCounts.good,
+        badCount = this.ratingCounts.bad,
+        goodMannerCount = this.tagCounts.goodManner,
+        onTimeCount = this.tagCounts.onTime,
+        fairPlayCount = this.tagCounts.fairPlay,
+        fastResponseCount = this.tagCounts.fastResponse,
+    )
+
 
 
 
