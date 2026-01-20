@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.region.kakaoRegion
+package com.smashing.app.data.di.region
 
 import com.smashing.app.data.repository.api.RegionRepository
 import com.smashing.app.data.repository.impl.RegionRepositoryImpl
@@ -10,10 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class KakaoRegionRepositoryModule {
+abstract class RegionRepositoryModule {
+
     @Binds
     @Singleton
     abstract fun bindRegionRepository(
-        regionRepositoryImpl: RegionRepositoryImpl,
+        regionRepositoryImpl: RegionRepositoryImpl
     ): RegionRepository
 }

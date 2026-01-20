@@ -1,7 +1,8 @@
-package com.smashing.app.data.di.region.kakaoRegion
+package com.smashing.app.data.di.region
 
 import com.smashing.app.core.network.qualifier.Kakao
 import com.smashing.app.data.remote.service.KakaoRegionService
+import com.smashing.app.data.remote.service.RegionService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,10 +13,17 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object KakaoServiceModule {
+object RegionServiceModule {
+
     @Provides
     @Singleton
-    fun provideKakaoService(
+    fun provideRegionService(
+        retrofit: Retrofit,
+    ): RegionService = retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideKakaoRegionService(
         @Kakao retrofit: Retrofit,
     ): KakaoRegionService = retrofit.create()
 }
