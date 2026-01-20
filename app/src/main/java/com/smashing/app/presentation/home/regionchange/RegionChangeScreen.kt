@@ -63,6 +63,7 @@ fun RegionChangeRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToRegion -> navigateToRegion()
+                    is RegionChangeContract.SideEffect.RegionChangeSuccess -> navigateUp()
                 }
             }
     }
@@ -71,6 +72,7 @@ fun RegionChangeRoute(
         uiState = uiState,
         modifier = modifier,
         navigateToRegion = viewModel::updateToRegion,
+        onConfirmRegionChange = viewModel::changeRegion,
         navigateUp = navigateUp,
         navigateToHome = navigateUp
     )
@@ -80,6 +82,7 @@ fun RegionChangeRoute(
 fun RegionChangeScreen(
     navigateToRegion: () -> Unit,
     navigateUp: () -> Unit,
+    onConfirmRegionChange: () -> Unit,
     navigateToHome: () -> Unit,
     uiState: RegionChangeContract.State,
     modifier: Modifier = Modifier,
@@ -173,7 +176,7 @@ fun RegionChangeScreen(
             dismissText = "아니요",
             onConfirmClick = {
                 showDialog = false
-                navigateToHome()
+                onConfirmRegionChange()
             },
             onDismissClick = {
                 showDialog = false
@@ -197,6 +200,7 @@ private fun RegionChangeScreenPreview_Empty() {
             navigateToRegion = {},
             navigateUp = {},
             navigateToHome = {},
+            onConfirmRegionChange = {}
         )
     }
 }
@@ -217,6 +221,7 @@ private fun RegionChangeScreenPreview_Selected() {
             navigateToRegion = {},
             navigateUp = {},
             navigateToHome = {},
+            onConfirmRegionChange = {},
         )
     }
 }

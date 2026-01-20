@@ -12,11 +12,14 @@ interface RegionChangeContract {
 
     sealed interface SideEffect {
         data object NavigateToRegion : SideEffect
+        data object RegionChangeSuccess : SideEffect
     }
 }
 
 sealed interface RegionChangeUiState {
     object Idle : RegionChangeUiState
+
+    object Loading : RegionChangeUiState
 
     object Success : RegionChangeUiState
 
