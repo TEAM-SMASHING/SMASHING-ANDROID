@@ -41,7 +41,7 @@ class UserProfileViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
-        fetchUserProfileReview(isRefresh = true)
+        fetchUserProfileReview()
     }
 
     private fun fetchProfileInfo() {
@@ -66,32 +66,23 @@ class UserProfileViewModel @Inject constructor(
         )
     }
 
-    fun fetchUserProfileReview(isRefresh: Boolean = false) = viewModelScope.launch {
+    fun fetchUserProfileReview() = viewModelScope.launch {
 
         val currentState = _uiState.value
-
-        if (!isRefresh) {
-            if (currentState.userProfileUiState == UserProfileUiState.Loading) return@launch
-            if (!currentState.userProfileCursor.hasNext) return@launch
-        }
 
         _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
 
         userRepository.getUserRecentList(
             userId = userId,
-            sportCode = "BM",// currentState.selectedSportProfileId,
-            cursor = if (isRefresh) null else currentState.userProfileCursor.nextCursor,
+            sportCode = "BM", //Todo: 실제 값으로 수정
+            cursor = null,
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
                 state.copy(
-                    gameReview = if (isRefresh) {
-                        cursorPage.items.toImmutableList()
-                    } else {
-                        (state.gameReview + cursorPage.items).toImmutableList()
-                    },
+                    gameReview = cursorPage.items.toImmutableList(),
                     userProfileCursor = cursorPage.cursor,
-                    userProfileUiState = if (cursorPage.items.isEmpty() && isRefresh) {
+                    userProfileUiState = if (cursorPage.items.isEmpty()) {
                         UserProfileUiState.Idle
                     } else {
                         UserProfileUiState.Success
