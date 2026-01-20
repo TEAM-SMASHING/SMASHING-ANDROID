@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.repository.api.UserRepository
+import com.smashing.app.presentation.profile.navigation.Review
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,27 +23,22 @@ class AllReviewViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) : ViewModel() {
 
-    private val userId = savedStateHandle.getStateFlow<String?>("userId", null)
+    private val userId = savedStateHandle.toRoute<Review>().userId
 
     private val _uiState = MutableStateFlow(State())
     val uiState = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            userId.collectLatest { userId ->
-                if (userId == null) {
-                    //fetchMyAllReviews()
-                } else {
-                    fetchUserProfileReview(true)
-                }
-            }
+        if (userId == null) {
+            //fetchMyAllReviews()
+        } else {
+            fetchUserProfileReview(true)
         }
     }
 
     fun fetchUserProfileReview(isRefresh: Boolean = false) = viewModelScope.launch {
 
         val currentState = _uiState.value
-        val userIdValue = userId.value
 
         if (!isRefresh) {
             if (currentState.userProfileUiState == UserProfileUiState.Loading) return@launch
@@ -51,9 +47,9 @@ class AllReviewViewModel @Inject constructor(
 
         _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
 
-        if(userIdValue != null){
+        if (userId != null) {
             userRepository.getUserRecentList(
-                userId = userIdValue,
+                userId = userId,
                 sportCode = "BM",// currentState.selectedSportProfileId,
                 cursor = if (isRefresh) null else currentState.userProfileCursor.nextCursor,
                 size = CURSOR_SIZE,

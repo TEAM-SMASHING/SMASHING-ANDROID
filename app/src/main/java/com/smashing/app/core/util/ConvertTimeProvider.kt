@@ -7,11 +7,11 @@ import java.time.temporal.ChronoUnit
 object ConvertTimeProvider {
     fun convertLocalDateTimeToTime(localDateTime: String): String {
 
-        val createdTime = runCatching {
+        val createdTime = try {
             LocalDateTime.parse(localDateTime)
-        }.getOrDefault(
-            LocalDateTime.parse("")
-        )
+        } catch(_: Exception) {
+            return ""
+        }
 
         val now = LocalDateTime.now(ZoneId.systemDefault())
 
