@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.ranking
 
 import com.smashing.app.data.model.rank.MyRank
 import com.smashing.app.data.model.rank.Ranking
