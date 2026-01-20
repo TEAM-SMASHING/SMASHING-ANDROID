@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -125,7 +126,7 @@ private fun MyProfileScreen(
                 sportProfileList = uiState.sportProfileList,
                 selectedProfileId = uiState.selectedSportProfileId,
                 onSportClick = onSportClick,
-                tierIconResId = uiState.profileInfo.tierType.toTierInfoStyle().getImg(),
+                tierIconResId = uiState.profileInfo.tierType.img(),
                 progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
                 lpStatus = uiState.profileInfo.minLp,
                 totalLp = uiState.profileInfo.maxLp,
