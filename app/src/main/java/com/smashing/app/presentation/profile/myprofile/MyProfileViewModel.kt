@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.String
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
@@ -45,12 +44,14 @@ class MyProfileViewModel @Inject constructor(
     val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
 
     init {
-        fetchProfileInfo()
+        fetchProfileInfo(isShowLoading = true)
     }
 
-    private fun fetchProfileInfo() {
+    private fun fetchProfileInfo(isShowLoading: Boolean = false) {
         viewModelScope.launch {
-            _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
+            if (isShowLoading) {
+                _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
+            }
 
             myRepository.getMyPageInfo()
                 .onSuccess { data ->
@@ -65,42 +66,50 @@ class MyProfileViewModel @Inject constructor(
                     }
                 }
                 .onFailure { exception ->
-                    _uiState.update {
-                        it.copy(
-                            loadState = MyProfileUiState.Failure(
-                                exception.message ?: "알 수 없는 오류가 발생했습니다."
+                    if (isShowLoading) {
+                        _uiState.update {
+                            it.copy(
+                                loadState = MyProfileUiState.Failure(
+                                    exception.message ?: "오류 발생"
+                                )
                             )
-                        )
+                        }
                     }
                 }
         }
     }
 
     fun selectProfileId(profileId: String) {
-        if (uiState.value.selectedSportProfileId == profileId) return
+        val currentState = uiState.value
+        if (currentState.selectedSportProfileId == profileId) return
+
+        val optimisticList = currentState.sportProfileList.map { profile ->
+            if (profile.profileId == profileId) {
+                profile.copy(isActive = true)
+            } else {
+                profile.copy(isActive = false)
+            }
+        }.toPersistentList()
+
+        _uiState.update {
+            it.copy(
+                selectedSportProfileId = profileId,
+                sportProfileList = optimisticList
+            )
+        }
         viewModelScope.launch {
             myRepository.switchActiveMyProfile(profileId)
                 .onSuccess {
-                    updateSelectedProfileId(profileId)
-                    fetchProfileInfo()
+                    fetchProfileInfo(isShowLoading = false)
                 }
                 .onFailure { exception ->
                     _uiState.update {
                         it.copy(
-                            loadState = MyProfileUiState.Failure(
-                                exception.message ?: "알 수 없는 오류가 발생했습니다."
-                            )
+                            loadState = MyProfileUiState.Failure(exception.message ?: "프로필 변경 실패")
                         )
                     }
+                    fetchProfileInfo(isShowLoading = false)
                 }
-        }
-    }
-
-    private fun updateSelectedProfileId(profileId: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                selectedSportProfileId = profileId,
-            )
         }
     }
 }
