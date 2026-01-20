@@ -17,12 +17,14 @@ import com.smashing.app.presentation.write.submit.SubmitViewModel
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToSubmit(
+    gameId: String,
     navOptions: NavOptions? = null,
-) = navigate(Submit, navOptions)
+) = navigate(Submit(gameId = gameId), navOptions)
 
 fun NavController.navigateToConfirm(
+    gameId: String,
     navOptions: NavOptions? = null,
-) = navigate(Confirm, navOptions)
+) = navigate(Confirm(gameId = gameId), navOptions)
 
 fun NavController.navigateToSubmitReview(
     navOptions: NavOptions? = null,
@@ -89,7 +91,9 @@ fun NavGraphBuilder.writeGraph(
 }
 
 @Serializable
-data object Submit : Route
+data class Submit(
+    val gameId: String,
+) : Route
 
 @Serializable
 data object SubmitResult : Route
@@ -98,11 +102,12 @@ data object SubmitResult : Route
 data object SubmitReview : Route
 
 @Serializable
-data object Confirm : Route
+data class Confirm(
+    val gameId: String,
+) : Route
 
 @Serializable
 data object ConfirmResult : Route
 
 @Serializable
 data object ConfirmReview : Route
-

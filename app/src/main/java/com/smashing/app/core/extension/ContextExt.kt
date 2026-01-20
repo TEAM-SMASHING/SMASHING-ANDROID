@@ -10,7 +10,8 @@ import androidx.core.net.toUri
  * @param url URL 문자열
  * @return 성공 시 true, 실패 시 false
  */
-fun Context.openUrl(url: String): Boolean {
+fun Context.openUrl(url: String?): Boolean {
+    if (url == null) return false
     return runCatching {
         startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
     }.isSuccess
