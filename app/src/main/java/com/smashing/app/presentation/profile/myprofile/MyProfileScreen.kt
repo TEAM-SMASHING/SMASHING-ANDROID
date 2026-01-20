@@ -143,7 +143,7 @@ private fun MyProfileScreen(
 
             ReviewCard(
                 reviews = uiState.gameReview,
-                onViewAllReviewClick = { onReviewClick },
+                onViewAllReviewClick = { onReviewClick(null) },
                 bestCount = uiState.gameReviewResult.bestCount,
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
