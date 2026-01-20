@@ -256,14 +256,14 @@ private fun HomeScreen(
                             ),
                     )
                 }
-                if (uiState.matchingCardList.isNotEmpty()) {
+                if (uiState.recommendedUserList.isNotEmpty()) {
                     LazyRow(
                         modifier = Modifier
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         items(
-                            items = uiState.matchingCardList,
+                            items = uiState.recommendedUserList,
                             key = { it.userId }
                         ) { cardState ->
                             MatchingCard(
@@ -602,7 +602,7 @@ private fun HomeScreenPreview() {
                     lp = 2050,
                 ),
             ).toImmutableList(),
-            matchingCardList = listOf(
+            recommendedUserList = listOf(
                 MatchingCardState.Search(
                     userId = "match1",
                     nickname = "탁구의신",
@@ -674,7 +674,7 @@ private fun HomeScreenEmptyValuePreview() {
                     lp = 2500,
                 ),
             ).toImmutableList(),
-            matchingCardList = listOf<MatchingCardState.Search>().toImmutableList(),
+            recommendedUserList = listOf<MatchingCardState.Search>().toImmutableList(),
             loadState = HomeUiState.Success,
             isNotice = false,
         ),

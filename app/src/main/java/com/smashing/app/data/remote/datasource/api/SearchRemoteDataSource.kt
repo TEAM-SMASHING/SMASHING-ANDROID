@@ -3,6 +3,7 @@ package com.smashing.app.data.remote.datasource.api
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.search.GetNicknameUsersSearchResponse
+import com.smashing.app.data.remote.dto.search.GetRecommendedUsersResponse
 import com.smashing.app.data.remote.dto.search.GetRegionUsersSearchResponse
 
 interface SearchRemoteDataSource {
@@ -16,4 +17,7 @@ interface SearchRemoteDataSource {
     suspend fun getNickNameUsersSearch(
         nickname: String,
     ): BaseResponse<GetNicknameUsersSearchResponse>
+
+    suspend fun getRecommendedUsers(): BaseResponse<GetRecommendedUsersResponse>
+
 }

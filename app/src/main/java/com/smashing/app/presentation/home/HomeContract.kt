@@ -17,7 +17,7 @@ interface HomeContract {
         val allUserProfiles: ImmutableList<UserProfileItem> = persistentListOf(),
         val topRankerList: ImmutableList<UserRank> = persistentListOf(),
         val regionRankerList: ImmutableList<UserRank> = persistentListOf(),
-        val matchingCardList: ImmutableList<MatchingCardState.Search> = persistentListOf(),
+        val recommendedUserList: ImmutableList<MatchingCardState.Search> = persistentListOf(),
         val matchedUser: DummyMatchedUser? = null,
         val isNotice: Boolean = false,
     )
