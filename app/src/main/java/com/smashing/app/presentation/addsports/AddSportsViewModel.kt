@@ -2,6 +2,8 @@ package com.smashing.app.presentation.addsports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.repository.api.AddSportsRepository
+import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +20,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AddSportsViewModel @Inject constructor(
+    private val addSportsRepository: AddSportsRepository,
+    private val myRepository: MyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddSportsContract.State())
@@ -28,6 +32,34 @@ class AddSportsViewModel @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val sideEffect = _sideEffect.asSharedFlow()
+
+    init {
+        fetchAvailableSports()
+    }
+
+    private fun fetchAvailableSports() {
+        viewModelScope.launch {
+            myRepository.getMyPageInfo()
+                .onSuccess { myPageData ->
+                    val myExistingSportCodes: List<String> = myPageData.sportProfiles.map {
+                        it.sportType.code
+                    }
+                    // 전체 종목(SportType) 중에서 내 종목에 없는 것만 남김
+                    val filteredSports = SportType.entries.filter { sport ->
+                        sport.code !in myExistingSportCodes
+                    }
+                    _uiState.update {
+                        it.copy(availableSports = filteredSports)
+                    }
+                }
+                .onFailure {
+                    _uiState.update {
+                        it.copy(availableSports = SportType.entries)
+                    }
+                }
+        }
+    }
+
     fun updateSelectedSport(sport: SportType) {
         _uiState.update { state ->
             state.copy(
@@ -52,15 +84,27 @@ class AddSportsViewModel @Inject constructor(
         _uiState.update { it.copy(currentStep = it.currentStep + 1) }
     }
 
+
     fun postAddSport() {
+        val currentInfo = uiState.value.addSportsInfo
+        if (currentInfo.selectedSports == null || currentInfo.selectedSkill == null) return
+
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = AddSportsUiState.Loading) }
-            // TODO: 실제 API 호출로 교체 필요
-            //repository.addSport(uiState.value.addSportsInfo)
-            //     .onSuccess { ... }
-            //     .onFailure { ... }
-            _uiState.update { it.copy(loadState = AddSportsUiState.Success) }
-            _sideEffect.emit(AddSportsUiState.AddSportsSideEffect.NavigateToSports)
+            addSportsRepository.addSportsProfile(currentInfo)
+                .onSuccess {
+                    _uiState.update { it.copy(loadState = AddSportsUiState.Success) }
+                    _sideEffect.emit(AddSportsUiState.AddSportsSideEffect.NavigateToSports)
+                }
+                .onFailure { exception ->
+                    _uiState.update {
+                        it.copy(
+                            loadState = AddSportsUiState.Failure(
+                                exception.message ?: "오류가 발생했습니다."
+                            )
+                        )
+                    }
+                }
         }
     }
 }
