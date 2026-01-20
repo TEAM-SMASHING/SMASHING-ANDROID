@@ -43,7 +43,7 @@ enum class MainTab(
         selectedIconRes = ic_trophy_selected,
         unselectedIconRes = ic_trophy_unselected,
         titleRes = matching_manage,
-        route = Matching,
+        route = Matching(),
     ),
     PROFILE(
         selectedIconRes = ic_profile_selected,

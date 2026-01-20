@@ -19,6 +19,10 @@ data class AcceptedMatchingListResponse(
     val remainingSeconds: Long,
     @SerialName("isSubmitLocked")
     val isSubmitLocked: Boolean,
+    @SerialName("latestSubmissionId")
+    val latestSubmissionId: String? = null,
+    @SerialName("latestAttemptNo")
+    val latestAttemptNo: Int? = null,
 ) {
     @Serializable
     data class OpponentSummary(

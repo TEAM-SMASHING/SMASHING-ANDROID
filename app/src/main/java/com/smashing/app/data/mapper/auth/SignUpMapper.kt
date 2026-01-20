@@ -7,4 +7,5 @@ fun PostSignUpResponse.toSignUpModel() = SignUpModel(
     accessToken = this.accessToken,
     refreshToken = this.refreshToken,
     userId = this.userId,
+    userNickname = this.userNickname,
 )
