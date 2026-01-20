@@ -13,19 +13,13 @@ class RegionRepositoryImpl @Inject constructor(
     private val regionRemoteDataSource: RegionRemoteDataSource,
 ) : RegionRepository {
 
-    override suspend fun searchAddress(query: String): Result<List<KakaoRegion>> {
-        return suspendRunCatching {
+    override suspend fun searchAddress(query: String): Result<List<KakaoRegion>> =
+        suspendRunCatching {
             val response = regionDataSource.searchAddress(query)
-
-           response.toRegionList()
+            response.toRegionList()
         }
-    }
 
     override suspend fun changeRegion(region: String): Result<Unit> = suspendRunCatching {
-        val response = regionRemoteDataSource.putRegionChange(region)
-
-        if (response.statusCode != 200) {
-            throw IllegalStateException("Region change failed: ${response.status}")
-        }
+        regionRemoteDataSource.putRegionChange(region)
     }
 }
