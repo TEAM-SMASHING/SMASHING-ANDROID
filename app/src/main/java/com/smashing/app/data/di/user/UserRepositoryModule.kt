@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.User
+package com.smashing.app.data.di.user
 
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.repository.impl.UserRepositoryImpl
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class UserProfileRepositoryModule {
+abstract class UserRepositoryModule {
 
     @Binds
     @Singleton

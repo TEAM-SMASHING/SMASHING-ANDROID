@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.User
+package com.smashing.app.data.di.user
 
 import com.smashing.app.data.remote.service.ReviewService
 import dagger.Module
@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object UserProfileServiceModule {
+object UserServiceModule {
 
     @Provides
     @Singleton

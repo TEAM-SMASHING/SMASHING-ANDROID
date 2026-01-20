@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.User
+package com.smashing.app.data.di.user
 
 import com.smashing.app.data.remote.datasource.api.UserRemoteDataSource
 import com.smashing.app.data.remote.datasource.impl.UserRemoteDataSourceImpl
@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class UserProfileDataSourceModule {
+abstract class UserDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindUserProfileRemoteDataSource(
+    abstract fun bindUserRemoteDataSource(
         userRemoteDataSourceImpl: UserRemoteDataSourceImpl
     ): UserRemoteDataSource
 }
