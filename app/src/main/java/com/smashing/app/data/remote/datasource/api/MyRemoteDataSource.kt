@@ -3,6 +3,7 @@ package com.smashing.app.data.remote.datasource.api
 
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
+import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
 import com.smashing.app.data.remote.dto.my.MyPageData
 import com.smashing.app.data.remote.dto.my.MyProfileReviewListData
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
