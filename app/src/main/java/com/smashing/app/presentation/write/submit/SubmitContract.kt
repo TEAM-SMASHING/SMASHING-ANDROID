@@ -17,8 +17,22 @@ interface SubmitContract {
         val winner: MatchPlayer? = null,
         val loser: MatchPlayer? = null,
         val isButtonEnabled: Boolean = false,
-        val selectedRatingTypes: ImmutableSet<ReviewRatingType> = persistentSetOf(),
-        val selectedTagTypes: ImmutableSet<ReviewTagType> = persistentSetOf(),
+        val selectedRating: ReviewRatingType? = null,
+        val selectedTagList: ImmutableSet<ReviewTagType> = persistentSetOf(),
         val reviewText: String = "",
+        val reviewId: String = "",
+        val submitUiState: SubmitUiState = SubmitUiState.Idle,
+        val isResubmitDialogVisible: Boolean = false,
     )
+
+    sealed interface SideEffect {
+        data object NavigateToMatching : SideEffect
+    }
+
+    sealed interface SubmitUiState {
+        data object Idle : SubmitUiState
+        data object Loading : SubmitUiState
+        data object Success : SubmitUiState
+        data class Failure(val msg: String) : SubmitUiState
+    }
 }

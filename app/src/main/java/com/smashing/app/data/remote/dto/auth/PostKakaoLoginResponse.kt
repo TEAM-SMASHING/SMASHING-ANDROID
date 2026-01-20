@@ -13,6 +13,8 @@ data class PostKakaoLoginResponse(
     val kakaoId: String,
     @SerialName("userId")
     val userId: String?,
+    @SerialName("nickname")
+    val nickname: String?,
     @SerialName("isCompletedSignUp")
     val isCompletedSignUp: Boolean,
 )
