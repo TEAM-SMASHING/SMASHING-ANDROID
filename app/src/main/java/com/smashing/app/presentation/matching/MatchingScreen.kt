@@ -384,7 +384,7 @@ private fun MatchingList(
                             onProfileClick = { onProfileClick(matching.userId) },
                             onConfirmClick = { onAcceptedMatchingClick(matching) },
                             onKakaoLinkClick = { onAcceptedKakaoLinkClick(matching.openChatUrl) },
-                            onCloseClick ={ onAcceptedCloseClick(matching.gameId) },
+                            onCloseClick = { onAcceptedCloseClick(matching.gameId) },
                             gameStatusType = matching.resultStatus,
                         ),
                         modifier = Modifier.fillMaxWidth()

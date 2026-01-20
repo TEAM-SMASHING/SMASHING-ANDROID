@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +27,7 @@ class MatchingViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val initTab = savedStateHandle.toRoute<Matching>().initTab
-    
+
     private val _uiState = MutableStateFlow(
         MatchingContract.State(selectedType = initTab)
     )
@@ -113,13 +112,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    receivedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateReceivedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -149,13 +144,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    sentUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateSentUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -185,13 +176,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    acceptedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateAcceptedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -212,13 +199,9 @@ class MatchingViewModel @Inject constructor(
             }
 
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    receivedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateReceivedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -238,13 +221,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    receivedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateReceivedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -265,13 +244,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    sentUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateSentUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -291,8 +266,10 @@ class MatchingViewModel @Inject constructor(
                     }.toImmutableList()
                 )
             }
-        }.onFailure {
-            Timber.tag(TAG).d("${it.message}")
+        }.onFailure { throwable ->
+            updateAcceptedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -334,8 +311,20 @@ class MatchingViewModel @Inject constructor(
                 )
             }
 
-            else -> null
+            else -> Unit
         }
+    }
+
+    private fun updateReceivedUiState(uiState: MatchingUiState) = _uiState.update {
+        it.copy(receivedUiState = uiState)
+    }
+
+    private fun updateSentUiState(uiState: MatchingUiState) = _uiState.update {
+        it.copy(sentUiState = uiState)
+    }
+
+    private fun updateAcceptedUiState(uiState: MatchingUiState) = _uiState.update {
+        it.copy(acceptedUiState = uiState)
     }
 
     companion object {

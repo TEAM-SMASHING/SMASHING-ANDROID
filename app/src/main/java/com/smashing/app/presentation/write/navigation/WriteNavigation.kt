@@ -41,7 +41,7 @@ fun NavController.navigateToConfirm(
     isFirstAttempt: Boolean,
     navOptions: NavOptions? = null,
 ) = navigate(
-    route =Confirm(
+    route = Confirm(
         submissionId = submissionId,
         gameId = gameId,
         opponentUserId = opponentUserId,
