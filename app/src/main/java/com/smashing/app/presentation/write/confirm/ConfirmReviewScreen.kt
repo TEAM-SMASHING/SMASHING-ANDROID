@@ -78,7 +78,6 @@ private fun ConfirmReviewScreen(
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas)
             .systemBarsPadding()
-            .verticalScroll(scrollState)
             .clearFocus(focusManager),
     ) {
         SmashingDefaultTopBar(
