@@ -68,6 +68,7 @@ import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.data.model.matching.AcceptedMatching
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -229,11 +230,9 @@ private fun HomeScreen(
 
                     //TODO 아래 유저 ID에 profileId를 임시로 넣었어요. 받는 값에 유저ID가 없어...
                     CloseMatching(
-                        matchedMyData = DummyMatchedUser(
-                            userId = uiState.activeUserProfile.profileId,
-                            nickname = uiState.activeUserProfile.nickname,
-                        ),
-                        matchedUserData = uiState.matchedUser,
+                        myProfileId = uiState.activeUserProfile.profileId,
+                        myNickname = uiState.activeUserProfile.nickname,
+                        matchedUser = uiState.matchedUser,
                         onClick = {},
                     )
                 }
@@ -421,10 +420,11 @@ private fun HomeTopBar(
 
 @Composable
 private fun CloseMatching(
-    matchedMyData: DummyMatchedUser,
+    myNickname: String,
+    myProfileId: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    matchedUserData: DummyMatchedUser? = null,
+    matchedUser: AcceptedMatching? = null,  // 타입 변경
     buttonState: String = "dummy",
 ) {
     //TODO 매칭 상대에서 받는 데이터 확인 후에 nickName + userId 묶는 데이터 타입 추가
@@ -443,7 +443,7 @@ private fun CloseMatching(
                 bottom = 24.dp,
             ),
     ) {
-        if (matchedUserData != null) {
+        if (matchedUser != null) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -456,15 +456,15 @@ private fun CloseMatching(
                 )
 
                 MatchedUserItem(
-                    matchedUser = matchedMyData,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
+                    userId = myProfileId,
+                    nickname = myNickname,
+                    modifier = Modifier.align(Alignment.CenterStart)
                 )
 
                 MatchedUserItem(
-                    matchedUser = matchedUserData,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
+                    userId = matchedUser.userId,
+                    nickname = matchedUser.nickname,
+                    modifier = Modifier.align(Alignment.CenterEnd)
                 )
             }
 
@@ -498,7 +498,8 @@ private fun CloseMatching(
 
 @Composable
 private fun MatchedUserItem(
-    matchedUser: DummyMatchedUser,
+    userId: String,
+    nickname: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -514,7 +515,7 @@ private fun MatchedUserItem(
                 )
         ) {
             UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(matchedUser.nickname),
+                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
                 modifier = Modifier
                     .height(64.dp)
                     .aspectRatio(1f)
@@ -525,7 +526,7 @@ private fun MatchedUserItem(
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = matchedUser.nickname,
+            text = nickname,
             style = SmashingTheme.typography.sm.medium14,
             color = SmashingTheme.colors.txtMuted,
         )
@@ -653,10 +654,7 @@ private fun HomeScreenPreview() {
                     reviewCount = 25,
                 ),
             ).toImmutableList(),
-            matchedUser = DummyMatchedUser(
-                userId = "matchedUser1",
-                nickname = "더미하는김에긴닉네임",
-            ),
+            matchedUser = null,
             loadState = HomeUiState.Success,
             isNotice = true,
         ),

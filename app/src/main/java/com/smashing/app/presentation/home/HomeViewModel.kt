@@ -3,9 +3,11 @@ package com.smashing.app.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.designsystem.state.MatchingCardState
+import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
+import com.smashing.app.data.type.OrderType
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -22,6 +24,7 @@ class HomeViewModel @Inject constructor(
     private val rankingRepository: RankingRepository,
     private val searchRepository: SearchRepository,
     private val myRepository: MyRepository,
+    private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
@@ -76,16 +79,26 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchMatchedUser() = viewModelScope.launch {
-        updateLoadState(HomeUiState.Loading)
-
-        val dummyMatchedUser = createDummyMatchedUser()
-
-        updateLoadState(HomeUiState.Success)
-
-        _uiState.update { currentState ->
-            currentState.copy(matchedUser = dummyMatchedUser)
-        }
+        matchingRepository.getMeAcceptedMatchingList(
+            snapshotAt = null,
+            cursor = null,
+            size = 1,
+            order = OrderType.OLDEST,
+        )
+            .onSuccess { cursorPage ->
+                val latestMatch = cursorPage.items.firstOrNull()
+                _uiState.update { currentState ->
+                    currentState.copy(matchedUser = latestMatch)
+                }
+            }
+            .onFailure { throwable ->
+                Timber.tag("HomeViewModel").e(throwable, "Failed to fetch matched user")
+                _uiState.update { currentState ->
+                    currentState.copy(matchedUser = null)
+                }
+            }
     }
+
 
     fun fetchRegionRankerList() = viewModelScope.launch {
         updateLoadState(HomeUiState.Loading)
@@ -103,13 +116,6 @@ class HomeViewModel @Inject constructor(
             .onFailure { throwable ->
                 updateLoadState(HomeUiState.Failure(throwable.message ?: "Unknown error"))
             }
-    }
-
-    private fun createDummyMatchedUser(): DummyMatchedUser? {
-        return DummyMatchedUser(
-            userId = "matchedUser1",
-            nickname = "더미하는김에긴닉네임",
-        )
     }
 
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
