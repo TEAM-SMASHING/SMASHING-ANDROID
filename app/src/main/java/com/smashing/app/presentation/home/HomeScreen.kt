@@ -65,7 +65,6 @@ import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.presentation.home.component.SportsTierChip
-import com.smashing.app.presentation.home.type.DummyMatchedUser
 import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.data.model.matching.AcceptedMatching

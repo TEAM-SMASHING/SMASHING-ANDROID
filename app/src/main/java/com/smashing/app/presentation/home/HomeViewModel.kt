@@ -8,7 +8,6 @@ import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
 import com.smashing.app.data.type.OrderType
-import com.smashing.app.presentation.home.type.DummyMatchedUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
