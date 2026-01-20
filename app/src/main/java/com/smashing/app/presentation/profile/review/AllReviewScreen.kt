@@ -54,8 +54,7 @@ import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.presentation.profile.component.ReviewItem
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
+import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -79,14 +78,14 @@ fun AllReviewRoute(
 
 @Composable
 private fun AllReviewScreen(
-    uiState: UserProfileContract.State,
+    uiState: ReviewContract.State,
     reviews: ImmutableList<GameReview>,
     onLoadMoreReviewList: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    val currentIsLoading = uiState.userProfileUiState is UserProfileUiState.Loading
+    val currentIsLoading = uiState.reviewUiState is ReviewUiState.Loading
 
     Column(
         modifier = modifier
@@ -254,7 +253,7 @@ private fun AllReviewScreen(
 @Composable
 private fun ReviewScreenPreview() {
     SmashingAndroidTheme {
-        val emptyState = UserProfileContract.State()
+        val emptyState = ReviewContract.State()
         AllReviewScreen(
             uiState = emptyState,
             onLoadMoreReviewList = {},
@@ -312,7 +311,7 @@ private fun AllReviewScreenPopulatedPreview() {
                 content = "즐거운 경기였습니다.",
             )
         )
-        val populatedState = UserProfileContract.State(
+        val populatedState = ReviewContract.State(
             gameReviewResult = dummyResult,
             gameReview = dummyReviews
         )
