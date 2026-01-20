@@ -1,11 +1,13 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
+import com.smashing.app.data.mapper.my.toUserProfile
 import com.smashing.app.data.mapper.toGameReviewPage
 import com.smashing.app.data.mapper.toMyPageInfo
 import com.smashing.app.data.mapper.toRequest
 import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.cursor.CursorPage
+import com.smashing.app.data.model.my.UserProfile
 import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
@@ -43,5 +45,10 @@ class MyRepositoryImpl @Inject constructor(
     override suspend fun addSportsProfile(info: AddSportsInfo): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.addSportProfile(info.toRequest())
 
+    }
+    override suspend fun getMyTierProfile(): Result<UserProfile> = suspendRunCatching {
+        myRemoteDataSource.getMyTierProfile()
+            .requireData()
+            .toUserProfile()
     }
 }

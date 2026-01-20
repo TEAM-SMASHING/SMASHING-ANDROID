@@ -1,9 +1,8 @@
-package com.smashing.app.data.model.profile
+package com.smashing.app.data.model.my
 
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 
-//TODO nickname과 region은 서버에서 추가 예정
 data class ActiveUserProfile(
     val nickname: String,
     val region: String,
