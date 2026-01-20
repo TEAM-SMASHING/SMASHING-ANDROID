@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.presentation.profile.navigation.Review
+import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -24,7 +25,7 @@ class AllReviewViewModel @Inject constructor(
     private val userId = savedStateHandle.toRoute<Review>().userId
     private val isUser = savedStateHandle.toRoute<Review>().isUser
 
-    private val _uiState = MutableStateFlow(State())
+    private val _uiState = MutableStateFlow(ReviewContract.State())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -40,17 +41,17 @@ class AllReviewViewModel @Inject constructor(
         val currentState = _uiState.value
 
         if (!isRefresh) {
-            if (currentState.userProfileUiState == UserProfileUiState.Loading) return@launch
-            if (!currentState.userProfileCursor.hasNext) return@launch
+            if (currentState.reviewUiState == UserProfileUiState.Loading) return@launch
+            if (!currentState.reviewCursor.hasNext) return@launch
         }
 
-        _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
+        _uiState.update { it.copy(reviewUiState = ReviewUiState.Loading) }
 
         if (userId != null) {
             reviewRepository.getUserRecentReviewList(
                 userId = userId,
                 sportCode = "BM", //Todo: 실제 값으로 수정
-                cursor = if (isRefresh) null else currentState.userProfileCursor.nextCursor,
+                cursor = if (isRefresh) null else currentState.reviewCursor.nextCursor,
                 size = CURSOR_SIZE,
             ).onSuccess { cursorPage ->
                 _uiState.update { state ->
@@ -60,18 +61,18 @@ class AllReviewViewModel @Inject constructor(
                         } else {
                             (state.gameReview + cursorPage.items).toImmutableList()
                         },
-                        userProfileCursor = cursorPage.cursor,
-                        userProfileUiState = if (cursorPage.items.isEmpty() && isRefresh) {
-                            UserProfileUiState.Idle
+                        reviewCursor = cursorPage.cursor,
+                        reviewUiState = if (cursorPage.items.isEmpty() && isRefresh) {
+                            ReviewUiState.Idle
                         } else {
-                            UserProfileUiState.Success
+                            ReviewUiState.Success
                         },
                     )
                 }
             }.onFailure { throwable ->
                 _uiState.update {
                     it.copy(
-                        userProfileUiState = UserProfileUiState.Failure(
+                        reviewUiState = ReviewUiState.Failure(
                             throwable.message ?: "Unknown error"
                         )
                     )

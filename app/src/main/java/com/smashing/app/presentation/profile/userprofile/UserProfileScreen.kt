@@ -57,7 +57,7 @@ fun UserProfileRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.sideEffect.flowWithLifecycle(lifecycle   = lifecycleOwner.lifecycle)
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToAllReview -> navigateToReview(sideEffect.userId)
