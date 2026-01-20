@@ -6,8 +6,8 @@ import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.model.profile.UserProfileItem
+import com.smashing.app.data.model.my.ActiveUserProfile
+import com.smashing.app.data.model.my.UserProfileItem
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.presentation.home.type.DummyMatchedUser
@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

@@ -60,7 +60,7 @@ import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.data.model.profile.ActiveUserProfile
+import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.presentation.home.component.SportsTierChip
