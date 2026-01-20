@@ -6,4 +6,10 @@ data class GameSubmission(
     val winnerScore: Int,
     val loserScore: Int,
     val review: Review?,
-)
+) {
+    data class Review(
+        val rating: String,
+        val content: String?,
+        val tags: List<String>?,
+    )
+}

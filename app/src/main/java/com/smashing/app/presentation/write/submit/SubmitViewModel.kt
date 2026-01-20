@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
+import com.smashing.app.data.model.game.GameSubmission
 import com.smashing.app.data.repository.api.GameRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.ReviewRatingType
@@ -137,14 +137,14 @@ class SubmitViewModel @Inject constructor(
 
         val review = if (!isFirstAttempt) null else
             state.selectedRating?.let { rating ->
-                PostGameSubmissionRequest.Review(
+                GameSubmission.Review(
                     rating = rating.name,
                     content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
                     tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() }
                 )
             }
 
-        val request = PostGameSubmissionRequest(
+        val gameSubmission = GameSubmission(
             winnerUserId = winner.userId,
             loserUserId = loser.userId,
             winnerScore = if (winner.userId == state.submitter.userId) state.submitterScore else state.receiverScore,
@@ -154,7 +154,7 @@ class SubmitViewModel @Inject constructor(
 
         gameRepository.postGameSubmission(
             gameId = gameId,
-            request = request,
+            gameSubmission = gameSubmission,
         ).onSuccess { reviewId ->
             _uiState.update { 
                 it.copy(
@@ -166,7 +166,7 @@ class SubmitViewModel @Inject constructor(
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    submitUiState = SubmitContract.SubmitUiState.Failure("${throwable.message}"),
+                    submitUiState = SubmitContract.SubmitUiState.Failure("경기 결과 제출 실패"),
                     isResubmitDialogVisible = false
                 )
             }

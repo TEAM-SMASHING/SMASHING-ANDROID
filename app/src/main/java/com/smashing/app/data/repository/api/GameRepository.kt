@@ -1,11 +1,11 @@
 package com.smashing.app.data.repository.api
 
-import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
+import com.smashing.app.data.model.game.GameSubmission
 
 interface GameRepository {
 
     suspend fun postGameSubmission(
         gameId: String,
-        request: PostGameSubmissionRequest,
+        gameSubmission: GameSubmission,
     ): Result<String?>
 }
