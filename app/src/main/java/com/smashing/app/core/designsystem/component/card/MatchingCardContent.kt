@@ -24,8 +24,8 @@ import com.smashing.app.R.string.count
 import com.smashing.app.R.string.record
 import com.smashing.app.R.string.review
 import com.smashing.app.R.string.win_lose_count
-import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.mapper.icon20
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -42,7 +42,7 @@ fun MatchingCardContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         UrlImage(
-            url = ProfileImageProvider.getTempUrl(cardState.userId),
+            placeholderDrawable = ProfileImageProvider.getTempImg(cardState.nickname),
             modifier = Modifier
                 .height(52.dp)
                 .aspectRatio(1f)

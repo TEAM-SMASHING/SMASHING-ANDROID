@@ -28,7 +28,7 @@ fun ReviewItem(
     ) {
 
         UrlImage(
-            url = ProfileImageProvider.getTempUrl(review.opponentNickname),
+            placeholderDrawable = ProfileImageProvider.getTempImg(review.opponentNickname),
             modifier = Modifier
                 .height(32.dp)
                 .aspectRatio(1f)

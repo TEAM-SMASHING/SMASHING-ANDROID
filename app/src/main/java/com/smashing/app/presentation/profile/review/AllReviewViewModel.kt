@@ -10,27 +10,37 @@ import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import com.smashing.app.data.repository.api.MyRepository
+import jakarta.inject.Inject
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 @HiltViewModel
 class AllReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
+    private val myRepository: MyRepository
 ) : ViewModel() {
 
-    private val userId = savedStateHandle.toRoute<Review>().userId
-    private val isUser = savedStateHandle.toRoute<Review>().isUser
+    private val userData = savedStateHandle.toRoute<Review>()
+
+    private val userId = userData.userId
+    private val isUser = userData.isUser
 
     private val _uiState = MutableStateFlow(ReviewContract.State())
     val uiState = _uiState.asStateFlow()
 
+    private var nextCursor: String? = null
+    private var hasNextPage: Boolean = true
+    private var isLoading: Boolean = false
+
     init {
-        if (userId == null && !isUser) {
-            //Todo: 나의 리뷰로 이동
+        if (userId == null && isUser) {
+            fetchReviews(true)
         } else {
             fetchUserProfileReview(true)
         }
@@ -76,12 +86,62 @@ class AllReviewViewModel @Inject constructor(
                             throwable.message ?: "Unknown error"
                         )
                     )
+                    //fetchReviews(isInit = true)
                 }
             }
         }
     }
 
+    fun fetchReviews(isInit: Boolean = false) {
+        if (isLoading || (!isInit && !hasNextPage)) return
+
+        viewModelScope.launch {
+            isLoading = true
+
+            if (isInit) {
+                _uiState.update {
+                    it.copy(loadState = ReviewUiState.Loading)
+                }
+                nextCursor = null
+            }
+
+            myRepository.getMyGameReviews(
+                cursor = if (isInit) null else nextCursor,
+                size = PAGE_SIZE
+            )
+                .onSuccess { page ->
+                    nextCursor = page.cursor.nextCursor
+                    hasNextPage = page.cursor.hasNext
+
+                    _uiState.update { currentState ->
+                        val newReviews = if (isInit) {
+                            page.items.toPersistentList()
+                        } else {
+                            (currentState.gameReview + page.items).toPersistentList()
+                        }
+
+                        currentState.copy(
+                            loadState = ReviewUiState.Success,
+                            gameReview = newReviews
+                        )
+                    }
+                }
+                .onFailure { exception ->
+                    exception.printStackTrace()
+                    _uiState.update {
+                        it.copy(
+                            loadState = ReviewUiState.Failure(
+                                exception.message ?: "리뷰를 불러오는데 실패했습니다."
+                            )
+                        )
+                    }
+                }
+            isLoading = false
+        }
+    }
+
     companion object {
         private const val CURSOR_SIZE = 50
+        private const val PAGE_SIZE = 50
     }
 }

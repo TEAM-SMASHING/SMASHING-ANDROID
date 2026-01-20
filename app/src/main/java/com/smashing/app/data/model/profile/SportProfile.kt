@@ -4,7 +4,7 @@ import com.smashing.app.data.type.SportType
 
 
 data class SportProfile(
-    val profileId: String,
-    val sportType: SportType,
-    val isActive: Boolean,
+    val profileId: String = "",
+    val sportType: SportType = SportType.PING_PONG,
+    val isActive: Boolean = false,
 )

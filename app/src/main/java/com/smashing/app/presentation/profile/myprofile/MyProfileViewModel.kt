@@ -2,18 +2,11 @@ package com.smashing.app.presentation.profile.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.SportProfile
-import com.smashing.app.data.model.review.GameReview
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import com.smashing.app.data.repository.api.MyRepository
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -24,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
+    private val myRepository: MyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(State())
@@ -32,23 +26,30 @@ class MyProfileViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    init {
-        fetchProfileInfo()
-    }
-
-    private fun fetchProfileInfo() {
+    fun fetchProfileInfo() {
         viewModelScope.launch {
-            _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
-
-            try {
-                // TODO: 실제 API 호출 (delay로 시뮬레이션)
-                delay(1000)
-
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(loadState = MyProfileUiState.Failure(e.message ?: "Unknown Error"))
+            _uiState.update { it.copy(profileLoadState = MyProfileUiState.Loading) }
+            myRepository.getMyPageInfo()
+                .onSuccess { data ->
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            profileLoadState = MyProfileUiState.Success,
+                            profileInfo = data.profileInfo,
+                            sportProfileList = data.sportProfiles.toPersistentList(),
+                            selectedSportProfileId = data.sportProfiles.find { it.isActive }?.profileId
+                                ?: data.profileInfo.profileId
+                        )
+                    }
                 }
-            }
+                .onFailure { exception ->
+                    _uiState.update {
+                        it.copy(
+                            profileLoadState = MyProfileUiState.Failure(
+                                exception.message ?: "오류 발생"
+                            )
+                        )
+                    }
+                }
         }
     }
 
@@ -59,10 +60,69 @@ class MyProfileViewModel @Inject constructor(
     }
 
     fun selectProfileId(profileId: String) {
-        updateSelectedProfileId(profileId)
+        val currentState = uiState.value
+        if (currentState.selectedSportProfileId == profileId) return
+
+        val optimisticList = currentState.sportProfileList.map { profile ->
+            if (profile.profileId == profileId) {
+                profile.copy(isActive = true)
+            } else {
+                profile.copy(isActive = false)
+            }
+        }.toPersistentList()
+
+        _uiState.update {
+            it.copy(
+                selectedSportProfileId = profileId,
+                sportProfileList = optimisticList
+            )
+        }
+        viewModelScope.launch {
+            myRepository.switchActiveMyProfile(profileId)
+                .onSuccess {
+                    fetchProfileInfo()
+                    fetchReviews()
+                }
+                .onFailure { exception ->
+                    _uiState.update {
+                        it.copy(
+                            profileLoadState = MyProfileUiState.Failure(
+                                exception.message ?: "프로필 변경 실패"
+                            )
+                        )
+                    }
+                }
+        }
+    }
+
+    fun fetchReviews() {
 
         viewModelScope.launch {
-            // TODO fetch 함수 호출
+            _uiState.update {
+                it.copy(reviewLoadState = MyProfileUiState.Loading)
+            }
+
+            myRepository.getMyGameReviews(
+                cursor = null,
+                size = PAGE_SIZE
+            )
+                .onSuccess { page ->
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            reviewLoadState = MyProfileUiState.Success,
+                            gameReview = page.items.toPersistentList()
+                        )
+                    }
+                }
+                .onFailure { exception ->
+                    _uiState.update {
+                        it.copy(
+                            reviewLoadState = MyProfileUiState.Failure(
+                                exception.message ?: "리뷰를 불러오는데 실패했습니다."
+                            )
+                        )
+                    }
+                }
         }
     }
 
@@ -74,72 +134,8 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
-    // TODO: 추후 제거 예정
-    private fun getDummyState(): State {
-        val loadState: MyProfileUiState = MyProfileUiState.Success
-        val profileInfo = ProfileInfo(
-            profileId = "123",
-            sportType = SportType.PING_PONG,
-            genderType = GenderType.MALE,
-            nickname = "하이하이",
-            tierType = TierType.GOLD_1,
-            minLp = 100,
-            maxLp = 500,
-            winCount = 4,
-            loseCount = 5,
-            lp = 3,
-            reviewCount = 323,
-        )
 
-        val gameReview: ImmutableList<GameReview> = persistentListOf(
-            GameReview(
-                gameReviewId = "",
-                "이야이야오",
-                "",
-                "매너도 좋고, 너무 잘하세요!",
-
-                ),
-            GameReview(
-                gameReviewId = "",
-                "이야이야오",
-                "",
-                "매너도 좋고, 너무 잘하세요!",
-
-                ),
-            GameReview(
-                gameReviewId = "",
-                "이야이야오",
-                "",
-                "매너도 좋고, 너무 잘하세요!",
-
-                ),
-            GameReview(
-                gameReviewId = "",
-                "이야이야오",
-                "",
-                "매너도 좋고, 너무 잘하세요!",
-
-                ),
-            GameReview(
-                gameReviewId = "",
-                "이야이야오",
-                "",
-                "매너도 좋고, 너무 잘하세요!",
-
-                ),
-        )
-
-        return State(
-            loadState = loadState,
-            profileInfo = profileInfo,
-            sportProfileList = persistentListOf(
-                SportProfile(
-                    profileId = "1",
-                    sportType = SportType.PING_PONG,
-                    isActive = true,
-                ),
-            ),
-            gameReview = gameReview,
-            )
+    companion object {
+        private const val PAGE_SIZE = 3
     }
 }
