@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +51,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
+import com.smashing.app.core.extension.openUrl
+import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
 
@@ -57,16 +60,27 @@ private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 
 @Composable
 fun MatchingRoute(
-    navigateToSubmit: () -> Unit,
+    navigateToSubmit: (gameId: String) -> Unit,
+    navigateToConfirm: (gameId: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { sideEffect ->
+            when (sideEffect) {
+                is MatchingContract.SideEffect.NavigateToSubmit -> navigateToSubmit(sideEffect.gameId)
+
+                is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(sideEffect.gameId)
+            }
+        }
+    }
 
     MatchingScreen(
         uiState = uiState,
-        navigateToSubmit = navigateToSubmit,
         onLoadMoreMatchingList = viewModel::fetchMatchingList,
         onTabClick = viewModel::selectMatchingTab,
         onDialogDismissClick = viewModel::hideDialogVisible,
@@ -74,8 +88,8 @@ fun MatchingRoute(
         onProfileClick = { userId -> /* TODO: Navigate to profile */ },
         onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
         onReceivedSkipClick = viewModel::rejectReceivedMatching,
-        onAcceptedConfirmClick = { gameId -> navigateToSubmit() },
-        onAcceptedKakaoLinkClick = { url -> /* TODO: Open Kakao link */ },
+        onAcceptedMatchingClick = viewModel::handleAcceptedMatchingClick,
+        onAcceptedKakaoLinkClick = { kakaoLink -> context.openUrl(kakaoLink) },
         onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
         onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
         onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
@@ -87,7 +101,6 @@ fun MatchingRoute(
 private fun MatchingScreen(
     uiState: MatchingContract.State,
     onLoadMoreMatchingList: () -> Unit,
-    navigateToSubmit: () -> Unit,
     onTabClick: (MatchingType) -> Unit,
     onDialogDismissClick: () -> Unit,
     onReceivedAcceptClick: (String) -> Unit,
@@ -95,7 +108,7 @@ private fun MatchingScreen(
     onProfileClick: (String) -> Unit = {},
     onSentCloseClick: (String) -> Unit = {},
     onReceivedSkipClick: (String) -> Unit = {},
-    onAcceptedConfirmClick: (String) -> Unit = {},
+    onAcceptedMatchingClick: (AcceptedMatching) -> Unit = {},
     onAcceptedKakaoLinkClick: (String?) -> Unit = {},
     onAcceptedCloseClick: (String) -> Unit = {},
     onConfirmDeleteSentMatching: () -> Unit = {},
@@ -189,7 +202,7 @@ private fun MatchingScreen(
                         onSentCloseClick = onSentCloseClick,
                         onReceivedSkipClick = onReceivedSkipClick,
                         onReceivedAcceptClick = onReceivedAcceptClick,
-                        onAcceptedConfirmClick = onAcceptedConfirmClick,
+                        onAcceptedMatchingClick = onAcceptedMatchingClick,
                         onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
                         onAcceptedCloseClick = onAcceptedCloseClick,
                     )
@@ -242,7 +255,7 @@ private fun MatchingList(
     onSentCloseClick: (String) -> Unit,
     onReceivedSkipClick: (String) -> Unit,
     onReceivedAcceptClick: (String) -> Unit,
-    onAcceptedConfirmClick: (String) -> Unit,
+    onAcceptedMatchingClick: (AcceptedMatching) -> Unit,
     onAcceptedKakaoLinkClick: (String?) -> Unit,
     onAcceptedCloseClick: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -320,17 +333,18 @@ private fun MatchingList(
             MatchingType.ACCEPTED -> items(
                 items = uiState.acceptedList,
                 key = { it.gameId }
-            ) {
+            ) { matching ->
                 MatchingCard(
                     cardState = MatchingCardState.Confirm(
-                        userId = it.userId,
-                        nickname = it.nickname,
-                        genderType = it.genderType,
-                        tierType = it.tierType,
-                        onProfileClick = { onProfileClick(it.userId) },
-                        onConfirmClick = { onAcceptedConfirmClick(it.gameId) },
-                        onKakaoLinkClick = { onAcceptedKakaoLinkClick(it.openChatUrl) },
-                        onCloseClick = { onAcceptedCloseClick(it.gameId) },
+                        userId = matching.userId,
+                        nickname = matching.nickname,
+                        genderType = matching.genderType,
+                        tierType = matching.tierType,
+                        onProfileClick = { onProfileClick(matching.userId) },
+                        onConfirmClick = { onAcceptedMatchingClick(matching) },
+                        onKakaoLinkClick = { onAcceptedKakaoLinkClick(matching.openChatUrl) },
+                        onCloseClick = { onAcceptedCloseClick(matching.gameId) },
+                        gameStatusType = matching.resultStatus
                     ),
                     modifier = Modifier.animateItem(
                         fadeInSpec = tween(durationMillis = 300),
@@ -350,14 +364,13 @@ private fun MatchingScreenPreview() {
         MatchingScreen(
             uiState = MatchingContract.State(),
             onLoadMoreMatchingList = {},
-            navigateToSubmit = {},
             onTabClick = {},
             onDialogDismissClick = {},
             onReceivedAcceptClick = {},
             onProfileClick = {},
             onSentCloseClick = {},
             onReceivedSkipClick = {},
-            onAcceptedConfirmClick = {},
+            onAcceptedMatchingClick = {},
             onAcceptedKakaoLinkClick = {},
             onAcceptedCloseClick = {},
             onConfirmDeleteSentMatching = {},
