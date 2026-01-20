@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -48,6 +49,11 @@ fun ProfileRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchProfileInfo()
+        viewModel.fetchReviews()
+    }
+
     MyProfileScreen(
         modifier = modifier,
         uiState = uiState,
@@ -70,7 +76,7 @@ private fun MyProfileScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
-
+    val isMaxProfileReached = uiState.sportProfileList.size >= 3
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -123,7 +129,7 @@ private fun MyProfileScreen(
                 progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
                 lpStatus = uiState.profileInfo.minLp,
                 totalLp = uiState.profileInfo.maxLp,
-                onAddSportClick = onAddSportClick,
+                onAddSportClick = if (isMaxProfileReached) null else onAddSportClick,
                 onTierInfoClick = onTierGuideClick,
             )
 

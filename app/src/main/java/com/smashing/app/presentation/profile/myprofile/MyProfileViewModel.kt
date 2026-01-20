@@ -2,13 +2,8 @@ package com.smashing.app.presentation.profile.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.repository.api.MyRepository
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,42 +17,15 @@ class MyProfileViewModel @Inject constructor(
     private val myRepository: MyRepository
 ) : ViewModel() {
 
-    private val pageSize = 50
-    private var nextCursor: String? = null
-    private var hasNextPage: Boolean = true
     private var isLoading: Boolean = false
 
-    private val _uiState = MutableStateFlow(
-        MyProfileContract.State(
-            loadState = MyProfileUiState.Loading,
-            profileInfo = ProfileInfo(
-                profileId = "",
-                sportType = SportType.PING_PONG,
-                nickname = "",
-                genderType = GenderType.MALE,
-                tierType = TierType.GOLD_1,
-                lp = 0,
-                minLp = 0,
-                maxLp = 1, winCount = 0,
-                loseCount = 0,
-                reviewCount = 0,
-            ),
-            sportProfileList = persistentListOf(),
-            gameReview = persistentListOf()
-        )
-    )
+    private val _uiState = MutableStateFlow(MyProfileContract.State())
+
     val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
 
-    init {
-        fetchReviews(isInit = true)
-        fetchProfileInfo(isShowLoading = true)
-    }
-
-    private fun fetchProfileInfo(isShowLoading: Boolean = false) {
+    fun fetchProfileInfo(isShowLoading: Boolean = false) {
         viewModelScope.launch {
-            if (isShowLoading) {
                 _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
-            }
 
             myRepository.getMyPageInfo()
                 .onSuccess { data ->
@@ -120,24 +88,20 @@ class MyProfileViewModel @Inject constructor(
     }
 
     fun fetchReviews(isInit: Boolean = false) {
-        if (isLoading || (!isInit && !hasNextPage)) return
+        if (isLoading || (!isInit)) return
 
         viewModelScope.launch {
             isLoading = true
 
             if (isInit) {
                 _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
-                nextCursor = null
             }
 
             myRepository.getMyGameReviews(
-                cursor = if (isInit) null else nextCursor,
-                size = pageSize
+                cursor = null,
+                size = PAGE_SIZE
             )
                 .onSuccess { page ->
-                    nextCursor = page.cursor.nextCursor
-                    hasNextPage = page.cursor.hasNext
-
                     _uiState.update { currentState ->
                         val newReviews = if (isInit) {
                             page.items.toPersistentList()
@@ -163,5 +127,9 @@ class MyProfileViewModel @Inject constructor(
                 }
             isLoading = false
         }
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 3
     }
 }
