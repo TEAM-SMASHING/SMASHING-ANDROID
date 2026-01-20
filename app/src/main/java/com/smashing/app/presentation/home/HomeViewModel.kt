@@ -36,8 +36,15 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
-            .onFailure {throwable ->
-                Timber.tag("HomeViewModel").e(throwable)
+            .onFailure { throwable ->
+                Timber.tag("HomeViewModel").e(throwable, "Failed to fetch my tier profile")
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = HomeUiState.Failure(
+                            throwable.message ?: "프로필을 불러오는데 실패했습니다."
+                        )
+                    )
+                }
             }
     }
 
