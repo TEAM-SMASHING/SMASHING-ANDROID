@@ -154,8 +154,22 @@ class ConfirmViewModel @Inject constructor(
         it.copy(confirmUiState = uiState)
     }
 
-    fun denySubmission(reason: String) = viewModelScope.launch {
-        // TODO: 반려 API 구현
-        _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
+    fun rejectSubmission(reason: String) = viewModelScope.launch {
+        _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
+
+        gameRepository.postRejectSubmission(
+            gameId = gameId,
+            submissionId = submissionId,
+            reason = reason,
+        ).onSuccess {
+            updateConfirmUiState(uiState = ConfirmUiState.Success)
+            _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
+        }.onFailure { throwable ->
+            updateConfirmUiState(
+                uiState = ConfirmUiState.Failure(
+                    throwable.message ?: "Unknown error"
+                )
+            )
+        }
     }
 }

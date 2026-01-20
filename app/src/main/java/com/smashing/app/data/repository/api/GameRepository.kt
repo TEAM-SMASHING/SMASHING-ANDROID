@@ -21,4 +21,10 @@ interface GameRepository {
         gameId: String,
         submissionId: String,
     ): Result<GameSubmissionDetail>
+
+    suspend fun postRejectSubmission(
+        gameId: String,
+        submissionId: String,
+        reason: String,
+    ): Result<Unit>
 }

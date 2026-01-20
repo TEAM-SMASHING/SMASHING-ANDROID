@@ -57,7 +57,7 @@ fun ConfirmResultRoute(
         rightTextFieldState = viewModel.rightTextFieldState,
         onBackClick = navigateUp,
         onConfirmClick = navigateToConfirmReview,
-        onDenyClick = viewModel::denySubmission,
+        onRejectClick = viewModel::rejectSubmission,
         modifier = modifier,
     )
 }
@@ -71,12 +71,12 @@ private fun ConfirmResultScreen(
     rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
     onConfirmClick: () -> Unit,
-    onDenyClick: (String) -> Unit,
+    onRejectClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     var showDenyBottomSheet by remember { mutableStateOf(false) }
-    var showDenyDialog by remember { mutableStateOf(false) }
+    var showRejectDialog by remember { mutableStateOf(false) }
     var selectedReason by remember { mutableStateOf("") }
     val bottomSheetItems = ConfirmDenyType.entries.map { it.description }.toPersistentList()
 
@@ -132,7 +132,7 @@ private fun ConfirmResultScreen(
                     buttonStyle = ButtonStyle.DISABLED_ACTIVE,
                     text = "아니요",
                     modifier = Modifier.weight(131f),
-                    onClick = { if (isFirstAttempt) showDenyBottomSheet = true else showDenyDialog = true },
+                    onClick = { if (isFirstAttempt) showDenyBottomSheet = true else showRejectDialog = true },
                 )
                 SmashingButton(
                     buttonStyle = ButtonStyle.PRIMARY,
@@ -158,25 +158,25 @@ private fun ConfirmResultScreen(
                 onBtnClick = {
                     showDenyBottomSheet = false
                     if (selectedReason.isNotEmpty()) {
-                        onDenyClick(selectedReason)
+                        onRejectClick(selectedReason)
                     }
                 },
             )
         }
 
-        if (showDenyDialog) {
+        if (showRejectDialog) {
             SmashingDialog(
                 title = "마지막 반려 기회에요",
                 subtitle = "이번에 반려 시 해당 매칭은 취소됩니다.",
                 type = DialogStyle.ALERT,
                 confirmText = "반려하기",
                 dismissText = "아니요",
-                onDismissRequest = { showDenyDialog = false },
+                onDismissRequest = { showRejectDialog = false },
                 onConfirmClick = {
-                    showDenyDialog = false
-                    onDenyClick("")
+                    showRejectDialog = false
+                    onRejectClick("")
                 },
-                onDismissClick = { showDenyDialog = false },
+                onDismissClick = { showRejectDialog = false },
             )
         }
     }
@@ -193,7 +193,7 @@ private fun ConfirmResultScreenPreview() {
             rightTextFieldState = rememberTextFieldState(1.toString()),
             onBackClick = {},
             onConfirmClick = {},
-            onDenyClick = {},
+            onRejectClick = {},
         )
     }
 }

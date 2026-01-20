@@ -6,6 +6,7 @@ import com.smashing.app.data.remote.dto.game.GetGameSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionResponse
+import com.smashing.app.data.remote.dto.game.PostRejectSubmissionRequest
 import com.smashing.app.data.remote.service.GameService
 import javax.inject.Inject
 
@@ -40,5 +41,16 @@ class GameRemoteDataSourceImpl @Inject constructor(
         gameService.getGameSubmission(
             gameId = gameId,
             submissionId = submissionId,
+        )
+
+    override suspend fun postRejectSubmission(
+        gameId: String,
+        submissionId: String,
+        request: PostRejectSubmissionRequest,
+    ): BaseResponse<Unit> =
+        gameService.postRejectSubmission(
+            gameId = gameId,
+            submissionId = submissionId,
+            request = request,
         )
 }
