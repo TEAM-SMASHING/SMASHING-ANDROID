@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.data.model.game.GameSubmissionDetail
 import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.repository.api.GameRepository
 import com.smashing.app.data.repository.api.UserRepository
@@ -35,24 +36,65 @@ class ConfirmViewModel @Inject constructor(
     private val opponentUserId = confirmRoute.opponentUserId
     private val opponentNickname = confirmRoute.opponentNickname
     private val isFirstAttempt = confirmRoute.isFirstAttempt
-    
+
     private val _uiState = MutableStateFlow(ConfirmContract.State())
     val uiState = _uiState.asStateFlow()
-    
+
     init {
         initUserInfo()
+        fetchGameSubmission()
     }
-    
+
     private fun initUserInfo() = viewModelScope.launch {
         val currentUserId = userRepository.getUserId() ?: ""
         val currentUserNickname = userRepository.getUserNickname() ?: ""
-        
+
         _uiState.update { state ->
             state.copy(
                 submitter = MatchPlayer(userId = currentUserId, name = currentUserNickname),
                 receiver = MatchPlayer(userId = opponentUserId, name = opponentNickname),
             )
         }
+    }
+
+    private fun fetchGameSubmission() = viewModelScope.launch {
+        _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
+
+        gameRepository.getGameSubmission(
+            gameId = gameId,
+            submissionId = submissionId,
+        ).onSuccess { submissionDetail ->
+            _uiState.update { state ->
+                getGameSubmission(currentState = state, submissionDetail = submissionDetail)
+            }
+        }.onFailure { throwable ->
+            updateConfirmUiState(
+                uiState = ConfirmUiState.Failure(
+                    throwable.message ?: "Unknown error"
+                )
+            )
+        }
+    }
+
+    private fun getGameSubmission(
+        currentState: ConfirmContract.State,
+        submissionDetail: GameSubmissionDetail,
+    ): ConfirmContract.State {
+        val isSubmitterWinner = submissionDetail.winner.userId == currentState.submitter.userId
+
+        val (winner, loser) = if (isSubmitterWinner) currentState.submitter to currentState.receiver
+        else currentState.receiver to currentState.submitter
+
+        val (submitterScore, receiverScore) = if (isSubmitterWinner) submissionDetail.winner.score to submissionDetail.loser.score
+        else submissionDetail.loser.score to submissionDetail.winner.score
+
+        return currentState.copy(
+            submitterScore = submitterScore,
+            receiverScore = receiverScore,
+            winner = winner,
+            loser = loser,
+            confirmUiState = ConfirmUiState.Idle,
+        )
     }
 
     private val _sideEffect = MutableSharedFlow<ConfirmContract.SideEffect>()

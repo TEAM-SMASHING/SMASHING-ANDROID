@@ -1,10 +1,12 @@
 package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
+import com.smashing.app.data.remote.dto.game.GetGameSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionResponse
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -24,4 +26,12 @@ interface GameService {
         submissionId: String,
         @Body request: PostConfirmSubmissionRequest,
     ): BaseResponse<Unit>
+
+    @GET("/api/v1/games/{gameId}/submissions/{submissionId}")
+    suspend fun getGameSubmission(
+        @Path("gameId")
+        gameId: String,
+        @Path("submissionId")
+        submissionId: String,
+    ): BaseResponse<GetGameSubmissionResponse>
 }

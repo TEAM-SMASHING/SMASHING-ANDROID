@@ -1,6 +1,7 @@
 package com.smashing.app.data.remote.datasource.api
 
 import com.smashing.app.data.remote.dto.BaseResponse
+import com.smashing.app.data.remote.dto.game.GetGameSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionResponse
@@ -17,4 +18,9 @@ interface GameRemoteDataSource {
         submissionId: String,
         request: PostConfirmSubmissionRequest,
     ): BaseResponse<Unit>
+
+    suspend fun getGameSubmission(
+        gameId: String,
+        submissionId: String,
+    ): BaseResponse<GetGameSubmissionResponse>
 }
