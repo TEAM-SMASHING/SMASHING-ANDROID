@@ -10,7 +10,7 @@ data class MyProfileReviewListData(
     @SerialName("snapshotAt")
     val snapshotAt: String,
     @SerialName("nextCursor")
-    val nextCursor: String,
+    val nextCursor: String?,
     @SerialName("hasNext")
     val hasNext: Boolean,
     @SerialName("results")
@@ -18,6 +18,7 @@ data class MyProfileReviewListData(
 
 
 )
+
 @Serializable
 data class MyReviewsDto(
     @SerialName("gameReviewId")
