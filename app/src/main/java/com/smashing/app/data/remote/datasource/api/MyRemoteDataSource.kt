@@ -12,7 +12,7 @@ interface MyRemoteDataSource {
 
     suspend fun getMyGameReviews(cursor: String?, size: Int?): BaseResponse<MyProfileReviewListData>
 
-    suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<String?>
+    suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<Unit?>
     suspend fun putActiveMyProfile(request: MyProfileSwitchRequest): BaseResponse<Unit?>
 
 }

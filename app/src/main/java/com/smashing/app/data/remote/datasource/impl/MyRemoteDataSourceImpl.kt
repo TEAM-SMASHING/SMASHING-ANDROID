@@ -9,6 +9,7 @@ import com.smashing.app.data.remote.dto.my.MyProfileReviewListData
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.service.MyService
 import jakarta.inject.Inject
+
 class MyRemoteDataSourceImpl @Inject constructor(
     private val myService: MyService
 ) : MyRemoteDataSource {
@@ -24,7 +25,7 @@ class MyRemoteDataSourceImpl @Inject constructor(
         return myService.getMyGameReviews(cursor, size)
     }
 
-    override suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<String?> {
+    override suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<Unit?> {
         return myService.addSportProfile(request)
     }
 

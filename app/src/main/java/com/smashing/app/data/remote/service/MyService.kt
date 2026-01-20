@@ -23,11 +23,11 @@ interface MyService {
 
     @PUT("/api/v1/users/me/active-profile")
     suspend fun putActiveMyProfile(
-      @Body request: MyProfileSwitchRequest
+        @Body request: MyProfileSwitchRequest
     ): BaseResponse<Unit?>
 
     @POST("/api/v1/users/me/profiles")
     suspend fun addSportProfile(
         @Body request: AddSportProfileRequest
-    ): BaseResponse<String?>
+    ): BaseResponse<Unit?>
 }
