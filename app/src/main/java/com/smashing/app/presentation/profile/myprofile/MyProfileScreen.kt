@@ -25,9 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
@@ -38,7 +36,6 @@ import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
-import com.smashing.app.presentation.profile.myprofile.MyProfileContract.SideEffect
 
 
 @Composable
@@ -50,7 +47,6 @@ fun MyProfileRoute(
     modifier: Modifier = Modifier,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -147,7 +143,7 @@ private fun MyProfileScreen(
 
             ReviewCard(
                 reviews = uiState.gameReview,
-                onViewAllReviewClick = onReviewClick,
+                onViewAllReviewClick = { onReviewClick },
                 bestCount = uiState.gameReviewResult.bestCount,
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
