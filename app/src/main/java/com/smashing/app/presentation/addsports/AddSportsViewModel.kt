@@ -43,7 +43,7 @@ class AddSportsViewModel @Inject constructor(
                 .onSuccess { myPageData ->
                     val myExistingSportCodes: List<String> = myPageData.sportProfiles.map {
                         it.sportType.code
-                    }.toImmutableList()
+                    }
 
                     val filteredSports = SportType.entries.filter { sport ->
                         sport.code !in myExistingSportCodes

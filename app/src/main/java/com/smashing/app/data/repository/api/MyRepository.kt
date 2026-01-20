@@ -10,9 +10,9 @@ interface MyRepository {
     suspend fun getMyPageInfo(): Result<MyPageInfo>
 
     suspend fun getMyGameReviews(
-        cursor:String?,
-        size:Int?=50,
-    ):Result<CursorPage<GameReview>>
+        cursor: String?,
+        size: Int?,
+    ): Result<CursorPage<GameReview>>
 
     suspend fun switchActiveMyProfile(profileId: String): Result<Unit>
 

@@ -8,8 +8,7 @@ import com.smashing.app.data.remote.dto.my.MyPageData
 import com.smashing.app.data.remote.dto.my.MyProfileReviewListData
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.service.MyService
-import javax.inject.Inject
-
+import jakarta.inject.Inject
 class MyRemoteDataSourceImpl @Inject constructor(
     private val myService: MyService
 ) : MyRemoteDataSource {

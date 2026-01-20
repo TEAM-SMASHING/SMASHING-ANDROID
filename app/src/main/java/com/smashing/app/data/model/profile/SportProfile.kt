@@ -5,6 +5,6 @@ import com.smashing.app.data.type.SportType
 
 data class SportProfile(
     val profileId: String = "",
-    val sportType: SportType = SportType.TENNIS,
+    val sportType: SportType = SportType.PING_PONG,
     val isActive: Boolean = false,
 )

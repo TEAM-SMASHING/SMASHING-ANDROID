@@ -15,8 +15,6 @@ data class MyProfileReviewListData(
     val hasNext: Boolean,
     @SerialName("results")
     val results: List<MyReviewsDto>
-
-
 )
 
 @Serializable
