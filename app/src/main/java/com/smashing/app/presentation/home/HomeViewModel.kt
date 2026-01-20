@@ -7,7 +7,6 @@ import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.data.model.my.UserProfileItem
-import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
 import com.smashing.app.presentation.home.type.DummyMatchedUser
