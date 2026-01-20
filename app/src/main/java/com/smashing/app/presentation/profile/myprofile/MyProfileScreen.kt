@@ -35,7 +35,6 @@ import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
-import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
@@ -134,7 +133,7 @@ private fun MyProfileScreen(
             )
 
             ReviewCard(
-                reviews = persistentListOf(),
+                reviews = uiState.gameReview,
                 onViewAllReviewClick = onReviewClick,
                 bestCount = uiState.gameReviewResult.bestCount,
                 goodCount = uiState.gameReviewResult.goodCount,
