@@ -28,8 +28,19 @@ interface MatchingContract {
     )
 
     sealed interface SideEffect {
-        data class NavigateToSubmit(val gameId: String) : SideEffect
-        data class NavigateToConfirm(val gameId: String) : SideEffect
+        data class NavigateToSubmit(
+            val gameId: String,
+            val opponentUserId: String,
+            val opponentNickname: String,
+            val isFirstAttempt: Boolean,
+        ) : SideEffect
+        data class NavigateToConfirm(
+            val submissionId: String,
+            val gameId: String,
+            val opponentUserId: String,
+            val opponentNickname: String,
+            val isFirstAttempt: Boolean,
+        ) : SideEffect
     }
 }
 

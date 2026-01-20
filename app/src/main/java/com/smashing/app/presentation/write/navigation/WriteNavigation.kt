@@ -18,13 +18,19 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToSubmit(
     gameId: String,
+    opponentUserId: String,
+    opponentNickname: String,
     navOptions: NavOptions? = null,
-) = navigate(Submit(gameId = gameId), navOptions)
+) = navigate(Submit(gameId = gameId, opponentUserId = opponentUserId, opponentNickname = opponentNickname), navOptions)
 
 fun NavController.navigateToConfirm(
+    submissionId: String,
     gameId: String,
+    opponentUserId: String,
+    opponentNickname: String,
+    isFirstAttempt: Boolean,
     navOptions: NavOptions? = null,
-) = navigate(Confirm(gameId = gameId), navOptions)
+) = navigate(Confirm(submissionId = submissionId, gameId = gameId, opponentUserId = opponentUserId, opponentNickname = opponentNickname, isFirstAttempt = isFirstAttempt), navOptions)
 
 fun NavController.navigateToSubmitReview(
     navOptions: NavOptions? = null,
@@ -93,6 +99,8 @@ fun NavGraphBuilder.writeGraph(
 @Serializable
 data class Submit(
     val gameId: String,
+    val opponentUserId: String,
+    val opponentNickname: String,
 ) : Route
 
 @Serializable
@@ -103,7 +111,11 @@ data object SubmitReview : Route
 
 @Serializable
 data class Confirm(
+    val submissionId: String,
     val gameId: String,
+    val opponentUserId: String,
+    val opponentNickname: String,
+    val isFirstAttempt: Boolean,
 ) : Route
 
 @Serializable

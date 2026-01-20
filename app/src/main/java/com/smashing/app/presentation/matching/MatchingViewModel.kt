@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -270,7 +269,7 @@ class MatchingViewModel @Inject constructor(
     fun confirmDeleteAcceptedMatching() = viewModelScope.launch {
         val gameId = _uiState.value.selectedGameId ?: return@launch
         hideDialogVisible()
-        
+
         // TODO: API 구현 후 연결
         // matchingRepository.deleteAcceptedMatching(gameId)
     }
@@ -278,24 +277,42 @@ class MatchingViewModel @Inject constructor(
     fun handleAcceptedMatchingClick(matching: AcceptedMatching) = viewModelScope.launch {
         when (matching.resultStatus) {
             GameResultStatusType.PENDING_RESULT -> {
-                Timber.tag(TAG).d("결과 작성하기 - gameId: ${matching.gameId}")
-                _sideEffect.emit(SideEffect.NavigateToSubmit(matching.gameId))
+                _sideEffect.emit(
+                    SideEffect.NavigateToSubmit(
+                        gameId = matching.gameId,
+                        opponentUserId = matching.userId,
+                        opponentNickname = matching.nickname,
+                        isFirstAttempt = true,
+                    )
+                )
             }
+
             GameResultStatusType.RESULT_REJECTED -> {
-                Timber.tag(TAG).d("결과 재제출 - gameId: ${matching.gameId}")
-                _sideEffect.emit(SideEffect.NavigateToConfirm(matching.gameId))
+                _sideEffect.emit(
+                    SideEffect.NavigateToSubmit(
+                        gameId = matching.gameId,
+                        opponentUserId = matching.userId,
+                        opponentNickname = matching.nickname,
+                        isFirstAttempt = false,
+                    )
+                )
             }
-            GameResultStatusType.WAITING_CONFIRMATION -> {
-                Timber.tag(TAG).d("결과 확인 - gameId: ${matching.gameId}")
-                _sideEffect.emit(SideEffect.NavigateToConfirm(matching.gameId))
-            }
-            GameResultStatusType.CANCELED,
+
             GameResultStatusType.RESULT_CONFIRMED -> {
-                Timber.tag(TAG).d("클릭 불가 상태 - status: ${matching.resultStatus}, gameId: ${matching.gameId}")
+                val submissionId = matching.latestSubmissionId ?: return@launch
+                val isFirstAttempt = matching.latestAttemptNo == 1
+                _sideEffect.emit(
+                    SideEffect.NavigateToConfirm(
+                        submissionId = submissionId,
+                        gameId = matching.gameId,
+                        opponentUserId = matching.userId,
+                        opponentNickname = matching.nickname,
+                        isFirstAttempt = isFirstAttempt,
+                    )
+                )
             }
-            GameResultStatusType.UNKNOWN -> {
-                Timber.tag(TAG).e("알 수 없는 상태 - gameId: ${matching.gameId}")
-            }
+
+            else -> null
         }
     }
 

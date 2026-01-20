@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.repository.api.GameRepository
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
+import com.smashing.app.presentation.write.model.MatchPlayer
 import com.smashing.app.presentation.write.navigation.Submit
 import com.smashing.app.presentation.write.submit.SubmitContract.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,10 +27,31 @@ import javax.inject.Inject
 class SubmitViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val gameRepository: GameRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
-    private val gameId = savedStateHandle.toRoute<Submit>().gameId
+    private val submitRoute = savedStateHandle.toRoute<Submit>()
+    private val gameId = submitRoute.gameId
+    private val opponentUserId = submitRoute.opponentUserId
+    private val opponentNickname = submitRoute.opponentNickname
+    
     private val _uiState = MutableStateFlow(SubmitContract.State())
     val uiState = _uiState.asStateFlow()
+    
+    init {
+        initUserInfo()
+    }
+    
+    private fun initUserInfo() = viewModelScope.launch {
+        val currentUserId = userRepository.getUserId() ?: ""
+        val currentUserNickname = userRepository.getUserNickname() ?: ""
+        
+        _uiState.update { state ->
+            state.copy(
+                submitter = MatchPlayer(userId = currentUserId, name = currentUserNickname),
+                receiver = MatchPlayer(userId = opponentUserId, name = opponentNickname),
+            )
+        }
+    }
 
     private val _sideEffect = MutableSharedFlow<SubmitContract.SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()

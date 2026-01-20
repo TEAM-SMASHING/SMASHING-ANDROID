@@ -62,8 +62,8 @@ private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 
 @Composable
 fun MatchingRoute(
-    navigateToSubmit: (gameId: String) -> Unit,
-    navigateToConfirm: (gameId: String) -> Unit,
+    navigateToSubmit: (gameId: String, opponentUserId: String, opponentNickname: String) -> Unit,
+    navigateToConfirm: (submissionId: String, gameId: String, opponentUserId: String, opponentNickname: String, isFirstAttempt: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -77,9 +77,19 @@ fun MatchingRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is MatchingContract.SideEffect.NavigateToSubmit -> navigateToSubmit(sideEffect.gameId)
+                    is MatchingContract.SideEffect.NavigateToSubmit -> navigateToSubmit(
+                        sideEffect.gameId,
+                        sideEffect.opponentUserId,
+                        sideEffect.opponentNickname,
+                    )
 
-                    is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(sideEffect.gameId)
+                    is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(
+                        sideEffect.submissionId,
+                        sideEffect.gameId,
+                        sideEffect.opponentUserId,
+                        sideEffect.opponentNickname,
+                        sideEffect.isFirstAttempt,
+                    )
                 }
             }
     }

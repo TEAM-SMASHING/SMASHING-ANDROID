@@ -1,10 +1,15 @@
 package com.smashing.app.presentation.write.confirm
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.model.MatchPlayer
+import com.smashing.app.presentation.write.navigation.Confirm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,14 +17,39 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ConfirmViewModel @Inject constructor(
-
+    savedStateHandle: SavedStateHandle,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(getDummyState())
+    private val confirmRoute = savedStateHandle.toRoute<Confirm>()
+    private val submissionId = confirmRoute.submissionId
+    private val gameId = confirmRoute.gameId
+    private val opponentUserId = confirmRoute.opponentUserId
+    private val opponentNickname = confirmRoute.opponentNickname
+    private val isFirstAttempt = confirmRoute.isFirstAttempt
+    
+    private val _uiState = MutableStateFlow(ConfirmContract.State())
     val uiState = _uiState.asStateFlow()
+    
+    init {
+        initUserInfo()
+    }
+    
+    private fun initUserInfo() = viewModelScope.launch {
+        val currentUserId = userRepository.getUserId() ?: ""
+        val currentUserNickname = userRepository.getUserNickname() ?: ""
+        
+        _uiState.update { state ->
+            state.copy(
+                submitter = MatchPlayer(userId = currentUserId, name = currentUserNickname),
+                receiver = MatchPlayer(userId = opponentUserId, name = opponentNickname),
+            )
+        }
+    }
 
     private val _sideEffect = MutableSharedFlow<ConfirmContract.SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
@@ -88,18 +118,6 @@ class ConfirmViewModel @Inject constructor(
                 submitterScore = score,
                 receiverScore = state.receiverScore,
             ),
-        )
-    }
-
-    private fun getDummyState(): ConfirmContract.State {
-        return ConfirmContract.State(
-            submitter = MatchPlayer(userId = "1", name = "밤이달이"),
-            receiver = MatchPlayer(userId = "2", name = "와쿠와쿠"),
-            submitterScore = 0,
-            receiverScore = 0,
-            winner = null,
-            loser = null,
-            isButtonEnabled = false,
         )
     }
 }

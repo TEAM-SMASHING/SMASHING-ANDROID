@@ -87,5 +87,7 @@ private fun AcceptedMatchingListResponse.toAcceptedMatching(): AcceptedMatching 
         submitAvailableAt = submitAvailableAt,
         remainingSeconds = remainingSeconds,
         isSubmitLocked = isSubmitLocked,
+        latestSubmissionId = latestSubmissionId,
+        latestAttemptNo = latestAttemptNo,
     )
 }
