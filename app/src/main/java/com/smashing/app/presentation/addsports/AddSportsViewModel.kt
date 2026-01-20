@@ -8,6 +8,7 @@ import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,18 +44,19 @@ class AddSportsViewModel @Inject constructor(
                 .onSuccess { myPageData ->
                     val myExistingSportCodes: List<String> = myPageData.sportProfiles.map {
                         it.sportType.code
-                    }
-                    // 전체 종목(SportType) 중에서 내 종목에 없는 것만 남김
+                    }.toImmutableList()
+
                     val filteredSports = SportType.entries.filter { sport ->
                         sport.code !in myExistingSportCodes
-                    }
+                    }.toImmutableList()
+
                     _uiState.update {
                         it.copy(availableSports = filteredSports)
                     }
                 }
                 .onFailure {
                     _uiState.update {
-                        it.copy(availableSports = SportType.entries)
+                        it.copy(availableSports = SportType.entries.toImmutableList())
                     }
                 }
         }

@@ -12,7 +12,7 @@ import com.smashing.app.data.remote.dto.profile.my.MyProfileReviewListData
 import com.smashing.app.data.remote.dto.profile.my.MyReviewsDto
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportName
+import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportCode
 import com.smashing.app.data.type.TierType
 
 fun MyPageData.toProfileInfo(): ProfileInfo {
@@ -20,7 +20,7 @@ fun MyPageData.toProfileInfo(): ProfileInfo {
 
     return ProfileInfo(
         profileId = active.profileId,
-        sportType = findSportTypeToSportName(active.sportCode),
+        sportType = findSportTypeToSportCode(active.sportCode),
         tierType = TierType.findTierType(active.tierCode),
         lp = active.lp,
         minLp = active.minLp,
@@ -48,7 +48,6 @@ fun MyPageData.toMyPageInfo(): MyPageInfo {
         sportProfiles = this.allProfiles.map { it.toSportProfile() }
     )
 }
-
 
 
 fun MyProfileReviewListData.toGameReviewPage(): CursorPage<GameReview> {

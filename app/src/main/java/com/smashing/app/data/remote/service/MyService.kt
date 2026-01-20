@@ -20,7 +20,7 @@ interface MyService {
     ): BaseResponse<MyProfileReviewListData>
 
     @PUT("/api/v1/users/me/active-profile")
-    suspend fun switchActiveMyProfile(
+    suspend fun putActiveMyProfile(
       @Body request: MyProfileSwitchRequest
     ): BaseResponse<Unit?>
 }

@@ -34,9 +34,9 @@ class MyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun switchActiveMyProfile(profileId: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             myService
-                .switchActiveMyProfile(MyProfileSwitchRequest(profileId = profileId))
+                .putActiveMyProfile(MyProfileSwitchRequest(profileId = profileId))
                 .requireData()
         }
     }

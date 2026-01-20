@@ -13,7 +13,7 @@ import javax.inject.Singleton
 abstract class AddSportsRepositoryModule {
     @Binds
     @Singleton
-    abstract fun bindAddSPortsRepository(
+    abstract fun bindAddSportsRepository(
         impl: AddSportsRepositoryImpl
     ): AddSportsRepository
 }
