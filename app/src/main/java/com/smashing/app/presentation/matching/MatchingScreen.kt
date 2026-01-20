@@ -5,11 +5,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -24,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -55,6 +58,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.core.extension.openUrl
 import com.smashing.app.data.model.matching.AcceptedMatching
+import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
 
@@ -63,7 +67,13 @@ private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 @Composable
 fun MatchingRoute(
     navigateToSubmit: (gameId: String, opponentUserId: String, opponentNickname: String) -> Unit,
-    navigateToConfirm: (submissionId: String, gameId: String, opponentUserId: String, opponentNickname: String, isFirstAttempt: Boolean) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -349,24 +359,41 @@ private fun MatchingList(
                 items = uiState.acceptedList,
                 key = { it.gameId }
             ) { matching ->
-                MatchingCard(
-                    cardState = MatchingCardState.Confirm(
-                        userId = matching.userId,
-                        nickname = matching.nickname,
-                        genderType = matching.genderType,
-                        tierType = matching.tierType,
-                        onProfileClick = { onProfileClick(matching.userId) },
-                        onConfirmClick = { onAcceptedMatchingClick(matching) },
-                        onKakaoLinkClick = { onAcceptedKakaoLinkClick(matching.openChatUrl) },
-                        onCloseClick = { onAcceptedCloseClick(matching.gameId) },
-                        gameStatusType = matching.resultStatus
-                    ),
-                    modifier = Modifier.animateItem(
-                        fadeInSpec = tween(durationMillis = 300),
-                        fadeOutSpec = tween(durationMillis = 300),
-                        placementSpec = tween(durationMillis = 300),
-                    ),
-                )
+                val isCanceled = matching.resultStatus == GameResultStatusType.CANCELED
+
+                Box(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = tween(300),
+                            fadeOutSpec = tween(300),
+                            placementSpec = tween(300),
+                        )
+                ) {
+                    MatchingCard(
+                        cardState = MatchingCardState.Confirm(
+                            userId = matching.userId,
+                            nickname = matching.nickname,
+                            genderType = matching.genderType,
+                            tierType = matching.tierType,
+                            onProfileClick = { onProfileClick(matching.userId) },
+                            onConfirmClick = { onAcceptedMatchingClick(matching) },
+                            onKakaoLinkClick = { onAcceptedKakaoLinkClick(matching.openChatUrl) },
+                            onCloseClick ={ onAcceptedCloseClick(matching.gameId) },
+                            gameStatusType = matching.resultStatus,
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    if (isCanceled) {
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .background(SmashingTheme.colors.bgDimmed)
+                                .pointerInput(Unit) {}
+                        )
+                    }
+                }
+
             }
         }
     }

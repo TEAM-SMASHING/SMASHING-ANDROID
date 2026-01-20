@@ -78,4 +78,12 @@ class MatchingRepositoryImpl @Inject constructor(
             matchingId = matchingId,
         )
     }
+
+    override suspend fun putCancelGame(
+        gameId: String,
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.putCancelGame(
+            gameId = gameId,
+        )
+    }
 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -270,8 +271,21 @@ class MatchingViewModel @Inject constructor(
         val gameId = _uiState.value.selectedGameId ?: return@launch
         hideDialogVisible()
 
-        // TODO: API 구현 후 연결
-        // matchingRepository.deleteAcceptedMatching(gameId)
+        matchingRepository.putCancelGame(gameId).onSuccess {
+            _uiState.update { state ->
+                state.copy(
+                    acceptedList = state.acceptedList.map { matching ->
+                        if (matching.gameId == gameId) {
+                            matching.copy(resultStatus = GameResultStatusType.CANCELED)
+                        } else {
+                            matching
+                        }
+                    }.toImmutableList()
+                )
+            }
+        }.onFailure {
+            Timber.tag(TAG).d("${it.message}")
+        }
     }
 
     fun handleAcceptedMatchingClick(matching: AcceptedMatching) = viewModelScope.launch {

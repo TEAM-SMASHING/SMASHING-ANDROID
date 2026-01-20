@@ -9,6 +9,7 @@ import com.smashing.app.data.type.OrderType
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -62,5 +63,11 @@ interface MatchingService {
     suspend fun postRejectMatching(
         @Path("matchingId")
         matchingId: String,
+    ): BaseResponse<Unit>
+
+    @PUT("/api/v1/games/{gameId}")
+    suspend fun putCancelGame(
+        @Path("gameId")
+        gameId: String,
     ): BaseResponse<Unit>
 }
