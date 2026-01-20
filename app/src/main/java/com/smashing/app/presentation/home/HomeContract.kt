@@ -2,8 +2,8 @@ package com.smashing.app.presentation.home
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.data.model.profile.ActiveUserProfile
-import com.smashing.app.data.model.profile.UserProfileItem
+import com.smashing.app.data.model.my.ActiveUserProfile
+import com.smashing.app.data.model.my.UserProfileItem
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import kotlinx.collections.immutable.ImmutableList
