@@ -10,7 +10,7 @@ import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.AllProfileDto
-import com.smashing.app.data.remote.dto.my.GetMyRecentReviewStatsResponse
+import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
 import com.smashing.app.data.remote.dto.my.MyPageData
 import com.smashing.app.data.type.GenderType

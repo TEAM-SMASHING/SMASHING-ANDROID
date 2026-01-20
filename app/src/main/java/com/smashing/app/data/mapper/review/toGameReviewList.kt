@@ -39,12 +39,3 @@ fun MyProfileReviewListData.toGameReviewPage(): CursorPage<GameReview> {
         )
     )
 }
-
-fun MyReviewsDto.toGameReview(): GameReview {
-    return GameReview(
-        gameReviewId = this.gameReviewId,
-        opponentNickname = this.nickname,
-        createdAt = convertLocalDateTimeToTime(this.createdAt),
-        content = this.content
-    )
-}
