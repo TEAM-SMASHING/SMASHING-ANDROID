@@ -3,8 +3,8 @@ package com.smashing.app.data.repository.api
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.review.GameReview
 
-interface UserRepository {
-    suspend fun getUserRecentList(
+interface ReviewRepository {
+    suspend fun getUserRecentReviewList(
         userId: String,
         sportCode: String?,
         cursor: String?,

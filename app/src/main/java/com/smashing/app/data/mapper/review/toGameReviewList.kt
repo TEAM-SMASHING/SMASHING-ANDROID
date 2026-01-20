@@ -5,9 +5,9 @@ import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.remote.dto.cursor.CursorDto
-import com.smashing.app.data.remote.dto.user.GetUserRecentListResponse
+import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 
-fun CursorDto<GetUserRecentListResponse>.toGameReviewList(): CursorPage<GameReview> {
+fun CursorDto<GetUserRecentReviewListResponse>.toGameReviewList(): CursorPage<GameReview> {
     return CursorPage(
         items = results.map { it.toGameReview() },
         cursor = Cursor(
@@ -18,7 +18,7 @@ fun CursorDto<GetUserRecentListResponse>.toGameReviewList(): CursorPage<GameRevi
     )
 }
 
-private fun GetUserRecentListResponse.toGameReview(): GameReview {
+private fun GetUserRecentReviewListResponse.toGameReview(): GameReview {
     return GameReview(
         gameReviewId = this.gameReviewId,
         opponentNickname = this.opponentNickname,

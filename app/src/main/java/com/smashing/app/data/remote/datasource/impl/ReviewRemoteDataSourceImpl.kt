@@ -1,23 +1,23 @@
 package com.smashing.app.data.remote.datasource.impl
 
-import com.smashing.app.data.remote.datasource.api.UserRemoteDataSource
+import com.smashing.app.data.remote.datasource.api.ReviewRemoteDataSource
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
-import com.smashing.app.data.remote.dto.user.GetUserRecentListResponse
+import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 import com.smashing.app.data.remote.service.ReviewService
 import javax.inject.Inject
 
-class UserRemoteDataSourceImpl @Inject constructor(
+class ReviewRemoteDataSourceImpl @Inject constructor(
     private val reviewService: ReviewService,
-) : UserRemoteDataSource {
+) : ReviewRemoteDataSource {
 
-    override suspend fun getUserRecentList(
+    override suspend fun getUserRecentReviewList(
         userId: String,
         sportCode: String?,
         cursor: String?,
         size: Int?
-    ): BaseResponse<CursorDto<GetUserRecentListResponse>> =
-        reviewService.getUserRecentList(
+    ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>> =
+        reviewService.getUserRecentReviewList(
             userId = userId,
             sportCode = sportCode,
             cursor = cursor,

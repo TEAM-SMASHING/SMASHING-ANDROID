@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.user
+package com.smashing.app.data.di.review
 
 import com.smashing.app.data.remote.service.ReviewService
 import dagger.Module
@@ -11,11 +11,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object UserServiceModule {
+object ReviewServiceModule {
 
     @Provides
     @Singleton
-    fun provideUserProfileService(
+    fun provideReviewService(
         retrofit: Retrofit
     ): ReviewService = retrofit.create()
 }

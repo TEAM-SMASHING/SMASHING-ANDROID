@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
-import com.smashing.app.data.repository.api.UserRepository
+import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
@@ -29,7 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val userRepository: UserRepository
+    private val reviewRepository: ReviewRepository
 ) : ViewModel() {
 
     private val userId = savedStateHandle.toRoute<UserProfile>().userId
@@ -72,7 +72,7 @@ class UserProfileViewModel @Inject constructor(
 
         _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
 
-        userRepository.getUserRecentList(
+        reviewRepository.getUserRecentReviewList(
             userId = userId,
             sportCode = "BM", //Todo: 실제 값으로 수정
             cursor = null,

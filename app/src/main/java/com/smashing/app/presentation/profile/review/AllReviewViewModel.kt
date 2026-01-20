@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.repository.api.UserRepository
+import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.presentation.profile.navigation.Review
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AllReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val userRepository: UserRepository,
+    private val reviewRepository: ReviewRepository,
 ) : ViewModel() {
 
     private val userId = savedStateHandle.toRoute<Review>().userId
@@ -47,7 +47,7 @@ class AllReviewViewModel @Inject constructor(
         _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
 
         if (userId != null) {
-            userRepository.getUserRecentList(
+            reviewRepository.getUserRecentReviewList(
                 userId = userId,
                 sportCode = "BM", //Todo: 실제 값으로 수정
                 cursor = if (isRefresh) null else currentState.userProfileCursor.nextCursor,
