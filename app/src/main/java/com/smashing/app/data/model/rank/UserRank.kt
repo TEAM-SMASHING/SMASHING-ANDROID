@@ -2,10 +2,10 @@ package com.smashing.app.data.model.rank
 
 import com.smashing.app.data.type.TierType
 
-data class UserRank(
-    val userId: String,
+data class UserRank (
+    val rank: Int = 0,
+    val userId: String = "",
     val nickname: String,
-    val rank: Int,
-    val tierType: TierType,
+    val tier: TierType,
     val lp: Int,
 )
