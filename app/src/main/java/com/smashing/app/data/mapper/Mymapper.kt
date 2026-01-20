@@ -51,7 +51,7 @@ fun MyPageData.toMyPageInfo(): MyPageInfo {
 
 
 
-private fun MyProfileReviewListData.toGameReviewPage(): CursorPage<GameReview> {
+fun MyProfileReviewListData.toGameReviewPage(): CursorPage<GameReview> {
     return CursorPage(
         items = this.results.map { it.toGameReview() },
         cursor = Cursor(
@@ -62,7 +62,7 @@ private fun MyProfileReviewListData.toGameReviewPage(): CursorPage<GameReview> {
     )
 }
 
-private fun MyReviewsDto.toGameReview(): GameReview {
+fun MyReviewsDto.toGameReview(): GameReview {
     return GameReview(
         gameReviewId = this.gameReviewId,
         opponentNickname = this.nickname,
