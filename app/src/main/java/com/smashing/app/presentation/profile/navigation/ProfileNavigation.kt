@@ -28,8 +28,9 @@ fun NavController.navigateToUserProfile(
 
 fun NavController.navigateToReview(
     userId: String? = null,
+    sportCode: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(Review(userId), navOptions)
+) = navigate(Review(userId, sportCode), navOptions)
 
 
 fun NavGraphBuilder.profileGraph(
@@ -80,6 +81,7 @@ data class UserProfile(
 @Serializable
 data class Review(
     val userId: String?,
+    val sportCode: String?,
     val isUser: Boolean = true,
 ) : Route
 

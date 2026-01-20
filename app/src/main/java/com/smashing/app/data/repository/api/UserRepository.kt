@@ -1,5 +1,6 @@
 package com.smashing.app.data.repository.api
 
+import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.model.profile.UserProfileInfo
 
 interface UserRepository {
@@ -11,4 +12,8 @@ interface UserRepository {
         userId: String,
         sportCode: String?,
     ): Result<UserProfileInfo>
+    suspend fun getUserRecentReviewStats(
+        userId: String,
+        sportCode: String?,
+    ): Result<GameReviewResult>
 }

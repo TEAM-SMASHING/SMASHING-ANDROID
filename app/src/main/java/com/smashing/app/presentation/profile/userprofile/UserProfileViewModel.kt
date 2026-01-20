@@ -4,18 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
@@ -45,6 +41,7 @@ class UserProfileViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
+        fetchUserRecentReviewStats()
         fetchProfileInfo()
         fetchUserProfileReview()
     }
@@ -83,9 +80,37 @@ class UserProfileViewModel @Inject constructor(
         )
     }
 
-    fun fetchUserProfileReview() = viewModelScope.launch {
+    fun fetchUserRecentReviewStats() = viewModelScope.launch {
+        userRepository.getUserRecentReviewStats(
+            userId = userId,
+            sportCode = sportCode,
+        ).onSuccess { data ->
+            _uiState.update { currentState ->
+                currentState.copy(
+                    loadState = UserProfileUiState.Success,
+                    gameReviewResult = GameReviewResult(
+                        bestCount = data.bestCount,
+                        goodCount = data.goodCount,
+                        badCount = data.badCount,
+                        goodMannerCount = data.goodMannerCount,
+                        onTimeCount = data.onTimeCount,
+                        fairPlayCount = data.fairPlayCount,
+                        fastResponseCount = data.fastResponseCount,
+                    ),
+                )
+            }
+        }.onFailure { exception ->
+            _uiState.update {
+                it.copy(
+                    loadState = UserProfileUiState.Failure(
+                        exception.message ?: "오류 발생"
+                    )
+                )
+            }
+        }
+    }
 
-        val currentState = _uiState.value
+    fun fetchUserProfileReview() = viewModelScope.launch {
 
         _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
 

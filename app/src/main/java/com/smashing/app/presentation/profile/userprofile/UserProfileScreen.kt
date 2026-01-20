@@ -45,6 +45,7 @@ import com.smashing.app.presentation.profile.userprofile.UserProfileContract.Sid
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+private const val BTN_WEIGHT = 131f/185f
 
 @Composable
 fun UserProfileRoute(
@@ -160,20 +161,19 @@ private fun UserProfileScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 48.dp),
+                    .padding(bottom = 52.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 SmashingButton(
                     buttonStyle = ButtonStyle.DISABLED_ACTIVE,
-                    text = "아니요",
-                    modifier = Modifier.weight(131f),
+                    text = "건너뛰기",
+                    modifier = Modifier.weight(BTN_WEIGHT),
                     onClick = onNoClick,
                 )
                 SmashingButton(
                     buttonStyle = ButtonStyle.PRIMARY,
-                    text = "네, 맞아요",
-                    modifier = Modifier.weight(185f),
+                    text = "수락",
+                    modifier = Modifier.weight(1f),
                     onClick = onYesClick,
                 )
             }
