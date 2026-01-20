@@ -4,7 +4,9 @@ import androidx.compose.runtime.Immutable
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.model.MatchPlayer
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 
 interface SubmitContract {
@@ -17,8 +19,8 @@ interface SubmitContract {
         val winner: MatchPlayer? = null,
         val loser: MatchPlayer? = null,
         val isButtonEnabled: Boolean = false,
-        val selectedRatingTypes: ImmutableSet<ReviewRatingType> = persistentSetOf(),
-        val selectedTagTypes: ImmutableSet<ReviewTagType> = persistentSetOf(),
+        val selectedRating: ReviewRatingType? = null,
+        val selectedTagList: ImmutableSet<ReviewTagType> = persistentSetOf(),
         val reviewText: String = "",
         val reviewId: String = "",
         val submitUiState: SubmitUiState = SubmitUiState.Idle,
@@ -26,7 +28,6 @@ interface SubmitContract {
 
     sealed interface SideEffect {
         data object NavigateBack : SideEffect
-        data class ShowError(val message: String) : SideEffect
     }
 
     sealed interface SubmitUiState {

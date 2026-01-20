@@ -12,15 +12,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -42,12 +46,24 @@ fun SubmitReviewRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is SubmitContract.SideEffect.NavigateBack -> navigateUp()
+                   
+                }
+            }
+    }
 
     SubmitReviewScreen(
         uiState = uiState,
         reviewTextFieldState = viewModel.reviewTextFieldState,
         onBackClick = navigateUp,
-        onDoneClick = navigateToMatching,
+        onDoneClick = viewModel::submitGame,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
         isButtonEnabled = uiState.isButtonEnabled,
@@ -95,8 +111,8 @@ private fun SubmitReviewScreen(
             WriteReviewContent(
                 nickname = uiState.receiver.name,
                 textFieldState = reviewTextFieldState,
-                selectedReviewRatingTypes = uiState.selectedRatingTypes,
-                selectedReviewTagTypes = uiState.selectedTagTypes,
+                selectedReviewRating = uiState.selectedRating,
+                selectedReviewTagTypes = uiState.selectedTagList,
                 onReviewRatingClick = onReviewRatingClick,
                 onReviewTagClick = onReviewTagClick,
             )

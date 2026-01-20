@@ -9,7 +9,6 @@ import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.repository.api.GameRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
-import com.smashing.app.presentation.write.model.MatchPlayer
 import com.smashing.app.presentation.write.navigation.Submit
 import com.smashing.app.presentation.write.submit.SubmitContract.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +27,7 @@ class SubmitViewModel @Inject constructor(
     private val gameRepository: GameRepository,
 ) : ViewModel() {
     private val gameId = savedStateHandle.toRoute<Submit>().gameId
-    private val _uiState = MutableStateFlow(getDummyState())
+    private val _uiState = MutableStateFlow(SubmitContract.State())
     val uiState = _uiState.asStateFlow()
 
     private val _sideEffect = MutableSharedFlow<SubmitContract.SideEffect>()
@@ -86,38 +84,37 @@ class SubmitViewModel @Inject constructor(
     else receiverScore > submitterScore
 
     fun updateSelectedRatingType(type: ReviewRatingType) = _uiState.update { state ->
-        val next = if (type in state.selectedRatingTypes)
-            state.selectedRatingTypes - type
-        else state.selectedRatingTypes + type
-
-        state.copy(selectedRatingTypes = next.toImmutableSet())
+        state.copy(
+            selectedRating = if (state.selectedRating == type) null else type
+        )
     }
 
     fun updateSelectedTagType(type: ReviewTagType) = _uiState.update { state ->
-        val next = if (type in state.selectedTagTypes)
-            state.selectedTagTypes - type
-        else state.selectedTagTypes + type
-
-        state.copy(selectedTagTypes = next.toImmutableSet())
+        val updatedTags = if (type in state.selectedTagList) {
+            state.selectedTagList - type
+        } else {
+            state.selectedTagList + type
+        }
+        state.copy(selectedTagList = updatedTags.toImmutableSet())
     }
 
     fun submitGame() = viewModelScope.launch {
         val state = _uiState.value
         val winner = state.winner
         val loser = state.loser
-        
+
         if (winner == null || loser == null) return@launch
 
         _uiState.update { it.copy(submitUiState = SubmitContract.SubmitUiState.Loading) }
-        
-        val review = if (state.selectedRatingTypes.isNotEmpty()) {
+
+        val review = state.selectedRating?.let { rating ->
             PostGameSubmissionRequest.Review(
-                rating = state.selectedRatingTypes.first().name,
+                rating = rating.name,
                 content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
-                tags = state.selectedTagTypes.map { it.name }.takeIf { it.isNotEmpty() }
+                tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() }
             )
-        } else null
-        
+        }
+
         val request = PostGameSubmissionRequest(
             winnerUserId = winner.userId,
             loserUserId = loser.userId,
@@ -125,35 +122,18 @@ class SubmitViewModel @Inject constructor(
             loserScore = if (loser.userId == state.submitter.userId) state.submitterScore else state.receiverScore,
             review = review,
         )
-        
+
         gameRepository.postGameSubmission(
             gameId = gameId,
             request = request,
         ).onSuccess { reviewId ->
             _uiState.update { it.copy(submitUiState = SubmitContract.SubmitUiState.Success) }
-            Timber.tag(TAG).d("경기 제출 성공 - reviewId: $reviewId")
             _sideEffect.emit(SideEffect.NavigateBack)
         }.onFailure { throwable ->
-            val errorMessage = throwable.message ?: "경기 제출 실패"
-            _uiState.update { 
-                it.copy(submitUiState = SubmitContract.SubmitUiState.Failure(errorMessage)) 
+            _uiState.update {
+                it.copy(submitUiState = SubmitContract.SubmitUiState.Failure("${throwable.message}"))
             }
-            Timber.tag(TAG).e("경기 제출 실패: $errorMessage")
-            _sideEffect.emit(SideEffect.ShowError(errorMessage))
         }
-    }
-
-
-    private fun getDummyState(): SubmitContract.State {
-        return SubmitContract.State(
-            submitter = MatchPlayer(userId = "1", name = "밤이달이"),
-            receiver = MatchPlayer(userId = "2", name = "와쿠와쿠"),
-            submitterScore = 0,
-            receiverScore = 0,
-            winner = null,
-            loser = null,
-            isButtonEnabled = false,
-        )
     }
 
     companion object {

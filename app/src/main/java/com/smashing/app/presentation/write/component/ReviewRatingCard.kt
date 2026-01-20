@@ -26,12 +26,10 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.type.ReviewRatingType
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentSetOf
 
 @Composable
 fun ReviewRatingCard(
-    selectedItems: ImmutableSet<ReviewRatingType>,
+    selectedItem: ReviewRatingType?,
     onItemClick: (ReviewRatingType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -52,7 +50,7 @@ fun ReviewRatingCard(
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         ratingList.forEach { item ->
-            val isSelected = item in selectedItems
+            val isSelected = item == selectedItem
 
             RatingItem(
                 text = item.label,
@@ -121,9 +119,7 @@ private fun RatingItem(
 private fun ReviewRatingCardPreview() {
     SmashingAndroidTheme {
         ReviewRatingCard(
-            selectedItems = persistentSetOf(
-                ReviewRatingType.GOOD,
-            ),
+            selectedItem = ReviewRatingType.GOOD,
             onItemClick = {},
         )
     }
