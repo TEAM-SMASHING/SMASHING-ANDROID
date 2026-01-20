@@ -6,13 +6,13 @@ import com.smashing.app.data.type.TierType
 
 @DrawableRes
 fun TierType.img() = when(this){
-    TierType.IRON -> R.drawable.img_tier_sliver
+    TierType.IRON -> R.drawable.img_tier_iron
     TierType.BRONZE_3,
     TierType.BRONZE_2,
     TierType.BRONZE_1 -> R.drawable.img_tier_bronze
     TierType.SILVER_3,
     TierType.SILVER_2,
-    TierType.SILVER_1 -> R.drawable.img_tier_sliver
+    TierType.SILVER_1 -> R.drawable.img_tier_silver
     TierType.GOLD_3,
     TierType.GOLD_2,
     TierType.GOLD_1 -> R.drawable.img_tier_gold

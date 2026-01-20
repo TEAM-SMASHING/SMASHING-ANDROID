@@ -10,7 +10,7 @@ import com.smashing.app.R.drawable.img_tier_diamond
 import com.smashing.app.R.drawable.img_tier_gold
 import com.smashing.app.R.drawable.img_tier_iron
 import com.smashing.app.R.drawable.img_tier_platinum
-import com.smashing.app.R.drawable.img_tier_sliver
+import com.smashing.app.R.drawable.img_tier_silver
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.TierType
 
@@ -78,7 +78,7 @@ enum class TierInfoStyle(
     fun getImg(): Int = when (this) {
         IRON -> img_tier_iron
         BRONZE -> img_tier_bronze
-        SILVER -> img_tier_sliver
+        SILVER -> img_tier_silver
         GOLD -> img_tier_gold
         PLATINUM -> img_tier_platinum
         DIAMOND -> img_tier_diamond

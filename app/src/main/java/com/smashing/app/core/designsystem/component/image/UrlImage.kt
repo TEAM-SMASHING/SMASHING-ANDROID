@@ -68,7 +68,7 @@ fun UrlImage(
 @Preview
 @Composable
 private fun UrlImagePreview() {
-    _root_ide_package_.com.smashing.app.core.designsystem.component.image.UrlImage(
+    UrlImage(
         url = "",
         modifier = Modifier.size(100.dp),
     )
