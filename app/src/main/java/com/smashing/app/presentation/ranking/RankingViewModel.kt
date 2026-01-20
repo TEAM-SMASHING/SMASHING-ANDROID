@@ -37,9 +37,7 @@ class RankingViewModel @Inject constructor(
                         restRankingList = userRankList.drop(3).toImmutableList(),
                         userInfo = rankingData.myRank?.let { user ->
                             UserRank(
-                                userId = "",
                                 nickname = user.nickname,
-                                rank = 0,
                                 tier = user.tierType,
                                 lp = user.lp,
                             )
