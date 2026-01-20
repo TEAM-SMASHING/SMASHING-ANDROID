@@ -1,9 +1,9 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
-import com.smashing.app.data.mapper.toAcceptedMatchingList
-import com.smashing.app.data.mapper.toReceivedMatchingList
-import com.smashing.app.data.mapper.toSentMatchingList
+import com.smashing.app.data.mapper.matching.toAcceptedMatchingList
+import com.smashing.app.data.mapper.matching.toReceivedMatchingList
+import com.smashing.app.data.mapper.matching.toSentMatchingList
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.matching.ReceivedMatching

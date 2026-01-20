@@ -3,7 +3,7 @@ package com.smashing.app.data.repository.impl
 import android.content.Context
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
-import com.smashing.app.data.local.datasource.api.LocalUserDatasource
+import com.smashing.app.data.local.datasource.api.LocalUserDataSource
 import com.smashing.app.data.mapper.auth.toKakaoLoginToken
 import com.smashing.app.data.mapper.auth.toSignUpModel
 import com.smashing.app.data.mapper.auth.toSignUpNickNameAvailableModel
@@ -25,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource,
     private val kakaoAuthDataSource: KakaoAuthDataSource,
     private val tokenDataStore: LocalTokenDataSource,
-    private val userDataStore: LocalUserDatasource,
+    private val userDataStore: LocalUserDataSource,
 ) : AuthRepository {
 
     override suspend fun loginKakao(context: Context): Result<String> =

@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.game
 
 import com.smashing.app.data.model.game.GameSubmission
 import com.smashing.app.data.model.game.Review

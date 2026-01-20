@@ -5,14 +5,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.smashing.app.core.local.datastore.di.UserDataStore
-import com.smashing.app.data.local.datasource.api.LocalUserDatasource
+import com.smashing.app.data.local.datasource.api.LocalUserDataSource
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class LocalUserDatasourceImpl @Inject constructor(
+class LocalUserDataSourceImpl @Inject constructor(
     @UserDataStore private val dataStore: DataStore<Preferences>,
-): LocalUserDatasource {
+): LocalUserDataSource {
     override suspend fun getUserId(): String? = dataStore.data
         .map { prefs ->
             prefs[USER_ID]
