@@ -179,7 +179,7 @@ fun HomeDropdown(
                 )
 
                 TierBadge(
-                    tierType = tierType,
+                    tierType = tierType.getNextTier(),
                     modifier = Modifier
                         .align(Alignment.End),
                 )
