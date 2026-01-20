@@ -23,6 +23,7 @@ class AllReviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(value = MyProfileContract.State())
     val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
 
+    private val pageSize = 50
     private var nextCursor: String? = null
     private var hasNextPage: Boolean = true
     private var isLoading: Boolean = false
@@ -42,7 +43,10 @@ class AllReviewViewModel @Inject constructor(
                 nextCursor = null
             }
 
-            myRepository.getMyGameReviews(cursor = if (isInit) null else nextCursor)
+            myRepository.getMyGameReviews(
+                cursor = if (isInit) null else nextCursor,
+                size = pageSize
+            )
                 .onSuccess { page ->
                     nextCursor = page.cursor.nextCursor
                     hasNextPage = page.cursor.hasNext

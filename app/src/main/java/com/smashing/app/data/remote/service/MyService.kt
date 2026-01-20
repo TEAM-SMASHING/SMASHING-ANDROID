@@ -15,8 +15,8 @@ interface MyService {
 
     @GET("/api/v1/users/me/reviews/recent")
     suspend fun getMyGameReviews(
-        @Query("cursor") cursor: String? = null,
-        @Query("size") size: Int? = 50,
+        @Query("cursor") cursor: String?,
+        @Query("size") size: Int?,
     ): BaseResponse<MyProfileReviewListData>
 
     @PUT("/api/v1/users/me/active-profile")
