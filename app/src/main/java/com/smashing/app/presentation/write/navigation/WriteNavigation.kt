@@ -20,8 +20,17 @@ fun NavController.navigateToSubmit(
     gameId: String,
     opponentUserId: String,
     opponentNickname: String,
+    isFirstAttempt: Boolean,
     navOptions: NavOptions? = null,
-) = navigate(Submit(gameId = gameId, opponentUserId = opponentUserId, opponentNickname = opponentNickname), navOptions)
+) = navigate(
+    route = Submit(
+        gameId = gameId,
+        opponentUserId = opponentUserId,
+        opponentNickname = opponentNickname,
+        isFirstAttempt = isFirstAttempt,
+    ),
+    navOptions = navOptions,
+)
 
 fun NavController.navigateToConfirm(
     submissionId: String,
@@ -30,7 +39,16 @@ fun NavController.navigateToConfirm(
     opponentNickname: String,
     isFirstAttempt: Boolean,
     navOptions: NavOptions? = null,
-) = navigate(Confirm(submissionId = submissionId, gameId = gameId, opponentUserId = opponentUserId, opponentNickname = opponentNickname, isFirstAttempt = isFirstAttempt), navOptions)
+) = navigate(
+    route =Confirm(
+        submissionId = submissionId,
+        gameId = gameId,
+        opponentUserId = opponentUserId,
+        opponentNickname = opponentNickname,
+        isFirstAttempt = isFirstAttempt,
+    ),
+    navOptions = navOptions,
+)
 
 fun NavController.navigateToSubmitReview(
     navOptions: NavOptions? = null,
@@ -101,6 +119,7 @@ data class Submit(
     val gameId: String,
     val opponentUserId: String,
     val opponentNickname: String,
+    val isFirstAttempt: Boolean,
 ) : Route
 
 @Serializable

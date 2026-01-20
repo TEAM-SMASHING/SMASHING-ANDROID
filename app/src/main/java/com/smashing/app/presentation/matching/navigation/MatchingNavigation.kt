@@ -16,7 +16,12 @@ fun NavController.navigateToMatching(
 ) = navigate(Matching, navOptions)
 
 fun NavGraphBuilder.matchingGraph(
-    navigateToSubmit: (gameId: String, opponentUserId: String, opponentNickname: String) -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
         gameId: String,

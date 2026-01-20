@@ -66,7 +66,12 @@ private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 
 @Composable
 fun MatchingRoute(
-    navigateToSubmit: (gameId: String, opponentUserId: String, opponentNickname: String) -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
         gameId: String,
@@ -91,6 +96,7 @@ fun MatchingRoute(
                         sideEffect.gameId,
                         sideEffect.opponentUserId,
                         sideEffect.opponentNickname,
+                        sideEffect.isFirstAttempt,
                     )
 
                     is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(
