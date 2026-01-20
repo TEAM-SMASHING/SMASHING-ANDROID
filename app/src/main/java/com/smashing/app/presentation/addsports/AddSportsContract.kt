@@ -1,7 +1,7 @@
 package com.smashing.app.presentation.addsports
 
 import androidx.compose.runtime.Immutable
-import com.smashing.app.data.model.profile.AddSportsInfo
+import com.smashing.app.data.model.addsports.AddSportsInfo
 
 class AddSportsContract {
     @Immutable
