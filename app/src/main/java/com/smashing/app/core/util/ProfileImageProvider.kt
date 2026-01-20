@@ -1,6 +1,5 @@
 package com.smashing.app.core.util
 
-import com.smashing.app.R
 import com.smashing.app.R.drawable.img_profile_01
 import com.smashing.app.R.drawable.img_profile_02
 import com.smashing.app.R.drawable.img_profile_03

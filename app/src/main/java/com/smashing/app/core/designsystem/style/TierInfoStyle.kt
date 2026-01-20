@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
-import com.smashing.app.R
 import com.smashing.app.R.drawable.img_tier_bronze
 import com.smashing.app.R.drawable.img_tier_challenger
 import com.smashing.app.R.drawable.img_tier_diamond
