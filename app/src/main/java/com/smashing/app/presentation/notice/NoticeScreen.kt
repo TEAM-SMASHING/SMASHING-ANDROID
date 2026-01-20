@@ -101,6 +101,7 @@ private fun NoticeScreen(
                     sportType = it.sportType,
                     isRead = it.isRead,
                     timeAgo = it.timeAgo,
+                    nickname = it.nickname,
                     onItemClick = {}, // TODO 추후 라우팅 로직 추가
                 )
             }
@@ -120,6 +121,7 @@ private fun NoticeScreenPreview() {
             userId = "user_$index",
             sportType = if (index % 2 == 0) SportType.TENNIS else SportType.PING_PONG,
             isRead = index > 5,
+            nickname = "a",
             timeAgo = "${index}분 전",
         )
     }.toPersistentList()

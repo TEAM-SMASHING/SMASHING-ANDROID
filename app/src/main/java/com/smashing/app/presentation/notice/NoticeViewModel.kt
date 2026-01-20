@@ -28,6 +28,7 @@ class NoticeViewModel @Inject constructor(
                 userId = "user_$index",
                 sportType = if (index % 2 == 0) SportType.TENNIS else SportType.PING_PONG,
                 isRead = index > 5,
+                nickname = "test",
                 timeAgo = "${index}분 전",
             )
         }.toPersistentList()

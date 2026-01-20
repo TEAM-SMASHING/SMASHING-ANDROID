@@ -47,13 +47,13 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
 import com.smashing.app.R.drawable.img_dummy_versus
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.ButtonStyle
@@ -495,7 +495,7 @@ private fun MatchedUserItem(
                 )
         ) {
             UrlImage(
-                url = ProfileImageProvider.getTempUrl(matchedUser.userId),
+                placeholderDrawable = ProfileImageProvider.getTempImg(matchedUser.nickname),
                 modifier = Modifier
                     .height(64.dp)
                     .aspectRatio(1f)
