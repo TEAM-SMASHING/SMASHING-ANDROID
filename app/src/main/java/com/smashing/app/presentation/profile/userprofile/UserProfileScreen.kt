@@ -25,10 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -119,7 +119,7 @@ private fun UserProfileScreen(
                 tierType = uiState.profileInfo.tierType,
                 sportProfileList = uiState.sportProfileList,
                 selectedProfileId = uiState.selectedSportProfileId,
-                tierIconResId = R.drawable.ic_check, // TODO 수정 예정
+                tierIconResId = uiState.profileInfo.tierType.img(),
                 progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
                 lpStatus = uiState.profileInfo.minLp,
                 totalLp = uiState.profileInfo.maxLp,
