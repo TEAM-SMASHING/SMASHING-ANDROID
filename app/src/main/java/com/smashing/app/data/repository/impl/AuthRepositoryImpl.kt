@@ -3,6 +3,7 @@ package com.smashing.app.data.repository.impl
 import android.content.Context
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
+import com.smashing.app.data.local.datasource.api.LocalUserDataSource
 import com.smashing.app.data.mapper.auth.toKakaoLoginToken
 import com.smashing.app.data.mapper.auth.toSignUpModel
 import com.smashing.app.data.mapper.auth.toSignUpNickNameAvailableModel
@@ -24,6 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource,
     private val kakaoAuthDataSource: KakaoAuthDataSource,
     private val tokenDataStore: LocalTokenDataSource,
+    private val userDataStore: LocalUserDataSource,
 ) : AuthRepository {
 
     override suspend fun loginKakao(context: Context): Result<String> =
@@ -34,16 +36,21 @@ class AuthRepositoryImpl @Inject constructor(
             val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization)).requireData()
 
             val loginModel = response.toKakaoLoginToken()
+            val (accessToken, refreshToken) = loginModel.accessToken to loginModel.refreshToken
+            val (userId, userNickname) = loginModel.userId to loginModel.userNickname
 
-            when(!loginModel.accessToken.isNullOrEmpty() && !loginModel.refreshToken.isNullOrEmpty()) {
-                true -> {
+            if(!accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()
+                && !userId.isNullOrEmpty() && !userNickname.isNullOrEmpty()) {
                     tokenDataStore.setTokens(
-                        accessToken = loginModel.accessToken,
-                        refreshToken = loginModel.refreshToken,
+                        accessToken = accessToken,
+                        refreshToken = refreshToken,
                     )
-                }
-                false -> {}
+                    userDataStore.setUserInfo(
+                        userId = userId,
+                        userNickname = userNickname,
+                    )
             }
+
             loginModel
         }
 
@@ -51,7 +58,19 @@ class AuthRepositoryImpl @Inject constructor(
         suspendRunCatching {
             val response = authRemoteDataSource.postSignUp(request).requireData()
 
-            response.toSignUpModel()
+            val signUpModel = response.toSignUpModel()
+
+            tokenDataStore.setTokens(
+                accessToken = signUpModel.accessToken,
+                refreshToken = signUpModel.refreshToken,
+            )
+
+            userDataStore.setUserInfo(
+                userId = signUpModel.userId,
+                userNickname = signUpModel.userNickname,
+            )
+
+            signUpModel
         }
 
     override suspend fun getNicknameAvailable(nickname: String): Result<SignUpNickNameAvailableModel> =
@@ -67,5 +86,5 @@ class AuthRepositoryImpl @Inject constructor(
 
             response.toSignUpOpenchatValidModel()
         }
-    
+
 }

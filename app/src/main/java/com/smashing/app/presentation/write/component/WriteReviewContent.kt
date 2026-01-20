@@ -35,7 +35,7 @@ private const val REVIEW_RATIO = 328 / 156f
 fun WriteReviewContent(
     nickname: String,
     textFieldState: TextFieldState,
-    selectedReviewRatingTypes: ImmutableSet<ReviewRatingType>,
+    selectedReviewRating: ReviewRatingType?,
     selectedReviewTagTypes: ImmutableSet<ReviewTagType>,
     onReviewRatingClick: (ReviewRatingType) -> Unit,
     onReviewTagClick: (ReviewTagType) -> Unit,
@@ -69,7 +69,7 @@ fun WriteReviewContent(
         Spacer(Modifier.height(8.dp))
 
         ReviewRatingCard(
-            selectedItems = selectedReviewRatingTypes,
+            selectedItem = selectedReviewRating,
             onItemClick = onReviewRatingClick,
         )
 
@@ -124,10 +124,7 @@ private fun WriteReviewContentPreview() {
     SmashingAndroidTheme {
         WriteReviewContent(
             nickname = "닉네임",
-            selectedReviewRatingTypes = persistentSetOf(
-                ReviewRatingType.BAD,
-                ReviewRatingType.GOOD
-            ),
+            selectedReviewRating = ReviewRatingType.GOOD,
             selectedReviewTagTypes = persistentSetOf(ReviewTagType.ON_TIME),
             textFieldState = TextFieldState(),
             onReviewRatingClick = {},

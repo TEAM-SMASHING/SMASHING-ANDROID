@@ -1,12 +1,20 @@
 package com.smashing.app.presentation.matching
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.repository.api.MatchingRepository
+import com.smashing.app.data.type.GameResultStatusType
+import com.smashing.app.presentation.matching.MatchingContract.SideEffect
+import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.type.MatchingType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -14,11 +22,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MatchingViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MatchingContract.State())
+    private val initTab = savedStateHandle.toRoute<Matching>().initTab
+
+    private val _uiState = MutableStateFlow(
+        MatchingContract.State(selectedType = initTab)
+    )
     val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<MatchingContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         fetchReceivedMatchingList(isRefresh = true)
@@ -96,13 +112,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    receivedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateReceivedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -132,13 +144,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    sentUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateSentUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -168,13 +176,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    acceptedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateAcceptedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -195,13 +199,9 @@ class MatchingViewModel @Inject constructor(
             }
 
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    receivedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateReceivedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -221,13 +221,9 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    receivedUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateReceivedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
@@ -248,22 +244,87 @@ class MatchingViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.copy(
-                    sentUiState = MatchingUiState.Failure(
-                        throwable.message ?: "Unknown error"
-                    )
-                )
-            }
+            updateSentUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
         }
     }
 
     fun confirmDeleteAcceptedMatching() = viewModelScope.launch {
         val gameId = _uiState.value.selectedGameId ?: return@launch
         hideDialogVisible()
-        
-        // TODO: API 구현 후 연결
-        // matchingRepository.deleteAcceptedMatching(gameId)
+
+        matchingRepository.putCancelGame(gameId).onSuccess {
+            _uiState.update { state ->
+                state.copy(
+                    acceptedList = state.acceptedList.map { matching ->
+                        if (matching.gameId == gameId) {
+                            matching.copy(resultStatus = GameResultStatusType.CANCELED)
+                        } else {
+                            matching
+                        }
+                    }.toImmutableList()
+                )
+            }
+        }.onFailure { throwable ->
+            updateAcceptedUiState(
+                MatchingUiState.Failure(throwable.message ?: "Unknown error")
+            )
+        }
+    }
+
+    fun handleAcceptedMatchingClick(matching: AcceptedMatching) = viewModelScope.launch {
+        when (matching.resultStatus) {
+            GameResultStatusType.PENDING_RESULT -> {
+                _sideEffect.emit(
+                    SideEffect.NavigateToSubmit(
+                        gameId = matching.gameId,
+                        opponentUserId = matching.userId,
+                        opponentNickname = matching.nickname,
+                        isFirstAttempt = true,
+                    )
+                )
+            }
+
+            GameResultStatusType.RESULT_REJECTED -> {
+                _sideEffect.emit(
+                    SideEffect.NavigateToSubmit(
+                        gameId = matching.gameId,
+                        opponentUserId = matching.userId,
+                        opponentNickname = matching.nickname,
+                        isFirstAttempt = false,
+                    )
+                )
+            }
+
+            GameResultStatusType.RESULT_CONFIRMED -> {
+                val submissionId = matching.latestSubmissionId ?: return@launch
+                val isFirstAttempt = matching.latestAttemptNo == 1
+                _sideEffect.emit(
+                    SideEffect.NavigateToConfirm(
+                        submissionId = submissionId,
+                        gameId = matching.gameId,
+                        opponentUserId = matching.userId,
+                        opponentNickname = matching.nickname,
+                        isFirstAttempt = isFirstAttempt,
+                    )
+                )
+            }
+
+            else -> Unit
+        }
+    }
+
+    private fun updateReceivedUiState(uiState: MatchingUiState) = _uiState.update {
+        it.copy(receivedUiState = uiState)
+    }
+
+    private fun updateSentUiState(uiState: MatchingUiState) = _uiState.update {
+        it.copy(sentUiState = uiState)
+    }
+
+    private fun updateAcceptedUiState(uiState: MatchingUiState) = _uiState.update {
+        it.copy(acceptedUiState = uiState)
     }
 
     companion object {

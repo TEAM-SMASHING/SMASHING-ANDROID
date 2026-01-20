@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.matching
 
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
@@ -87,5 +87,7 @@ private fun AcceptedMatchingListResponse.toAcceptedMatching(): AcceptedMatching 
         submitAvailableAt = submitAvailableAt,
         remainingSeconds = remainingSeconds,
         isSubmitLocked = isSubmitLocked,
+        latestSubmissionId = latestSubmissionId,
+        latestAttemptNo = latestAttemptNo,
     )
 }

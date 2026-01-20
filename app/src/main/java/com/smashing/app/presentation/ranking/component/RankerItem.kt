@@ -203,7 +203,7 @@ private fun RankerItem(
 
                 if (userRank != null) {
                     Image(
-                        painter = painterResource(id = userRank.tierType.img()),
+                        painter = painterResource(id = userRank.tier.img()),
                         contentDescription = null,
                         modifier = Modifier
                             .height(if (rankerType == FIRST) 60.dp else 40.dp)
@@ -251,7 +251,7 @@ private fun RankerItemPreview_FirstPlace() {
             userId = "user1",
             nickname = "1위 유저",
             rank = 1,
-            tierType = TierType.CHALLENGER,
+            tier = TierType.CHALLENGER,
             lp = 2500,
         ),
         rankerType = FIRST,
@@ -269,7 +269,7 @@ private fun RankerItemPreview_SecondPlace() {
             userId = "user2",
             nickname = "2위 유저",
             rank = 2,
-            tierType = TierType.DIAMOND_1,
+            tier = TierType.DIAMOND_1,
             lp = 2300,
         ),
         rankerType = SECOND,
@@ -302,21 +302,21 @@ private fun RankerPreview_AllThree() {
                 userId = "user1",
                 nickname = "1위 유저1위 유저1위 유저1위 유저",
                 rank = 1,
-                tierType = TierType.CHALLENGER,
+                tier = TierType.CHALLENGER,
                 lp = 2500,
             ),
             UserRank(
                 userId = "user2",
                 nickname = "긴 이름은 열글자",
                 rank = 2,
-                tierType = TierType.CHALLENGER,
+                tier = TierType.CHALLENGER,
                 lp = 2450,
             ),
             UserRank(
                 userId = "user3",
                 nickname = "3위 유저",
                 rank = 3,
-                tierType = TierType.CHALLENGER,
+                tier = TierType.CHALLENGER,
                 lp = 2400,
             ),
         ).toImmutableList(),
@@ -337,14 +337,14 @@ private fun RankerPreview_FirstAndSecond() {
                 userId = "user1",
                 nickname = "1위 유저",
                 rank = 1,
-                tierType = TierType.CHALLENGER,
+                tier = TierType.CHALLENGER,
                 lp = 2500,
             ),
             UserRank(
                 userId = "user2",
                 nickname = "2위 유저",
                 rank = 2,
-                tierType = TierType.CHALLENGER,
+                tier = TierType.CHALLENGER,
                 lp = 2450,
             ),
         ).toImmutableList(),

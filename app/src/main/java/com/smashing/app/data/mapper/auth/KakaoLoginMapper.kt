@@ -8,5 +8,6 @@ fun PostKakaoLoginResponse.toKakaoLoginToken() = KakaoLoginModel(
     refreshToken = this.refreshToken,
     kakaoId = this.kakaoId,
     userId = this.userId,
+    userNickname = this.nickname,
     isCompletedSignUp = this.isCompletedSignUp,
 )
