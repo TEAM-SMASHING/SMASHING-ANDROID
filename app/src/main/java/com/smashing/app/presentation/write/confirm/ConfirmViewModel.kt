@@ -35,7 +35,7 @@ class ConfirmViewModel @Inject constructor(
     private val gameId = confirmRoute.gameId
     private val opponentUserId = confirmRoute.opponentUserId
     private val opponentNickname = confirmRoute.opponentNickname
-    private val isFirstAttempt = confirmRoute.isFirstAttempt
+    val isFirstAttempt = confirmRoute.isFirstAttempt
 
     private val _uiState = MutableStateFlow(ConfirmContract.State())
     val uiState = _uiState.asStateFlow()
@@ -196,5 +196,22 @@ class ConfirmViewModel @Inject constructor(
 
     private fun updateConfirmUiState(uiState: ConfirmUiState) = _uiState.update {
         it.copy(confirmUiState = uiState)
+    }
+
+    fun getIsFirstAttempt(): Boolean = isFirstAttempt
+
+    fun showResubmitDialog() = _uiState.update {
+        it.copy(isResubmitDialogVisible = true)
+    }
+
+    fun hideResubmitDialog() = _uiState.update {
+        it.copy(isResubmitDialogVisible = false)
+    }
+
+    fun denySubmission(reason: String) = viewModelScope.launch {
+        hideResubmitDialog()
+        
+        // TODO: 반려 API 구현
+        _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
     }
 }

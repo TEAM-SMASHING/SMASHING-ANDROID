@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +23,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.confirm_result
 import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.button.SmashingButton
+import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -48,6 +52,7 @@ fun ConfirmResultRoute(
 
     ConfirmResultScreen(
         uiState = uiState,
+        isFirstAttempt = viewModel.isFirstAttempt,
         leftTextFieldState = viewModel.leftTextFieldState,
         rightTextFieldState = viewModel.rightTextFieldState,
         onBackClick = navigateUp,
@@ -55,7 +60,9 @@ fun ConfirmResultRoute(
         onLeftDoneClick = viewModel::updateSubmitterScore,
         onRightDoneClick = viewModel::updateReceiverScore,
         onConfirmClick = navigateToConfirmReview,
-        onDenyClick = navigateUp, // TODO 바텀 시트 로직 수정 예정
+        onShowResubmitDialog = viewModel::showResubmitDialog,
+        onHideResubmitDialog = viewModel::hideResubmitDialog,
+        onDenyClick = viewModel::denySubmission,
         modifier = modifier,
     )
 
@@ -65,6 +72,7 @@ fun ConfirmResultRoute(
 @Composable
 private fun ConfirmResultScreen(
     uiState: ConfirmContract.State,
+    isFirstAttempt: Boolean,
     leftTextFieldState: TextFieldState,
     rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
@@ -72,7 +80,9 @@ private fun ConfirmResultScreen(
     onLeftDoneClick: (Int) -> Unit,
     onRightDoneClick: (Int) -> Unit,
     onConfirmClick: () -> Unit,
-    onDenyClick: () -> Unit,
+    onShowResubmitDialog: () -> Unit,
+    onHideResubmitDialog: () -> Unit,
+    onDenyClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -115,6 +125,17 @@ private fun ConfirmResultScreen(
             )
 
             Spacer(modifier = Modifier.weight(1f))
+
+            Text(
+                text = "경기 결과가 일치하나요?",
+                style = SmashingTheme.typography.sm.regular14,
+                color = SmashingTheme.colors.txtPrimary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+            )
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -132,16 +153,18 @@ private fun ConfirmResultScreen(
                     buttonStyle = ButtonStyle.PRIMARY,
                     text = "네, 맞아요",
                     modifier = Modifier.weight(185f),
-                    onClick = onConfirmClick,
+                    onClick = { if (isFirstAttempt) onConfirmClick() else onShowResubmitDialog() },
                 )
             }
         }
+
         if (showExitBottomSheet) {
             SmashingBottomSheet(
                 onDismissRequest = {
                     showExitBottomSheet = false
+                    selectedReason = ""
                 },
-                title = "매칭결과",
+                title = "어떤 내용이 잘못됐나요?",
                 items = bottomSheetItems,
                 selectedItem = selectedReason,
                 contentToBtnPadding = 20.dp,
@@ -150,9 +173,25 @@ private fun ConfirmResultScreen(
                 onBtnClick = {
                     showExitBottomSheet = false
                     if (selectedReason.isNotEmpty()) {
-                        onDenyClick()
+                        onDenyClick(selectedReason)
                     }
                 },
+            )
+        }
+
+        if (uiState.isResubmitDialogVisible) {
+            SmashingDialog(
+                title = "매칭 결과를 다시 제출하시겠습니까?",
+                subtitle = "상대가 다시 반려할 경우 매칭 기록은 삭제됩니다.",
+                confirmText = "제출하기",
+                dismissText = "아니요",
+                onDismissRequest = onHideResubmitDialog,
+                type = DialogStyle.ALERT,
+                onConfirmClick = {
+                    onHideResubmitDialog()
+                    onConfirmClick()
+                },
+                onDismissClick = onHideResubmitDialog,
             )
         }
     }
@@ -164,6 +203,7 @@ private fun ConfirmResultScreenPreview() {
     SmashingAndroidTheme {
         ConfirmResultScreen(
             uiState = ConfirmContract.State(),
+            isFirstAttempt = true,
             leftTextFieldState = rememberTextFieldState(3.toString()),
             rightTextFieldState = rememberTextFieldState(1.toString()),
             onBackClick = {},
@@ -171,6 +211,8 @@ private fun ConfirmResultScreenPreview() {
             onLeftDoneClick = {},
             onRightDoneClick = {},
             onConfirmClick = {},
+            onShowResubmitDialog = {},
+            onHideResubmitDialog = {},
             onDenyClick = {},
         )
     }
