@@ -61,8 +61,6 @@ class AllReviewViewModel @Inject constructor(
                     }
                 }
                 .onFailure { exception ->
-
-                    android.util.Log.e("DEBUG_REVIEW", "API 실패 ㅠㅠ 원인: ${exception.message}")
                     exception.printStackTrace()
                     _uiState.update {
                         it.copy(
