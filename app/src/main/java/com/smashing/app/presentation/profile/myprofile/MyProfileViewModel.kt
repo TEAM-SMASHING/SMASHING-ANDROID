@@ -44,7 +44,8 @@ class MyProfileViewModel @Inject constructor(
                             loadState = MyProfileUiState.Success,
                             profileInfo = data.profileInfo,
                             sportProfileList = data.sportProfiles.toPersistentList(),
-                            selectedSportProfileId = data.profileInfo.profileId
+                            selectedSportProfileId = data.sportProfiles.find { it.isActive }?.profileId
+                                ?: data.profileInfo.profileId
                         )
                     }
                 }
@@ -61,7 +62,23 @@ class MyProfileViewModel @Inject constructor(
     }
 
     fun selectProfileId(profileId: String) {
-        updateSelectedProfileId(profileId)
+        if (uiState.value.selectedSportProfileId == profileId) return
+        viewModelScope.launch {
+            myRepository.switchActiveMyProfile(profileId)
+                .onSuccess {
+                    updateSelectedProfileId(profileId)
+                    fetchProfileInfo()
+                }
+                .onFailure { exception ->
+                    _uiState.update {
+                        it.copy(
+                            loadState = MyProfileUiState.Failure(
+                                exception.message ?: "알 수 없는 오류가 발생했습니다."
+                            )
+                        )
+                    }
+                }
+        }
     }
 
     private fun updateSelectedProfileId(profileId: String) {
