@@ -1,5 +1,6 @@
 package com.smashing.app.data.repository.api
 
+import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.review.GameReview
@@ -14,4 +15,7 @@ interface MyRepository {
     ):Result<CursorPage<GameReview>>
 
     suspend fun switchActiveMyProfile(profileId: String): Result<Unit>
+
+    suspend fun addSportsProfile(info: AddSportsInfo): Result<Unit>
+
 }

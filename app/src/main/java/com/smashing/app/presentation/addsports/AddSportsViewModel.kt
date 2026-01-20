@@ -2,7 +2,6 @@ package com.smashing.app.presentation.addsports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.repository.api.AddSportsRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
@@ -21,7 +20,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AddSportsViewModel @Inject constructor(
-    private val addSportsRepository: AddSportsRepository,
+    private val addSportsRepository: MyRepository,
     private val myRepository: MyRepository
 ) : ViewModel() {
 

@@ -1,10 +1,11 @@
 package com.smashing.app.data.mapper
 
 import com.smashing.app.data.model.addsports.AddSportsInfo
-import com.smashing.app.data.remote.dto.addsports.AddSportProfileRequest
+import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 
 
-fun AddSportsInfo.toRequest(): AddSportProfileRequest {
+fun AddSportsInfo.toRequest():
+        AddSportProfileRequest {
     val sportCode = requireNotNull(this.selectedSports?.code) { "sportCode is required" }
     return AddSportProfileRequest(
         sportCode = sportCode,

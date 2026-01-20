@@ -3,8 +3,9 @@ package com.smashing.app.data.remote.datasource.impl
 
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.BaseResponse
-import com.smashing.app.data.remote.dto.profile.my.MyPageData
-import com.smashing.app.data.remote.dto.profile.my.MyProfileReviewListData
+import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
+import com.smashing.app.data.remote.dto.my.MyPageData
+import com.smashing.app.data.remote.dto.my.MyProfileReviewListData
 import com.smashing.app.data.remote.service.MyService
 import javax.inject.Inject
 
@@ -21,5 +22,9 @@ class MyRemoteDataSourceImpl @Inject constructor(
         size: Int?
     ): BaseResponse<MyProfileReviewListData> {
         return myService.getMyGameReviews(cursor, size)
+    }
+
+    override suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<String?> {
+        return myService.addSportProfile(request)
     }
 }

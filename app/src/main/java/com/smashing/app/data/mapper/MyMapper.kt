@@ -6,10 +6,10 @@ import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.model.review.GameReview
-import com.smashing.app.data.remote.dto.profile.my.AllProfileDto
-import com.smashing.app.data.remote.dto.profile.my.MyPageData
-import com.smashing.app.data.remote.dto.profile.my.MyProfileReviewListData
-import com.smashing.app.data.remote.dto.profile.my.MyReviewsDto
+import com.smashing.app.data.remote.dto.my.AllProfileDto
+import com.smashing.app.data.remote.dto.my.MyPageData
+import com.smashing.app.data.remote.dto.my.MyProfileReviewListData
+import com.smashing.app.data.remote.dto.my.MyReviewsDto
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportCode

@@ -1,4 +1,4 @@
-package com.smashing.app.data.di.profile.myprofile
+package com.smashing.app.data.di.my
 
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.datasource.impl.MyRemoteDataSourceImpl
