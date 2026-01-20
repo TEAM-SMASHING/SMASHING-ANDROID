@@ -15,19 +15,7 @@ interface MyProfileContract {
     @Immutable
     data class State(
         val loadState: MyProfileUiState = MyProfileUiState.Idle,
-        val profileInfo: ProfileInfo = ProfileInfo(
-            profileId = "",
-            sportType = SportType.PING_PONG,
-            nickname = "",
-            genderType = GenderType.MALE,
-            tierType = TierType.GOLD_1,
-            lp = 0,
-            minLp = 0,
-            maxLp = 1,
-            winCount = 0,
-            loseCount = 0,
-            reviewCount = 0,
-        ),
+        val profileInfo: ProfileInfo = ProfileInfo(),
         val sportProfileList: ImmutableList<SportProfile> = persistentListOf(),
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
