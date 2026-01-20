@@ -4,7 +4,7 @@ import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.profile.SportsProfile
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.remote.dto.profile.my.AllProfileDto
 import com.smashing.app.data.remote.dto.profile.my.MyPageData
@@ -34,8 +34,8 @@ fun MyPageData.toProfileInfo(): ProfileInfo {
     )
 }
 
-fun AllProfileDto.toSportProfile(): SportProfile {
-    return SportProfile(
+fun AllProfileDto.toSportProfile(): SportsProfile {
+    return SportsProfile(
         profileId = this.profileId,
         sportType = SportType.findSportTypeToSportCode(this.sportCode),
         isActive = this.isActive
@@ -45,7 +45,7 @@ fun AllProfileDto.toSportProfile(): SportProfile {
 fun MyPageData.toMyPageInfo(): MyPageInfo {
     return MyPageInfo(
         profileInfo = this.toProfileInfo(),
-        sportProfiles = this.allProfiles.map { it.toSportProfile() }
+        sportsProfiles = this.allProfiles.map { it.toSportProfile() }
     )
 }
 
