@@ -53,7 +53,6 @@ fun MyProfileRoute(
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
         viewModel.fetchReviews()
-
     }
 
     MyProfileScreen(
@@ -63,8 +62,7 @@ fun MyProfileRoute(
         onSportClick = viewModel::selectProfileId,
         onAddSportClick = navigateToSportAdd,
         onTierGuideClick = navigateToTierGuide,
-        onReviewClick = { userId ->
-            navigateToReview(userId) },
+        onReviewClick = navigateToReview,
     )
 }
 
@@ -143,7 +141,7 @@ private fun MyProfileScreen(
 
             ReviewCard(
                 reviews = uiState.gameReview,
-                onViewAllReviewClick = { onReviewClick },
+                onViewAllReviewClick = { onReviewClick(null) },
                 bestCount = uiState.gameReviewResult.bestCount,
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
