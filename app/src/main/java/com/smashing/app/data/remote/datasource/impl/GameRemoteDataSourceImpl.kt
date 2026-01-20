@@ -2,6 +2,7 @@ package com.smashing.app.data.remote.datasource.impl
 
 import com.smashing.app.data.remote.datasource.api.GameRemoteDataSource
 import com.smashing.app.data.remote.dto.BaseResponse
+import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionResponse
 import com.smashing.app.data.remote.service.GameService
@@ -20,4 +21,14 @@ class GameRemoteDataSourceImpl @Inject constructor(
             request = request,
         )
 
+    override suspend fun postConfirmSubmission(
+        gameId: String,
+        submissionId: String,
+        request: PostConfirmSubmissionRequest,
+    ): BaseResponse<Unit> =
+        gameService.postConfirmSubmission(
+            gameId = gameId,
+            submissionId = submissionId,
+            request = request,
+        )
 }

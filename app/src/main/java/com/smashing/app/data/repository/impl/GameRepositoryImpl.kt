@@ -3,6 +3,7 @@ package com.smashing.app.data.repository.impl
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.mapper.game.toRequest
 import com.smashing.app.data.model.game.GameSubmission
+import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.remote.datasource.api.GameRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.GameRepository
@@ -20,5 +21,17 @@ class GameRepositoryImpl @Inject constructor(
             gameId = gameId,
             request = gameSubmission.toRequest(),
         ).requireData().reviewId
+    }
+
+    override suspend fun postConfirmSubmission(
+        gameId: String,
+        submissionId: String,
+        submissionConfirm: SubmissionConfirm,
+    ): Result<Unit> = suspendRunCatching {
+        gameRemoteDataSource.postConfirmSubmission(
+            gameId = gameId,
+            submissionId = submissionId,
+            request = submissionConfirm.toRequest(),
+        ).requireData()
     }
 }

@@ -5,9 +5,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.data.model.game.SubmissionConfirm
+import com.smashing.app.data.repository.api.GameRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
+import com.smashing.app.presentation.write.confirm.ConfirmContract.ConfirmUiState
 import com.smashing.app.presentation.write.model.MatchPlayer
 import com.smashing.app.presentation.write.navigation.Confirm
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +27,7 @@ import javax.inject.Inject
 class ConfirmViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
+    private val gameRepository: GameRepository,
 ) : ViewModel() {
     private val confirmRoute = savedStateHandle.toRoute<Confirm>()
     private val submissionId = confirmRoute.submissionId
@@ -119,5 +123,36 @@ class ConfirmViewModel @Inject constructor(
                 receiverScore = state.receiverScore,
             ),
         )
+    }
+
+    fun confirmSubmission() = viewModelScope.launch {
+        val state = _uiState.value
+
+        _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
+
+        val submissionConfirm = SubmissionConfirm(
+            rating = state.selectedRating?.name ?: return@launch,
+            content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
+            tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() },
+        )
+
+        gameRepository.postConfirmSubmission(
+            gameId = gameId,
+            submissionId = submissionId,
+            submissionConfirm = submissionConfirm,
+        ).onSuccess {
+            updateConfirmUiState(uiState = ConfirmUiState.Success)
+            _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
+        }.onFailure { throwable ->
+            updateConfirmUiState(
+                uiState = ConfirmUiState.Failure(
+                    throwable.message ?: "Unknown error"
+                )
+            )
+        }
+    }
+
+    private fun updateConfirmUiState(uiState: ConfirmUiState) = _uiState.update {
+        it.copy(confirmUiState = uiState)
     }
 }

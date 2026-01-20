@@ -1,7 +1,7 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
-import com.smashing.app.data.mapper.toRegionList
+import com.smashing.app.data.mapper.region.toRegionList
 import com.smashing.app.data.model.region.KakaoRegion
 import com.smashing.app.data.remote.datasource.api.KakaoRegionDataSource
 import com.smashing.app.data.remote.datasource.api.RegionRemoteDataSource
