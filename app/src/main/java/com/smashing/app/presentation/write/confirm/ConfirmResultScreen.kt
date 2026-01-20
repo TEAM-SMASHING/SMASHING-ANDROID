@@ -56,9 +56,6 @@ fun ConfirmResultRoute(
         leftTextFieldState = viewModel.leftTextFieldState,
         rightTextFieldState = viewModel.rightTextFieldState,
         onBackClick = navigateUp,
-        onWinnerSelected = viewModel::updateSelectedWinner,
-        onLeftDoneClick = viewModel::updateSubmitterScore,
-        onRightDoneClick = viewModel::updateReceiverScore,
         onConfirmClick = navigateToConfirmReview,
         onShowResubmitDialog = viewModel::showResubmitDialog,
         onHideResubmitDialog = viewModel::hideResubmitDialog,
@@ -76,9 +73,6 @@ private fun ConfirmResultScreen(
     leftTextFieldState: TextFieldState,
     rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
-    onWinnerSelected: (String) -> Unit,
-    onLeftDoneClick: (Int) -> Unit,
-    onRightDoneClick: (Int) -> Unit,
     onConfirmClick: () -> Unit,
     onShowResubmitDialog: () -> Unit,
     onHideResubmitDialog: () -> Unit,
@@ -113,15 +107,11 @@ private fun ConfirmResultScreen(
             WriteResultContent(
                 submitter = uiState.submitter,
                 receiver = uiState.receiver,
-                submitterScore = uiState.submitterScore,
-                receiverScore = uiState.receiverScore,
-                winner = uiState.winner,
+                winnerId = uiState.winnerId,
                 leftTextFieldState = leftTextFieldState,
                 rightTextFieldState = rightTextFieldState,
-                onWinnerSelected = onWinnerSelected,
-                onLeftDoneClick = onLeftDoneClick,
-                onRightDoneClick = onRightDoneClick,
                 isTextFieldsEnabled = false,
+                title = "경기 결과를 확인해주세요",
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -187,10 +177,7 @@ private fun ConfirmResultScreen(
                 dismissText = "아니요",
                 onDismissRequest = onHideResubmitDialog,
                 type = DialogStyle.ALERT,
-                onConfirmClick = {
-                    onHideResubmitDialog()
-                    onConfirmClick()
-                },
+                onConfirmClick = onConfirmClick,
                 onDismissClick = onHideResubmitDialog,
             )
         }
@@ -207,9 +194,6 @@ private fun ConfirmResultScreenPreview() {
             leftTextFieldState = rememberTextFieldState(3.toString()),
             rightTextFieldState = rememberTextFieldState(1.toString()),
             onBackClick = {},
-            onWinnerSelected = {},
-            onLeftDoneClick = {},
-            onRightDoneClick = {},
             onConfirmClick = {},
             onShowResubmitDialog = {},
             onHideResubmitDialog = {},

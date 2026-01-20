@@ -70,7 +70,6 @@ private fun ConfirmReviewScreen(
 ) {
     val focusManager = LocalFocusManager.current
 
-    var isAlertDialogOpen by remember { mutableStateOf(false) }
     var isConfirmDialogOpen by remember { mutableStateOf(false) }
 
     Column(
@@ -94,7 +93,7 @@ private fun ConfirmReviewScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             WriteReviewContent(
-                nickname = uiState.revieweeNickname,
+                nickname = uiState.receiver.name,
                 textFieldState = reviewTextFieldState,
                 selectedReviewRating = uiState.selectedRating,
                 selectedReviewTagTypes = uiState.selectedTagList,
@@ -118,26 +117,15 @@ private fun ConfirmReviewScreen(
             )
         }
 
-        if (isAlertDialogOpen) {
-            SmashingDialog(
-                title = "매칭 결과를 제출하시겠습니까?",
-                subtitle = "정확한 경기 결과가 아닐 경우 반려될 수 있어요.",
-                type = DialogStyle.ALERT,
-                confirmText = "제출하기",
-                dismissText = "아니요",
-                onDismissRequest = { isAlertDialogOpen = false },
-                onConfirmClick = onDoneClick, // TODO: 제출하기
-            )
-        }
-
         if (isConfirmDialogOpen) {
             SmashingDialog(
-                title = "매칭 결과를 제출하시겠습니까?",
-                subtitle = "정확한 경기 결과가 아닐 경우 반려될 수 있어요.",
-                type = DialogStyle.CONFIRM,
-                confirmText = "확인",
+                title = "마지막 반려 기회에요",
+                subtitle = "이번에 반려 시 해당 매칭은 취소됩니다.",
+                type = DialogStyle.ALERT,
+                confirmText = "반려하기",
+                dismissText = "아니요",
                 onDismissRequest = { isConfirmDialogOpen = false },
-                onConfirmClick = onDoneClick, // TODO: 제출하기
+                onConfirmClick = onDoneClick,
             )
         }
     }

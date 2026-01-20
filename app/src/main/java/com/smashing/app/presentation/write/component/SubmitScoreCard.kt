@@ -28,16 +28,14 @@ import com.smashing.app.R.string.score_format
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.presentation.write.model.MatchPlayer
+import com.smashing.app.presentation.write.model.PlayerInfo
 
 @Composable
 fun SubmitScoreCard(
-    submitter: MatchPlayer,
-    submitterScore: Int,
-    receiver: MatchPlayer,
-    receiverScore: Int,
+    submitter: PlayerInfo,
+    receiver: PlayerInfo,
     modifier: Modifier = Modifier,
-    winner: MatchPlayer? = null,
+    winnerId: String? = null,
 ) {
     Row(
         modifier = modifier
@@ -50,7 +48,7 @@ fun SubmitScoreCard(
     ) {
         ProfileInfo(
             player = submitter,
-            isWinner = winner?.userId == submitter.userId,
+            isWinner = winnerId == submitter.userId,
             modifier = Modifier
                 .padding(start = 36.dp),
         )
@@ -58,8 +56,8 @@ fun SubmitScoreCard(
         Text(
             text = stringResource(
                 score_format,
-                submitterScore,
-                receiverScore
+                submitter.score,
+                receiver.score
             ),
             color = SmashingTheme.colors.txtSecondary,
             style = SmashingTheme.typography.hero.semibold28,
@@ -72,7 +70,7 @@ fun SubmitScoreCard(
 
         ProfileInfo(
             player = receiver,
-            isWinner = winner?.userId == receiver.userId,
+            isWinner = winnerId == receiver.userId,
             modifier = Modifier
                 .padding(end = 36.dp),
         )
@@ -81,7 +79,7 @@ fun SubmitScoreCard(
 
 @Composable
 private fun ProfileInfo(
-    player: MatchPlayer,
+    player: PlayerInfo,
     isWinner: Boolean,
     modifier: Modifier = Modifier,
 ) {

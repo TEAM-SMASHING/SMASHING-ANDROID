@@ -304,8 +304,6 @@ class MatchingViewModel @Inject constructor(
                     SideEffect.NavigateToConfirm(
                         submissionId = submissionId,
                         gameId = matching.gameId,
-                        opponentUserId = matching.userId,
-                        opponentNickname = matching.nickname,
                         isFirstAttempt = isFirstAttempt,
                     )
                 )

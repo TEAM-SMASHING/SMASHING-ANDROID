@@ -36,16 +36,12 @@ fun NavController.navigateToSubmit(
 fun NavController.navigateToConfirm(
     submissionId: String,
     gameId: String,
-    opponentUserId: String,
-    opponentNickname: String,
     isFirstAttempt: Boolean,
     navOptions: NavOptions? = null,
 ) = navigate(
     route = Confirm(
         submissionId = submissionId,
         gameId = gameId,
-        opponentUserId = opponentUserId,
-        opponentNickname = opponentNickname,
         isFirstAttempt = isFirstAttempt,
     ),
     navOptions = navOptions,
@@ -133,8 +129,6 @@ data object SubmitReview : Route
 data class Confirm(
     val submissionId: String,
     val gameId: String,
-    val opponentUserId: String,
-    val opponentNickname: String,
     val isFirstAttempt: Boolean,
 ) : Route
 

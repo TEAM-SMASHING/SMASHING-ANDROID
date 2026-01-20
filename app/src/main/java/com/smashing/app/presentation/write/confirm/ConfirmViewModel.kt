@@ -12,7 +12,7 @@ import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.confirm.ConfirmContract.ConfirmUiState
-import com.smashing.app.presentation.write.model.MatchPlayer
+import com.smashing.app.presentation.write.model.PlayerInfo
 import com.smashing.app.presentation.write.navigation.Confirm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableSet
@@ -33,28 +33,21 @@ class ConfirmViewModel @Inject constructor(
     private val confirmRoute = savedStateHandle.toRoute<Confirm>()
     private val submissionId = confirmRoute.submissionId
     private val gameId = confirmRoute.gameId
-    private val opponentUserId = confirmRoute.opponentUserId
-    private val opponentNickname = confirmRoute.opponentNickname
+
     val isFirstAttempt = confirmRoute.isFirstAttempt
 
     private val _uiState = MutableStateFlow(ConfirmContract.State())
     val uiState = _uiState.asStateFlow()
 
+    private val _sideEffect = MutableSharedFlow<ConfirmContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
+
+    val reviewTextFieldState: TextFieldState = TextFieldState()
+    val leftTextFieldState: TextFieldState = TextFieldState()
+    val rightTextFieldState: TextFieldState = TextFieldState()
+
     init {
-        initUserInfo()
         fetchGameSubmission()
-    }
-
-    private fun initUserInfo() = viewModelScope.launch {
-        val currentUserId = userRepository.getUserId() ?: ""
-        val currentUserNickname = userRepository.getUserNickname() ?: ""
-
-        _uiState.update { state ->
-            state.copy(
-                submitter = MatchPlayer(userId = currentUserId, name = currentUserNickname),
-                receiver = MatchPlayer(userId = opponentUserId, name = opponentNickname),
-            )
-        }
     }
 
     private fun fetchGameSubmission() = viewModelScope.launch {
@@ -64,8 +57,14 @@ class ConfirmViewModel @Inject constructor(
             gameId = gameId,
             submissionId = submissionId,
         ).onSuccess { submissionDetail ->
-            _uiState.update { state ->
-                getGameSubmission(currentState = state, submissionDetail = submissionDetail)
+            updateGameSubmission(submissionDetail)
+
+            val currentState = _uiState.value
+            leftTextFieldState.edit {
+                replace(0, length, currentState.submitter.score.toString())
+            }
+            rightTextFieldState.edit {
+                replace(0, length, currentState.receiver.score.toString())
             }
         }.onFailure { throwable ->
             updateConfirmUiState(
@@ -76,40 +75,44 @@ class ConfirmViewModel @Inject constructor(
         }
     }
 
-    private fun getGameSubmission(
-        currentState: ConfirmContract.State,
-        submissionDetail: GameSubmissionDetail,
-    ): ConfirmContract.State {
-        val isSubmitterWinner = submissionDetail.winner.userId == currentState.submitter.userId
+    private fun updateGameSubmission(submissionDetail: GameSubmissionDetail) {
+        _uiState.update { currentState ->
+            val isSubmitterWinner = submissionDetail.winner.userId == submissionDetail.submitter.userId
+            
+            val submitter = PlayerInfo(
+                userId = submissionDetail.submitter.userId,
+                name = submissionDetail.submitter.nickname,
+                score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score
+            )
+            
+            val receiver = if (isSubmitterWinner) {
+                PlayerInfo(
+                    userId = submissionDetail.loser.userId,
+                    name = submissionDetail.loser.nickname,
+                    score = submissionDetail.loser.score
+                )
+            } else {
+                PlayerInfo(
+                    userId = submissionDetail.winner.userId,
+                    name = submissionDetail.winner.nickname,
+                    score = submissionDetail.winner.score
+                )
+            }
 
-        val (winner, loser) = if (isSubmitterWinner) currentState.submitter to currentState.receiver
-        else currentState.receiver to currentState.submitter
-
-        val (submitterScore, receiverScore) = if (isSubmitterWinner) submissionDetail.winner.score to submissionDetail.loser.score
-        else submissionDetail.loser.score to submissionDetail.winner.score
-
-        return currentState.copy(
-            submitterScore = submitterScore,
-            receiverScore = receiverScore,
-            winner = winner,
-            loser = loser,
-            confirmUiState = ConfirmUiState.Idle,
-        )
+            currentState.copy(
+                submitter = submitter,
+                receiver = receiver,
+                winnerId = submissionDetail.winner.userId,
+                confirmUiState = ConfirmUiState.Idle,
+            )
+        }
     }
-
-    private val _sideEffect = MutableSharedFlow<ConfirmContract.SideEffect>()
-    val sideEffect = _sideEffect.asSharedFlow()
-
-    val reviewTextFieldState: TextFieldState = TextFieldState()
-    val leftTextFieldState: TextFieldState = TextFieldState()
-    val rightTextFieldState: TextFieldState = TextFieldState()
 
     fun updateSelectedRatingType(type: ReviewRatingType) = _uiState.update { state ->
         state.copy(
             selectedRating = if (state.selectedRating == type) null else type
         )
     }
-
 
     private fun isScoreMatchingWinner(
         isSubmitterWinner: Boolean,
@@ -126,45 +129,6 @@ class ConfirmViewModel @Inject constructor(
             state.selectedTagList + type
         }
         state.copy(selectedTagList = updatedTags.toImmutableSet())
-    }
-
-    fun updateSelectedWinner(winnerName: String) = _uiState.update { state ->
-        val isSubmitterWinner = winnerName == state.submitter.name
-        val winner = if (isSubmitterWinner) state.submitter else state.receiver
-        val loser = if (isSubmitterWinner) state.receiver else state.submitter
-        state.copy(
-            winner = winner,
-            loser = loser,
-            isButtonEnabled = isScoreMatchingWinner(
-                isSubmitterWinner = isSubmitterWinner,
-                submitterScore = state.submitterScore,
-                receiverScore = state.receiverScore,
-            ),
-        )
-    }
-
-    fun updateReceiverScore(score: Int) = _uiState.update { state ->
-        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
-        state.copy(
-            receiverScore = score,
-            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
-                isSubmitterWinner = isSubmitterWinner,
-                submitterScore = state.submitterScore,
-                receiverScore = score,
-            ),
-        )
-    }
-
-    fun updateSubmitterScore(score: Int) = _uiState.update { state ->
-        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
-        state.copy(
-            submitterScore = score,
-            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
-                isSubmitterWinner = isSubmitterWinner,
-                submitterScore = score,
-                receiverScore = state.receiverScore,
-            ),
-        )
     }
 
     fun confirmSubmission() = viewModelScope.launch {
@@ -198,8 +162,6 @@ class ConfirmViewModel @Inject constructor(
         it.copy(confirmUiState = uiState)
     }
 
-    fun getIsFirstAttempt(): Boolean = isFirstAttempt
-
     fun showResubmitDialog() = _uiState.update {
         it.copy(isResubmitDialogVisible = true)
     }
@@ -210,7 +172,7 @@ class ConfirmViewModel @Inject constructor(
 
     fun denySubmission(reason: String) = viewModelScope.launch {
         hideResubmitDialog()
-        
+
         // TODO: 반려 API 구현
         _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
     }
