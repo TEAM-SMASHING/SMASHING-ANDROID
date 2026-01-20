@@ -12,4 +12,6 @@ interface MyRepository {
         cursor:String?,
         size:Int?=50,
     ):Result<CursorPage<GameReview>>
+
+    suspend fun switchActiveMyProfile(profileId: String): Result<Unit>
 }
