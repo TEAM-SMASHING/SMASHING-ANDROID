@@ -22,8 +22,9 @@ fun NavController.navigateToMyProfile(
 
 fun NavController.navigateToUserProfile(
     userId: String,
+    sportCode: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(UserProfile(userId), navOptions)
+) = navigate(UserProfile(userId, sportCode), navOptions)
 
 fun NavController.navigateToReview(
     userId: String? = null,
@@ -72,7 +73,8 @@ data object MyProfile : MainTabRoute
 
 @Serializable
 data class UserProfile(
-    val userId: String
+    val userId: String,
+    val sportCode: String?,
 ) : Route
 
 @Serializable

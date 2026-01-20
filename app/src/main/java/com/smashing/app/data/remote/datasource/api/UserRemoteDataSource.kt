@@ -4,5 +4,5 @@ import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.user.GetUserInfoDetailResponse
 
 interface UserRemoteDataSource {
-    suspend fun getUserInfoDetail(): BaseResponse<GetUserInfoDetailResponse>
+    suspend fun getUserInfoDetail(userId: String, sportCode: String?): BaseResponse<GetUserInfoDetailResponse>
 }

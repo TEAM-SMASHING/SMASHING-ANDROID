@@ -1,7 +1,6 @@
 package com.smashing.app.data.repository.api
 
-import com.smashing.app.data.model.game.GameSubmission
-import com.smashing.app.data.model.profile.ProfileInfo
+import com.smashing.app.data.model.profile.UserProfileInfo
 
 interface UserRepository {
     suspend fun getUserId(): String?
@@ -11,5 +10,5 @@ interface UserRepository {
     suspend fun getUserInfoDetail(
         userId: String,
         sportCode: String?,
-    ): Result<ProfileInfo>
+    ): Result<UserProfileInfo>
 }

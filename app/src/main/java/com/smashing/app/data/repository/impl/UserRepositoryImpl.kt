@@ -2,9 +2,8 @@ package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalUserDataSource
-import com.smashing.app.data.mapper.toRankingData
 import com.smashing.app.data.mapper.user.toProfileInfo
-import com.smashing.app.data.model.profile.ProfileInfo
+import com.smashing.app.data.model.profile.UserProfileInfo
 import com.smashing.app.data.remote.datasource.api.UserRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.UserRepository
@@ -29,9 +28,9 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserInfoDetail(
         userId: String,
         sportCode: String?
-    ): Result<ProfileInfo> =
+    ): Result<UserProfileInfo> =
         suspendRunCatching{
-            userRemoteDataSource.getUserInfoDetail().requireData().toProfileInfo()
+            userRemoteDataSource.getUserInfoDetail(userId, sportCode).requireData().toProfileInfo()
         }
 
 }
