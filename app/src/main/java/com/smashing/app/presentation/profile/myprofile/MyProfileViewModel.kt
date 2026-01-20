@@ -17,21 +17,21 @@ class MyProfileViewModel @Inject constructor(
     private val myRepository: MyRepository
 ) : ViewModel() {
 
-    private var isLoading: Boolean = false
-
+    private var isReviewPaging: Boolean = false
     private val _uiState = MutableStateFlow(MyProfileContract.State())
 
     val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
 
     fun fetchProfileInfo(isShowLoading: Boolean = false) {
         viewModelScope.launch {
-                _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
-
+            if (isShowLoading) {
+                _uiState.update { it.copy(profileLoadState = MyProfileUiState.Loading) }
+            }
             myRepository.getMyPageInfo()
                 .onSuccess { data ->
                     _uiState.update { currentState ->
                         currentState.copy(
-                            loadState = MyProfileUiState.Success,
+                            profileLoadState = MyProfileUiState.Success,
                             profileInfo = data.profileInfo,
                             sportProfileList = data.sportProfiles.toPersistentList(),
                             selectedSportProfileId = data.sportProfiles.find { it.isActive }?.profileId
@@ -43,7 +43,7 @@ class MyProfileViewModel @Inject constructor(
                     if (isShowLoading) {
                         _uiState.update {
                             it.copy(
-                                loadState = MyProfileUiState.Failure(
+                                profileLoadState = MyProfileUiState.Failure(
                                     exception.message ?: "오류 발생"
                                 )
                             )
@@ -79,7 +79,9 @@ class MyProfileViewModel @Inject constructor(
                 .onFailure { exception ->
                     _uiState.update {
                         it.copy(
-                            loadState = MyProfileUiState.Failure(exception.message ?: "프로필 변경 실패")
+                            profileLoadState = MyProfileUiState.Failure(
+                                exception.message ?: "프로필 변경 실패"
+                            )
                         )
                     }
                     fetchProfileInfo(isShowLoading = false)
@@ -88,13 +90,14 @@ class MyProfileViewModel @Inject constructor(
     }
 
     fun fetchReviews(isInit: Boolean = false) {
-        if (isLoading || (!isInit)) return
+        if (isReviewPaging) return
 
         viewModelScope.launch {
-            isLoading = true
-
+            isReviewPaging = true
             if (isInit) {
-                _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
+                _uiState.update {
+                    it.copy(reviewLoadState = MyProfileUiState.Loading)
+                }
             }
 
             myRepository.getMyGameReviews(
@@ -110,7 +113,7 @@ class MyProfileViewModel @Inject constructor(
                         }
 
                         currentState.copy(
-                            loadState = MyProfileUiState.Success,
+                            reviewLoadState = MyProfileUiState.Success, // 리뷰 성공
                             gameReview = newReviews
                         )
                     }
@@ -119,13 +122,13 @@ class MyProfileViewModel @Inject constructor(
                     exception.printStackTrace()
                     _uiState.update {
                         it.copy(
-                            loadState = MyProfileUiState.Failure(
+                            reviewLoadState = MyProfileUiState.Failure(
                                 exception.message ?: "리뷰를 불러오는데 실패했습니다."
                             )
                         )
                     }
                 }
-            isLoading = false
+            isReviewPaging = false
         }
     }
 

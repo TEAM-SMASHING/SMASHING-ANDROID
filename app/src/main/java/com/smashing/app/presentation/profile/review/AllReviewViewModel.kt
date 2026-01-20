@@ -39,7 +39,8 @@ class AllReviewViewModel @Inject constructor(
             isLoading = true
 
             if (isInit) {
-                _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
+                _uiState.update {it.copy(reviewLoadState = MyProfileUiState.Loading)
+                }
                 nextCursor = null
             }
 
@@ -59,7 +60,7 @@ class AllReviewViewModel @Inject constructor(
                         }
 
                         currentState.copy(
-                            loadState = MyProfileUiState.Success,
+                            reviewLoadState = MyProfileUiState.Success,
                             gameReview = newReviews
                         )
                     }
@@ -68,7 +69,7 @@ class AllReviewViewModel @Inject constructor(
                     exception.printStackTrace()
                     _uiState.update {
                         it.copy(
-                            loadState = MyProfileUiState.Failure(
+                            reviewLoadState = MyProfileUiState.Failure(
                                 exception.message ?: "리뷰를 불러오는데 실패했습니다."
                             )
                         )
