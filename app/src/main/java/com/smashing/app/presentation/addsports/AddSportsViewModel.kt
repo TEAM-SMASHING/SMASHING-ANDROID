@@ -39,6 +39,7 @@ class AddSportsViewModel @Inject constructor(
 
     private fun fetchAvailableSports() {
         viewModelScope.launch {
+            _uiState.update { it.copy(loadState = AddSportsUiState.Loading) }
             myRepository.getMyPageInfo()
                 .onSuccess { myPageData ->
                     val myExistingSportCodes: List<String> = myPageData.sportProfiles.map {
@@ -50,12 +51,20 @@ class AddSportsViewModel @Inject constructor(
                     }.toImmutableList()
 
                     _uiState.update {
-                        it.copy(availableSports = filteredSports)
+                        it.copy(
+                            loadState = AddSportsUiState.Success,
+                            availableSports = filteredSports
+                        )
                     }
                 }
-                .onFailure {
+                .onFailure { exception ->
                     _uiState.update {
-                        it.copy(availableSports = SportType.entries.toImmutableList())
+                        it.copy(
+                            loadState = AddSportsUiState.Failure(
+                                exception.message ?: "정보를 불러오는데 실패했습니다."
+                            ),
+                            availableSports = SportType.entries.toImmutableList()
+                        )
                     }
                 }
         }
