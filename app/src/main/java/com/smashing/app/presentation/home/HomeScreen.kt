@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -80,6 +81,13 @@ fun HomeRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchMyTierProfile()
+        viewModel.fetchRegionRankerList()
+        viewModel.fetchRecommendedUserList()
+        viewModel.fetchMatchedUser()
+    }
+
     HomeScreen(
         uiState = uiState,
         navigateToNotice = navigateToNotice,
@@ -108,7 +116,6 @@ private fun HomeScreen(
         // TODO: 로딩 또는 에러 UI 표시
         return
     }
-
 
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }

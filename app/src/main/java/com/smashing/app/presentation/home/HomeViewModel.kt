@@ -26,14 +26,6 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        fetchMyTierProfile()
-        fetchRegionRankerList()
-        fetchRecommendedUserList()
-        fetchMatchedUser()
-    }
-
-
     fun fetchMyTierProfile() = viewModelScope.launch {
         myRepository.getMyTierProfile()
             .onSuccess { userProfile ->
