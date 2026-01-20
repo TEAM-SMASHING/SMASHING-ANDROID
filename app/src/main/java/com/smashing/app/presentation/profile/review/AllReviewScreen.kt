@@ -55,7 +55,7 @@ import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.presentation.profile.component.ReviewItem
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract
-import com.smashing.app.presentation.profile.userprofile.UserProfileUiState
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -70,7 +70,7 @@ fun AllReviewRoute(
     AllReviewScreen(
         modifier = modifier,
         uiState = uiState,
-        onLoadMoreReviewList = viewModel::fetchProfileReview,
+        onLoadMoreReviewList = viewModel::fetchUserProfileReview,
         onBackClick = navigateUp,
         reviews = uiState.gameReview,
     )
