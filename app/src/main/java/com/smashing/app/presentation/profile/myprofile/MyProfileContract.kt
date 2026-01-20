@@ -11,23 +11,28 @@ import kotlinx.collections.immutable.persistentListOf
 interface MyProfileContract {
     @Immutable
     data class State(
-        val loadState: MyProfileUiState = MyProfileUiState.Idle,
+        val profileLoadState: MyProfileUiState = MyProfileUiState.Idle,
+        val reviewLoadState: MyProfileUiState = MyProfileUiState.Idle,
         val profileInfo: ProfileInfo = ProfileInfo(),
         val sportProfileList: ImmutableList<SportProfile> = persistentListOf(),
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
-    ){
+    ) {
         val isReviewEmpty: Boolean
-        get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
+            get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
     }
-}
 
-sealed interface MyProfileUiState {
-    data object Idle : MyProfileUiState
-    data object Loading : MyProfileUiState
-    data object Success : MyProfileUiState
-    data class Failure(
-        val msg: String,
-    ) : MyProfileUiState
+    sealed interface MyProfileUiState {
+        data object Idle : MyProfileUiState
+        data object Loading : MyProfileUiState
+        data object Success : MyProfileUiState
+        data class Failure(
+            val msg: String,
+        ) : MyProfileUiState
+    }
+
+    sealed interface SideEffect {
+        data class NavigateToAllReview(val userId: String?): SideEffect
+    }
 }

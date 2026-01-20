@@ -94,7 +94,7 @@ private fun ProfileInfo(
             contentAlignment = Alignment.TopCenter,
         ) {
             UrlImage(
-                url = ProfileImageProvider.getTempUrl(player.userId),
+                placeholderDrawable = ProfileImageProvider.getTempImg(player.name),
                 modifier = Modifier
                     .height(64.dp)
                     .aspectRatio(1f)

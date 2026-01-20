@@ -202,7 +202,7 @@ private fun MyRanking(
             )
     ) {
         UrlImage(
-            url = ProfileImageProvider.getTempUrl(userId),
+            placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
             modifier = Modifier
                 .height(40.dp)
                 .aspectRatio(1f)

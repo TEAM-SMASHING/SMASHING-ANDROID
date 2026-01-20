@@ -36,6 +36,7 @@ fun NoticeItem(
     title: String,
     description: String,
     userId: String,
+    nickname: String,
     sportType: SportType,
     isRead: Boolean,
     timeAgo: String,
@@ -66,7 +67,7 @@ fun NoticeItem(
                 )
         ) {
             UrlImage(
-                url = ProfileImageProvider.getTempUrl(userId),
+                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
                 modifier = Modifier
                     .height(40.dp)
                     .aspectRatio(1f)
@@ -134,6 +135,7 @@ private fun NoticeItemPreview() {
                 isRead = false,
                 timeAgo = "2시간 전",
                 onItemClick = {},
+                nickname = "와쿠와쿠"
             )
 
             NoticeItem(
@@ -144,6 +146,7 @@ private fun NoticeItemPreview() {
                 isRead = true,
                 timeAgo = "2시간 전",
                 onItemClick = {},
+                nickname = "닝우닝"
             )
         }
     }

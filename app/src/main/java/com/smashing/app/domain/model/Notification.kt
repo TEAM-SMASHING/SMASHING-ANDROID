@@ -6,6 +6,7 @@ import com.smashing.app.data.type.SportType
 data class Notification(
     val notificationId: String,
     val userId: String,
+    val nickname: String,
     val sportType: SportType,
     val notificationType: NotificationType,
     val title: String,

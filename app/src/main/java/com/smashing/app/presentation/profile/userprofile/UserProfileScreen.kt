@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,35 +25,52 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
 fun UserProfileRoute(
-    navigateToReview: () -> Unit,
+    navigateToReview: (String?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToAllReview -> navigateToReview(sideEffect.userId)
+                }
+            }
+    }
 
     UserProfileScreen(
         uiState = uiState,
-        onYesClick = viewModel::onYseClick,
+        reviews = uiState.gameReview,
+        onYesClick = viewModel::onYesClick,
         onNoClick = viewModel::onNoClick,
-        onReviewClick = navigateToReview,
+        onReviewClick = viewModel::navigateToAllReview,
         updateBottomBar = {},
         modifier = modifier,
         onCompeteClick = viewModel::requestCompetition,
@@ -62,6 +80,7 @@ fun UserProfileRoute(
 @Composable
 private fun UserProfileScreen(
     uiState: UserProfileContract.State,
+    reviews: ImmutableList<GameReview>,
     onReviewClick: () -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     onYesClick: () -> Unit,
@@ -119,7 +138,7 @@ private fun UserProfileScreen(
                 tierType = uiState.profileInfo.tierType,
                 sportProfileList = uiState.sportProfileList,
                 selectedProfileId = uiState.selectedSportProfileId,
-                tierIconResId = R.drawable.ic_check, // TODO 수정 예정
+                tierIconResId = uiState.profileInfo.tierType.img(),
                 progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
                 lpStatus = uiState.profileInfo.minLp,
                 totalLp = uiState.profileInfo.maxLp,
@@ -131,7 +150,7 @@ private fun UserProfileScreen(
             )
 
             ReviewCard(
-                reviews = persistentListOf(),
+                reviews = reviews,
                 onViewAllReviewClick = onReviewClick,
                 bestCount = uiState.gameReviewResult.bestCount,
                 goodCount = uiState.gameReviewResult.goodCount,
@@ -169,6 +188,7 @@ private fun ProfileScreenPreview() {
     SmashingAndroidTheme {
         UserProfileScreen(
             uiState = UserProfileContract.State(),
+            reviews = persistentListOf(),
             onReviewClick = {},
             updateBottomBar = {},
             onNoClick = {},

@@ -25,9 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.string.record_label
 import com.smashing.app.R.string.review
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingButton
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.mapper.icon20
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -59,7 +59,7 @@ fun UserProfileCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             UrlImage(
-                url = ProfileImageProvider.getTempUrl(nickname),
+                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
                 modifier = Modifier
                     .height(60.dp)
                     .aspectRatio(1f)
