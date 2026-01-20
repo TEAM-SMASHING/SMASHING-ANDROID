@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +41,6 @@ class UserProfileViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
-        //fetchProfileInfo()
         fetchUserProfileReview(isRefresh = true)
     }
 
@@ -50,7 +48,6 @@ class UserProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
 
-            //fetchUserProfileReview(isRefresh = true)
             try {
                 // TODO: 실제 API 호출 (delay로 시뮬레이션)
                 delay(1000)

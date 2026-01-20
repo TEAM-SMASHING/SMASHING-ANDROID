@@ -6,13 +6,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
-import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,13 +22,14 @@ class AllReviewViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val userId = savedStateHandle.toRoute<Review>().userId
+    private val isUser = savedStateHandle.toRoute<Review>().isUser
 
     private val _uiState = MutableStateFlow(State())
     val uiState = _uiState.asStateFlow()
 
     init {
-        if (userId == null) {
-            //fetchMyAllReviews()
+        if (userId == null && !isUser) {
+            //Todo: 나의 리뷰로 이동
         } else {
             fetchUserProfileReview(true)
         }
@@ -50,7 +49,7 @@ class AllReviewViewModel @Inject constructor(
         if (userId != null) {
             userRepository.getUserRecentList(
                 userId = userId,
-                sportCode = "BM",// currentState.selectedSportProfileId,
+                sportCode = "BM", //Todo: 실제 값으로 수정
                 cursor = if (isRefresh) null else currentState.userProfileCursor.nextCursor,
                 size = CURSOR_SIZE,
             ).onSuccess { cursorPage ->

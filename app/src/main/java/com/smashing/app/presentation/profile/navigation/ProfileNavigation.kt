@@ -77,7 +77,8 @@ data class UserProfile(
 
 @Serializable
 data class Review(
-    val userId: String?
+    val userId: String?,
+    val isUser: Boolean = true,
 ) : Route
 
 
