@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.repository.api.MyRepository
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -13,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.String
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
@@ -22,7 +26,18 @@ class MyProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(
         MyProfileContract.State(
             loadState = MyProfileUiState.Loading,
-            profileInfo = ProfileInfo(),
+            profileInfo = ProfileInfo(
+                profileId = "",
+                sportType = SportType.TENNIS,
+                nickname = "",
+                genderType = GenderType.MALE,
+                tierType = TierType.GOLD_1,
+                lp = 0,
+                minLp = 0,
+                maxLp = 1, winCount = 0,
+                loseCount = 0,
+                reviewCount = 0,
+            ),
             sportProfileList = persistentListOf(),
             gameReview = persistentListOf()
         )
