@@ -91,7 +91,7 @@ class UserProfileViewModel @Inject constructor(
 
         reviewRepository.getUserRecentReviewList(
             userId = userId,
-            sportCode = "BM", //Todo: 실제 값으로 수정
+            sportCode = sportCode,
             cursor = null,
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
