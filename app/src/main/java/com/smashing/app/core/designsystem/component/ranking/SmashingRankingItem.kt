@@ -31,6 +31,7 @@ import com.smashing.app.R.drawable.ic_gold
 import com.smashing.app.R.drawable.ic_silver
 import com.smashing.app.R.string.ranking_tier_with_lp
 import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
@@ -106,7 +107,7 @@ fun SmashingRankingItem(
         Spacer(modifier = Modifier.width(10.dp))
 
         UrlImage(
-            url = ProfileImageProvider.getTempUrl(userId),
+            placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
             modifier = Modifier
                 .height(40.dp)
                 .aspectRatio(1f)

@@ -142,7 +142,7 @@ private fun RankerItem(
 
         if (userRank != null) {
             UrlImage(
-                url = ProfileImageProvider.getTempUrl(userRank.userId),
+                placeholderDrawable = ProfileImageProvider.getTempImg(userRank.nickname),
                 modifier = Modifier
                     .height(40.dp)
                     .aspectRatio(1f)
