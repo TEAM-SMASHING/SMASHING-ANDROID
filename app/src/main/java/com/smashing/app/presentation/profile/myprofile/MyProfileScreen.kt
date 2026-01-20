@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -35,7 +37,6 @@ import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
-import kotlinx.collections.immutable.persistentListOf
 
 
 @Composable
@@ -48,6 +49,11 @@ fun ProfileRoute(
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchProfileInfo()
+        viewModel.fetchReviews()
+    }
 
     MyProfileScreen(
         modifier = modifier,
@@ -71,7 +77,7 @@ private fun MyProfileScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
-
+    val isMaxProfileReached = uiState.sportProfileList.size >= 3
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -120,11 +126,11 @@ private fun MyProfileScreen(
                 sportProfileList = uiState.sportProfileList,
                 selectedProfileId = uiState.selectedSportProfileId,
                 onSportClick = onSportClick,
-                tierIconResId = uiState.profileInfo.tierType.toTierInfoStyle().getImg(),
+                tierIconResId = uiState.profileInfo.tierType.img(),
                 progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
                 lpStatus = uiState.profileInfo.minLp,
                 totalLp = uiState.profileInfo.maxLp,
-                onAddSportClick = onAddSportClick,
+                onAddSportClick = if (isMaxProfileReached) null else onAddSportClick,
                 onTierInfoClick = onTierGuideClick,
             )
 
@@ -134,7 +140,7 @@ private fun MyProfileScreen(
             )
 
             ReviewCard(
-                reviews = persistentListOf(),
+                reviews = uiState.gameReview,
                 onViewAllReviewClick = onReviewClick,
                 bestCount = uiState.gameReviewResult.bestCount,
                 goodCount = uiState.gameReviewResult.goodCount,
