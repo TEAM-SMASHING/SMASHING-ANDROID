@@ -37,15 +37,17 @@ class AuthRepositoryImpl @Inject constructor(
 
             val loginModel = response.toKakaoLoginToken()
             val (accessToken, refreshToken) = loginModel.accessToken to loginModel.refreshToken
-            val userId = loginModel.userId
+            val (userId, userNickname) = loginModel.userId to loginModel.userNickname
 
-            if(!accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty() && !userId.isNullOrEmpty()) {
+            if(!accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()
+                && !userId.isNullOrEmpty() && !userNickname.isNullOrEmpty()) {
                     tokenDataStore.setTokens(
                         accessToken = accessToken,
                         refreshToken = refreshToken,
                     )
-                    userDataStore.setUserId(
+                    userDataStore.setUserInfo(
                         userId = userId,
+                        userNickname = userNickname,
                     )
             }
 
@@ -56,7 +58,19 @@ class AuthRepositoryImpl @Inject constructor(
         suspendRunCatching {
             val response = authRemoteDataSource.postSignUp(request).requireData()
 
-            response.toSignUpModel()
+            val signUpModel = response.toSignUpModel()
+
+            tokenDataStore.setTokens(
+                accessToken = signUpModel.accessToken,
+                refreshToken = signUpModel.refreshToken,
+            )
+
+            userDataStore.setUserInfo(
+                userId = signUpModel.userId,
+                userNickname = signUpModel.userNickname,
+            )
+
+            signUpModel
         }
 
     override suspend fun getNicknameAvailable(nickname: String): Result<SignUpNickNameAvailableModel> =
@@ -72,5 +86,5 @@ class AuthRepositoryImpl @Inject constructor(
 
             response.toSignUpOpenchatValidModel()
         }
-    
+
 }

@@ -196,18 +196,9 @@ class SignUpViewModel @Inject constructor(
             authRepository.postSignUp(request = request)
                 .onSuccess {
                     _sideEffect.emit(NavigateToHome)
-                    Timber.tag("SignUp").d(
-                        "회원가입 성공 ${
-                            SignUpModel(
-                                accessToken = it.accessToken,
-                                refreshToken = it.refreshToken,
-                                userId = it.userId,
-                            )
-                        }"
-                    )
                 }
                 .onFailure { error ->
-                    Timber.tag("SignUp").e("회원가입 실패 ${error}")
+                    Timber.tag("SignUp").e("회원가입 실패 $error")
                 }
         }
     }
