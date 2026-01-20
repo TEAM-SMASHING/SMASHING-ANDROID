@@ -4,7 +4,14 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
-import com.smashing.app.R.drawable.img_tier_dummy
+import com.smashing.app.R
+import com.smashing.app.R.drawable.img_tier_bronze
+import com.smashing.app.R.drawable.img_tier_challenger
+import com.smashing.app.R.drawable.img_tier_diamond
+import com.smashing.app.R.drawable.img_tier_gold
+import com.smashing.app.R.drawable.img_tier_iron
+import com.smashing.app.R.drawable.img_tier_platinum
+import com.smashing.app.R.drawable.img_tier_sliver
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.TierType
 
@@ -70,13 +77,13 @@ enum class TierInfoStyle(
 
     @DrawableRes
     fun getImg(): Int = when (this) {
-        IRON -> img_tier_dummy
-        BRONZE -> img_tier_dummy
-        SILVER -> img_tier_dummy
-        GOLD -> img_tier_dummy
-        PLATINUM -> img_tier_dummy
-        DIAMOND -> img_tier_dummy
-        CHALLENGER -> img_tier_dummy
+        IRON -> img_tier_iron
+        BRONZE -> img_tier_bronze
+        SILVER -> img_tier_sliver
+        GOLD -> img_tier_gold
+        PLATINUM -> img_tier_platinum
+        DIAMOND -> img_tier_diamond
+        CHALLENGER -> img_tier_challenger
     }
 }
 
