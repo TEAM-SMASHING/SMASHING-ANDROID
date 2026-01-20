@@ -6,7 +6,7 @@ import com.smashing.app.data.remote.dto.profile.my.MyProfileReviewListData
 import com.smashing.app.data.remote.dto.profile.my.MyProfileSwitchRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface MyService {
@@ -19,7 +19,7 @@ interface MyService {
         @Query("size") size: Int? = 50,
     ): BaseResponse<MyProfileReviewListData>
 
-    @POST("/api/v1/users/me/active-profile")
+    @PUT("/api/v1/users/me/active-profile")
     suspend fun switchActiveMyProfile(
       @Body request: MyProfileSwitchRequest
     ): BaseResponse<Unit?>
