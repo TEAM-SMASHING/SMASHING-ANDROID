@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AddSportsProfileRequest(
+data class AddSportProfileRequest(
     @SerialName("sportCode")
     val sportCode: String,
 
