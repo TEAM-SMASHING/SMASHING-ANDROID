@@ -6,6 +6,7 @@ import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
+import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -23,18 +24,22 @@ class UserProfileContract {
         val isCompeteButtonEnabled: Boolean = false,
         val userProfileUiState: UserProfileUiState = UserProfileUiState.Idle,
         val userProfileCursor: Cursor = Cursor(),
-    ){
+    ) {
         val isReviewEmpty: Boolean
             get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
     }
-}
 
 
-sealed interface UserProfileUiState {
-    data object Idle : UserProfileUiState
-    data object Loading : UserProfileUiState
-    data object Success : UserProfileUiState
-    data class Failure(
-        val msg: String,
-    ) : UserProfileUiState
+    sealed interface UserProfileUiState {
+        data object Idle : UserProfileUiState
+        data object Loading : UserProfileUiState
+        data object Success : UserProfileUiState
+        data class Failure(
+            val msg: String,
+        ) : UserProfileUiState
+    }
+
+    sealed interface SideEffect {
+        data class NavigateToAllReview(val userId: String?): SideEffect
+    }
 }
