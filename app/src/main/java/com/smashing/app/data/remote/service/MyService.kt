@@ -10,7 +10,7 @@ interface MyService {
     @GET("/api/v1/users/me/profiles")
     suspend fun getMyProfile(): BaseResponse<MyPageData>
 
-    @GET("/api/v1/users/me/reviews/recent?cursor={cursor?}&size={size?}")
+    @GET("/api/v1/users/me/reviews/recent")
     suspend fun getMyGameReviews(
         @Query("cursor") cursor: String? = null,
         @Query("size") size: Int? = 50,
