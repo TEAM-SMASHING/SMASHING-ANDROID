@@ -11,14 +11,7 @@ class AddSportsRepositoryImpl @Inject constructor(
     private val addSportsRemoteDataSource: AddSportsRemoteDataSource
 ) : AddSportsRepository {
     override suspend fun addSportsProfile(info: AddSportsInfo): Result<Unit> = suspendRunCatching {
-        val request = info.toRequest()
 
-        val response = addSportsRemoteDataSource.addSportProfile(request)
-
-        if (response.statusCode == 200) {
-        //성공
-        } else {
-            throw IllegalStateException(response.status)
-        }
+        val response = addSportsRemoteDataSource.addSportProfile(info.toRequest())
     }
 }
