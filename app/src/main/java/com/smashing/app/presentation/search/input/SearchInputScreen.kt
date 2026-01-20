@@ -34,6 +34,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun SearchInputRoute(
     navigateToSearchMain: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -45,7 +46,8 @@ fun SearchInputRoute(
         items = uiState.suggestions,
         searchState = viewModel.searchInputState,
         onBackClick = navigateToSearchMain,
-        onSuggestionItemClick = {},
+        onSuggestionItemClick = { userId ->
+            navigateToUserProfile(userId) },
         modifier = modifier,
     )
 }
@@ -56,7 +58,7 @@ private fun SearchInputScreen(
     items: ImmutableList<SuggestionItemModel>,
     searchState: TextFieldState,
     onBackClick: () -> Unit,
-    onSuggestionItemClick: () -> Unit,
+    onSuggestionItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column (
@@ -79,7 +81,7 @@ private fun SearchInputScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .noRippleClickable(
-                            onClick = onSuggestionItemClick,
+                            onClick = { onSuggestionItemClick(item.userId) },
                         )
                         .padding(vertical = 12.dp)
                         .padding(start = 16.dp),

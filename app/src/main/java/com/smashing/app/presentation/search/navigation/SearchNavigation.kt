@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.search.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.ui.Modifier
+import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -12,7 +11,6 @@ import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
 import com.smashing.app.presentation.home.navigation.navigateToRegionChange
-import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.input.SearchInputRoute
 import com.smashing.app.presentation.search.searchmain.SearchMainRoute
@@ -21,7 +19,6 @@ import kotlinx.serialization.Serializable
 fun NavController.navigateToSearch(
     navOptions: NavOptions? = null
 ) = navigate(Search, navOptions)
-
 
 fun NavController.navigateToSearchInput(
     navOptions: NavOptions? = null
@@ -39,6 +36,7 @@ fun NavGraphBuilder.searchGraph(
             SearchMainRoute(
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToSearchInput = navController::navigateToSearchInput,
+                navigateToUserProfile = navController::navigateToUserProfile,
                 viewModel = viewModel,
             )
         }
@@ -48,6 +46,7 @@ fun NavGraphBuilder.searchGraph(
 
             SearchInputRoute(
                 navigateToSearchMain = navController::navigateUp,
+                navigateToUserProfile = navController::navigateToUserProfile,
                 viewModel = viewModel,
             )
         }
