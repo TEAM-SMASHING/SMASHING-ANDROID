@@ -140,8 +140,8 @@ private fun UserProfileScreen(
                 sportProfileList = uiState.sportProfileList,
                 selectedProfileId = uiState.selectedSportProfileId,
                 tierIconResId = uiState.profileInfo.tierType.img(),
-                progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
-                lpStatus = uiState.profileInfo.minLp,
+                progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
+                lpStatus = uiState.profileInfo.maxLp - uiState.profileInfo.lp,
                 totalLp = uiState.profileInfo.maxLp,
             )
 

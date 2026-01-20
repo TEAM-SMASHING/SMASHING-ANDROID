@@ -4,6 +4,8 @@ import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalUserDataSource
 import com.smashing.app.data.mapper.user.toGameReviewResult
 import com.smashing.app.data.model.review.GameReviewResult
+import com.smashing.app.data.mapper.user.toProfileInfo
+import com.smashing.app.data.model.profile.UserProfileInfo
 import com.smashing.app.data.remote.datasource.api.UserRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.UserRepository
@@ -24,6 +26,14 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun clearUserInfo() =
         localUserDataSource.clearUserInfo()
+
+    override suspend fun getUserInfoDetail(
+        userId: String,
+        sportCode: String?
+    ): Result<UserProfileInfo> =
+        suspendRunCatching{
+            userRemoteDataSource.getUserInfoDetail(userId, sportCode).requireData().toProfileInfo()
+        }
 
     override suspend fun getUserRecentReviewStats(
         userId: String,

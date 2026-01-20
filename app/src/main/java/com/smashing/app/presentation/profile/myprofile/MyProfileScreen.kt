@@ -53,7 +53,6 @@ fun MyProfileRoute(
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
         viewModel.fetchReviews()
-
     }
 
     MyProfileScreen(
