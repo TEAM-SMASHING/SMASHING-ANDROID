@@ -297,7 +297,7 @@ class MatchingViewModel @Inject constructor(
                 )
             }
 
-            GameResultStatusType.RESULT_CONFIRMED -> {
+            GameResultStatusType.WAITING_CONFIRMATION -> {
                 val submissionId = matching.latestSubmissionId ?: return@launch
                 val isFirstAttempt = matching.latestAttemptNo == 1
                 _sideEffect.emit(

@@ -23,6 +23,8 @@ data class AcceptedMatchingListResponse(
     val latestSubmissionId: String? = null,
     @SerialName("latestAttemptNo")
     val latestAttemptNo: Int? = null,
+    @SerialName("latestSubmitterId")
+    val latestSubmitterId: String? = null,
 ) {
     @Serializable
     data class OpponentSummary(
