@@ -2,10 +2,12 @@ package com.smashing.app.presentation.addsports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +20,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AddSportsViewModel @Inject constructor(
+    private val addSportsRepository: MyRepository,
+    private val myRepository: MyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddSportsContract.State())
@@ -28,6 +32,44 @@ class AddSportsViewModel @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val sideEffect = _sideEffect.asSharedFlow()
+
+    init {
+        fetchAvailableSports()
+    }
+
+    private fun fetchAvailableSports() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(loadState = AddSportsUiState.Loading) }
+            myRepository.getMyPageInfo()
+                .onSuccess { myPageData ->
+                    val myExistingSportCodes: List<String> = myPageData.sportProfiles.map {
+                        it.sportType.code
+                    }
+
+                    val filteredSports = SportType.entries.filter { sport ->
+                        sport.code !in myExistingSportCodes
+                    }.toImmutableList()
+
+                    _uiState.update {
+                        it.copy(
+                            loadState = AddSportsUiState.Success,
+                            availableSports = filteredSports
+                        )
+                    }
+                }
+                .onFailure { exception ->
+                    _uiState.update {
+                        it.copy(
+                            loadState = AddSportsUiState.Failure(
+                                exception.message ?: "정보를 불러오는데 실패했습니다."
+                            ),
+                            availableSports = SportType.entries.toImmutableList()
+                        )
+                    }
+                }
+        }
+    }
+
     fun updateSelectedSport(sport: SportType) {
         _uiState.update { state ->
             state.copy(
@@ -52,15 +94,27 @@ class AddSportsViewModel @Inject constructor(
         _uiState.update { it.copy(currentStep = it.currentStep + 1) }
     }
 
+
     fun postAddSport() {
+        val currentInfo = uiState.value.addSportsInfo
+        if (currentInfo.selectedSports == null || currentInfo.selectedSkill == null) return
+
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = AddSportsUiState.Loading) }
-            // TODO: 실제 API 호출로 교체 필요
-            //repository.addSport(uiState.value.addSportsInfo)
-            //     .onSuccess { ... }
-            //     .onFailure { ... }
-            _uiState.update { it.copy(loadState = AddSportsUiState.Success) }
-            _sideEffect.emit(AddSportsUiState.AddSportsSideEffect.NavigateToSports)
+            addSportsRepository.addSportsProfile(currentInfo)
+                .onSuccess {
+                    _uiState.update { it.copy(loadState = AddSportsUiState.Success) }
+                    _sideEffect.emit(AddSportsUiState.AddSportsSideEffect.NavigateToSports)
+                }
+                .onFailure { exception ->
+                    _uiState.update {
+                        it.copy(
+                            loadState = AddSportsUiState.Failure(
+                                exception.message ?: "오류가 발생했습니다."
+                            )
+                        )
+                    }
+                }
         }
     }
 }

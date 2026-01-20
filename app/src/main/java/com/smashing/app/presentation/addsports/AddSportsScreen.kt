@@ -40,7 +40,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 private const val MAX_STEP = 2
 
@@ -133,11 +133,7 @@ private fun AddSportScreen(
             when (uiState.currentStep) {
 
                 1 -> SportSelector(
-                    items = persistentListOf(
-                        SportType.BADMINTON,
-                        SportType.PING_PONG,
-                        SportType.TENNIS,
-                    ),
+                    items = uiState.availableSports.toPersistentList(),
                     selectedSport = selectedSport,
                     onSportSelected = onSportSelected,
                     title = "추가할 종목을 선택해주세요",
