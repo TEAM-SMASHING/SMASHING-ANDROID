@@ -57,12 +57,7 @@ fun MyProfileRoute(
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
         viewModel.fetchReviews()
-        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .collect { sideEffect ->
-                when (sideEffect) {
-                    is SideEffect.NavigateToAllReview -> navigateToReview(sideEffect.userId)
-                }
-            }
+
     }
 
     MyProfileScreen(
@@ -72,7 +67,8 @@ fun MyProfileRoute(
         onSportClick = viewModel::selectProfileId,
         onAddSportClick = navigateToSportAdd,
         onTierGuideClick = navigateToTierGuide,
-        onReviewClick = viewModel::navigateToAllReview,
+        onReviewClick = { userId ->
+            navigateToReview(userId) },
     )
 }
 
@@ -81,7 +77,7 @@ private fun MyProfileScreen(
     uiState: MyProfileContract.State,
     onAddSportClick: () -> Unit,
     onTierGuideClick: () -> Unit,
-    onReviewClick: () -> Unit,
+    onReviewClick: (String?) -> Unit,
     onSportClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,

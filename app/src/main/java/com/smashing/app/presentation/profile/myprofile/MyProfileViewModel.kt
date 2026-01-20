@@ -23,9 +23,6 @@ class MyProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
-    private val _sideEffect = MutableSharedFlow<SideEffect>()
-    val sideEffect = _sideEffect.asSharedFlow()
-
     fun fetchProfileInfo() {
         viewModelScope.launch {
             _uiState.update { it.copy(profileLoadState = MyProfileUiState.Loading) }
@@ -51,12 +48,6 @@ class MyProfileViewModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    fun navigateToAllReview() = viewModelScope.launch {
-        _sideEffect.emit(
-            SideEffect.NavigateToAllReview(null)
-        )
     }
 
     fun selectProfileId(profileId: String) {
@@ -125,16 +116,6 @@ class MyProfileViewModel @Inject constructor(
                 }
         }
     }
-
-    private fun updateSelectedProfileId(profileId: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                selectedSportProfileId = profileId,
-            )
-        }
-    }
-
-
     companion object {
         private const val PAGE_SIZE = 3
     }
