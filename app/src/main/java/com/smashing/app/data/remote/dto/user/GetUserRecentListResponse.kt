@@ -1,9 +1,7 @@
 package com.smashing.app.data.remote.dto.user
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
 
 @Serializable
 data class GetUserRecentListResponse(
@@ -11,9 +9,8 @@ data class GetUserRecentListResponse(
     val gameReviewId: String,
     @SerialName("opponentNickname")
     val opponentNickname: String,
-    @Contextual
     @SerialName("createdAt")
-    val createdAt: LocalDateTime,
+    val createdAt: String,
     @SerialName("content")
     val content: String?,
 )

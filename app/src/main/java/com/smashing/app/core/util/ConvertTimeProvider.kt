@@ -5,9 +5,9 @@ import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 object ConvertTimeProvider {
-    fun convertLocalDateTimeToTime(localDateTime: LocalDateTime): String {
+    fun convertLocalDateTimeToTime(localDateTime: String): String {
 
-        val createdTime = localDateTime
+        val createdTime = LocalDateTime.parse(localDateTime)
         val now = LocalDateTime.now(ZoneId.systemDefault())
 
         val minutes = ChronoUnit.MINUTES.between(createdTime, now)
