@@ -47,7 +47,6 @@ fun SubmitReviewRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
