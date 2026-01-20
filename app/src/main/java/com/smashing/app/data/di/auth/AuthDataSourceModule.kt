@@ -1,7 +1,9 @@
 package com.smashing.app.data.di.auth
 
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
+import com.smashing.app.data.local.datasource.api.LocalUserDatasource
 import com.smashing.app.data.local.datasource.impl.LocalTokenDataSourceImpl
+import com.smashing.app.data.local.datasource.impl.LocalUserDatasourceImpl
 import com.smashing.app.data.remote.datasource.api.AuthRemoteDataSource
 import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
 import com.smashing.app.data.remote.datasource.impl.AuthRemoteDataSourceImpl
@@ -33,4 +35,10 @@ abstract class AuthDataSourceModule {
     abstract fun bindLocalTokenDataSource(
         localTokenDataSourceImpl: LocalTokenDataSourceImpl
     ): LocalTokenDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindLocalUserDataSource(
+        localUserDataSourceImpl: LocalUserDatasourceImpl
+    ): LocalUserDatasource
 }
