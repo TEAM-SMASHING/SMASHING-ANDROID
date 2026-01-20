@@ -14,19 +14,14 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
-import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -38,7 +33,6 @@ import com.smashing.app.presentation.write.component.WriteReviewContent
 @Composable
 fun ConfirmReviewRoute(
     navigateUp: () -> Unit,
-    navigateToMatching: () -> Unit,
     viewModel: ConfirmViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -48,10 +42,9 @@ fun ConfirmReviewRoute(
         uiState = uiState,
         reviewTextFieldState = viewModel.reviewTextFieldState,
         onBackClick = navigateUp,
-        onDoneClick = navigateToMatching,
+        onConfirmSubmission = viewModel::confirmSubmission,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
-        isButtonEnabled = uiState.isButtonEnabled,
         modifier = modifier,
     )
 }
@@ -63,14 +56,12 @@ private fun ConfirmReviewScreen(
     onReviewRatingClick: (ReviewRatingType) -> Unit,
     onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
-    onDoneClick: () -> Unit,
-    isButtonEnabled: Boolean,
+    onConfirmSubmission: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val focusManager = LocalFocusManager.current
-
-    var isConfirmDialogOpen by remember { mutableStateOf(false) }
+    val isButtonEnabled = uiState.selectedRating != null
 
     Column(
         modifier = modifier
@@ -106,7 +97,7 @@ private fun ConfirmReviewScreen(
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "완료",
-                onClick = onDoneClick,
+                onClick = onConfirmSubmission,
                 isEnabled = isButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -114,18 +105,6 @@ private fun ConfirmReviewScreen(
                         top = 13.dp,
                         bottom = 48.dp,
                     ),
-            )
-        }
-
-        if (isConfirmDialogOpen) {
-            SmashingDialog(
-                title = "마지막 반려 기회에요",
-                subtitle = "이번에 반려 시 해당 매칭은 취소됩니다.",
-                type = DialogStyle.ALERT,
-                confirmText = "반려하기",
-                dismissText = "아니요",
-                onDismissRequest = { isConfirmDialogOpen = false },
-                onConfirmClick = onDoneClick,
             )
         }
     }
@@ -139,8 +118,7 @@ private fun ConfirmReviewScreenPreview() {
             uiState = ConfirmContract.State(),
             reviewTextFieldState = TextFieldState(),
             onBackClick = {},
-            onDoneClick = {},
-            isButtonEnabled = true,
+            onConfirmSubmission = {},
             onReviewTagClick = {},
             onReviewRatingClick = {},
             modifier = Modifier,

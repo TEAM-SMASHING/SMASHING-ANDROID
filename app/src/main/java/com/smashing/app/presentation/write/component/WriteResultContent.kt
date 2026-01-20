@@ -23,7 +23,6 @@ import com.smashing.app.R.string.submit_score
 import com.smashing.app.R.string.submit_title
 import com.smashing.app.R.string.submit_winner
 import com.smashing.app.R.string.zero_label
-import com.smashing.app.R.string.submit_description
 import com.smashing.app.core.designsystem.component.dropdown.SmashingWinnerDropdown
 import com.smashing.app.core.designsystem.component.textfield.ScoreInputTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme

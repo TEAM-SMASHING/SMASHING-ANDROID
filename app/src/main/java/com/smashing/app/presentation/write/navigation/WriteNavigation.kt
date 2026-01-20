@@ -103,7 +103,6 @@ fun NavGraphBuilder.writeGraph(
 
             ConfirmReviewRoute(
                 navigateUp = navController::navigateUp,
-                navigateToMatching = { navigateToMatching(MatchingType.ACCEPTED)},
                 viewModel = viewModel,
             )
         }

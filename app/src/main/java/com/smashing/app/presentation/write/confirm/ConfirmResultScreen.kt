@@ -57,12 +57,9 @@ fun ConfirmResultRoute(
         rightTextFieldState = viewModel.rightTextFieldState,
         onBackClick = navigateUp,
         onConfirmClick = navigateToConfirmReview,
-        onShowResubmitDialog = viewModel::showResubmitDialog,
-        onHideResubmitDialog = viewModel::hideResubmitDialog,
         onDenyClick = viewModel::denySubmission,
         modifier = modifier,
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,16 +71,14 @@ private fun ConfirmResultScreen(
     rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
     onConfirmClick: () -> Unit,
-    onShowResubmitDialog: () -> Unit,
-    onHideResubmitDialog: () -> Unit,
     onDenyClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
-    var showExitBottomSheet by remember { mutableStateOf(false) }
+    var showDenyBottomSheet by remember { mutableStateOf(false) }
+    var showDenyDialog by remember { mutableStateOf(false) }
     var selectedReason by remember { mutableStateOf("") }
     val bottomSheetItems = ConfirmDenyType.entries.map { it.description }.toPersistentList()
-
 
     Column(
         modifier = modifier
@@ -137,31 +132,31 @@ private fun ConfirmResultScreen(
                     buttonStyle = ButtonStyle.DISABLED_ACTIVE,
                     text = "아니요",
                     modifier = Modifier.weight(131f),
-                    onClick = { showExitBottomSheet = true },
+                    onClick = { if (isFirstAttempt) showDenyBottomSheet = true else showDenyDialog = true },
                 )
                 SmashingButton(
                     buttonStyle = ButtonStyle.PRIMARY,
                     text = "네, 맞아요",
                     modifier = Modifier.weight(185f),
-                    onClick = { if (isFirstAttempt) onConfirmClick() else onShowResubmitDialog() },
+                    onClick = onConfirmClick,
                 )
             }
         }
 
-        if (showExitBottomSheet) {
+        if (showDenyBottomSheet) {
             SmashingBottomSheet(
                 onDismissRequest = {
-                    showExitBottomSheet = false
+                    showDenyBottomSheet = false
                     selectedReason = ""
                 },
                 title = "어떤 내용이 잘못됐나요?",
                 items = bottomSheetItems,
                 selectedItem = selectedReason,
                 contentToBtnPadding = 20.dp,
-                btnText = "완료",
+                btnText = "제출하기",
                 onItemClick = { selectedReason = it },
                 onBtnClick = {
-                    showExitBottomSheet = false
+                    showDenyBottomSheet = false
                     if (selectedReason.isNotEmpty()) {
                         onDenyClick(selectedReason)
                     }
@@ -169,16 +164,19 @@ private fun ConfirmResultScreen(
             )
         }
 
-        if (uiState.isResubmitDialogVisible) {
+        if (showDenyDialog) {
             SmashingDialog(
-                title = "매칭 결과를 다시 제출하시겠습니까?",
-                subtitle = "상대가 다시 반려할 경우 매칭 기록은 삭제됩니다.",
-                confirmText = "제출하기",
-                dismissText = "아니요",
-                onDismissRequest = onHideResubmitDialog,
+                title = "마지막 반려 기회에요",
+                subtitle = "이번에 반려 시 해당 매칭은 취소됩니다.",
                 type = DialogStyle.ALERT,
-                onConfirmClick = onConfirmClick,
-                onDismissClick = onHideResubmitDialog,
+                confirmText = "반려하기",
+                dismissText = "아니요",
+                onDismissRequest = { showDenyDialog = false },
+                onConfirmClick = {
+                    showDenyDialog = false
+                    onDenyClick("")
+                },
+                onDismissClick = { showDenyDialog = false },
             )
         }
     }
@@ -195,8 +193,6 @@ private fun ConfirmResultScreenPreview() {
             rightTextFieldState = rememberTextFieldState(1.toString()),
             onBackClick = {},
             onConfirmClick = {},
-            onShowResubmitDialog = {},
-            onHideResubmitDialog = {},
             onDenyClick = {},
         )
     }

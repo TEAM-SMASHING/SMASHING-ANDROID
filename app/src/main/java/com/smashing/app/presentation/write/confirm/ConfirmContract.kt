@@ -26,7 +26,6 @@ interface ConfirmContract {
         val revieweeNickname: String = "",
         val tag: ImmutableList<String> = persistentListOf(),
         val content: String? = null,
-        val isResubmitDialogVisible: Boolean = false,
     )
 
     sealed interface SideEffect {

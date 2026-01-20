@@ -77,14 +77,15 @@ class ConfirmViewModel @Inject constructor(
 
     private fun updateGameSubmission(submissionDetail: GameSubmissionDetail) {
         _uiState.update { currentState ->
-            val isSubmitterWinner = submissionDetail.winner.userId == submissionDetail.submitter.userId
-            
+            val isSubmitterWinner =
+                submissionDetail.winner.userId == submissionDetail.submitter.userId
+
             val submitter = PlayerInfo(
                 userId = submissionDetail.submitter.userId,
                 name = submissionDetail.submitter.nickname,
                 score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score
             )
-            
+
             val receiver = if (isSubmitterWinner) {
                 PlayerInfo(
                     userId = submissionDetail.loser.userId,
@@ -114,14 +115,6 @@ class ConfirmViewModel @Inject constructor(
         )
     }
 
-    private fun isScoreMatchingWinner(
-        isSubmitterWinner: Boolean,
-        submitterScore: Int,
-        receiverScore: Int,
-    ): Boolean = if (isSubmitterWinner) submitterScore > receiverScore
-    else receiverScore > submitterScore
-
-
     fun updateSelectedTagType(type: ReviewTagType) = _uiState.update { state ->
         val updatedTags = if (type in state.selectedTagList) {
             state.selectedTagList - type
@@ -133,7 +126,6 @@ class ConfirmViewModel @Inject constructor(
 
     fun confirmSubmission() = viewModelScope.launch {
         val state = _uiState.value
-
         _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
 
         val submissionConfirm = SubmissionConfirm(
@@ -162,17 +154,7 @@ class ConfirmViewModel @Inject constructor(
         it.copy(confirmUiState = uiState)
     }
 
-    fun showResubmitDialog() = _uiState.update {
-        it.copy(isResubmitDialogVisible = true)
-    }
-
-    fun hideResubmitDialog() = _uiState.update {
-        it.copy(isResubmitDialogVisible = false)
-    }
-
     fun denySubmission(reason: String) = viewModelScope.launch {
-        hideResubmitDialog()
-
         // TODO: 반려 API 구현
         _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
     }
