@@ -1,7 +1,7 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
-import com.smashing.app.data.mapper.toUserProfile
+import com.smashing.app.data.mapper.my.toUserProfile
 import com.smashing.app.data.model.my.UserProfile
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
