@@ -1,4 +1,4 @@
-package com.smashing.app.data.remote.dto.my
+package com.smashing.app.data.remote.dto.review
 
 
 import kotlinx.serialization.SerialName

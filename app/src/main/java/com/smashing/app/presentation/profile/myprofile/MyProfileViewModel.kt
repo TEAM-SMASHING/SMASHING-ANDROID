@@ -2,14 +2,14 @@ package com.smashing.app.presentation.profile.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.presentation.profile.myprofile.MyProfileContract.*
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import com.smashing.app.data.repository.api.MyRepository
+import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.presentation.profile.myprofile.MyProfileContract.MyProfileUiState
+import com.smashing.app.presentation.profile.myprofile.MyProfileContract.State
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,7 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
-    private val myRepository: MyRepository
+    private val myRepository: MyRepository,
+    private val reviewRepository: ReviewRepository
+
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(State())
@@ -93,7 +95,7 @@ class MyProfileViewModel @Inject constructor(
                 it.copy(reviewLoadState = MyProfileUiState.Loading)
             }
 
-            myRepository.getMyGameReviews(
+            reviewRepository.getMyGameReviews(
                 cursor = null,
                 size = PAGE_SIZE
             )
@@ -116,6 +118,7 @@ class MyProfileViewModel @Inject constructor(
                 }
         }
     }
+
     companion object {
         private const val PAGE_SIZE = 3
     }

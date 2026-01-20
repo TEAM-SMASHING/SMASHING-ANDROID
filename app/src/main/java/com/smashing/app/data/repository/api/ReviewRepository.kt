@@ -11,4 +11,10 @@ interface ReviewRepository {
         size: Int?,
     ): Result<CursorPage<GameReview>>
 
+
+    suspend fun getMyGameReviews(
+        cursor: String?,
+        size: Int?,
+    ): Result<CursorPage<GameReview>>
+
 }
