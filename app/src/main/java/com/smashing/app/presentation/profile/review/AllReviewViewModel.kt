@@ -69,6 +69,6 @@ class AllReviewViewModel @Inject constructor(
     }
 
     companion object {
-        private const val CURSOR_SIZE = 5
+        private const val CURSOR_SIZE = 50
     }
 }

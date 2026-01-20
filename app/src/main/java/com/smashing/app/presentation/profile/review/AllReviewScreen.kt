@@ -54,9 +54,8 @@ import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.presentation.profile.component.ReviewItem
-import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract
-import com.smashing.app.presentation.search.SearchContract
+import com.smashing.app.presentation.profile.userprofile.UserProfileUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -87,7 +86,7 @@ private fun AllReviewScreen(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    val currentIsLoading = uiState.userProfileUiState is SearchContract.SearchUiState.Loading
+    val currentIsLoading = uiState.userProfileUiState is UserProfileUiState.Loading
 
     Column(
         modifier = modifier
