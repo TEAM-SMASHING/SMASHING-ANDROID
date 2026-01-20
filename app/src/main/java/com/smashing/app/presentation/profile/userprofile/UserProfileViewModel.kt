@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
@@ -25,14 +27,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.Long
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val userRepository: UserRepository,
     private val reviewRepository: ReviewRepository
 ) : ViewModel() {
 
-    private val userId = savedStateHandle.toRoute<UserProfile>().userId
+    private val userInfo = savedStateHandle.toRoute<UserProfile>()
+
+    private val userId = userInfo.userId
+    private val sportCode = userInfo.sportCode
 
     private val _uiState = MutableStateFlow(UserProfileContract.State())
     val uiState: StateFlow<UserProfileContract.State> = _uiState.asStateFlow()
@@ -41,6 +48,7 @@ class UserProfileViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
+        fetchUserRecentReviewStats()
         fetchUserProfileReview()
     }
 
@@ -66,6 +74,36 @@ class UserProfileViewModel @Inject constructor(
         )
     }
 
+    fun fetchUserRecentReviewStats() = viewModelScope.launch {
+        userRepository.getUserRecentReviewStats(
+            userId = userId,
+            sportCode = sportCode,
+        ).onSuccess { data ->
+            _uiState.update { currentState ->
+                currentState.copy(
+                    loadState = UserProfileUiState.Success,
+                    gameReviewResult = GameReviewResult(
+                        bestCount = data.bestCount,
+                        goodCount = data.goodCount,
+                        badCount = data.badCount,
+                        goodMannerCount = data.goodMannerCount,
+                        onTimeCount = data.onTimeCount,
+                        fairPlayCount = data.fairPlayCount,
+                        fastResponseCount = data.fastResponseCount,
+                    ),
+                )
+            }
+        }.onFailure { exception ->
+            _uiState.update {
+                it.copy(
+                    loadState = UserProfileUiState.Failure(
+                        exception.message ?: "오류 발생"
+                    )
+                )
+            }
+        }
+    }
+
     fun fetchUserProfileReview() = viewModelScope.launch {
 
         val currentState = _uiState.value
@@ -74,7 +112,7 @@ class UserProfileViewModel @Inject constructor(
 
         reviewRepository.getUserRecentReviewList(
             userId = userId,
-            sportCode = "BM", //Todo: 실제 값으로 수정
+            sportCode = sportCode,
             cursor = null,
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
