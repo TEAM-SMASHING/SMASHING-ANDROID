@@ -5,6 +5,7 @@ import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.MyPageData
 import com.smashing.app.data.remote.dto.my.MyProfileReviewListData
+import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 
 interface MyRemoteDataSource {
     suspend fun getMyProfile(): BaseResponse<MyPageData>
@@ -12,5 +13,6 @@ interface MyRemoteDataSource {
     suspend fun getMyGameReviews(cursor: String?, size: Int?): BaseResponse<MyProfileReviewListData>
 
     suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<String?>
+    suspend fun putActiveMyProfile(request: MyProfileSwitchRequest): BaseResponse<Unit?>
 
 }

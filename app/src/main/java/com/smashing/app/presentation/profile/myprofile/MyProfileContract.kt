@@ -5,9 +5,6 @@ import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -21,9 +18,9 @@ interface MyProfileContract {
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
-    ){
+    ) {
         val isReviewEmpty: Boolean
-        get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
+            get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
     }
 }
 

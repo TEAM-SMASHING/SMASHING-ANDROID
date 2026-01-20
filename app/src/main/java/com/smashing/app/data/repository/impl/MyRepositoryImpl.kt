@@ -11,13 +11,11 @@ import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData
-import com.smashing.app.data.remote.service.MyService
 import com.smashing.app.data.repository.api.MyRepository
 import javax.inject.Inject
 
 class MyRepositoryImpl @Inject constructor(
     private val myRemoteDataSource: MyRemoteDataSource,
-    private val myService: MyService
 ) : MyRepository {
 
     override suspend fun getMyPageInfo(): Result<MyPageInfo> = suspendRunCatching {
@@ -35,13 +33,12 @@ class MyRepositoryImpl @Inject constructor(
             .toGameReviewPage()
     }
 
-    override suspend fun switchActiveMyProfile(profileId: String): Result<Unit> {
-        return suspendRunCatching {
-            myService
-                .putActiveMyProfile(MyProfileSwitchRequest(profileId = profileId))
-                .requireData()
-        }
+    override suspend fun switchActiveMyProfile(
+        profileId: String
+    ): Result<Unit> = suspendRunCatching {
+        myRemoteDataSource.putActiveMyProfile(MyProfileSwitchRequest(profileId = profileId))
     }
+
 
     override suspend fun addSportsProfile(info: AddSportsInfo): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.addSportProfile(info.toRequest())

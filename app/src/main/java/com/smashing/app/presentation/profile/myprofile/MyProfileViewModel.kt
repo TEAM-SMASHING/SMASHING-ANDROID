@@ -17,16 +17,13 @@ class MyProfileViewModel @Inject constructor(
     private val myRepository: MyRepository
 ) : ViewModel() {
 
-    private var isReviewPaging: Boolean = false
     private val _uiState = MutableStateFlow(MyProfileContract.State())
 
     val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
 
-    fun fetchProfileInfo(isShowLoading: Boolean = false) {
+    fun fetchProfileInfo() {
         viewModelScope.launch {
-            if (isShowLoading) {
-                _uiState.update { it.copy(profileLoadState = MyProfileUiState.Loading) }
-            }
+            _uiState.update { it.copy(profileLoadState = MyProfileUiState.Loading) }
             myRepository.getMyPageInfo()
                 .onSuccess { data ->
                     _uiState.update { currentState ->
@@ -40,14 +37,12 @@ class MyProfileViewModel @Inject constructor(
                     }
                 }
                 .onFailure { exception ->
-                    if (isShowLoading) {
-                        _uiState.update {
-                            it.copy(
-                                profileLoadState = MyProfileUiState.Failure(
-                                    exception.message ?: "오류 발생"
-                                )
+                    _uiState.update {
+                        it.copy(
+                            profileLoadState = MyProfileUiState.Failure(
+                                exception.message ?: "오류 발생"
                             )
-                        }
+                        )
                     }
                 }
         }
@@ -74,7 +69,8 @@ class MyProfileViewModel @Inject constructor(
         viewModelScope.launch {
             myRepository.switchActiveMyProfile(profileId)
                 .onSuccess {
-                    fetchProfileInfo(isShowLoading = false)
+                    fetchProfileInfo()
+                    fetchReviews()
                 }
                 .onFailure { exception ->
                     _uiState.update {
@@ -84,20 +80,15 @@ class MyProfileViewModel @Inject constructor(
                             )
                         )
                     }
-                    fetchProfileInfo(isShowLoading = false)
                 }
         }
     }
 
-    fun fetchReviews(isInit: Boolean = false) {
-        if (isReviewPaging) return
+    fun fetchReviews() {
 
         viewModelScope.launch {
-            isReviewPaging = true
-            if (isInit) {
-                _uiState.update {
-                    it.copy(reviewLoadState = MyProfileUiState.Loading)
-                }
+            _uiState.update {
+                it.copy(reviewLoadState = MyProfileUiState.Loading)
             }
 
             myRepository.getMyGameReviews(
@@ -106,20 +97,13 @@ class MyProfileViewModel @Inject constructor(
             )
                 .onSuccess { page ->
                     _uiState.update { currentState ->
-                        val newReviews = if (isInit) {
-                            page.items.toPersistentList()
-                        } else {
-                            (currentState.gameReview + page.items).toPersistentList()
-                        }
-
                         currentState.copy(
-                            reviewLoadState = MyProfileUiState.Success, // 리뷰 성공
-                            gameReview = newReviews
+                            reviewLoadState = MyProfileUiState.Success,
+                            gameReview = page.items.toPersistentList()
                         )
                     }
                 }
                 .onFailure { exception ->
-                    exception.printStackTrace()
                     _uiState.update {
                         it.copy(
                             reviewLoadState = MyProfileUiState.Failure(
@@ -128,7 +112,6 @@ class MyProfileViewModel @Inject constructor(
                         )
                     }
                 }
-            isReviewPaging = false
         }
     }
 
