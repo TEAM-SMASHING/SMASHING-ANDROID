@@ -3,6 +3,8 @@ package com.smashing.app.presentation.addsports
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.type.SportType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 class AddSportsContract {
     @Immutable
@@ -10,7 +12,7 @@ class AddSportsContract {
         val currentStep: Int = 1,
         val loadState: AddSportsUiState = AddSportsUiState.Idle,
         val addSportsInfo: AddSportsInfo = AddSportsInfo(),
-        val availableSports: List<SportType> = emptyList()
+        val availableSports: ImmutableList<SportType> = persistentListOf(),
     ) {
         val isBtnEnabled: Boolean
             get() = when (currentStep) {
