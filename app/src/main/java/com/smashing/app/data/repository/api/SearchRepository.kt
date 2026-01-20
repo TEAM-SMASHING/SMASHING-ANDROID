@@ -20,4 +20,6 @@ interface SearchRepository {
     suspend fun getNickNameUsersSearch(
         nickname: String,
     ): Result<List<SuggestionItemModel>>
+
+    suspend fun getRecommendedUsers(): Result<List<SearchMainItemModel>>
 }
