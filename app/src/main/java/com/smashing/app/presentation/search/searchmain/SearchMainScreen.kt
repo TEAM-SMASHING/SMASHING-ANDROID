@@ -28,8 +28,6 @@ import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.onBottomReached
-import com.smashing.app.presentation.matching.MatchingUiState
-import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
@@ -42,6 +40,7 @@ import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
 fun SearchMainRoute(
     navigateToRegionChange: () -> Unit,
     navigateToSearchInput: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -54,7 +53,8 @@ fun SearchMainRoute(
         onRegionSelectClick = navigateToRegionChange,
         onRegionDropdownClick = viewModel::updateSelectedRegion,
         onSearchClick = navigateToSearchInput,
-        onProfileClick = {},
+        onProfileClick = { userId ->
+            navigateToUserProfile(userId) },
         onTierItemClick = viewModel::updateSelectedTierItem,
         onGenderItemClick = viewModel::updateSelectedGenderItem,
         onTierBottomSheetOpen = viewModel::openTierBottomSheet,
@@ -77,7 +77,7 @@ private fun SearchMainScreen(
     onRegionSelectClick: () -> Unit,
     onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
-    onProfileClick: () -> Unit,
+    onProfileClick: (String) -> Unit,
     onTierItemClick: (String) -> Unit,
     onGenderItemClick: (String) -> Unit,
     onTierBottomSheetOpen: () -> Unit,
@@ -183,7 +183,7 @@ private fun SearchMainScreen(
                             nickname = it.nickname,
                             genderType = it.gender,
                             tierType = it.tierType,
-                            onProfileClick = onProfileClick,
+                            onProfileClick = { onProfileClick(it.userId) },
                             winCount = it.wins,
                             loseCount = it.losses,
                             reviewCount = it.reviews,

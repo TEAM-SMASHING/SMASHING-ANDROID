@@ -2,6 +2,7 @@ package com.smashing.app.presentation.ranking.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -142,11 +143,16 @@ private fun RankerItem(
 
         if (userRank != null) {
             UrlImage(
-                url = ProfileImageProvider.getTempUrl(userRank.userId),
+                placeholderDrawable = ProfileImageProvider.getTempImg(userRank.nickname),
                 modifier = Modifier
                     .height(40.dp)
                     .aspectRatio(1f)
                     .clip(CircleShape)
+                    .border(
+                        width = 1.dp,
+                        color = colors.borderPrimary,
+                        shape = CircleShape,
+                    )
                     .noRippleClickable(
                         onClick = { navigateToProfile(userRank.userId) }
                     ),

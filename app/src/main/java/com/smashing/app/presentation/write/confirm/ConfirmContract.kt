@@ -19,14 +19,26 @@ interface ConfirmContract {
         val winner: MatchPlayer? = null,
         val loser: MatchPlayer? = null,
         val isButtonEnabled: Boolean = false,
-        val selectedRatingTypes: ImmutableSet<ReviewRatingType> = persistentSetOf(),
-        val selectedTagTypes: ImmutableSet<ReviewTagType> = persistentSetOf(),
+        val selectedRating: ReviewRatingType? = null,
+        val selectedTagList: ImmutableSet<ReviewTagType> = persistentSetOf(),
         val reviewText: String = "",
-
+        val reviewId: String = "",
+        val confirmUiState: ConfirmUiState = ConfirmUiState.Idle,
         val rating: String = "",
         val reviewerNickname: String = "",
         val revieweeNickname: String = "",
         val tag: ImmutableList<String> = persistentListOf(),
         val content: String? = null,
     )
+
+    sealed interface SideEffect {
+        data object NavigateBack : SideEffect
+    }
+
+    sealed interface ConfirmUiState {
+        data object Idle : ConfirmUiState
+        data object Loading : ConfirmUiState
+        data object Success : ConfirmUiState
+        data class Failure(val msg: String) : ConfirmUiState
+    }
 }

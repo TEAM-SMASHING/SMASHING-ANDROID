@@ -1,42 +1,147 @@
 package com.smashing.app.presentation.profile.review
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.presentation.profile.myprofile.MyProfileContract
-import com.smashing.app.presentation.profile.myprofile.MyProfileUiState
+import androidx.navigation.toRoute
+import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.presentation.profile.navigation.Review
+import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.collections.immutable.toImmutableList
+import com.smashing.app.data.repository.api.MyRepository
+import jakarta.inject.Inject
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 @HiltViewModel
 class AllReviewViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val reviewRepository: ReviewRepository,
+    private val myRepository: MyRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MyProfileContract.State())
-    val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
+    private val userData = savedStateHandle.toRoute<Review>()
+
+    private val userId = userData.userId
+    private val isUser = userData.isUser
+
+    private val _uiState = MutableStateFlow(ReviewContract.State())
+    val uiState = _uiState.asStateFlow()
+
+    private var nextCursor: String? = null
+    private var hasNextPage: Boolean = true
+    private var isLoading: Boolean = false
 
     init {
-        fetchProfileData()
+        if (userId == null && isUser) {
+            fetchReviews(true)
+        } else {
+            fetchUserProfileReview(true)
+        }
     }
 
-    private fun fetchProfileData() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(loadState = MyProfileUiState.Loading) }
+    fun fetchUserProfileReview(isRefresh: Boolean = false) = viewModelScope.launch {
 
-            try {
-                // TODO: 실제 API 호출 (delay로 시뮬레이션)
-                delay(1000)
+        val currentState = _uiState.value
 
-            } catch (e: Exception) {
+        if (!isRefresh) {
+            if (currentState.reviewUiState == UserProfileUiState.Loading) return@launch
+            if (!currentState.reviewCursor.hasNext) return@launch
+        }
+
+        _uiState.update { it.copy(reviewUiState = ReviewUiState.Loading) }
+
+        if (userId != null) {
+            reviewRepository.getUserRecentReviewList(
+                userId = userId,
+                sportCode = "BM", //Todo: 실제 값으로 수정
+                cursor = if (isRefresh) null else currentState.reviewCursor.nextCursor,
+                size = CURSOR_SIZE,
+            ).onSuccess { cursorPage ->
+                _uiState.update { state ->
+                    state.copy(
+                        gameReview = if (isRefresh) {
+                            cursorPage.items.toImmutableList()
+                        } else {
+                            (state.gameReview + cursorPage.items).toImmutableList()
+                        },
+                        reviewCursor = cursorPage.cursor,
+                        reviewUiState = if (cursorPage.items.isEmpty() && isRefresh) {
+                            ReviewUiState.Idle
+                        } else {
+                            ReviewUiState.Success
+                        },
+                    )
+                }
+            }.onFailure { throwable ->
                 _uiState.update {
-                    it.copy(loadState = MyProfileUiState.Failure(e.message ?: "Unknown Error"))
+                    it.copy(
+                        reviewUiState = ReviewUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
+                    )
+                    //fetchReviews(isInit = true)
                 }
             }
         }
+    }
+
+    fun fetchReviews(isInit: Boolean = false) {
+        if (isLoading || (!isInit && !hasNextPage)) return
+
+        viewModelScope.launch {
+            isLoading = true
+
+            if (isInit) {
+                _uiState.update {
+                    it.copy(loadState = ReviewUiState.Loading)
+                }
+                nextCursor = null
+            }
+
+            myRepository.getMyGameReviews(
+                cursor = if (isInit) null else nextCursor,
+                size = PAGE_SIZE
+            )
+                .onSuccess { page ->
+                    nextCursor = page.cursor.nextCursor
+                    hasNextPage = page.cursor.hasNext
+
+                    _uiState.update { currentState ->
+                        val newReviews = if (isInit) {
+                            page.items.toPersistentList()
+                        } else {
+                            (currentState.gameReview + page.items).toPersistentList()
+                        }
+
+                        currentState.copy(
+                            loadState = ReviewUiState.Success,
+                            gameReview = newReviews
+                        )
+                    }
+                }
+                .onFailure { exception ->
+                    exception.printStackTrace()
+                    _uiState.update {
+                        it.copy(
+                            loadState = ReviewUiState.Failure(
+                                exception.message ?: "리뷰를 불러오는데 실패했습니다."
+                            )
+                        )
+                    }
+                }
+            isLoading = false
+        }
+    }
+
+    companion object {
+        private const val CURSOR_SIZE = 50
+        private const val PAGE_SIZE = 50
     }
 }

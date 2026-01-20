@@ -3,6 +3,7 @@ package com.smashing.app.data.remote.service
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.search.GetNicknameUsersSearchResponse
+import com.smashing.app.data.remote.dto.search.GetRecommendedUsersResponse
 import com.smashing.app.data.remote.dto.search.GetRegionUsersSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -26,5 +27,8 @@ interface SearchService {
         @Query("nickname")
         nickname: String,
     ): BaseResponse<GetNicknameUsersSearchResponse>
+
+    @GET("/api/v1/users/me/regions/recommendation")
+    suspend fun getRecommendedUsers(): BaseResponse<GetRecommendedUsersResponse>
 
 }
