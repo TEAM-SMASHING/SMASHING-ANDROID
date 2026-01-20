@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface UserService {
 
-    @GET("/api/v1/users/{userId}/profiles?")
+    @GET("/api/v1/users/{userId}/profiles")
     suspend fun getUserInfoDetail(
         @Path ("userId")
         userId: String,

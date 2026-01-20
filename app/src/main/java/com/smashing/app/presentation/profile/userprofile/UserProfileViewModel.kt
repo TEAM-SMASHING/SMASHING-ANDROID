@@ -121,35 +121,6 @@ class UserProfileViewModel @Inject constructor(
         private const val CURSOR_SIZE = 3
     }
 
-    // TODO: 추후 제거 예정
-    private fun getDummyState(): UserProfileContract.State {
-        val loadState: UserProfileUiState = UserProfileUiState.Success
-        val profileInfo = ProfileInfo(
-            profileId = "123",
-            sportType = SportType.PING_PONG,
-            genderType = GenderType.MALE,
-            nickname = "하이하이",
-            tierType = TierType.GOLD_1,
-            minLp = 100,
-            maxLp = 500,
-            winCount = 4,
-            loseCount = 5,
-            lp = 3,
-            reviewCount = 323,
-        )
-        return UserProfileContract.State(
-            loadState = loadState,
-            profileInfo = profileInfo,
-            sportProfileList = persistentListOf(
-                SportProfile(
-                    profileId = "1",
-                    sportType = SportType.PING_PONG,
-                    isActive = true,
-                ),
-            )
-        )
-    }
-
     fun onYesClick() {
         viewModelScope.launch {
             // TODO: 매칭 수락 API 호출
