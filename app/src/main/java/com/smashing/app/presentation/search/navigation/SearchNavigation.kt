@@ -46,6 +46,7 @@ fun NavGraphBuilder.searchGraph(
 
             SearchInputRoute(
                 navigateToSearchMain = navController::navigateUp,
+                navigateToUserProfile = navController::navigateToUserProfile,
                 viewModel = viewModel,
             )
         }
