@@ -28,7 +28,7 @@ class MyProfileViewModel @Inject constructor(
             loadState = MyProfileUiState.Loading,
             profileInfo = ProfileInfo(
                 profileId = "",
-                sportType = SportType.TENNIS,
+                sportType = SportType.PING_PONG,
                 nickname = "",
                 genderType = GenderType.MALE,
                 tierType = TierType.GOLD_1,
