@@ -7,7 +7,12 @@ import java.time.temporal.ChronoUnit
 object ConvertTimeProvider {
     fun convertLocalDateTimeToTime(localDateTime: String): String {
 
-        val createdTime = LocalDateTime.parse(localDateTime)
+        val createdTime = runCatching {
+            LocalDateTime.parse(localDateTime)
+        }.getOrDefault(
+            LocalDateTime.parse("")
+        )
+
         val now = LocalDateTime.now(ZoneId.systemDefault())
 
         val minutes = ChronoUnit.MINUTES.between(createdTime, now)
