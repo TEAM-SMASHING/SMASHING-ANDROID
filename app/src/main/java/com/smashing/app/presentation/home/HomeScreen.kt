@@ -62,7 +62,7 @@ import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.presentation.home.component.HomeDropdown
-import com.smashing.app.data.model.rank.UserRankInfo
+import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.presentation.home.type.DummyMatchedUser
 import com.smashing.app.core.designsystem.style.TierInfoStyle
@@ -256,14 +256,14 @@ private fun HomeScreen(
                             ),
                     )
                 }
-                if (uiState.matchingCardList.isNotEmpty()) {
+                if (uiState.recommendedUserList.isNotEmpty()) {
                     LazyRow(
                         modifier = Modifier
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         items(
-                            items = uiState.matchingCardList,
+                            items = uiState.recommendedUserList,
                             key = { it.userId }
                         ) { cardState ->
                             MatchingCard(
@@ -531,70 +531,70 @@ private fun HomeScreenPreview() {
                 losses = 7,
             ),
             topRankerList = listOf(
-                UserRankInfo(
+                UserRank(
                     userId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
                     lp = 2500,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user2",
                     nickname = "열글자테스트중입니다",
                     rank = 2,
                     tier = TierType.CHALLENGER,
                     lp = 2450,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user3",
                     nickname = "1위 유저",
                     rank = 3,
                     tier = TierType.CHALLENGER,
                     lp = 2400,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user4",
                     nickname = "프로게이머",
                     rank = 4,
                     tier = TierType.DIAMOND_1,
                     lp = 2350,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user5",
                     nickname = "랭커킹커",
                     rank = 5,
                     tier = TierType.DIAMOND_1,
                     lp = 2300,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user6",
                     nickname = "승리만추구",
                     rank = 6,
                     tier = TierType.DIAMOND_2,
                     lp = 2250,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user7",
                     nickname = "플래티넘마스터",
                     rank = 7,
                     tier = TierType.DIAMOND_2,
                     lp = 2200,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user8",
                     nickname = "골드라이더",
                     rank = 8,
                     tier = TierType.DIAMOND_3,
                     lp = 2150,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user9",
                     nickname = "실버도전자",
                     rank = 9,
                     tier = TierType.PLATINUM_1,
                     lp = 2100,
                 ),
-                UserRankInfo(
+                UserRank(
                     userId = "user10",
                     nickname = "브론즈탈출",
                     rank = 10,
@@ -602,7 +602,7 @@ private fun HomeScreenPreview() {
                     lp = 2050,
                 ),
             ).toImmutableList(),
-            matchingCardList = listOf(
+            recommendedUserList = listOf(
                 MatchingCardState.Search(
                     userId = "match1",
                     nickname = "탁구의신",
@@ -666,7 +666,7 @@ private fun HomeScreenEmptyValuePreview() {
                 losses = 7,
             ),
             topRankerList = listOf(
-                UserRankInfo(
+                UserRank(
                     userId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
@@ -674,7 +674,7 @@ private fun HomeScreenEmptyValuePreview() {
                     lp = 2500,
                 ),
             ).toImmutableList(),
-            matchingCardList = listOf<MatchingCardState.Search>().toImmutableList(),
+            recommendedUserList = listOf<MatchingCardState.Search>().toImmutableList(),
             loadState = HomeUiState.Success,
             isNotice = false,
         ),

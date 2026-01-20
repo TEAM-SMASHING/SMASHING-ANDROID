@@ -41,7 +41,6 @@ import kotlinx.collections.immutable.toPersistentList
 fun ConfirmResultRoute(
     navigateUp: () -> Unit,
     navigateToConfirmReview: () -> Unit,
-    navigateToMatching: () -> Unit,
     viewModel: ConfirmViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -56,7 +55,7 @@ fun ConfirmResultRoute(
         onLeftDoneClick = viewModel::updateSubmitterScore,
         onRightDoneClick = viewModel::updateReceiverScore,
         onConfirmClick = navigateToConfirmReview,
-        onDenyClick = navigateToMatching,
+        onDenyClick = navigateUp, // TODO 바텀 시트 로직 수정 예정
         modifier = modifier,
     )
 

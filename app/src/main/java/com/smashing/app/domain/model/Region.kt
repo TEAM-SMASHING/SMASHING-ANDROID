@@ -6,5 +6,5 @@ data class Region(
     val districtName: String,
 ){
     val isSeoulDistrict: Boolean
-        get() = cityName == "서울" && districtName.isNotBlank()
+        get() = cityName == "서울" && districtName.isNotBlank() && districtName.endsWith("구")
 }

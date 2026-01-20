@@ -16,4 +16,6 @@ data class AcceptedMatching(
     val submitAvailableAt: String,
     val remainingSeconds: Long,
     val isSubmitLocked: Boolean,
+    val latestSubmissionId: String?,
+    val latestAttemptNo: Int?,
 )

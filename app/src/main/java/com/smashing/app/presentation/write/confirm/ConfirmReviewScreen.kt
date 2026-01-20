@@ -78,7 +78,6 @@ private fun ConfirmReviewScreen(
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas)
             .systemBarsPadding()
-            .verticalScroll(scrollState)
             .clearFocus(focusManager),
     ) {
         SmashingDefaultTopBar(
@@ -97,8 +96,8 @@ private fun ConfirmReviewScreen(
             WriteReviewContent(
                 nickname = uiState.revieweeNickname,
                 textFieldState = reviewTextFieldState,
-                selectedReviewRatingTypes = uiState.selectedRatingTypes,
-                selectedReviewTagTypes = uiState.selectedTagTypes,
+                selectedReviewRating = uiState.selectedRating,
+                selectedReviewTagTypes = uiState.selectedTagList,
                 onReviewRatingClick = onReviewRatingClick,
                 onReviewTagClick = onReviewTagClick,
             )

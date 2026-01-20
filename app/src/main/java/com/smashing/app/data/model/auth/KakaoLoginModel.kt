@@ -5,5 +5,6 @@ data class KakaoLoginModel(
     val refreshToken: String?,
     val kakaoId: String,
     val userId: String?,
+    val userNickname: String?,
     val isCompletedSignUp: Boolean,
 )

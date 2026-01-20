@@ -35,4 +35,11 @@ class SearchRepositoryImpl @Inject constructor(
                 nickname = nickname,
             ).requireData().toSuggestionItemModel()
         }
+
+    override suspend fun getRecommendedUsers(): Result<List<SearchMainItemModel>> =
+        suspendRunCatching {
+            searchRemoteDataSource.getRecommendedUsers()
+                .requireData()
+                .toSearchMainItemModelList()
+        }
 }

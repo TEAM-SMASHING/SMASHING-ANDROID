@@ -38,4 +38,8 @@ interface MatchingRemoteDataSource {
     suspend fun postRejectMatching(
         matchingId: String,
     ): BaseResponse<Unit>
+
+    suspend fun putCancelGame(
+        gameId: String,
+    ): BaseResponse<Unit>
 }
