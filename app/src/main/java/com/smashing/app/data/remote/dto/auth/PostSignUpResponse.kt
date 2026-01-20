@@ -11,6 +11,6 @@ data class PostSignUpResponse(
     val refreshToken: String,
     @SerialName("userId")
     val userId: String,
-    @SerialName("nickname") // TODO 수정 예정
+    @SerialName("nickname")
     val userNickname: String,
 )
