@@ -170,7 +170,6 @@ private fun HomeScreen(
                 isDropdownExpanded = false
             },
             onTierClick = {
-                isDropdownExpanded = false
                 navigateToTierInfo()
             },
             onDismiss = {
