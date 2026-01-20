@@ -20,7 +20,7 @@ fun CursorDto<GetRegionUsersSearchResponse>.toSearchMainItemModelList(): CursorP
     )
 }
 
-internal fun GetRegionUsersSearchResponse.toSearchMainItemModel(): SearchMainItemModel {
+private fun GetRegionUsersSearchResponse.toSearchMainItemModel(): SearchMainItemModel {
     return SearchMainItemModel(
         userId = this.userId,
         nickname = this.nickname,
