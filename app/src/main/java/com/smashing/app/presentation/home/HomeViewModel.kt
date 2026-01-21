@@ -105,6 +105,43 @@ class HomeViewModel @Inject constructor(
             }
     }
 
+    fun fetchSelectSportProfile(profileId: String) {
+        val currentState = uiState.value
+        val currentActiveProfile = currentState.activeUserProfile ?: return
+        if (currentActiveProfile.profileId == profileId) return
+
+        val selectedProfile = currentState.allUserProfiles.find { it.profileId == profileId } ?: return
+
+        val optimisticList = currentState.allUserProfiles.map { profile ->
+            profile.copy(isActive = profile.profileId == profileId)
+        }.toImmutableList()
+
+        val optimisticActiveProfile = currentActiveProfile.copy(
+            profileId = selectedProfile.profileId,
+            sportType = selectedProfile.sportCode,
+        )
+
+        _uiState.update {
+            it.copy(
+                allUserProfiles = optimisticList,
+                activeUserProfile = optimisticActiveProfile,
+            )
+        }
+
+        viewModelScope.launch {
+            myRepository.switchActiveMyProfile(profileId)
+                .onSuccess {
+                    fetchMyTierProfile()
+                    fetchRegionRankerList()
+                    fetchRecommendedUserList()
+                }
+                .onFailure { throwable ->
+                    Timber.tag("HomeViewModel").e(throwable, "Failed to switch sport profile")
+                    fetchMyTierProfile()
+                }
+        }
+    }
+
     private fun createDummyMatchedUser(): DummyMatchedUser? {
         return DummyMatchedUser(
             userId = "matchedUser1",
