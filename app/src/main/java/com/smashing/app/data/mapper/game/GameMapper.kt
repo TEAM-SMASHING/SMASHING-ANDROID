@@ -6,6 +6,7 @@ import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.remote.dto.game.GetGameSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
+import com.smashing.app.data.remote.dto.game.ReviewRequest
 
 fun GameSubmission.toRequest(): PostGameSubmissionRequest {
     return PostGameSubmissionRequest(
@@ -27,9 +28,11 @@ private fun GameSubmission.Review.toDto(): PostGameSubmissionRequest.Review {
 
 fun SubmissionConfirm.toRequest(): PostConfirmSubmissionRequest {
     return PostConfirmSubmissionRequest(
-        rating = rating,
-        content = content,
-        tags = tags,
+        review = ReviewRequest(
+            rating = rating,
+            content = content,
+            tags = tags,
+        )
     )
 }
 

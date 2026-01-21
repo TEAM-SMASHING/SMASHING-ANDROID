@@ -5,6 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostConfirmSubmissionRequest(
+    @SerialName("review")
+    val review: ReviewRequest,
+)
+
+@Serializable
+data class ReviewRequest(
     @SerialName("rating")
     val rating: String,
     @SerialName("content")
