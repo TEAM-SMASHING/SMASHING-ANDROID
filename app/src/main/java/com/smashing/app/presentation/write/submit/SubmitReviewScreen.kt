@@ -136,7 +136,7 @@ private fun SubmitReviewScreen(
                 confirmText = "제출하기",
                 dismissText = "아니요",
                 onDismissRequest = { isAlertDialogOpen = false },
-                onConfirmClick = onDoneClick, // TODO: 제출하기
+                onConfirmClick = onDoneClick,
             )
         }
 
