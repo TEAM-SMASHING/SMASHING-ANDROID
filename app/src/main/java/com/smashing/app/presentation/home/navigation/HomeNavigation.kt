@@ -9,9 +9,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
+import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.ranking.navigation.navigateToRanking
 import com.smashing.app.presentation.region.navigation.getRegionResult
 import com.smashing.app.presentation.region.navigation.navigateToRegion
@@ -30,6 +34,7 @@ fun NavController.navigateToRegionChange(
 fun NavGraphBuilder.homeGraph(
     innerPadding: PaddingValues,
     navController: NavController,
+    updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Home>(
         startDestination = HomeUser,
@@ -41,8 +46,16 @@ fun NavGraphBuilder.homeGraph(
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToRanking = navController::navigateToRanking,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
-                    navController.navigateToTierInfo(tierName = tierInfoStyle.name, sportName = sportType.code)
+                    navController.navigateToTierInfo(tierName = tierInfoStyle.name, sportName = sportType.sportName)
                 },
+                navigateToMatchingAccepted = {
+                    navController.navigateToMatching(initTab = MatchingType.ACCEPTED)
+                },
+                navigateToUserProfile = { userId ->
+                    navController.navigateToUserProfile(userId = userId)
+                },
+                navigateToSportAdd = navController::navigateToAddSports,
+                updateBottomBar = updateBottomBar,
             )
         }
 

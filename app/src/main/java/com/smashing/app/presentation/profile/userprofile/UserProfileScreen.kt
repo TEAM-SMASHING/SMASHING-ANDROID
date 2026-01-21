@@ -30,9 +30,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.button.SmashingButton
+import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -45,10 +47,13 @@ import com.smashing.app.presentation.profile.userprofile.UserProfileContract.Sid
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+private const val BTN_WEIGHT = 131f / 185f
 
 @Composable
 fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
+    navigateToSentMatching: () -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
 ) {
@@ -70,10 +75,13 @@ fun UserProfileRoute(
         reviews = uiState.gameReview,
         onYesClick = viewModel::onYesClick,
         onNoClick = viewModel::onNoClick,
+        onBackClick = navigateUp,
         onReviewClick = viewModel::navigateToAllReview,
         updateBottomBar = {},
-        modifier = modifier,
         onCompeteClick = viewModel::requestCompetition,
+        onConfirmClick = navigateToSentMatching,
+        onDialogDismissClick = viewModel::dismissDialog,
+        modifier = modifier,
     )
 }
 
@@ -82,10 +90,13 @@ private fun UserProfileScreen(
     uiState: UserProfileContract.State,
     reviews: ImmutableList<GameReview>,
     onReviewClick: () -> Unit,
+    onBackClick: () -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     onYesClick: () -> Unit,
     onNoClick: () -> Unit,
     onCompeteClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+    onDialogDismissClick: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -112,8 +123,8 @@ private fun UserProfileScreen(
 
         SmashingDefaultTopBar(
             title = stringResource(profile),
-            topBarType = TopBarType.DEFAULT,
-            onClick = null,
+            topBarType = TopBarType.BACK,
+            onClick = onBackClick,
         )
 
         Column(
@@ -121,6 +132,7 @@ private fun UserProfileScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .nestedScroll(nestedScrollConnection)
+                .padding(bottom = 37.dp)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
         ) {
@@ -132,16 +144,32 @@ private fun UserProfileScreen(
                 loseCount = uiState.profileInfo.loseCount,
                 reviewCount = uiState.profileInfo.reviewCount,
                 onCompeteClick = onCompeteClick,
+                isCompeteEnabled = uiState.isCompeteButtonEnabled,
             )
+
+            if (uiState.isDialogVisible) {
+
+                SmashingDialog(
+                    title = "경쟁 신청이 완료되었습니다!",
+                    subtitle = "매칭 관리 탭에서 매칭 정보를 확인해주세요.",
+                    type = DialogStyle.ALERT,
+                    confirmText = "바로가기",
+                    dismissText = "확인",
+                    onConfirmClick = onConfirmClick,
+                    onDismissClick = onDialogDismissClick,
+                    onDismissRequest = onDialogDismissClick,
+                )
+            }
+
 
             ProfileTierBox(
                 tierType = uiState.profileInfo.tierType,
                 sportProfileList = uiState.sportProfileList,
                 selectedProfileId = uiState.selectedSportProfileId,
                 tierIconResId = uiState.profileInfo.tierType.img(),
-                progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
-                lpStatus = uiState.profileInfo.minLp,
-                totalLp = uiState.profileInfo.maxLp,
+                progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
+                lpStatus = (uiState.profileInfo.maxLp - uiState.profileInfo.lp) + 1,
+                totalLp = (uiState.profileInfo.maxLp) + 1,
             )
 
             ProfileStatsBar(
@@ -156,29 +184,31 @@ private fun UserProfileScreen(
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
             )
+        }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 48.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SmashingButton(
-                    buttonStyle = ButtonStyle.DISABLED_ACTIVE,
-                    text = "아니요",
-                    modifier = Modifier.weight(131f),
-                    onClick = onNoClick,
-                )
-                SmashingButton(
-                    buttonStyle = ButtonStyle.PRIMARY,
-                    text = "네, 맞아요",
-                    modifier = Modifier.weight(185f),
-                    onClick = onYesClick,
-                )
-            }
+    if (uiState.isCompeteButtonEnabled == false) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 52.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            SmashingButton(
+                buttonStyle = ButtonStyle.DISABLED_ACTIVE,
+                text = "건너뛰기",
+                modifier = Modifier.weight(BTN_WEIGHT),
+                onClick = onNoClick,
+            )
+            SmashingButton(
+                buttonStyle = ButtonStyle.PRIMARY,
+                text = "수락",
+                modifier = Modifier.weight(1f),
+                onClick = onYesClick,
+            )
         }
     }
+}
 }
 
 
@@ -194,6 +224,9 @@ private fun ProfileScreenPreview() {
             onNoClick = {},
             onYesClick = {},
             onCompeteClick = {},
+            onConfirmClick = {},
+            onDialogDismissClick = {},
+            onBackClick = {},
         )
     }
 }

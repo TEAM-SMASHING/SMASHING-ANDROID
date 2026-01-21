@@ -19,6 +19,7 @@ fun NavController.navigateToSignUp(
 fun NavGraphBuilder.signUpGraph(
     navigateToRegion: () -> Unit,
     navigateToHome: () -> Unit,
+    navigateUp: () -> Unit,
     innerPadding: PaddingValues,
 ) {
     composable<SignUp> {backStackEntry ->
@@ -26,6 +27,7 @@ fun NavGraphBuilder.signUpGraph(
 
         SignUpRoute(
             regionResult = savedStateHandle.getRegionResult(),
+            navigateUp = navigateUp,
             onRegionResultConsumed = savedStateHandle::removeRegionResult,
             navigateToRegion = navigateToRegion,
             navigateToHome = navigateToHome,

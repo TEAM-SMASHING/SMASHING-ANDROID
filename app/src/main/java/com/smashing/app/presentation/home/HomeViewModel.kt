@@ -3,10 +3,11 @@ package com.smashing.app.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.designsystem.state.MatchingCardState
+import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
-import com.smashing.app.presentation.home.type.DummyMatchedUser
+import com.smashing.app.data.type.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -22,6 +23,7 @@ class HomeViewModel @Inject constructor(
     private val rankingRepository: RankingRepository,
     private val searchRepository: SearchRepository,
     private val myRepository: MyRepository,
+    private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
@@ -76,16 +78,26 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchMatchedUser() = viewModelScope.launch {
-        updateLoadState(HomeUiState.Loading)
-
-        val dummyMatchedUser = createDummyMatchedUser()
-
-        updateLoadState(HomeUiState.Success)
-
-        _uiState.update { currentState ->
-            currentState.copy(matchedUser = dummyMatchedUser)
-        }
+        matchingRepository.getMeAcceptedMatchingList(
+            snapshotAt = null,
+            cursor = null,
+            size = 1,
+            order = OrderType.OLDEST,
+        )
+            .onSuccess { cursorPage ->
+                val oldestMatch = cursorPage.items.firstOrNull()
+                _uiState.update { currentState ->
+                    currentState.copy(matchedUser = oldestMatch)
+                }
+            }
+            .onFailure { throwable ->
+                Timber.tag("HomeViewModel").e(throwable, "Failed to fetch matched user")
+                _uiState.update { currentState ->
+                    currentState.copy(matchedUser = null)
+                }
+            }
     }
+
 
     fun fetchRegionRankerList() = viewModelScope.launch {
         updateLoadState(HomeUiState.Loading)
@@ -105,12 +117,44 @@ class HomeViewModel @Inject constructor(
             }
     }
 
-    private fun createDummyMatchedUser(): DummyMatchedUser? {
-        return DummyMatchedUser(
-            userId = "matchedUser1",
-            nickname = "더미하는김에긴닉네임",
+    fun fetchSelectSportProfile(profileId: String) {
+        val currentState = uiState.value
+        val currentActiveProfile = currentState.activeUserProfile ?: return
+        if (currentActiveProfile.profileId == profileId) return
+
+        val selectedProfile = currentState.allUserProfiles.find { it.profileId == profileId } ?: return
+
+        val optimisticList = currentState.allUserProfiles.map { profile ->
+            profile.copy(isActive = profile.profileId == profileId)
+        }.toImmutableList()
+
+        val optimisticActiveProfile = currentActiveProfile.copy(
+            profileId = selectedProfile.profileId,
+            sportType = selectedProfile.sportCode,
         )
+
+        _uiState.update {
+            it.copy(
+                allUserProfiles = optimisticList,
+                activeUserProfile = optimisticActiveProfile,
+            )
+        }
+
+        viewModelScope.launch {
+            myRepository.switchActiveMyProfile(profileId)
+                .onSuccess {
+                    fetchMyTierProfile()
+                    fetchRegionRankerList()
+                    fetchRecommendedUserList()
+                    fetchMatchedUser()
+                }
+                .onFailure { throwable ->
+                    Timber.tag("HomeViewModel").e(throwable, "Failed to switch sport profile")
+                    fetchMyTierProfile()
+                }
+        }
     }
+
 
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
         currentState.copy(loadState = state)

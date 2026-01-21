@@ -13,20 +13,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
-import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -34,24 +33,40 @@ import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.component.WriteReviewContent
+import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmReviewSideEffect
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun ConfirmReviewRoute(
     navigateUp: () -> Unit,
-    navigateToMatching: () -> Unit,
-    viewModel: ConfirmViewModel,
+    navigateToConfirmReview: (String) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ConfirmViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<ConfirmReviewSideEffect>()
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is ConfirmReviewSideEffect.NavigateBack -> navigateUp()
+                    is ConfirmReviewSideEffect.NavigateToConfirmReview -> {
+                        navigateToConfirmReview(sideEffect.reviewId)
+                    }
+                }
+            }
+    }
 
     ConfirmReviewScreen(
         uiState = uiState,
         reviewTextFieldState = viewModel.reviewTextFieldState,
         onBackClick = navigateUp,
-        onDoneClick = navigateToMatching,
+        onConfirmSubmission = viewModel::confirmSubmission,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
-        isButtonEnabled = uiState.isButtonEnabled,
         modifier = modifier,
     )
 }
@@ -63,15 +78,12 @@ private fun ConfirmReviewScreen(
     onReviewRatingClick: (ReviewRatingType) -> Unit,
     onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
-    onDoneClick: () -> Unit,
-    isButtonEnabled: Boolean,
+    onConfirmSubmission: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val focusManager = LocalFocusManager.current
-
-    var isAlertDialogOpen by remember { mutableStateOf(false) }
-    var isConfirmDialogOpen by remember { mutableStateOf(false) }
+    val isButtonEnabled = uiState.selectedRating != null
 
     Column(
         modifier = modifier
@@ -94,7 +106,7 @@ private fun ConfirmReviewScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             WriteReviewContent(
-                nickname = uiState.revieweeNickname,
+                nickname = uiState.reviewerNickname,
                 textFieldState = reviewTextFieldState,
                 selectedReviewRating = uiState.selectedRating,
                 selectedReviewTagTypes = uiState.selectedTagList,
@@ -107,7 +119,7 @@ private fun ConfirmReviewScreen(
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "완료",
-                onClick = onDoneClick,
+                onClick = onConfirmSubmission,
                 isEnabled = isButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,29 +127,6 @@ private fun ConfirmReviewScreen(
                         top = 13.dp,
                         bottom = 48.dp,
                     ),
-            )
-        }
-
-        if (isAlertDialogOpen) {
-            SmashingDialog(
-                title = "매칭 결과를 제출하시겠습니까?",
-                subtitle = "정확한 경기 결과가 아닐 경우 반려될 수 있어요.",
-                type = DialogStyle.ALERT,
-                confirmText = "제출하기",
-                dismissText = "아니요",
-                onDismissRequest = { isAlertDialogOpen = false },
-                onConfirmClick = onDoneClick, // TODO: 제출하기
-            )
-        }
-
-        if (isConfirmDialogOpen) {
-            SmashingDialog(
-                title = "매칭 결과를 제출하시겠습니까?",
-                subtitle = "정확한 경기 결과가 아닐 경우 반려될 수 있어요.",
-                type = DialogStyle.CONFIRM,
-                confirmText = "확인",
-                onDismissRequest = { isConfirmDialogOpen = false },
-                onConfirmClick = onDoneClick, // TODO: 제출하기
             )
         }
     }
@@ -151,8 +140,7 @@ private fun ConfirmReviewScreenPreview() {
             uiState = ConfirmContract.State(),
             reviewTextFieldState = TextFieldState(),
             onBackClick = {},
-            onDoneClick = {},
-            isButtonEnabled = true,
+            onConfirmSubmission = {},
             onReviewTagClick = {},
             onReviewRatingClick = {},
             modifier = Modifier,

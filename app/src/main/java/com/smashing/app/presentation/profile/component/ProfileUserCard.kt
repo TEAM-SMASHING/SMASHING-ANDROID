@@ -45,7 +45,8 @@ fun UserProfileCard(
     loseCount: Int,
     reviewCount: Long,
     modifier: Modifier = Modifier,
-    onCompeteClick: (() -> Unit)? = null
+    isCompeteEnabled: Boolean = false,
+    onCompeteClick: (() -> Unit)? = null,
 ) {
 
     Column(
@@ -118,10 +119,10 @@ fun UserProfileCard(
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "경쟁 신청하기",
-                onClick = {},
+                onClick = onCompeteClick,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
+                    .fillMaxWidth(),
+                isEnabled = isCompeteEnabled
             )
         }
     }
@@ -162,7 +163,7 @@ private fun UserProfileCardPreview() {
             winCount = 254,
             loseCount = 38,
             reviewCount = 32,
-
+            isCompeteEnabled = true,
         )
     }
 }
