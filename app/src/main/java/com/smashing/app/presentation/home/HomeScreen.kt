@@ -491,7 +491,7 @@ private fun CloseMatching(
             )
             .padding(
                 top = 22.dp,
-                bottom = 24.dp,
+                bottom = 22.dp,
             ),
     ) {
         if (matchedUser != null) {
@@ -539,32 +539,30 @@ private fun CloseMatching(
         if (matchedUser != null) {
             SmashingBaseButton(
                 text = matchedUser.resultStatus.getMatchButtonTitle(),
-                textStyle = SmashingTheme.typography.sm.medium14,
+                textStyle = SmashingTheme.typography.md.medium16,
                 onClick = onClick,
                 buttonColor = matchedUser.resultStatus.getMatchButtonColor(),
                 contentPadding = PaddingValues(
-                    vertical = 4.dp,
+                    vertical = 9.dp,
                 ),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 11.dp,
-                    ),
-                shape = RoundedCornerShape(4.dp),
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                isRippleEnabled = false,
             )
         } else {
             SmashingBaseButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "매칭 탐색하러 가기",
-                textStyle = SmashingTheme.typography.lg.semibold18,
+                textStyle = SmashingTheme.typography.md.medium16,
                 onClick = navigateToSearch,
                 buttonColor = SmashingBtnColor(
-                    backgroundColor = SmashingTheme.colors.tierDiamondBg,
+                    backgroundColor = SmashingTheme.colors.btnBgPrimary300,
                     textColor = SmashingTheme.colors.txtEmphasis,
-                    disabledBackgroundColor = SmashingTheme.colors.tierDiamondBg,
+                    disabledBackgroundColor = SmashingTheme.colors.btnBgPrimary300,
                     disabledTextColor = SmashingTheme.colors.txtEmphasis,
                 ),
-                contentPadding = PaddingValues(vertical = 10.dp),
+                contentPadding = PaddingValues(vertical = 9.dp),
                 shape = RoundedCornerShape(8.dp),
                 isRippleEnabled = false,
             )
