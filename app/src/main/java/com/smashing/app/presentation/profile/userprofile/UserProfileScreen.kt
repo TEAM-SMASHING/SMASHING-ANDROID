@@ -45,7 +45,7 @@ import com.smashing.app.presentation.profile.userprofile.UserProfileContract.Sid
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-private const val BTN_WEIGHT = 131f/185f
+private const val BTN_WEIGHT = 131f / 185f
 
 @Composable
 fun UserProfileRoute(
@@ -142,8 +142,8 @@ private fun UserProfileScreen(
                 selectedProfileId = uiState.selectedSportProfileId,
                 tierIconResId = uiState.profileInfo.tierType.img(),
                 progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
-                lpStatus = uiState.profileInfo.maxLp - uiState.profileInfo.lp,
-                totalLp = uiState.profileInfo.maxLp,
+                lpStatus = (uiState.profileInfo.maxLp - uiState.profileInfo.lp) + 1,
+                totalLp = (uiState.profileInfo.maxLp) + 1,
             )
 
             ProfileStatsBar(
@@ -160,7 +160,7 @@ private fun UserProfileScreen(
             )
         }
 
-        if ( uiState.isCompeteButtonEnabled == false ){
+        if (uiState.isCompeteButtonEnabled == false) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
