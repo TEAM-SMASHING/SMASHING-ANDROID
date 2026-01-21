@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMatching(
     initTab: MatchingType = MatchingType.RECEIVE,
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) = navigate(Matching(initTab = initTab), navOptions)
 
 fun NavGraphBuilder.matchingGraph(
@@ -29,13 +29,15 @@ fun NavGraphBuilder.matchingGraph(
         gameId: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
+    updateBottomBar: (Boolean) -> Unit,
     innerPadding: PaddingValues,
 ) {
     composable<Matching> {
         MatchingRoute(
             navigateToSubmit = navigateToSubmit,
             navigateToConfirm = navigateToConfirm,
-            modifier = Modifier.padding(innerPadding),
+            updateBottomBar = updateBottomBar,
+            modifier = Modifier,
         )
     }
 }

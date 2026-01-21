@@ -88,6 +88,7 @@ private fun MyProfileScreen(
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val isMaxProfileReached = uiState.sportProfileList.size >= 3
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -116,8 +117,8 @@ private fun MyProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
                 .nestedScroll(nestedScrollConnection)
+                .verticalScroll(scrollState)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
         ) {
