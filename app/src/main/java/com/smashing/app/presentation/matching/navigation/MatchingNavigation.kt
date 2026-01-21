@@ -1,6 +1,5 @@
 package com.smashing.app.presentation.matching.navigation
 
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -34,7 +33,6 @@ fun NavGraphBuilder.matchingGraph(
             navigateToSubmit = navigateToSubmit,
             navigateToConfirm = navigateToConfirm,
             updateBottomBar = updateBottomBar,
-            modifier = Modifier,
         )
     }
 }
