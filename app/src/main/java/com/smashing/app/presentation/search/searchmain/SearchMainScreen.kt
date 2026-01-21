@@ -41,6 +41,7 @@ import com.smashing.app.presentation.search.searchmain.component.SearchTopBar
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.DEFAULT
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
 
+
 @Composable
 fun SearchMainRoute(
     navigateToRegionChange: () -> Unit,
@@ -53,11 +54,15 @@ fun SearchMainRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(uiState.selectedRegion) {
+        viewModel.updateSelectedRegion()
+    }
+
     SearchMainScreen(
         uiState = uiState,
         onLoadMoreSearchList = viewModel::fetchRegionUsersList,
         onRegionSelectClick = navigateToRegionChange,
-        onRegionDropdownClick = viewModel::updateSelectedRegion,
+        onRegionDropdownClick = { viewModel::updateSelectedRegion },
         onSearchClick = navigateToSearchInput,
         onProfileClick = { userId ->
             navigateToUserProfile(userId) },
