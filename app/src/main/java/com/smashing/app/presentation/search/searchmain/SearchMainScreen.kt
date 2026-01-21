@@ -54,7 +54,7 @@ fun SearchMainRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.selectedRegion) {
+    LaunchedEffect(Unit) {
         viewModel.updateSelectedRegion()
     }
 
