@@ -180,7 +180,7 @@ private fun TierInfoScreen(
                         .weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Spacer(modifier = Modifier.height(52.dp))
+                    Spacer(modifier = Modifier.height(80.dp))
                     AppIcon(
                         title = uiState.tierInfoDetail?.skills?.firstOrNull()?.name,
                         subtitle = uiState.tierInfoDetail?.skills?.firstOrNull()?.description,
