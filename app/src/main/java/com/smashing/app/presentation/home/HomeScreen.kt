@@ -76,6 +76,7 @@ import com.smashing.app.core.designsystem.style.getMatchButtonColor
 import com.smashing.app.core.designsystem.style.getMatchButtonTitle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.data.model.matching.AcceptedMatching
+import com.smashing.app.data.type.GameResultStatusType
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -88,6 +89,17 @@ fun HomeRoute(
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
     navigateToSearch: () -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -116,6 +128,8 @@ fun HomeRoute(
         navigateToUserProfile = navigateToUserProfile,
         navigateToSportAdd = navigateToSportAdd,
         navigateToSearch = navigateToSearch,
+        navigateToSubmit = navigateToSubmit,
+        navigateToConfirm = navigateToConfirm,
         onSportsChipClick = viewModel::fetchSelectSportProfile,
         updateBottomBar = updateBottomBar,
         modifier = modifier,
@@ -133,6 +147,17 @@ private fun HomeScreen(
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
     navigateToSearch: () -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
     onSportsChipClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -276,7 +301,39 @@ private fun HomeScreen(
                         myProfileId = uiState.activeUserProfile.profileId,
                         myNickname = uiState.activeUserProfile.nickname,
                         matchedUser = uiState.matchedUser,
-                        onClick = {},
+                        onClick = onClick@ { matching ->
+                            when (matching.resultStatus) {
+                                GameResultStatusType.PENDING_RESULT -> {
+                                    navigateToSubmit(
+                                        matching.gameId,
+                                        matching.userId,
+                                        matching.nickname,
+                                        true,
+                                    )
+                                }
+
+                                GameResultStatusType.RESULT_REJECTED -> {
+                                    navigateToSubmit(
+                                        matching.gameId,
+                                        matching.userId,
+                                        matching.nickname,
+                                        false,
+                                    )
+                                }
+
+                                GameResultStatusType.WAITING_CONFIRMATION -> {
+                                    val submissionId = matching.latestSubmissionId ?: return@onClick
+                                    val isFirstAttempt = matching.latestAttemptNo == 1
+                                    navigateToConfirm(
+                                        submissionId,
+                                        matching.gameId,
+                                        isFirstAttempt,
+                                    )
+                                }
+
+                                else -> Unit
+                            }
+                        },
                         navigateToSearch = {
                             updateBottomBar(true)
                             navigateToSearch()
@@ -472,11 +529,10 @@ private fun HomeTopBar(
 private fun CloseMatching(
     myNickname: String,
     myProfileId: String,
-    onClick: () -> Unit,
-    navigateToSearch: () -> Unit,
+    onClick: (AcceptedMatching) -> Unit,
     modifier: Modifier = Modifier,
-    matchedUser: AcceptedMatching? = null,  // 타입 변경
-    buttonState: String = "dummy",
+    matchedUser: AcceptedMatching? = null,
+    navigateToSearch: () -> Unit,
 ) {
     //TODO 매칭 상대에서 받는 데이터 확인 후에 nickName + userId 묶는 데이터 타입 추가
     Column(
@@ -540,7 +596,7 @@ private fun CloseMatching(
             SmashingBaseButton(
                 text = matchedUser.resultStatus.getMatchButtonTitle(),
                 textStyle = SmashingTheme.typography.md.medium16,
-                onClick = onClick,
+                onClick = { onClick(matchedUser) },
                 buttonColor = matchedUser.resultStatus.getMatchButtonColor(),
                 contentPadding = PaddingValues(
                     vertical = 9.dp,
@@ -742,6 +798,8 @@ private fun HomeScreenPreview() {
         navigateToSportAdd = {},
         navigateToSearch = {},
         updateBottomBar = {},
+        navigateToSubmit = { _, _, _, _ -> },
+        navigateToConfirm = { _, _, _ -> },
     )
 }
 
@@ -785,5 +843,7 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToSearch = {},
         onSportsChipClick = {},
         updateBottomBar = {},
+        navigateToSubmit = { _, _, _, _ -> },
+        navigateToConfirm = { _, _, _ -> },
     )
 }

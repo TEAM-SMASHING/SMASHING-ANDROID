@@ -22,6 +22,8 @@ import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.removeRegionResult
 import com.smashing.app.presentation.search.navigation.navigateToSearch
 import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
+import com.smashing.app.presentation.write.navigation.navigateToConfirm
+import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(
@@ -57,6 +59,21 @@ fun NavGraphBuilder.homeGraph(
                 },
                 navigateToSportAdd = navController::navigateToAddSports,
                 navigateToSearch = navController::navigateToSearch,
+                navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt ->
+                    navController.navigateToSubmit(
+                        gameId = gameId,
+                        opponentUserId = opponentUserId,
+                        opponentNickname = opponentNickname,
+                        isFirstAttempt = isFirstAttempt,
+                    )
+                },
+                navigateToConfirm = { submissionId, gameId , isFirstAttempt ->
+                    navController.navigateToConfirm(
+                        submissionId = submissionId,
+                        gameId = gameId,
+                        isFirstAttempt = isFirstAttempt,
+                    )
+                },
                 updateBottomBar = updateBottomBar,
             )
         }
