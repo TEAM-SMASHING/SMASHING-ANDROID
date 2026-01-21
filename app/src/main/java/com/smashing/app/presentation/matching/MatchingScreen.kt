@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,6 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -75,8 +78,6 @@ fun MatchingRoute(
     navigateToConfirm: (
         submissionId: String,
         gameId: String,
-        opponentUserId: String,
-        opponentNickname: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
     modifier: Modifier = Modifier,
@@ -102,12 +103,22 @@ fun MatchingRoute(
                     is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(
                         sideEffect.submissionId,
                         sideEffect.gameId,
-                        sideEffect.opponentUserId,
-                        sideEffect.opponentNickname,
                         sideEffect.isFirstAttempt,
                     )
                 }
             }
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.refreshMatchingList()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     MatchingScreen(

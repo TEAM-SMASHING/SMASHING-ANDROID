@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.search
 
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage

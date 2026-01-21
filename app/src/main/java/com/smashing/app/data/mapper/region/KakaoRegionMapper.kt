@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.region
 
 import com.smashing.app.data.model.region.KakaoRegion
 import com.smashing.app.data.remote.dto.region.GetKakaoAddressSearchResponse
