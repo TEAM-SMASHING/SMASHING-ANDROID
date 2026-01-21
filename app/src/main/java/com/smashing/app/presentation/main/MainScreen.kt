@@ -13,9 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
-import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
-import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
@@ -25,7 +23,6 @@ import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.noticeGraph
-import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
@@ -196,7 +193,7 @@ private fun MainNavHost(
         )
 
         confirmReviewGraph(
-            navigateUp =  appState.navController::navigateUp,
+            navController = appState.navController
         )
     }
 }
