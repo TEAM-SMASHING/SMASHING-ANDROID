@@ -9,7 +9,7 @@ interface TierInfoContract {
     @Immutable
     data class State(
         val loadState: TierInfoUiState = TierInfoUiState.Idle,
-        val sportType: SportType = SportType.BADMINTON,
+        val sportType: SportType = SportType.PING_PONG,
         val selectedTierInfoStyle: TierInfoStyle = TierInfoStyle.IRON,
         val tierInfoDetail: TierInfoDetail? = null,
         )

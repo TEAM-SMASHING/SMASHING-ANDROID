@@ -6,7 +6,6 @@ import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
 import com.smashing.app.data.remote.dto.my.MyPageData
-import com.smashing.app.data.remote.dto.my.MyProfileReviewListData
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.service.MyService
 import jakarta.inject.Inject
@@ -19,12 +18,6 @@ class MyRemoteDataSourceImpl @Inject constructor(
         return myService.getMyProfile()
     }
 
-    override suspend fun getMyGameReviews(
-        cursor: String?,
-        size: Int?
-    ): BaseResponse<MyProfileReviewListData> {
-        return myService.getMyGameReviews(cursor, size)
-    }
 
     override suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<Unit?> {
         return myService.addSportProfile(request)

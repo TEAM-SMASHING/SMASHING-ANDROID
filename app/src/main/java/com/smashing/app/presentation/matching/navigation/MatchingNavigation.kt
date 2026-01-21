@@ -27,8 +27,6 @@ fun NavGraphBuilder.matchingGraph(
     navigateToConfirm: (
         submissionId: String,
         gameId: String,
-        opponentUserId: String,
-        opponentNickname: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
     innerPadding: PaddingValues,

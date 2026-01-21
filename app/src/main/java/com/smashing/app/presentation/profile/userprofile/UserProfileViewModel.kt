@@ -4,19 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.ReviewRepository
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,13 +21,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val userRepository: UserRepository,
     private val reviewRepository: ReviewRepository
 ) : ViewModel() {
 
-    private val userId = savedStateHandle.toRoute<UserProfile>().userId
+    private val userInfo = savedStateHandle.toRoute<UserProfile>()
+
+    private val userId = userInfo.userId
+    private val sportCode = userInfo.sportCode
 
     private val _uiState = MutableStateFlow(UserProfileContract.State())
     val uiState: StateFlow<UserProfileContract.State> = _uiState.asStateFlow()
@@ -41,20 +41,34 @@ class UserProfileViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
+        fetchUserRecentReviewStats()
+        fetchProfileInfo()
         fetchUserProfileReview()
     }
 
     private fun fetchProfileInfo() {
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
-
-            try {
-                // TODO: 실제 API 호출 (delay로 시뮬레이션)
-                delay(1000)
-
-            } catch (e: Exception) {
+            userRepository.getUserInfoDetail(
+                userId = userId,
+                sportCode = sportCode,
+            ).onSuccess { data ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success,
+                        profileInfo = data.profileInfo,
+                        sportProfileList = data.sportProfile.toImmutableList(),
+                        selectedSportProfileId = data.sportProfile.find { it.isActive }?.profileId
+                            ?: data.profileInfo.profileId
+                    )
+                }
+            }.onFailure { exception ->
                 _uiState.update {
-                    it.copy(loadState = UserProfileUiState.Failure(e.message ?: "Unknown Error"))
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            exception.message ?: "오류 발생"
+                        )
+                    )
                 }
             }
         }
@@ -66,15 +80,43 @@ class UserProfileViewModel @Inject constructor(
         )
     }
 
-    fun fetchUserProfileReview() = viewModelScope.launch {
+    fun fetchUserRecentReviewStats() = viewModelScope.launch {
+        userRepository.getUserRecentReviewStats(
+            userId = userId,
+            sportCode = sportCode,
+        ).onSuccess { data ->
+            _uiState.update { currentState ->
+                currentState.copy(
+                    loadState = UserProfileUiState.Success,
+                    gameReviewResult = GameReviewResult(
+                        bestCount = data.bestCount,
+                        goodCount = data.goodCount,
+                        badCount = data.badCount,
+                        goodMannerCount = data.goodMannerCount,
+                        onTimeCount = data.onTimeCount,
+                        fairPlayCount = data.fairPlayCount,
+                        fastResponseCount = data.fastResponseCount,
+                    ),
+                )
+            }
+        }.onFailure { exception ->
+            _uiState.update {
+                it.copy(
+                    loadState = UserProfileUiState.Failure(
+                        exception.message ?: "오류 발생"
+                    )
+                )
+            }
+        }
+    }
 
-        val currentState = _uiState.value
+    fun fetchUserProfileReview() = viewModelScope.launch {
 
         _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
 
         reviewRepository.getUserRecentReviewList(
             userId = userId,
-            sportCode = "BM", //Todo: 실제 값으로 수정
+            sportCode = sportCode,
             cursor = null,
             size = CURSOR_SIZE,
         ).onSuccess { cursorPage ->
@@ -102,35 +144,6 @@ class UserProfileViewModel @Inject constructor(
 
     companion object {
         private const val CURSOR_SIZE = 3
-    }
-
-    // TODO: 추후 제거 예정
-    private fun getDummyState(): UserProfileContract.State {
-        val loadState: UserProfileUiState = UserProfileUiState.Success
-        val profileInfo = ProfileInfo(
-            profileId = "123",
-            sportType = SportType.PING_PONG,
-            genderType = GenderType.MALE,
-            nickname = "하이하이",
-            tierType = TierType.GOLD_1,
-            minLp = 100,
-            maxLp = 500,
-            winCount = 4,
-            loseCount = 5,
-            lp = 3,
-            reviewCount = 323,
-        )
-        return UserProfileContract.State(
-            loadState = loadState,
-            profileInfo = profileInfo,
-            sportProfileList = persistentListOf(
-                SportProfile(
-                    profileId = "1",
-                    sportType = SportType.PING_PONG,
-                    isActive = true,
-                ),
-            )
-        )
     }
 
     fun onYesClick() {
