@@ -66,8 +66,6 @@ fun NavGraphBuilder.profileGraph(
 
         composable<Review> {
             AllReviewRoute(
-                modifier = Modifier.padding(innerPadding),
-                // 4. 뒤로가기도 navController 사용
                 navigateUp = { navController.navigateUp() },
             )
         }
