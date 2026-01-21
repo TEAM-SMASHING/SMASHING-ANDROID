@@ -72,4 +72,10 @@ class MatchingRemoteDataSourceImpl @Inject constructor(
     ): BaseResponse<Unit> = matchingService.putCancelGame(
         gameId = gameId,
     )
+
+    override suspend fun postMatching(
+        receiverProfileId: String
+    ): BaseResponse<Unit> = matchingService.postMatching(
+        receiverProfileId = receiverProfileId,
+    )
 }
