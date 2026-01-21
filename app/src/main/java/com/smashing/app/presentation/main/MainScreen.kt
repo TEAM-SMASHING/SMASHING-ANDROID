@@ -95,7 +95,6 @@ private fun MainNavHost(
         )
 
         profileGraph(
-            innerPadding = innerPadding,
             navController = appState.navController,
             updateBottomBar = appState::updateBottomBarVisible,
         )

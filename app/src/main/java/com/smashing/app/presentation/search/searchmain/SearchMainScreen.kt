@@ -62,7 +62,7 @@ fun SearchMainRoute(
         uiState = uiState,
         onLoadMoreSearchList = viewModel::fetchRegionUsersList,
         onRegionSelectClick = navigateToRegionChange,
-        onRegionDropdownClick = { viewModel::updateSelectedRegion },
+        onRegionDropdownClick = { },
         onSearchClick = navigateToSearchInput,
         onProfileClick = { userId ->
             navigateToUserProfile(userId) },
