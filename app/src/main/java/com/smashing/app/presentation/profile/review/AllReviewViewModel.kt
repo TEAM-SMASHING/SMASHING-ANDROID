@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.review.GameReviewResult
+import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
 import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
@@ -23,11 +25,13 @@ import kotlinx.coroutines.launch
 class AllReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val userData = savedStateHandle.toRoute<Review>()
 
     private val userId = userData.userId
+    private val sportCode = userData.sportCode
     private val isUser = userData.isUser
 
     private val _uiState = MutableStateFlow(ReviewContract.State())
@@ -42,6 +46,7 @@ class AllReviewViewModel @Inject constructor(
         if (userId == null && isUser) {
             fetchReviews(true)
         } else {
+            fetchUserRecentReviewStats()
             fetchUserProfileReview(true)
         }
     }
@@ -60,7 +65,7 @@ class AllReviewViewModel @Inject constructor(
         if (userId != null) {
             reviewRepository.getUserRecentReviewList(
                 userId = userId,
-                sportCode = "BM", //Todo: 실제 값으로 수정
+                sportCode = sportCode,
                 cursor = if (isRefresh) null else currentState.reviewCursor.nextCursor,
                 size = CURSOR_SIZE,
             ).onSuccess { cursorPage ->
@@ -84,6 +89,38 @@ class AllReviewViewModel @Inject constructor(
                     it.copy(
                         reviewUiState = ReviewUiState.Failure(
                             throwable.message ?: "Unknown error"
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    fun fetchUserRecentReviewStats() = viewModelScope.launch {
+        if (userId != null){
+            userRepository.getUserRecentReviewStats(
+                userId = userId,
+                sportCode = sportCode,
+            ).onSuccess { data ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = ReviewUiState.Success,
+                        gameReviewResult = GameReviewResult(
+                            bestCount = data.bestCount,
+                            goodCount = data.goodCount,
+                            badCount = data.badCount,
+                            goodMannerCount = data.goodMannerCount,
+                            onTimeCount = data.onTimeCount,
+                            fairPlayCount = data.fairPlayCount,
+                            fastResponseCount = data.fastResponseCount,
+                        ),
+                    )
+                }
+            }.onFailure { exception ->
+                _uiState.update {
+                    it.copy(
+                        loadState = ReviewUiState.Failure(
+                            exception.message ?: "오류 발생"
                         )
                     )
                 }

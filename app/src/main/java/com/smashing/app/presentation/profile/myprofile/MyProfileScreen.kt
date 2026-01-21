@@ -64,9 +64,7 @@ fun MyProfileRoute(
         onSportClick = viewModel::selectProfileId,
         onAddSportClick = navigateToSportAdd,
         onTierGuideClick = navigateToTierGuide,
-        onReviewClick = { userId ->
-            navigateToReview(userId)
-        },
+        onReviewClick = navigateToReview,
     )
 }
 

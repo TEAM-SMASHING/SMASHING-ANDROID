@@ -120,8 +120,7 @@ fun UserProfileCard(
                 text = "경쟁 신청하기",
                 onClick = {},
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
+                    .fillMaxWidth(),
             )
         }
     }

@@ -1,10 +1,10 @@
 package com.smashing.app.presentation.addsports
 
 import androidx.compose.runtime.Immutable
-import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.type.SportType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import com.smashing.app.data.model.addsports.AddSportsInfo
 
 class AddSportsContract {
     @Immutable
