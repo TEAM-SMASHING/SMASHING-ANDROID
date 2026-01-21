@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
@@ -139,6 +141,7 @@ private fun HomeScreen(
     var topBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
+    val scrollState = rememberScrollState()
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -220,15 +223,16 @@ private fun HomeScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
                     .nestedScroll(nestedScrollConnection)
+                    .verticalScroll(scrollState)
                     .padding(
                         horizontal = 16.dp,
                     )
                     .padding(
                         top = 12.dp,
                         bottom = 22.dp
-                    ),
+                    )
+                    .navigationBarsPadding(),
             ) {
                 Column {
                     Row(
