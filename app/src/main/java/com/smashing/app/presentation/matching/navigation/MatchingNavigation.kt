@@ -39,7 +39,7 @@ fun NavGraphBuilder.matchingGraph(
             navigateToSubmit = navigateToSubmit,
             navigateToConfirm = navigateToConfirm,
             updateBottomBar = updateBottomBar,
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier,
         )
     }
 }

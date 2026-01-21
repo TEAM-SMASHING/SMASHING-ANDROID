@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -190,8 +191,8 @@ private fun MatchingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
             .background(color = SmashingTheme.colors.bgCanvas)
+            .systemBarsPadding()
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -258,6 +259,7 @@ private fun MatchingScreen(
                         onAcceptedMatchingClick = onAcceptedMatchingClick,
                         onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
                         onAcceptedCloseClick = onAcceptedCloseClick,
+                        nestedScrollConnection = nestedScrollConnection,
                     )
                 }
 
@@ -311,6 +313,7 @@ private fun MatchingList(
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit,
     onAcceptedKakaoLinkClick: (String?) -> Unit,
     onAcceptedCloseClick: (String) -> Unit,
+    nestedScrollConnection: NestedScrollConnection,
     modifier: Modifier = Modifier,
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -331,7 +334,8 @@ private fun MatchingList(
         contentPadding = PaddingValues(bottom = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
         verticalArrangement = Arrangement.spacedBy(space = 10.dp),
-        modifier = modifier,
+        modifier = modifier
+            .nestedScroll(nestedScrollConnection),
     ) {
         when (uiState.selectedType) {
             MatchingType.RECEIVE -> items(
