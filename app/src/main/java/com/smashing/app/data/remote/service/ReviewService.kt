@@ -24,7 +24,7 @@ interface ReviewService {
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>>
 
     @GET("/api/v1/users/me/reviews/recent")
-    suspend fun getMyGameReviews(
+    suspend fun getMyGameReviewsResponse(
         @Query("cursor") cursor: String?,
         @Query("size") size: Int?,
     ): BaseResponse<MyProfileReviewListData>
