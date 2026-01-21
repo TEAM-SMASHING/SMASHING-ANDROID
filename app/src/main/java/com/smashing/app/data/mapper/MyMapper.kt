@@ -1,5 +1,6 @@
 package com.smashing.app.data.mapper
 
+import com.smashing.app.core.util.ConvertTimeProvider.convertLocalDateTimeToTime
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.profile.MyPageInfo
@@ -65,7 +66,7 @@ fun MyReviewsDto.toGameReview(): GameReview {
     return GameReview(
         gameReviewId = this.gameReviewId,
         opponentNickname = this.nickname,
-        createdAt = this.createdAt,
+        createdAt = convertLocalDateTimeToTime(this.createdAt),
         content = this.content
     )
 }

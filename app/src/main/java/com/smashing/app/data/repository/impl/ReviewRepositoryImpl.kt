@@ -1,7 +1,10 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
+import com.smashing.app.data.mapper.review.toGameReviewList
 import com.smashing.app.data.mapper.toReviewDetail
+import com.smashing.app.data.model.cursor.CursorPage
+import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.ReviewDetail
 import com.smashing.app.data.remote.datasource.api.ReviewRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
@@ -19,4 +22,19 @@ class ReviewRepositoryImpl @Inject constructor(
             reviewId = reviewId,
         ).requireData().toReviewDetail()
     }
+
+    override suspend fun getUserRecentReviewList(
+        userId: String,
+        sportCode: String?,
+        cursor: String?,
+        size: Int?
+    ): Result<CursorPage<GameReview>> =
+        suspendRunCatching {
+            reviewRemoteDataSource.getUserRecentReviewList(
+                userId = userId,
+                sportCode = sportCode,
+                cursor = cursor,
+                size = size,
+            ).requireData().toGameReviewList()
+        }
 }
