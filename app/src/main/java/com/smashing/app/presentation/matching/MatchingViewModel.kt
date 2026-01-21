@@ -86,6 +86,14 @@ class MatchingViewModel @Inject constructor(
         }
     }
 
+    fun refreshMatchingList() {
+        when (uiState.value.selectedType) {
+            MatchingType.RECEIVE -> fetchReceivedMatchingList(isRefresh = true)
+            MatchingType.SEND -> fetchSentMatchingList(isRefresh = true)
+            MatchingType.ACCEPTED -> fetchAcceptedMatchingList(isRefresh = true)
+        }
+    }
+
     private fun fetchReceivedMatchingList(isRefresh: Boolean = false) = viewModelScope.launch {
         val currentState = _uiState.value
 
