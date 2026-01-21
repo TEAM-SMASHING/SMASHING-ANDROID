@@ -56,6 +56,7 @@ private const val MAX_STEP = 6
 @Composable
 fun SignUpRoute(
     regionResult: Region?,
+    navigateUp: () -> Unit,
     onRegionResultConsumed: () -> Unit,
     navigateToRegion: () -> Unit,
     navigateToHome: () -> Unit,
@@ -93,7 +94,10 @@ fun SignUpRoute(
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
         onAddressClick = navigateToRegion,
-        onBackClick = viewModel::deleteCurrentStep,
+        onBackClick = if (uiState.currentStep ==1) {
+            navigateUp
+        } else {
+            viewModel::deleteCurrentStep },
         modifier = modifier,
         onBtnClick = {
             if (uiState.currentStep < MAX_STEP + 1)
@@ -124,8 +128,10 @@ private fun SignUpScreen(
 ) {
     val focusManager = LocalFocusManager.current
 
-    BackHandler (enabled = uiState.currentStep > 0){
-        onBackClick()
+    if(uiState.currentStep > 1){
+        BackHandler() {
+            onBackClick()
+        }
     }
 
     Column(

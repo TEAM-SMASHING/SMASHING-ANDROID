@@ -84,12 +84,15 @@ class SignUpViewModel @Inject constructor(
             .debounce(NETWORK_DEBOUNCE)
             .collectLatest { nickNameText ->
                 val text = nickNameText.toString()
-                val isNickNameValid = TextInputValidator.isTextInputValid(text)
+                val isNickNameValid = TextInputValidator.isTextInputSpecialValid(text)
+                val isNickNameFinished = TextInputValidator.isTextFinished(text)
 
                 if (text.isEmpty()) {
                     _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null, isNickNameAvailable = false) }
                 } else if (text.isBlank() || !isNickNameValid) {
                     _uiState.update { it.copy(nickNameErrorText = INVALID_NICKNAME_FORMAT, nickNameConfirmText = null, isNickNameAvailable = false) }
+                } else if (text.isBlank() || !isNickNameFinished){
+                    _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null, isNickNameAvailable = false) }
                 } else {
                     _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null) }
                     getNickNameAvailable()

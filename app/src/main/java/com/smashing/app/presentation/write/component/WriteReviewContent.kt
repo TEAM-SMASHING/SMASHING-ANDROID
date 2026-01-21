@@ -45,7 +45,7 @@ fun WriteReviewContent(
         modifier = modifier,
     ) {
         Text(
-            text = "${nickname}과의\n경기는 어떠셨나요?",
+            text = "${nickname}님과의\n경기는 어떠셨나요?",
             style = SmashingTheme.typography.xl.semibold20,
             color = SmashingTheme.colors.txtPrimary,
             modifier = Modifier

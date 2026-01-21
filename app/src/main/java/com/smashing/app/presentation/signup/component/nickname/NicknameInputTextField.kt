@@ -74,7 +74,7 @@ fun NicknameInputTextField(
             SmashingBasicTextField(
                 state = state,
                 placeholder = if (isFocused) "" else placeholder,
-                placeholderColor = inputState.getContentColor(),
+                placeholderColor = SmashingTheme.colors.txtDisabled,
                 placeholderStyle = inputState.getTextStyle(),
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
