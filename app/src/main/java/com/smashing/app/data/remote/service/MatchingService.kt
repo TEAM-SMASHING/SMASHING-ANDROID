@@ -70,4 +70,10 @@ interface MatchingService {
         @Path("gameId")
         gameId: String,
     ): BaseResponse<Unit>
+
+    @POST("/api/v1/matchings/profiles/{receiverProfileId}")
+    suspend fun postMatching(
+        @Path("receiverProfileId")
+        receiverProfileId: String,
+    ): BaseResponse<Unit>
 }

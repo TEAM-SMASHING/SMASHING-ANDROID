@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.review.GameReviewResult
+import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.UserProfile
@@ -26,7 +27,8 @@ import javax.inject.Inject
 class UserProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
-    private val reviewRepository: ReviewRepository
+    private val reviewRepository: ReviewRepository,
+    private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
 
     private val userInfo = savedStateHandle.toRoute<UserProfile>()
@@ -169,14 +171,25 @@ class UserProfileViewModel @Inject constructor(
     }
 
     fun requestCompetition() {
-        if (!_uiState.value.isCompeteButtonEnabled) return
 
         viewModelScope.launch {
-            // TODO: 경쟁 신청 API 호출
-            _uiState.update {
-                it.copy(
-                    isCompeteButtonEnabled = false,
-                )
+            _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
+            matchingRepository.postMatching(
+                receiverProfileId = _uiState.value.selectedSportProfileId
+            ).onSuccess { data ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success,
+                    )
+                }
+            }.onFailure { exception ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            exception.message ?: "오류 발생"
+                        )
+                    )
+                }
             }
         }
     }
