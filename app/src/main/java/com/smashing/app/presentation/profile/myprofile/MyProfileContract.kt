@@ -31,8 +31,4 @@ interface MyProfileContract {
             val msg: String,
         ) : MyProfileUiState
     }
-
-    sealed interface SideEffect {
-        data class NavigateToAllReview(val userId: String?): SideEffect
-    }
 }
