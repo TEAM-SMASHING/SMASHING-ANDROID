@@ -176,7 +176,7 @@ private fun MainNavHost(
 
         rankingGraph(
             innerPadding = innerPadding,
-            navigateUp = appState.navController::navigateUp,
+            navController = appState.navController,
         )
 
         tierInfoGraph(
