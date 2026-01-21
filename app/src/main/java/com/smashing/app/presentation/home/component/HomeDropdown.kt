@@ -75,6 +75,8 @@ fun HomeDropdown(
 ) {
     val density = LocalDensity.current
 
+    val lookedMaxLp = maxLp + 1
+
     val transition = updateTransition(
         targetState = isExpanded,
         label = "HomeDropdown"
@@ -189,7 +191,7 @@ fun HomeDropdown(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 SmashingProgressBar(
-                    progress = (lp - minLp) / (maxLp - minLp).toFloat(),
+                    progress = (lp - minLp) / (lookedMaxLp - minLp).toFloat(),
                     modifier = Modifier.fillMaxWidth(),
                 )
 
@@ -201,7 +203,7 @@ fun HomeDropdown(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = (maxLp - minLp).toString(),
+                        text = (lookedMaxLp - minLp).toString(),
                         style = SmashingTheme.typography.md.semibold16,
                         color = SmashingTheme.colors.txtPrimary,
                     )
@@ -219,7 +221,7 @@ fun HomeDropdown(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = maxLp.toString(),
+                        text = lookedMaxLp.toString(),
                         style = SmashingTheme.typography.md.semibold16,
                         color = SmashingTheme.colors.txtPrimary,
                     )
