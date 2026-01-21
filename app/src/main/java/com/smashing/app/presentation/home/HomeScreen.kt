@@ -33,11 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -53,26 +50,29 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
 import com.smashing.app.R.drawable.img_dummy_versus
-import com.smashing.app.core.designsystem.component.image.UrlImage
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.data.model.my.ActiveUserProfile
-import com.smashing.app.presentation.home.component.HomeDropdown
-import com.smashing.app.data.model.rank.UserRank
-import com.smashing.app.presentation.home.component.SportsTierChip
-import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.data.model.matching.AcceptedMatching
+import com.smashing.app.data.model.my.ActiveUserProfile
+import com.smashing.app.data.model.rank.UserRank
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
+import com.smashing.app.presentation.home.component.HomeDropdown
+import com.smashing.app.presentation.home.component.SportsTierChip
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -96,6 +96,11 @@ fun HomeRoute(
         viewModel.fetchRecommendedUserList()
         viewModel.fetchMatchedUser()
     }
+
+    // TODO 토스트 예시
+    val show = LocalToastTrigger.current
+    show.invoke("토스트 테스트입니다.")
+    show.invoke("토스트 테스트입니다.")
 
     HomeScreen(
         uiState = uiState,
@@ -141,18 +146,10 @@ private fun HomeScreen(
     val density = LocalDensity.current
 
     val scrollState = rememberScrollState()
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (available.y < -10) {
-                    updateBottomBar(false)
-                } else if (available.y > 10) {
-                    updateBottomBar(true)
-                }
-                return Offset.Zero
-            }
-        }
-    }
+    val nestedScrollConnection = bottomBarNestedScrollConnection(
+        scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
+        onBottomBarVisibilityChange = updateBottomBar,
+    )
 
     Column(
         modifier = modifier
@@ -259,7 +256,10 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = navigateToMatchingAccepted
+                                    onClick = {
+                                        updateBottomBar(true)
+                                        navigateToMatchingAccepted()
+                                    }
                                 ),
                         )
                     }
@@ -364,7 +364,10 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = navigateToRanking
+                                    onClick = {
+                                        updateBottomBar(true)
+                                        navigateToRanking()
+                                    }
                                 )
                         )
                     }

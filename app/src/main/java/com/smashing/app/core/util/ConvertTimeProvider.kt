@@ -1,23 +1,28 @@
 package com.smashing.app.core.util
 
+import java.time.Duration
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 object ConvertTimeProvider {
     fun convertLocalDateTimeToTime(time: String): String {
+        val createdInstant = parseToInstant(time) ?: return ""
+        val nowInstant = Instant.now().minus(9, ChronoUnit.HOURS)
 
-        val createdTime = parseToLocalDateTime(time) ?: return ""
+        val createdUtc = ZonedDateTime.ofInstant(createdInstant, ZoneId.of("UTC"))
+        val nowUtc = ZonedDateTime.ofInstant(nowInstant, ZoneId.of("UTC"))
 
-        val now = LocalDateTime.now(ZoneId.systemDefault())
-
-        val minutes = ChronoUnit.MINUTES.between(createdTime, now)
-        val hours = ChronoUnit.HOURS.between(createdTime, now)
-        val days = ChronoUnit.DAYS.between(createdTime, now)
-        val weeks = ChronoUnit.WEEKS.between(createdTime, now)
-        val months = ChronoUnit.MONTHS.between(createdTime, now)
-        val years = ChronoUnit.YEARS.between(createdTime, now)
+        val duration = Duration.between(createdInstant, nowInstant)
+        val minutes = duration.toMinutes()
+        val hours = duration.toHours()
+        val days = duration.toDays()
+        val weeks = days / 7
+        val months = ChronoUnit.MONTHS.between(createdUtc, nowUtc)
+        val years = ChronoUnit.YEARS.between(createdUtc, nowUtc)
 
         val convertedTime = when {
             minutes < 1 -> "방금 전"
@@ -32,8 +37,12 @@ object ConvertTimeProvider {
         return convertedTime
     }
 
-    private fun parseToLocalDateTime(time: String): LocalDateTime? =
-        runCatching { OffsetDateTime.parse(time).toLocalDateTime() }
-            .recoverCatching { LocalDateTime.parse(time) }
+    private fun parseToInstant(time: String): Instant? =
+        runCatching {
+            OffsetDateTime.parse(time).toInstant()
+        }
+            .recoverCatching {
+                LocalDateTime.parse(time).atZone(ZoneId.of("UTC")).toInstant()
+            }
             .getOrNull()
 }
