@@ -94,12 +94,9 @@ private fun MainNavHost(
 
         profileGraph(
             innerPadding = innerPadding,
-            navigateUp = appState.navController::navigateUp,
-            navigateToReview = appState.navController::navigateToReview,
+            navController = appState.navController,
             updateBottomBar = appState::updateBottomBarVisible,
-            navigateToAddSports = appState.navController::navigateToAddSports,
         )
-
         loginGraph(
             navigateToSignUp = { kakaoId ->
                 appState.navController.navigateToSignUp(

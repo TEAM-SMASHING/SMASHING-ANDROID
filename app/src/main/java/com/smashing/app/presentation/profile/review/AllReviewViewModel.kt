@@ -6,14 +6,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
 import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
-import com.smashing.app.data.repository.api.MyRepository
-import com.smashing.app.data.repository.api.UserRepository
 import jakarta.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +24,6 @@ import kotlinx.coroutines.launch
 class AllReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
-    private val myRepository: MyRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {
 
@@ -43,6 +41,7 @@ class AllReviewViewModel @Inject constructor(
     private var isLoading: Boolean = false
 
     init {
+        fetchMyRecentReviewStats()
         if (userId == null && isUser) {
             fetchReviews(true)
         } else {
@@ -136,12 +135,12 @@ class AllReviewViewModel @Inject constructor(
 
             if (isInit) {
                 _uiState.update {
-                    it.copy(loadState = ReviewUiState.Loading)
+                    it.copy(reviewUiState = ReviewUiState.Loading)
                 }
                 nextCursor = null
             }
 
-            myRepository.getMyGameReviews(
+            reviewRepository.getMyGameReviews(
                 cursor = if (isInit) null else nextCursor,
                 size = PAGE_SIZE
             )
@@ -157,22 +156,49 @@ class AllReviewViewModel @Inject constructor(
                         }
 
                         currentState.copy(
-                            loadState = ReviewUiState.Success,
+                            reviewUiState = ReviewUiState.Success,
                             gameReview = newReviews
                         )
                     }
                 }
                 .onFailure { exception ->
-                    exception.printStackTrace()
                     _uiState.update {
                         it.copy(
-                            loadState = ReviewUiState.Failure(
+                            reviewUiState = ReviewUiState.Failure(
                                 exception.message ?: "리뷰를 불러오는데 실패했습니다."
                             )
                         )
                     }
                 }
             isLoading = false
+        }
+    }
+
+    fun fetchMyRecentReviewStats() = viewModelScope.launch {
+        reviewRepository.getUserRecentReviewStats(
+        ).onSuccess { data ->
+            _uiState.update { currentState ->
+                currentState.copy(
+                    loadState = ReviewUiState.Success,
+                    gameReviewResult = GameReviewResult(
+                        bestCount = data.bestCount,
+                        goodCount = data.goodCount,
+                        badCount = data.badCount,
+                        goodMannerCount = data.goodMannerCount,
+                        onTimeCount = data.onTimeCount,
+                        fairPlayCount = data.fairPlayCount,
+                        fastResponseCount = data.fastResponseCount,
+                    ),
+                )
+            }
+        }.onFailure { exception ->
+            _uiState.update {
+                it.copy(
+                    loadState = ReviewUiState.Failure(
+                        exception.message ?: "오류 발생"
+                    )
+                )
+            }
         }
     }
 
