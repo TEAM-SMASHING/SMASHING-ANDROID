@@ -45,7 +45,10 @@ fun NoticeRoute(
         onBackBtnClick = navigateUp,
         onLoadMore = viewModel::loadMore,
         onNoticeClick = { notice ->
-            viewModel.readNotification(notice.notificationId)
+            if (!notice.isRead) {
+                viewModel.readNotification(notice.notificationId)
+            }
+            
             when (notice.notificationType) {
                 NotificationType.MATCHING_REQUESTED -> {
                     navigateToMatching(MatchingType.RECEIVE)
