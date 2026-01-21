@@ -14,6 +14,8 @@ import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
+import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
@@ -80,26 +82,26 @@ private fun MainNavHost(
         homeGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
+            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         searchGraph(
             navController = appState.navController,
+            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         matchingGraph(
             innerPadding = innerPadding,
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
+            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         profileGraph(
             innerPadding = innerPadding,
-            navigateUp = appState.navController::navigateUp,
-            navigateToReview = appState.navController::navigateToReview,
+            navController = appState.navController,
             updateBottomBar = appState::updateBottomBarVisible,
-            navigateToAddSports = appState.navController::navigateToAddSports,
         )
-
         loginGraph(
             navigateToSignUp = { kakaoId ->
                 appState.navController.navigateToSignUp(
@@ -151,6 +153,11 @@ private fun MainNavHost(
 
         noticeGraph(
             navigateUp = appState.navController::navigateUp,
+            navigateToMatching = { initialTab ->
+                appState.navController.navigateToMatching(
+                    initTab = initialTab,
+                )
+            },
             innerPadding = innerPadding,
         )
 
@@ -183,8 +190,13 @@ private fun MainNavHost(
             innerPadding = innerPadding,
             navController = appState.navController,
         )
+
         addSportsGraph(
             navigateUp = appState.navController::navigateUp,
+        )
+
+        confirmReviewGraph(
+            navigateUp =  appState.navController::navigateUp,
         )
     }
 }

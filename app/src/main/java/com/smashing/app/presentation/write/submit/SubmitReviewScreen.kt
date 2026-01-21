@@ -18,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +64,6 @@ fun SubmitReviewRoute(
         onDoneClick = viewModel::submitGame,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
-        isButtonEnabled = uiState.isButtonEnabled,
         modifier = modifier,
     )
 }
@@ -78,11 +76,11 @@ private fun SubmitReviewScreen(
     onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
     onDoneClick: () -> Unit,
-    isButtonEnabled: Boolean,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val focusManager = LocalFocusManager.current
+    val isButtonEnabled = uiState.selectedRating != null
 
     var isAlertDialogOpen by remember { mutableStateOf(false) }
     var isConfirmDialogOpen by remember { mutableStateOf(false) }
@@ -133,12 +131,12 @@ private fun SubmitReviewScreen(
         if (isAlertDialogOpen) {
             SmashingDialog(
                 title = "매칭 결과를 제출하시겠습니까?",
-                subtitle = "정확한 경기 결과각 아닐 경우 반려될 수 있어요.",
+                subtitle = "정확한 경기 결과가 아닐 경우 반려될 수 있어요.",
                 type = DialogStyle.ALERT,
                 confirmText = "제출하기",
                 dismissText = "아니요",
                 onDismissRequest = { isAlertDialogOpen = false },
-                onConfirmClick = onDoneClick, // TODO: 제출하기
+                onConfirmClick = onDoneClick,
             )
         }
 
@@ -164,7 +162,6 @@ private fun SubmitReviewScreenPreview() {
             reviewTextFieldState = TextFieldState(),
             onBackClick = {},
             onDoneClick = {},
-            isButtonEnabled = true,
             onReviewTagClick = {},
             onReviewRatingClick = {},
             modifier = Modifier,

@@ -34,6 +34,7 @@ fun NavController.navigateToRegionChange(
 fun NavGraphBuilder.homeGraph(
     innerPadding: PaddingValues,
     navController: NavController,
+    updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Home>(
         startDestination = HomeUser,
@@ -54,6 +55,7 @@ fun NavGraphBuilder.homeGraph(
                     navController.navigateToUserProfile(userId = userId)
                 },
                 navigateToSportAdd = navController::navigateToAddSports,
+                updateBottomBar = updateBottomBar,
             )
         }
 

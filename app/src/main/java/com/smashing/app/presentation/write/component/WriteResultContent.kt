@@ -23,31 +23,28 @@ import com.smashing.app.R.string.submit_score
 import com.smashing.app.R.string.submit_title
 import com.smashing.app.R.string.submit_winner
 import com.smashing.app.R.string.zero_label
-import com.smashing.app.R.string.submit_description
 import com.smashing.app.core.designsystem.component.dropdown.SmashingWinnerDropdown
 import com.smashing.app.core.designsystem.component.textfield.ScoreInputTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.intValue
-import com.smashing.app.presentation.write.model.MatchPlayer
+import com.smashing.app.presentation.write.model.PlayerInfo
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun WriteResultContent(
-    submitter: MatchPlayer,
-    receiver: MatchPlayer,
-    submitterScore: Int,
-    receiverScore: Int,
-    winner: MatchPlayer?,
+    submitter: PlayerInfo,
+    receiver: PlayerInfo,
+    winnerId: String?,
     leftTextFieldState: TextFieldState,
     rightTextFieldState: TextFieldState,
-    onWinnerSelected: (String) -> Unit,
-    onLeftDoneClick: (Int) -> Unit,
-    onRightDoneClick: (Int) -> Unit,
-    isTextFieldsEnabled: Boolean = true,
     modifier: Modifier = Modifier,
+    isTextFieldsEnabled: Boolean = true,
     title: String = stringResource(submit_title),
-    subTitle: String = stringResource(submit_description),
+    subTitle: String? = null,
+    onWinnerSelected: (String) -> Unit = {},
+    onLeftDoneClick: (Int) -> Unit = {},
+    onRightDoneClick: (Int) -> Unit = {},
 ) {
     val dropDownList = persistentListOf(
         submitter.name,
@@ -64,18 +61,18 @@ fun WriteResultContent(
             style = SmashingTheme.typography.xl.semibold20,
         )
 
-        Text(
-            text = subTitle,
-            color = SmashingTheme.colors.txtTertiary,
-            style = SmashingTheme.typography.sm.medium14,
-        )
+        subTitle?.let {
+            Text(
+                text = subTitle,
+                color = SmashingTheme.colors.txtTertiary,
+                style = SmashingTheme.typography.sm.medium14,
+            )
+        }
 
         SubmitScoreCard(
             submitter = submitter,
-            submitterScore = submitterScore,
             receiver = receiver,
-            receiverScore = receiverScore,
-            winner = winner,
+            winnerId = winnerId,
             modifier = Modifier.padding(top = 28.dp),
         )
 
@@ -86,8 +83,14 @@ fun WriteResultContent(
         ) {
             val (winnerLabel, scoreLabel, winnerDropdown, scoreRow) = createRefs()
 
+            val winnerName = when (winnerId) {
+                submitter.userId -> submitter.name
+                receiver.userId -> receiver.name
+                else -> null
+            }
+
             SmashingWinnerDropdown(
-                selectedItem = winner?.name,
+                selectedItem = winnerName,
                 items = dropDownList,
                 onClick = onWinnerSelected,
                 enabled = isTextFieldsEnabled,
@@ -189,11 +192,9 @@ private fun AccentAsteriskLabel(
 private fun WriteResultPreview() {
     SmashingAndroidTheme {
         WriteResultContent(
-            submitter = MatchPlayer("Submitter", "1"),
-            receiver = MatchPlayer("Receiver", "2"),
-            submitterScore = 4,
-            receiverScore = 5,
-            winner = null,
+            submitter = PlayerInfo(userId = "1", name = "Submitter", score = 4),
+            receiver = PlayerInfo(userId = "2", name = "Receiver", score = 5),
+            winnerId = "1",
             leftTextFieldState = TextFieldState(),
             rightTextFieldState = TextFieldState(),
             onWinnerSelected = {},

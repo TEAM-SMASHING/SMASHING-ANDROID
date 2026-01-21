@@ -10,7 +10,7 @@ import com.smashing.app.data.repository.api.GameRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
-import com.smashing.app.presentation.write.model.MatchPlayer
+import com.smashing.app.presentation.write.model.PlayerInfo
 import com.smashing.app.presentation.write.navigation.Submit
 import com.smashing.app.presentation.write.submit.SubmitContract.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,8 +48,8 @@ class SubmitViewModel @Inject constructor(
         
         _uiState.update { state ->
             state.copy(
-                submitter = MatchPlayer(userId = currentUserId, name = currentUserNickname),
-                receiver = MatchPlayer(userId = opponentUserId, name = opponentNickname),
+                submitter = PlayerInfo(userId = currentUserId, name = currentUserNickname, score = 0),
+                receiver = PlayerInfo(userId = opponentUserId, name = opponentNickname, score = 0),
             )
         }
     }
@@ -62,39 +62,41 @@ class SubmitViewModel @Inject constructor(
     val reviewTextFieldState: TextFieldState = TextFieldState()
 
     fun updateSelectedWinner(winnerName: String) = _uiState.update { state ->
-        val isSubmitterWinner = winnerName == state.submitter.name
-        val winner = if (isSubmitterWinner) state.submitter else state.receiver
-        val loser = if (isSubmitterWinner) state.receiver else state.submitter
+        val winnerId = if (winnerName == state.submitter.name) state.submitter.userId else state.receiver.userId
+        val isSubmitterWinner = winnerId == state.submitter.userId
         state.copy(
-            winner = winner,
-            loser = loser,
+            winnerId = winnerId,
             isButtonEnabled = isScoreMatchingWinner(
                 isSubmitterWinner = isSubmitterWinner,
-                submitterScore = state.submitterScore,
-                receiverScore = state.receiverScore,
+                submitterScore = state.submitter.score,
+                receiverScore = state.receiver.score,
             ),
         )
     }
 
     fun updateSubmitterScore(score: Int) = _uiState.update { state ->
-        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
+        val updatedSubmitter = state.submitter.copy(score = score)
+        val isSubmitterWinner = state.winnerId == updatedSubmitter.userId
+        
         state.copy(
-            submitterScore = score,
-            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
+            submitter = updatedSubmitter,
+            isButtonEnabled = state.winnerId != null && isScoreMatchingWinner(
                 isSubmitterWinner = isSubmitterWinner,
                 submitterScore = score,
-                receiverScore = state.receiverScore,
+                receiverScore = state.receiver.score,
             ),
         )
     }
 
     fun updateReceiverScore(score: Int) = _uiState.update { state ->
-        val isSubmitterWinner = state.winner?.userId == state.submitter.userId
+        val updatedReceiver = state.receiver.copy(score = score)
+        val isSubmitterWinner = state.winnerId == state.submitter.userId
+        
         state.copy(
-            receiverScore = score,
-            isButtonEnabled = state.winner != null && isScoreMatchingWinner(
+            receiver = updatedReceiver,
+            isButtonEnabled = state.winnerId != null && isScoreMatchingWinner(
                 isSubmitterWinner = isSubmitterWinner,
-                submitterScore = state.submitterScore,
+                submitterScore = state.submitter.score,
                 receiverScore = score,
             ),
         )
@@ -128,12 +130,17 @@ class SubmitViewModel @Inject constructor(
 
     fun submitGame() = viewModelScope.launch {
         val state = _uiState.value
-        val winner = state.winner
-        val loser = state.loser
+        val winnerId = state.winnerId
 
-        if (winner == null || loser == null) return@launch
+        if (winnerId == null) return@launch
 
         _uiState.update { it.copy(submitUiState = SubmitContract.SubmitUiState.Loading) }
+
+        val isSubmitterWinner = winnerId == state.submitter.userId
+        val (winnerScore, loserScore) = if (isSubmitterWinner) state.submitter.score to state.receiver.score
+        else state.receiver.score to state.submitter.score
+        
+        val loserId = if (isSubmitterWinner) state.receiver.userId else state.submitter.userId
 
         val review = if (!isFirstAttempt) null else
             state.selectedRating?.let { rating ->
@@ -145,10 +152,10 @@ class SubmitViewModel @Inject constructor(
             }
 
         val gameSubmission = GameSubmission(
-            winnerUserId = winner.userId,
-            loserUserId = loser.userId,
-            winnerScore = if (winner.userId == state.submitter.userId) state.submitterScore else state.receiverScore,
-            loserScore = if (loser.userId == state.submitter.userId) state.submitterScore else state.receiverScore,
+            winnerUserId = winnerId,
+            loserUserId = loserId,
+            winnerScore = winnerScore,
+            loserScore = loserScore,
             review = review,
         )
 

@@ -17,7 +17,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,6 +46,7 @@ fun SearchMainRoute(
     navigateToRegionChange: () -> Unit,
     navigateToSearchInput: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
+    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -65,6 +71,7 @@ fun SearchMainRoute(
         onGenderApplyClick = viewModel::applyGenderItem,
         onDeleteTierFilter = viewModel::clearFilterTier,
         onDeleteGenderFilter = viewModel::clearFilterGender,
+        updateBottomBar = updateBottomBar,
         modifier = modifier,
     )
 }
@@ -88,10 +95,24 @@ private fun SearchMainScreen(
     onGenderApplyClick: () -> Unit,
     onDeleteTierFilter: () -> Unit,
     onDeleteGenderFilter: () -> Unit,
+    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     val listState = rememberLazyGridState()
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                if (available.y < -10) {
+                    updateBottomBar(false)
+                } else if (available.y > 10) {
+                    updateBottomBar(true)
+                }
+                return Offset.Zero
+            }
+        }
+    }
 
     LaunchedEffect(uiState.searchList) {
         listState.scrollToItem(0)
@@ -169,6 +190,7 @@ private fun SearchMainScreen(
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = modifier
+                    .nestedScroll(nestedScrollConnection)
                     .padding(horizontal = 16.dp, vertical = 10.dp),
                 state = listState,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -221,6 +243,7 @@ private fun SearchScreenPreview() {
             onGenderApplyClick = {},
             onDeleteTierFilter = {},
             onDeleteGenderFilter = {},
+            updateBottomBar = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }
