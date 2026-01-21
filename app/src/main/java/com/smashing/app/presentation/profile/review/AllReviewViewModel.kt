@@ -162,7 +162,6 @@ class AllReviewViewModel @Inject constructor(
                     }
                 }
                 .onFailure { exception ->
-                    exception.printStackTrace()
                     _uiState.update {
                         it.copy(
                             reviewUiState = ReviewUiState.Failure(
