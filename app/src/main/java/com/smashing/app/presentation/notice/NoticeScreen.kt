@@ -17,7 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.core.designsystem.component.appicon.AppIcon
-import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -26,12 +25,14 @@ import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.data.type.NotificationType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.domain.model.Notification
+import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.component.NoticeItem
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun NoticeRoute(
     navigateUp: () -> Unit,
+    navigateToMatching: (MatchingType) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NoticeViewModel = hiltViewModel(),
 ) {
@@ -42,6 +43,16 @@ fun NoticeRoute(
         uiState = uiState,
         onBackBtnClick = navigateUp,
         onLoadMore = viewModel::loadMore,
+        onNoticeClick = { notice ->
+            viewModel.readNotification(notice.notificationId)
+            when (notice.notificationType) {
+                NotificationType.MATCHING_REQUESTED,
+                NotificationType.MATCHING_ACCEPTED,
+                NotificationType.MATCHING_RESULT_SUBMITTED,
+                -> navigateToMatching(MatchingType.ACCEPTED)
+                else -> Unit
+            }
+        },
     )
 }
 
@@ -50,6 +61,7 @@ private fun NoticeScreen(
     uiState: NoticeContract.State,
     onBackBtnClick: () -> Unit,
     onLoadMore: () -> Unit,
+    onNoticeClick: (Notification) -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
@@ -95,7 +107,7 @@ private fun NoticeScreen(
                         isRead = it.isRead,
                         timeAgo = it.timeAgo,
                         nickname = it.nickname,
-                        onItemClick = {}, // TODO 추후 라우팅 로직 추가
+                        onItemClick = { onNoticeClick(it) },
                     )
                 }
             }
@@ -141,6 +153,7 @@ private fun NoticeScreenPreview() {
             uiState = NoticeContract.State(noticeList = mockList),
             onBackBtnClick = {},
             onLoadMore = {},
+            onNoticeClick = {},
         )
     }
 }
