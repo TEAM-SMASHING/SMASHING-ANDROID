@@ -3,6 +3,7 @@ package com.smashing.app.presentation.notice
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.NotificationRepository
+import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.domain.model.Notification
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NoticeViewModel @Inject constructor(
     private val notificationRepository: NotificationRepository,
+    private val myRepository: ReviewRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(NoticeContract.State())
     val uiState = _uiState.asStateFlow()
@@ -64,7 +66,17 @@ class NoticeViewModel @Inject constructor(
         notificationRepository.putNotificationRead(
             notificationId = notificationId,
         ).onSuccess {
+            _uiState.update { state ->
+                val updatedList = state.noticeList.map { notice ->
+                    if (notice.notificationId == notificationId && !notice.isRead) {
+                        notice.copy(isRead = true)
+                    } else {
+                        notice
+                    }
+                }.toImmutableList()
 
+                state.copy(noticeList = updatedList)
+            }
         }.onFailure {
             updateNoticeUiState(NoticeUiState.Failure(it.message ?: "Read Notification Error"))
         }
@@ -79,12 +91,6 @@ class NoticeViewModel @Inject constructor(
     fun updateIsChangeDialogVisible(isVisible: Boolean) = _uiState.update {
         it.copy(
             isChangeDialogVisible = isVisible,
-        )
-    }
-
-    fun updateSelectedNoticeItem(noticeItem: Notification) = _uiState.update {
-        it.copy(
-            selectedNoticeItem = noticeItem,
         )
     }
 

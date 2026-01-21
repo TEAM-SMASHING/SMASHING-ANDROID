@@ -18,7 +18,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.core.designsystem.component.appicon.AppIcon
+import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -49,7 +51,7 @@ fun NoticeRoute(
             if (!notice.isRead) {
                 viewModel.readNotification(notice.notificationId)
             }
-            
+
             when (notice.notificationType) {
                 NotificationType.MATCHING_REQUESTED -> {
                     navigateToMatching(MatchingType.RECEIVE)
@@ -137,15 +139,19 @@ private fun NoticeScreen(
                 isLoading = uiState.loadState is NoticeUiState.Loading,
             )
 
-//            if (uiState.isChangeDialogVisible) {
-//                SmashingDialog(
-//                    title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
-//                    subtitle = "종목은 재변경 가능합니다.",
-//                    confirmText = "변경하기",
-//                    dismissText = "아니요",
-//                    onConfirmClick =
-//                )
-//            }
+            if (uiState.isChangeDialogVisible) {
+                SmashingDialog(
+                    title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
+                    subtitle = "종목은 재변경 가능합니다.",
+                    type = DialogStyle.ALERT,
+                    confirmText = "변경하기",
+                    dismissText = "아니요",
+                    onConfirmClick = {},
+                    onDismissClick = {},
+                    onDismissRequest = {},
+
+                )
+            }
         }
     }
 }
