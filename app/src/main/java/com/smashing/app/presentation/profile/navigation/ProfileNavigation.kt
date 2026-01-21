@@ -13,6 +13,7 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
+import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMyProfile(
@@ -38,6 +39,7 @@ fun NavGraphBuilder.profileGraph(
     navigateToReview: (String?) -> Unit,
     navigateToAddSports: () -> Unit,
     innerPadding: PaddingValues,
+    navController: NavController,
     updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Profile>(
@@ -46,12 +48,17 @@ fun NavGraphBuilder.profileGraph(
         composable<MyProfile> {
             MyProfileRoute(
                 navigateToSportAdd = navigateToAddSports,
-                navigateToTierGuide = {},
                 navigateToReview = navigateToReview,
                 updateBottomBar = updateBottomBar,
+                navigateToTierInfo = { tierInfoStyle, sportType ->
+                    navController.navigateToTierInfo(
+                        tierName = tierInfoStyle.name,
+                        sportName = sportType.code
+                    )
+                },
             )
         }
-        composable<UserProfile>{
+        composable<UserProfile> {
             UserProfileRoute(
                 navigateToReview = navigateToReview,
             )
