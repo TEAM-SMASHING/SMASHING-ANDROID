@@ -20,12 +20,14 @@ fun NavGraphBuilder.noticeGraph(
     innerPadding: PaddingValues,
     navigateUp: () -> Unit,
     navigateToMatching: (MatchingType) -> Unit,
+    navigateToConfirmReview: (String) -> Unit,
 ) {
     composable<Notice> {
         NoticeRoute(
             modifier = Modifier.padding(innerPadding),
             navigateUp = navigateUp,
             navigateToMatching = navigateToMatching,
+            navigateToConfirmReview = navigateToConfirmReview,
         )
     }
 }
