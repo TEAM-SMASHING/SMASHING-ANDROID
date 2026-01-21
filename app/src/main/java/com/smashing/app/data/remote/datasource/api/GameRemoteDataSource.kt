@@ -6,7 +6,7 @@ import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionResponse
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
+import com.smashing.app.data.type.ConfirmDenyType
 
 interface GameRemoteDataSource {
 

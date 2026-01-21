@@ -13,7 +13,7 @@ import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.confirm.ConfirmContract.ConfirmUiState
 import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmResultSideEffect
 import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmReviewSideEffect
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
+import com.smashing.app.data.type.ConfirmDenyType
 import com.smashing.app.presentation.write.model.PlayerInfo
 import com.smashing.app.presentation.write.navigation.Confirm
 import dagger.hilt.android.lifecycle.HiltViewModel

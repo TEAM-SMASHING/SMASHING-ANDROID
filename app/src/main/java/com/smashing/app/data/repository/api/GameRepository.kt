@@ -3,7 +3,7 @@ package com.smashing.app.data.repository.api
 import com.smashing.app.data.model.game.GameSubmission
 import com.smashing.app.data.model.game.GameSubmissionDetail
 import com.smashing.app.data.model.game.SubmissionConfirm
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
+import com.smashing.app.data.type.ConfirmDenyType
 
 interface GameRepository {
 

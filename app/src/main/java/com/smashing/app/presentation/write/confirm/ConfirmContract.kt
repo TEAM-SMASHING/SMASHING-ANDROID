@@ -3,7 +3,7 @@ package com.smashing.app.presentation.write.confirm
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
+import com.smashing.app.data.type.ConfirmDenyType
 import com.smashing.app.presentation.write.model.PlayerInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet

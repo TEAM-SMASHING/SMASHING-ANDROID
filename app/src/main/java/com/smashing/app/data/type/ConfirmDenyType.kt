@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.write.confirm.type
+package com.smashing.app.data.type
 
 enum class ConfirmDenyType(val description: String) {
     WIN_LOSE_REVERSED("승자가 잘못됐어요"),

@@ -1,6 +1,6 @@
 package com.smashing.app.data.remote.dto.game
 
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
+import com.smashing.app.data.type.ConfirmDenyType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

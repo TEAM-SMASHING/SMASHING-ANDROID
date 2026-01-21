@@ -39,7 +39,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.write.component.WriteResultContent
 import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmResultSideEffect
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
+import com.smashing.app.data.type.ConfirmDenyType
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.filterIsInstance
 

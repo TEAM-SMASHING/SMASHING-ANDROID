@@ -9,7 +9,7 @@ import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.remote.datasource.api.GameRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.GameRepository
-import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
+import com.smashing.app.data.type.ConfirmDenyType
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(
