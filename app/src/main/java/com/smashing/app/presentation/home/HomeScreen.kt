@@ -71,11 +71,8 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
-import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.util.ScrollStateHolder
 import com.smashing.app.core.util.bottomBarNestedScrollConnection
-import com.smashing.app.data.model.matching.AcceptedMatching
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
