@@ -229,7 +229,7 @@ val defaultSmashingColors = SmashingColors(
     stateCheck = primary100,
     stateWarning = redMain,
     stateSuccess = greenMain,
-    stateProgressTrack = gray300,
+    stateProgressTrack = gray700,
     stateProgressFill = primary200,
 )
 val LocalSmashingColors = staticCompositionLocalOf { defaultSmashingColors }
