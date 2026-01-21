@@ -65,12 +65,12 @@ fun HomeDropdown(
     maxLp: Int,
     winCount: Int,
     loseCount: Int,
-    onSportChipClick: () -> Unit,
-    onSportAddClick: () -> Unit,
+    onSportChipClick: (String) -> Unit,
     onTierClick: () -> Unit,
     onDismiss: () -> Unit,
     triggerHeight: Dp,
     modifier: Modifier = Modifier,
+    onSportAddClick: (() -> Unit)? = null,
     isExpanded: Boolean = false,
 ) {
     val density = LocalDensity.current
@@ -158,14 +158,16 @@ fun HomeDropdown(
                         SmashingChip(
                             text = sport.sportCode.sportName,
                             style = if (sport.isActive) ChipStyle.ACTIVE else ChipStyle.DISABLED,
-                            onClick = onSportChipClick,
+                            onClick = { onSportChipClick(sport.profileId) },  // profileId 전달
                         )
                     }
-                    SmashingChip(
-                        icon = ImageVector.vectorResource(ic_plus),
-                        style = ChipStyle.DISABLED,
-                        onClick = onSportAddClick,
-                    )
+                    if (onSportAddClick != null) {
+                        SmashingChip(
+                            icon = ImageVector.vectorResource(ic_plus),
+                            style = ChipStyle.DISABLED,
+                            onClick = onSportAddClick,
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

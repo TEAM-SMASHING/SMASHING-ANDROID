@@ -105,6 +105,36 @@ class HomeViewModel @Inject constructor(
             }
     }
 
+    fun fetchSelectSportProfile(profileId: String) {
+        val currentState = uiState.value
+        if (currentState.activeUserProfile?.profileId == profileId) return
+
+        val optimisticList = currentState.allUserProfiles.map { profile ->
+            if (profile.profileId == profileId) {
+                profile.copy(isActive = true)
+            } else {
+                profile.copy(isActive = false)
+            }
+        }.toImmutableList()
+
+        _uiState.update {
+            it.copy(allUserProfiles = optimisticList)
+        }
+
+        viewModelScope.launch {
+            myRepository.switchActiveMyProfile(profileId)
+                .onSuccess {
+                    fetchMyTierProfile()  // 프로필 정보 새로고침
+                    fetchRegionRankerList()  // 랭킹 새로고침 (스포츠 변경 시 필요할 수 있음)
+                    fetchRecommendedUserList()  // 추천 유저 새로고침
+                }
+                .onFailure { throwable ->
+                    Timber.tag("HomeViewModel").e(throwable, "Failed to switch sport profile")
+                    fetchMyTierProfile()
+                }
+        }
+    }
+
     private fun createDummyMatchedUser(): DummyMatchedUser? {
         return DummyMatchedUser(
             userId = "matchedUser1",

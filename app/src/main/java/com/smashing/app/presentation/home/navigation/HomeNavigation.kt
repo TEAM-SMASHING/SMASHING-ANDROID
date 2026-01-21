@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
@@ -52,6 +53,7 @@ fun NavGraphBuilder.homeGraph(
                 navigateToUserProfile = { userId ->
                     navController.navigateToUserProfile(userId = userId)
                 },
+                navigateToSportAdd = navController::navigateToAddSports,
             )
         }
 
