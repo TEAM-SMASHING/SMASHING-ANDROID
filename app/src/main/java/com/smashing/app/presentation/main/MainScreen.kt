@@ -150,6 +150,11 @@ private fun MainNavHost(
 
         noticeGraph(
             navigateUp = appState.navController::navigateUp,
+            navigateToMatching = { initialTab ->
+                appState.navController.navigateToMatching(
+                    initTab = initialTab,
+                )
+            },
             innerPadding = innerPadding,
         )
 
