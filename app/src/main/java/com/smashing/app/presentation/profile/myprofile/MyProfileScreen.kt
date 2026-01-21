@@ -138,8 +138,8 @@ private fun MyProfileScreen(
                 onSportClick = onSportClick,
                 tierIconResId = uiState.profileInfo.tierType.img(),
                 progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
-                lpStatus = uiState.profileInfo.maxLp - uiState.profileInfo.lp,
-                totalLp = uiState.profileInfo.maxLp,
+                lpStatus = (uiState.profileInfo.maxLp - uiState.profileInfo.lp) + 1,
+                totalLp = (uiState.profileInfo.maxLp) + 1,
                 onAddSportClick = if (isMaxProfileReached) null else onAddSportClick,
                 onTierInfoClick = navigateToTierInfo,
             )

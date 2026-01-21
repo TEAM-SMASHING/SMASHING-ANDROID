@@ -53,6 +53,7 @@ private const val BTN_WEIGHT = 131f / 185f
 fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
     navigateToSentMatching: () -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
 ) {
@@ -74,6 +75,7 @@ fun UserProfileRoute(
         reviews = uiState.gameReview,
         onYesClick = viewModel::onYesClick,
         onNoClick = viewModel::onNoClick,
+        onBackClick = navigateUp,
         onReviewClick = viewModel::navigateToAllReview,
         updateBottomBar = {},
         onCompeteClick = viewModel::requestCompetition,
@@ -88,6 +90,7 @@ private fun UserProfileScreen(
     uiState: UserProfileContract.State,
     reviews: ImmutableList<GameReview>,
     onReviewClick: () -> Unit,
+    onBackClick: () -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     onYesClick: () -> Unit,
     onNoClick: () -> Unit,
@@ -120,8 +123,8 @@ private fun UserProfileScreen(
 
         SmashingDefaultTopBar(
             title = stringResource(profile),
-            topBarType = TopBarType.DEFAULT,
-            onClick = null,
+            topBarType = TopBarType.BACK,
+            onClick = onBackClick,
         )
 
         Column(
@@ -165,8 +168,8 @@ private fun UserProfileScreen(
                 selectedProfileId = uiState.selectedSportProfileId,
                 tierIconResId = uiState.profileInfo.tierType.img(),
                 progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
-                lpStatus = uiState.profileInfo.maxLp - uiState.profileInfo.lp,
-                totalLp = uiState.profileInfo.maxLp,
+                lpStatus = (uiState.profileInfo.maxLp - uiState.profileInfo.lp) + 1,
+                totalLp = (uiState.profileInfo.maxLp) + 1,
             )
 
             ProfileStatsBar(
@@ -182,7 +185,6 @@ private fun UserProfileScreen(
                 badCount = uiState.gameReviewResult.badCount,
             )
         }
-    }
 
     if (uiState.isCompeteButtonEnabled == false) {
         Row(
@@ -207,6 +209,7 @@ private fun UserProfileScreen(
         }
     }
 }
+}
 
 
 @Preview(showBackground = true)
@@ -223,6 +226,7 @@ private fun ProfileScreenPreview() {
             onCompeteClick = {},
             onConfirmClick = {},
             onDialogDismissClick = {},
+            onBackClick = {},
         )
     }
 }
