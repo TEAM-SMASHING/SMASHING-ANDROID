@@ -64,7 +64,6 @@ fun SubmitReviewRoute(
         onDoneClick = viewModel::submitGame,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
-        isButtonEnabled = uiState.isButtonEnabled,
         modifier = modifier,
     )
 }
@@ -77,11 +76,11 @@ private fun SubmitReviewScreen(
     onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
     onDoneClick: () -> Unit,
-    isButtonEnabled: Boolean,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val focusManager = LocalFocusManager.current
+    val isButtonEnabled = uiState.selectedRating != null
 
     var isAlertDialogOpen by remember { mutableStateOf(false) }
     var isConfirmDialogOpen by remember { mutableStateOf(false) }
@@ -163,7 +162,6 @@ private fun SubmitReviewScreenPreview() {
             reviewTextFieldState = TextFieldState(),
             onBackClick = {},
             onDoneClick = {},
-            isButtonEnabled = true,
             onReviewTagClick = {},
             onReviewRatingClick = {},
             modifier = Modifier,
