@@ -28,7 +28,7 @@ class GameRemoteDataSourceImpl @Inject constructor(
     override suspend fun postConfirmSubmission(
         gameId: String,
         submissionId: String,
-        request: PostConfirmSubmissionRequest,
+        request: PostConfirmSubmissionRequest?,
     ): BaseResponse<PostConfirmSubmissionResponse> =
         gameService.postConfirmSubmission(
             gameId = gameId,

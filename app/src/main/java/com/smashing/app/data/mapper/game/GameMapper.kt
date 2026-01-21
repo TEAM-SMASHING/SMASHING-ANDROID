@@ -26,14 +26,16 @@ private fun GameSubmission.Review.toDto(): PostGameSubmissionRequest.Review {
     )
 }
 
-fun SubmissionConfirm.toRequest(): PostConfirmSubmissionRequest {
-    return PostConfirmSubmissionRequest(
-        review = ReviewRequest(
-            rating = rating,
-            content = content,
-            tags = tags,
+fun SubmissionConfirm?.toRequest(): PostConfirmSubmissionRequest? {
+    return this?.let {
+        PostConfirmSubmissionRequest(
+            review = ReviewRequest(
+                rating = it.rating,
+                content = it.content,
+                tags = it.tags,
+            )
         )
-    )
+    }
 }
 
 fun GetGameSubmissionResponse.toModel(): GameSubmissionDetail {

@@ -18,7 +18,7 @@ interface GameRemoteDataSource {
     suspend fun postConfirmSubmission(
         gameId: String,
         submissionId: String,
-        request: PostConfirmSubmissionRequest,
+        request: PostConfirmSubmissionRequest?,
     ): BaseResponse<PostConfirmSubmissionResponse>
 
     suspend fun getGameSubmission(

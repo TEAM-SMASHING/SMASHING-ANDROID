@@ -15,7 +15,7 @@ interface GameRepository {
     suspend fun postConfirmSubmission(
         gameId: String,
         submissionId: String,
-        submissionConfirm: SubmissionConfirm,
+        submissionConfirm: SubmissionConfirm?,
     ): Result<String>
 
     suspend fun getGameSubmission(
