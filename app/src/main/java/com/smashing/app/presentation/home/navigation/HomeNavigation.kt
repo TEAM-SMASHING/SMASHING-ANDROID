@@ -45,7 +45,7 @@ fun NavGraphBuilder.homeGraph(
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToRanking = navController::navigateToRanking,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
-                    navController.navigateToTierInfo(tierName = tierInfoStyle.name, sportName = sportType.code)
+                    navController.navigateToTierInfo(tierName = tierInfoStyle.name, sportName = sportType.sportName)
                 },
                 navigateToMatchingAccepted = {
                     navController.navigateToMatching(initTab = MatchingType.ACCEPTED)
