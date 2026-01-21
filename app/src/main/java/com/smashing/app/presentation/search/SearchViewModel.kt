@@ -43,7 +43,7 @@ class SearchViewModel @Inject constructor(
                 if (searchInputText.isEmpty()) {
                     _uiState.update { it.copy(
                         suggestions = persistentListOf(),
-                        searchNickNameUsersUiState = SearchUiState.Empty,
+                        searchNickNameUsersUiState = SearchUiState.Idle,
                     ) }
                 } else {
                     fetchNickNameUsersList(searchInputText)

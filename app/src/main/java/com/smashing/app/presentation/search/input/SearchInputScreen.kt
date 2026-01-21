@@ -27,6 +27,7 @@ import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
 import com.smashing.app.data.model.search.SuggestionItemModel
+import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -72,26 +73,34 @@ private fun SearchInputScreen(
             onBackClick = onBackClick,
         )
 
-        if(uiState.suggestions.isNotEmpty()) {
-            items.forEach { item ->
-                Text(
-                    text = item.nickname,
-                    color = colors.txtSecondary,
-                    style = typography.sm.medium14,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .noRippleClickable(
-                            onClick = { onSuggestionItemClick(item.userId) },
+        when(uiState.searchNickNameUsersUiState){
+            SearchUiState.Idle -> Unit
+            SearchUiState.Loading -> Unit
+            SearchUiState.Empty -> Unit
+            SearchUiState.Success -> {
+                if (uiState.suggestions.isNotEmpty()) {
+                    items.forEach { item ->
+                        Text(
+                            text = item.nickname,
+                            color = colors.txtSecondary,
+                            style = typography.sm.medium14,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .noRippleClickable(
+                                    onClick = { onSuggestionItemClick(item.userId) },
+                                )
+                                .padding(vertical = 12.dp)
+                                .padding(start = 16.dp),
                         )
-                        .padding(vertical = 12.dp)
-                        .padding(start = 16.dp),
-                )
+                    }
+                } else {
+                    SearchEmpty(
+                        title = "검색 결과가 없습니다.",
+                        subTitle = "다른 검색어를 입력해보세요",
+                    )
+                }
             }
-        } else {
-            SearchEmpty(
-                title = "검색 결과가 없습니다.",
-                subTitle = "다른 검색어를 입력해보세요",
-            )
+            else -> Unit
         }
     }
 
