@@ -2,6 +2,7 @@ package com.smashing.app.presentation.ranking
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,9 +13,10 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,9 +25,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -73,13 +80,17 @@ private fun RankingScreen(
     navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val density = LocalDensity.current
+    var myRankingHeight by remember { mutableStateOf(0.dp) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 color = colors.bgCanvas,
             )
-            .statusBarsPadding()
+            .systemBarsPadding()
     ) {
         Box(
             modifier = Modifier
@@ -127,14 +138,13 @@ private fun RankingScreen(
                     contentPadding = PaddingValues(
                         start = 16.dp,
                         end = 16.dp,
-                        bottom = 12.dp,
+                        bottom = myRankingHeight + 20.dp,
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     items(
                         items = uiState.restRankingList,
-                        key = { it.userId },
                     ) { user ->
                         SmashingRankingItem(
                             userId = user.userId,
@@ -169,15 +179,29 @@ private fun RankingScreen(
                 }
             }
 
-            MyRanking(
-                userId = "myUserId",
-                nickname = "내 닉네임",
-                tier = TierType.GOLD_1,
-                lp = 1850,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+
         }
+        MyRanking(
+            userId = uiState.userInfo?.userId ?: "",
+            nickname = uiState.userInfo?.nickname ?: "",
+            tier = uiState.userInfo?.tier ?: TierType.IRON,
+            lp = uiState.userInfo?.lp ?: 0,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .onGloballyPositioned { coordinates ->
+                    myRankingHeight = with(density) {
+                        coordinates.size.height.toDp()
+                    }
+                }
+                .padding(
+                    horizontal = 16.dp,
+                )
+                .padding(
+                    bottom = 20.dp
+                )
+                .navigationBarsPadding()
+        )
     }
 }
 
@@ -192,14 +216,20 @@ private fun MyRanking(
     Row(
         modifier = modifier
             .background(
-                color = colors.bgOverlay,
+                color = colors.bgSurface,
+            )
+            .border(
+                width = 1.dp,
+                color = colors.borderTertiary,
+                shape = RoundedCornerShape(8.dp),
             )
             .padding(
                 top = 15.dp,
-                bottom = 33.dp,
                 start = 16.dp,
+                bottom = 15.dp,
                 end = 16.dp,
             )
+
     ) {
         UrlImage(
             placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
