@@ -130,15 +130,11 @@ class ConfirmViewModel @Inject constructor(
         val state = _uiState.value
         _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
 
-        val submissionConfirm = if (isFirstAttempt) {
-            SubmissionConfirm(
-                rating = state.selectedRating?.name ?: return@launch,
-                content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
-                tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() },
-            )
-        } else {
-            null
-        }
+        val submissionConfirm = SubmissionConfirm(
+            rating = state.selectedRating ?: return@launch,
+            content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
+            tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() },
+        )
 
         gameRepository.postConfirmSubmission(
             gameId = gameId,

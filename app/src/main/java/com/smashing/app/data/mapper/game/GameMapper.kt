@@ -30,7 +30,7 @@ fun SubmissionConfirm?.toRequest(): PostConfirmSubmissionRequest? {
     return this?.let {
         PostConfirmSubmissionRequest(
             review = ReviewRequest(
-                rating = it.rating,
+                rating = it.rating.name,
                 content = it.content,
                 tags = it.tags,
             )
