@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class MyProfileReviewListData(
+data class GetMyGameReviewsResponse(
     @SerialName("snapshotAt")
     val snapshotAt: String,
     @SerialName("nextCursor")
