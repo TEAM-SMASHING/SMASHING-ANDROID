@@ -30,5 +30,11 @@ private fun NotificationSummaryResponse.toNotification(): Notification {
         description = content,
         isRead = isRead,
         timeAgo = ConvertTimeProvider.convertLocalDateTimeToTime(createdAt),
+        linkUrl = linkUrl,
+        relatedId = extractIdFromLinkUrl(linkUrl),
     )
+}
+
+private fun extractIdFromLinkUrl(linkUrl: String): String? {
+    return linkUrl.substringAfterLast("/", "").takeIf { it.isNotEmpty() }
 }

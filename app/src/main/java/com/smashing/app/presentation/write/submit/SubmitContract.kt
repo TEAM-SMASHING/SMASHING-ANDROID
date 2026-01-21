@@ -20,6 +20,7 @@ interface SubmitContract {
         val reviewId: String = "",
         val submitUiState: SubmitUiState = SubmitUiState.Idle,
         val isResubmitDialogVisible: Boolean = false,
+        val isSubmitAvailable: Boolean = false,
     )
 
     sealed interface SideEffect {

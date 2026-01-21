@@ -64,7 +64,7 @@
     <string name="home_no_matching">아직 확정된 매칭이 없어요.\n지금 바로 매칭을 신청해보세요!</string>
     <string name="home_all_text">모두 보기</string>
     <string name="home_region_ranker">우리 동네 랭커</string>
-    <string name="home_no_user">아직 동네 유저가 없습니다.</string>
+    <string name="home_no_user">아직 동네 유저가 없어요.</string>
     <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요.</string>
 
 
@@ -73,8 +73,8 @@
     <string name="tier_badminton_iron_percent">상위 100%</string>
 
     <!-- Skills: Badminton - Iron -->
-    <string name="skill_badminton_iron_name">클리어</string>
-    <string name="skill_badminton_iron_description">코트 뒤쪽으로 높고 길게 보내 상대를 뒤로 밀어내는 기본 스트로크</string>
+    <string name="skill_badminton_iron_name">누구나 처음은 그렇습니다...</string>
+    <string name="skill_badminton_iron_description">가능성을 찾으러 가볼까요?</string>
 
 
     <!-- Tier Info: Badminton - Bronze -->
@@ -147,8 +147,8 @@
     <string name="tier_pingpong_iron_percent">상위 100%</string>
 
     <!-- Skills: Ping Pong - Iron -->
-    <string name="skill_pingpong_iron_name">당신은 가공되지 않은 원석입니다.</string>
-    <string name="skill_pingpong_iron_description">지금 바로 상대를 찾아 승급에 도전해 보세요!</string>
+    <string name="skill_pingpong_iron_name">누구나 처음은 그렇습니다...</string>
+    <string name="skill_pingpong_iron_description">가능성을 찾으러 가볼까요?</string>
 
     <!-- Tier Info: Ping Pong - Bronze -->
     <string name="tier_pingpong_bronze_percent">상위 80%</string>
@@ -220,8 +220,8 @@
     <string name="tier_tennis_iron_percent">상위 100%</string>
 
     <!-- Skills: Tennis - Iron -->
-    <string name="skill_tennis_iron_name">포핸드 스트로크</string>
-    <string name="skill_tennis_iron_description">기본 자세로 공을 넘기며 랠리를 이어갈 수 있는 수준</string>
+    <string name="skill_tennis_iron_name">누구나 처음은 그렇습니다...</string>
+    <string name="skill_tennis_iron_description">가능성을 찾으러 가볼까요?</string>
 
     <!-- Tier Info: Tennis - Bronze -->
     <string name="tier_tennis_bronze_percent">상위 60%</string>
@@ -290,8 +290,8 @@
     <!-- ========== Common ========== -->
 
     <!-- Challenger Special Message -->
-    <string name="tier_challenger_name">당신은 시련 끝에 완성된 보석입니다.</string>
-    <string name="tier_challenger_description">끊임없이 덤비는 원석들로부터 당신의 왕좌를 지켜내세요!</string>
+    <string name="tier_challenger_name">결국 해내셨군요!</string>
+    <string name="tier_challenger_description">끊임없이 덤비는 도전자들로부터 자격을 증명하세요!</string>
 
 
     <!--Matching -->

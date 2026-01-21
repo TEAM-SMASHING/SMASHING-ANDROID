@@ -6,6 +6,7 @@ import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.search.GetNicknameUsersSearchResponse
 import com.smashing.app.data.remote.dto.search.GetRecommendedUsersResponse
 import com.smashing.app.data.remote.dto.search.GetRegionUsersSearchResponse
+import com.smashing.app.data.remote.dto.search.GetUserRegionResponse
 import com.smashing.app.data.remote.service.SearchService
 import javax.inject.Inject
 
@@ -32,4 +33,7 @@ class SearchRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getRecommendedUsers(): BaseResponse<GetRecommendedUsersResponse> =
         searchService.getRecommendedUsers()
+
+    override suspend fun getUserRegion(): BaseResponse<GetUserRegionResponse> =
+        searchService.getUserRegion()
 }

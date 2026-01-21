@@ -115,12 +115,12 @@ fun RegionChangeScreen(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = "활동지역을 변경해주세요",
+                text = "활동 지역을 변경해주세요",
                 style = SmashingTheme.typography.xl.semibold20,
                 color = SmashingTheme.colors.txtPrimary,
             )
             Text(
-                text = "서울 소재 주소만 입력가능해요",
+                text = "서울 소재 주소만 입력 가능해요",
                 style = SmashingTheme.typography.sm.medium14,
                 color = SmashingTheme.colors.txtTertiary,
             )

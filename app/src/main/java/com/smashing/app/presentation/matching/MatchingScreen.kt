@@ -25,13 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -64,6 +61,8 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.core.extension.openUrl
 import com.smashing.app.data.model.matching.AcceptedMatching
@@ -167,18 +166,10 @@ private fun MatchingScreen(
 ) {
     val gridState = rememberLazyGridState()
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (available.y < -10) {
-                    updateBottomBar(false)
-                } else if (available.y > 10) {
-                    updateBottomBar(true)
-                }
-                return Offset.Zero
-            }
-        }
-    }
+    val nestedScrollConnection = bottomBarNestedScrollConnection(
+        scrollStateHolder = ScrollStateHolder.LazyGrid(gridState),
+        onBottomBarVisibilityChange = updateBottomBar,
+    )
 
     LaunchedEffect(uiState.selectedType) {
         gridState.scrollToItem(0)
