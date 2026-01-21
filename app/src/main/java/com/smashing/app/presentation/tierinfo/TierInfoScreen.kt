@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -141,7 +142,7 @@ private fun TierInfoScreen(
                 .padding(
                     horizontal = 16.dp,
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
         ) {
             if (uiState.selectedTierInfoStyle != TierInfoStyle.CHALLENGER && uiState.selectedTierInfoStyle != TierInfoStyle.IRON) {
                 Text(
@@ -176,7 +177,9 @@ private fun TierInfoScreen(
             } else {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(52.dp))
                     AppIcon(
