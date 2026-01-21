@@ -9,7 +9,7 @@ import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
-import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
+import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.write.confirm.ConfirmResultRoute
 import com.smashing.app.presentation.write.confirm.ConfirmReviewRoute
@@ -18,6 +18,7 @@ import com.smashing.app.presentation.write.submit.SubmitResultRoute
 import com.smashing.app.presentation.write.submit.SubmitReviewRoute
 import com.smashing.app.presentation.write.submit.SubmitViewModel
 import kotlinx.serialization.Serializable
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview as navigateToConfirmReviewDetail
 
 fun NavController.navigateToSubmit(
     gameId: String,
@@ -108,11 +109,11 @@ fun NavGraphBuilder.writeGraph(
             ConfirmReviewRoute(
                 navigateUp = navController::navigateUp,
                 navigateToConfirmReview = { reviewId ->
-                    navController.navigateToConfirmReview(
+                    navController.navigateToConfirmReviewDetail(
                         reviewId = reviewId,
                         navOptions = navOptions {
-                            popUpTo<ConfirmReview> {
-                                inclusive = true
+                            popUpTo<Matching> {
+                                inclusive = false
                             }
                             launchSingleTop = true
                         }
