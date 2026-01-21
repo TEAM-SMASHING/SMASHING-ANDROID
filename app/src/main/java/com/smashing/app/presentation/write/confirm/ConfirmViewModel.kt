@@ -138,9 +138,9 @@ class ConfirmViewModel @Inject constructor(
             gameId = gameId,
             submissionId = submissionId,
             submissionConfirm = submissionConfirm,
-        ).onSuccess {
+        ).onSuccess { reviewId ->
             updateConfirmUiState(uiState = ConfirmUiState.Success)
-            _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
+            _sideEffect.emit(ConfirmContract.SideEffect.NavigateToConfirmReview(reviewId))
         }.onFailure { throwable ->
             updateConfirmUiState(
                 uiState = ConfirmUiState.Failure(

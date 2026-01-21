@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.write.confirm.ConfirmResultRoute
 import com.smashing.app.presentation.write.confirm.ConfirmReviewRoute
@@ -103,6 +104,9 @@ fun NavGraphBuilder.writeGraph(
 
             ConfirmReviewRoute(
                 navigateUp = navController::navigateUp,
+                navigateToConfirmReview = { reviewId ->
+                    navController.navigateToConfirmReview(reviewId = reviewId)
+                },
                 viewModel = viewModel,
             )
         }

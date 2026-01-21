@@ -30,6 +30,7 @@ interface ConfirmContract {
 
     sealed interface SideEffect {
         data object NavigateBack : SideEffect
+        data class NavigateToConfirmReview(val reviewId: String) : SideEffect
     }
 
     sealed interface ConfirmUiState {

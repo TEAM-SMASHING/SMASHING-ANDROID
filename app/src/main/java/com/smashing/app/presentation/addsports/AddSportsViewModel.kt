@@ -26,11 +26,7 @@ class AddSportsViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(AddSportsContract.State())
     val uiState: StateFlow<AddSportsContract.State> = _uiState.asStateFlow()
-    private val _sideEffect = MutableSharedFlow<AddSportsUiState.AddSportsSideEffect>(
-        replay = 0,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
+    private val _sideEffect = MutableSharedFlow<AddSportsUiState.AddSportsSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {

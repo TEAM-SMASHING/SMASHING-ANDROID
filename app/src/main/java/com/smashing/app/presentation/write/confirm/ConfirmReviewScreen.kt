@@ -13,12 +13,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
@@ -33,10 +37,25 @@ import com.smashing.app.presentation.write.component.WriteReviewContent
 @Composable
 fun ConfirmReviewRoute(
     navigateUp: () -> Unit,
-    viewModel: ConfirmViewModel,
+    navigateToConfirmReview: (String) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ConfirmViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is ConfirmContract.SideEffect.NavigateBack -> navigateUp()
+                    is ConfirmContract.SideEffect.NavigateToConfirmReview -> {
+                        navigateToConfirmReview(sideEffect.reviewId)
+                    }
+                }
+            }
+    }
 
     ConfirmReviewScreen(
         uiState = uiState,
