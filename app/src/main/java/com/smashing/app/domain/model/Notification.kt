@@ -13,4 +13,6 @@ data class Notification(
     val description: String = "",
     val isRead: Boolean = false,
     val timeAgo: String = "",
+    val linkUrl: String = "",
+    val relatedId: String? = null,
 )

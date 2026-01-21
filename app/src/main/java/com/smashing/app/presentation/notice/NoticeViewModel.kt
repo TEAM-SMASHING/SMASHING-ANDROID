@@ -59,7 +59,7 @@ class NoticeViewModel @Inject constructor(
             fetchNotificationList()
         }
     }
-    
+
     fun readNotification(notificationId: String) = viewModelScope.launch {
         notificationRepository.putNotificationRead(
             notificationId = notificationId,
