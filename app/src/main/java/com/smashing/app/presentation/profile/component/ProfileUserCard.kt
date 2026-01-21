@@ -119,7 +119,7 @@ fun UserProfileCard(
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "경쟁 신청하기",
-                onClick = {},
+                onClick = onCompeteClick,
                 modifier = Modifier
                     .fillMaxWidth(),
                 isEnabled = isCompeteEnabled
