@@ -146,6 +146,7 @@ class HomeViewModel @Inject constructor(
                     fetchMyTierProfile()
                     fetchRegionRankerList()
                     fetchRecommendedUserList()
+                    fetchMatchedUser()
                 }
                 .onFailure { throwable ->
                     Timber.tag("HomeViewModel").e(throwable, "Failed to switch sport profile")
