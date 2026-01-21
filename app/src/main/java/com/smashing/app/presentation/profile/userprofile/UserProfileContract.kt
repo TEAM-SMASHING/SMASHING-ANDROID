@@ -35,10 +35,12 @@ class UserProfileContract {
         val gameReviewResult: GameReviewResult = GameReviewResult(),
         val userId: String = "",
         val isMatchingRequest: Boolean = true,
-        val isCompeteButtonEnabled: Boolean = true,
         val userProfileUiState: UserProfileUiState = UserProfileUiState.Idle,
         val userProfileCursor: Cursor = Cursor(),
         val isDialogVisible: Boolean = false,
+        val isChallengeable: Boolean = false,
+        val isAcceptable: Boolean = false,
+        val receivedMatchingId: String? = null,
     ) {
         val isReviewEmpty: Boolean
             get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty

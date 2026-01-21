@@ -114,10 +114,6 @@ private fun UserProfileScreen(
         }
     }
 
-    if (uiState.profileInfo.nickname.isBlank()) {
-        return
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -148,7 +144,7 @@ private fun UserProfileScreen(
                 loseCount = uiState.profileInfo.loseCount,
                 reviewCount = uiState.profileInfo.reviewCount,
                 onCompeteClick = onCompeteClick,
-                isCompeteEnabled = uiState.isCompeteButtonEnabled,
+                isCompeteEnabled = uiState.isChallengeable,
             )
 
             if (uiState.isDialogVisible) {
@@ -190,29 +186,29 @@ private fun UserProfileScreen(
             )
         }
 
-    if (uiState.isCompeteButtonEnabled == false) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 52.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            SmashingButton(
-                buttonStyle = ButtonStyle.DISABLED_ACTIVE,
-                text = "건너뛰기",
-                modifier = Modifier.weight(BTN_WEIGHT),
-                onClick = onNoClick,
-            )
-            SmashingButton(
-                buttonStyle = ButtonStyle.PRIMARY,
-                text = "수락",
-                modifier = Modifier.weight(1f),
-                onClick = onYesClick,
-            )
+        if (true) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 52.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                SmashingButton(
+                    buttonStyle = ButtonStyle.DISABLED_ACTIVE,
+                    text = "건너뛰기",
+                    modifier = Modifier.weight(BTN_WEIGHT),
+                    onClick = onNoClick,
+                )
+                SmashingButton(
+                    buttonStyle = ButtonStyle.PRIMARY,
+                    text = "수락",
+                    modifier = Modifier.weight(1f),
+                    onClick = onYesClick,
+                )
+            }
         }
     }
-}
 }
 
 
