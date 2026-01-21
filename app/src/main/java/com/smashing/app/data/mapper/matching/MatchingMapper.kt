@@ -76,7 +76,7 @@ fun CursorDto<AcceptedMatchingListResponse>.toAcceptedMatchingList(): CursorPage
 
 private fun AcceptedMatchingListResponse.toAcceptedMatching(): AcceptedMatching {
     val currentStatus = GameResultStatusType.findByResultStatus(resultStatus)
-    val isSubmittedByMe = latestSubmitterId != opponentSummary.userId
+    val isSubmittedByMe = latestSubmitterId != null && latestSubmitterId != opponentSummary.userId
 
     val resultStatus = when {
         isSubmittedByMe &&
