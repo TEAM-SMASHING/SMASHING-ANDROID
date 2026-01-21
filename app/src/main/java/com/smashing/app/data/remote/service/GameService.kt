@@ -3,6 +3,7 @@ package com.smashing.app.data.remote.service
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.game.GetGameSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionRequest
+import com.smashing.app.data.remote.dto.game.PostConfirmSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 import com.smashing.app.data.remote.dto.game.PostGameSubmissionResponse
 import com.smashing.app.data.remote.dto.game.PostRejectSubmissionRequest
@@ -26,7 +27,7 @@ interface GameService {
         @Path("submissionId")
         submissionId: String,
         @Body request: PostConfirmSubmissionRequest?,
-    ): BaseResponse<Unit>
+    ): BaseResponse<PostConfirmSubmissionResponse>
 
     @GET("/api/v1/games/{gameId}/submissions/{submissionId}")
     suspend fun getGameSubmission(

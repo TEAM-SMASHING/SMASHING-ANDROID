@@ -15,7 +15,7 @@ interface GameRepository {
         gameId: String,
         submissionId: String,
         submissionConfirm: SubmissionConfirm,
-    ): Result<Unit>
+    ): Result<String>
 
     suspend fun getGameSubmission(
         gameId: String,

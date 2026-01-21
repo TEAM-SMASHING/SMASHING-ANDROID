@@ -30,12 +30,12 @@ class GameRepositoryImpl @Inject constructor(
         gameId: String,
         submissionId: String,
         submissionConfirm: SubmissionConfirm,
-    ): Result<Unit> = suspendRunCatching {
+    ): Result<String> = suspendRunCatching {
         gameRemoteDataSource.postConfirmSubmission(
             gameId = gameId,
             submissionId = submissionId,
             request = submissionConfirm.toRequest(),
-        ).requireData()
+        ).requireData().reviewId
     }
 
     override suspend fun getGameSubmission(
