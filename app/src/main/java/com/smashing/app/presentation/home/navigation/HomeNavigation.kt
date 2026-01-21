@@ -14,6 +14,7 @@ import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.ranking.navigation.navigateToRanking
 import com.smashing.app.presentation.region.navigation.getRegionResult
 import com.smashing.app.presentation.region.navigation.navigateToRegion
@@ -47,6 +48,9 @@ fun NavGraphBuilder.homeGraph(
                 },
                 navigateToMatchingAccepted = {
                     navController.navigateToMatching(initTab = MatchingType.ACCEPTED)
+                },
+                navigateToUserProfile = { userId ->
+                    navController.navigateToUserProfile(userId = userId)
                 },
             )
         }

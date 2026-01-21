@@ -77,6 +77,7 @@ fun HomeRoute(
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToRanking: () -> Unit,
     navigateToMatchingAccepted: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -101,6 +102,7 @@ fun HomeRoute(
         },
         navigateToRanking = navigateToRanking,
         navigateToMatchingAccepted = navigateToMatchingAccepted,
+        navigateToUserProfile = navigateToUserProfile,
         modifier = modifier,
     )
 }
@@ -113,6 +115,7 @@ private fun HomeScreen(
     navigateToTierInfo: () -> Unit,
     navigateToRanking: () -> Unit,
     navigateToMatchingAccepted: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -281,6 +284,9 @@ private fun HomeScreen(
                             ) { cardState ->
                                 MatchingCard(
                                     cardState = cardState,
+                                    modifier = Modifier.noRippleClickable(
+                                        onClick = { navigateToUserProfile(cardState.userId) }
+                                    )
                                 )
                             }
                         }
@@ -339,7 +345,7 @@ private fun HomeScreen(
                             tier = ranker.tier,
                             lp = ranker.lp,
                             userId = ranker.userId,
-                            onClick = {},
+                            onClick = { navigateToUserProfile(ranker.userId) },
                         )
                     }
                 }
@@ -668,6 +674,7 @@ private fun HomeScreenPreview() {
         navigateToTierInfo = {},
         navigateToRanking = {},
         navigateToMatchingAccepted = {},
+        navigateToUserProfile = {},
     )
 }
 
@@ -706,6 +713,6 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToTierInfo = {},
         navigateToRanking = {},
         navigateToMatchingAccepted = {},
-
+        navigateToUserProfile = {},
     )
 }
