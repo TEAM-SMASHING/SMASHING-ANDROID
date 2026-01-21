@@ -10,35 +10,50 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.presentation.profile.myprofile.ProfileRoute
+import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
+import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToProfile(
+fun NavController.navigateToMyProfile(
     navOptions: NavOptions? = null,
 ) = navigate(Profile, navOptions)
 
-fun NavController.navigateToReview(
+
+fun NavController.navigateToUserProfile(
+    userId: String,
+    sportCode: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(Review, navOptions)
+) = navigate(UserProfile(userId, sportCode), navOptions)
+
+fun NavController.navigateToReview(
+    userId: String? = null,
+    sportCode: String? = null,
+    navOptions: NavOptions? = null,
+) = navigate(Review(userId, sportCode), navOptions)
 
 
 fun NavGraphBuilder.profileGraph(
     navigateUp: () -> Unit,
-    navigateToReview: () -> Unit,
+    navigateToReview: (String?) -> Unit,
     navigateToAddSports: () -> Unit,
     innerPadding: PaddingValues,
     updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Profile>(
-        startDestination = ProfileUser,
+        startDestination = MyProfile,
     ) {
-        composable<ProfileUser> {
-            ProfileRoute(
+        composable<MyProfile> {
+            MyProfileRoute(
                 navigateToSportAdd = navigateToAddSports,
                 navigateToTierGuide = {},
                 navigateToReview = navigateToReview,
                 updateBottomBar = updateBottomBar,
+            )
+        }
+        composable<UserProfile>{
+            UserProfileRoute(
+                navigateToReview = navigateToReview,
             )
         }
         composable<Review> {
@@ -55,9 +70,19 @@ fun NavGraphBuilder.profileGraph(
 data object Profile : MainTabRoute
 
 @Serializable
-data object ProfileUser : MainTabRoute
+data object MyProfile : MainTabRoute
 
 @Serializable
-data object Review : Route
+data class UserProfile(
+    val userId: String,
+    val sportCode: String?,
+) : Route
+
+@Serializable
+data class Review(
+    val userId: String?,
+    val sportCode: String?,
+    val isUser: Boolean = true,
+) : Route
 
 

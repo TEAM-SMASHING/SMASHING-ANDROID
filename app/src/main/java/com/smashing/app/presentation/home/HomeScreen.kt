@@ -76,6 +76,9 @@ fun HomeRoute(
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToRanking: () -> Unit,
+    navigateToMatchingAccepted: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
+    navigateToSportAdd: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -99,6 +102,10 @@ fun HomeRoute(
             )
         },
         navigateToRanking = navigateToRanking,
+        navigateToMatchingAccepted = navigateToMatchingAccepted,
+        navigateToUserProfile = navigateToUserProfile,
+        navigateToSportAdd = navigateToSportAdd,
+        onSportsChipClick = viewModel::fetchSelectSportProfile,
         modifier = modifier,
     )
 }
@@ -110,6 +117,10 @@ private fun HomeScreen(
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: () -> Unit,
     navigateToRanking: () -> Unit,
+    navigateToMatchingAccepted: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
+    navigateToSportAdd: () -> Unit,
+    onSportsChipClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -161,13 +172,17 @@ private fun HomeScreen(
             maxLp = uiState.activeUserProfile.maxLp,
             winCount = uiState.activeUserProfile.wins,
             loseCount = uiState.activeUserProfile.losses,
-            onSportChipClick = {
-                // 스포츠 변경 로직 (필요시 추가)
+            onSportChipClick = { profileId ->
+                onSportsChipClick(profileId)
                 isDropdownExpanded = false
             },
-            onSportAddClick = {
-                // 스포츠 추가 로직 (필요시 추가)
-                isDropdownExpanded = false
+            onSportAddClick = if (uiState.allUserProfiles.size >= 3) {
+                null
+            } else {
+                {
+                    navigateToSportAdd()
+                    isDropdownExpanded = false
+                }
             },
             onTierClick = {
                 navigateToTierInfo()
@@ -220,7 +235,7 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = {}
+                                    onClick = navigateToMatchingAccepted
                                 ),
                         )
                     }
@@ -276,6 +291,9 @@ private fun HomeScreen(
                             ) { cardState ->
                                 MatchingCard(
                                     cardState = cardState,
+                                    modifier = Modifier.noRippleClickable(
+                                        onClick = { navigateToUserProfile(cardState.userId) }
+                                    )
                                 )
                             }
                         }
@@ -334,7 +352,7 @@ private fun HomeScreen(
                             tier = ranker.tier,
                             lp = ranker.lp,
                             userId = ranker.userId,
-                            onClick = {},
+                            onClick = { navigateToUserProfile(ranker.userId) },
                         )
                     }
                 }
@@ -661,6 +679,10 @@ private fun HomeScreenPreview() {
         navigateToRegionChange = {},
         navigateToTierInfo = {},
         navigateToRanking = {},
+        navigateToMatchingAccepted = {},
+        navigateToUserProfile = {},
+        onSportsChipClick = {},
+        navigateToSportAdd = {},
     )
 }
 
@@ -698,5 +720,9 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToRegionChange = {},
         navigateToTierInfo = {},
         navigateToRanking = {},
+        navigateToMatchingAccepted = {},
+        navigateToUserProfile = {},
+        navigateToSportAdd = {},
+        onSportsChipClick = {},
     )
 }

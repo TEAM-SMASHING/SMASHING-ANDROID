@@ -30,7 +30,6 @@ import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.TopBarType
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
@@ -40,14 +39,15 @@ import com.smashing.app.presentation.profile.component.UserProfileCard
 
 
 @Composable
-fun ProfileRoute(
+fun MyProfileRoute(
     navigateToSportAdd: () -> Unit,
     navigateToTierGuide: () -> Unit,
-    navigateToReview: () -> Unit,
+    navigateToReview: (String?) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -71,7 +71,7 @@ private fun MyProfileScreen(
     uiState: MyProfileContract.State,
     onAddSportClick: () -> Unit,
     onTierGuideClick: () -> Unit,
-    onReviewClick: () -> Unit,
+    onReviewClick: (String?) -> Unit,
     onSportClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -141,7 +141,7 @@ private fun MyProfileScreen(
 
             ReviewCard(
                 reviews = uiState.gameReview,
-                onViewAllReviewClick = onReviewClick,
+                onViewAllReviewClick = { onReviewClick(null) },
                 bestCount = uiState.gameReviewResult.bestCount,
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,

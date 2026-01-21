@@ -2,11 +2,14 @@ package com.smashing.app.presentation.profile.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.repository.api.MyRepository
+import com.smashing.app.presentation.profile.myprofile.MyProfileContract.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import com.smashing.app.data.repository.api.MyRepository
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,9 +20,8 @@ class MyProfileViewModel @Inject constructor(
     private val myRepository: MyRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MyProfileContract.State())
-
-    val uiState: StateFlow<MyProfileContract.State> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(State())
+    val uiState: StateFlow<State> = _uiState.asStateFlow()
 
     fun fetchProfileInfo() {
         viewModelScope.launch {
@@ -114,7 +116,6 @@ class MyProfileViewModel @Inject constructor(
                 }
         }
     }
-
     companion object {
         private const val PAGE_SIZE = 3
     }
