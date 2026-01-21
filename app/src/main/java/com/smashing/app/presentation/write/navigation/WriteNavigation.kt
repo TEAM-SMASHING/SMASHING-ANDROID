@@ -9,7 +9,6 @@ import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
-import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.write.confirm.ConfirmResultRoute
 import com.smashing.app.presentation.write.confirm.ConfirmReviewRoute
@@ -112,7 +111,7 @@ fun NavGraphBuilder.writeGraph(
                     navController.navigateToConfirmReviewDetail(
                         reviewId = reviewId,
                         navOptions = navOptions {
-                            popUpTo<Matching> {
+                            popUpTo<Confirm> {
                                 inclusive = false
                             }
                             launchSingleTop = true

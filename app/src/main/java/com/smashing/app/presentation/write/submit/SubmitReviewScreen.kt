@@ -64,6 +64,8 @@ fun SubmitReviewRoute(
         onDoneClick = viewModel::submitGame,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
+        onConfirmDialogClick = viewModel::updateIsConfirmDialogOpen,
+        onConfirmDialogDismiss = viewModel::hideConfirmDialog,
         modifier = modifier,
     )
 }
@@ -76,6 +78,8 @@ private fun SubmitReviewScreen(
     onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
     onDoneClick: () -> Unit,
+    onConfirmDialogClick: () -> Unit,
+    onConfirmDialogDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -83,7 +87,7 @@ private fun SubmitReviewScreen(
     val isButtonEnabled = uiState.selectedRating != null
 
     var isAlertDialogOpen by remember { mutableStateOf(false) }
-    var isConfirmDialogOpen by remember { mutableStateOf(false) }
+    val isConfirmDialogOpen = uiState.isConfirmDialogOpen
 
     Column(
         modifier = modifier
@@ -146,8 +150,8 @@ private fun SubmitReviewScreen(
                 subtitle = "매칭 결과를 확인해주세요.",
                 type = DialogStyle.CONFIRM,
                 confirmText = "확인",
-                onDismissRequest = { isConfirmDialogOpen = false },
-                onConfirmClick = onDoneClick,
+                onDismissRequest = onConfirmDialogDismiss,
+                onConfirmClick = onConfirmDialogClick,
             )
         }
     }
@@ -164,6 +168,8 @@ private fun SubmitReviewScreenPreview() {
             onDoneClick = {},
             onReviewTagClick = {},
             onReviewRatingClick = {},
+            onConfirmDialogClick = {},
+            onConfirmDialogDismiss = {},
             modifier = Modifier,
         )
     }

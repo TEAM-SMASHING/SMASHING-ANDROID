@@ -190,6 +190,15 @@ class SubmitViewModel @Inject constructor(
     
     fun hideResubmitDialog() = _uiState.update { it.copy(isResubmitDialogVisible = false) }
 
+    fun showConfirmDialog() = _uiState.update { it.copy(isConfirmDialogOpen = true) }
+
+    fun hideConfirmDialog() = _uiState.update { it.copy(isConfirmDialogOpen = false) }
+
+    fun updateIsConfirmDialogOpen() = viewModelScope.launch {
+        _uiState.update { it.copy(isConfirmDialogOpen = false) }
+        _sideEffect.emit(SideEffect.NavigateToMatching)
+    }
+
     fun submitGame() = viewModelScope.launch {
         val state = _uiState.value
         val winnerId = state.winnerId
@@ -228,7 +237,8 @@ class SubmitViewModel @Inject constructor(
             _uiState.update { 
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Success,
-                    isResubmitDialogVisible = false
+                    isResubmitDialogVisible = false,
+                    isConfirmDialogOpen = false,
                 )
             }
             _sideEffect.emit(SideEffect.NavigateToMatching)
@@ -236,7 +246,8 @@ class SubmitViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Failure("경기 결과 제출 실패"),
-                    isResubmitDialogVisible = false
+                    isResubmitDialogVisible = false,
+                    isConfirmDialogOpen = true,
                 )
             }
         }
