@@ -88,14 +88,12 @@ private fun MainNavHost(
         )
 
         matchingGraph(
-            innerPadding = innerPadding,
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
             updateBottomBar = appState::updateBottomBarVisible,
         )
 
         profileGraph(
-            innerPadding = innerPadding,
             navController = appState.navController,
             updateBottomBar = appState::updateBottomBarVisible,
         )
