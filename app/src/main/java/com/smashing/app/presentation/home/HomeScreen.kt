@@ -219,12 +219,12 @@ private fun HomeScreen(
                         Column {
                             Text(
                                 text = "${uiState.activeUserProfile.nickname}님,",
-                                style = SmashingTheme.typography.xxl.semibold24,
+                                style = SmashingTheme.typography.lg.semibold18,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
                                 text = stringResource(R.string.home_clos_matching_txt),
-                                style = SmashingTheme.typography.xl.semibold20,
+                                style = SmashingTheme.typography.md.medium16,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                         }
