@@ -9,6 +9,12 @@ data class GetUserInfoDetailResponse(
     val nickname: String,
     @SerialName("gender")
     val gender: String,
+    @SerialName("isChallengeable")
+    val isChallengeable: Boolean,
+    @SerialName("isAcceptable")
+    val isAcceptable: Boolean,
+    @SerialName("receivedMatchingId")
+    val receivedMatchingId: String?,
     @SerialName("selectedProfile")
     val selectedProfile: SelectedProfile,
     @SerialName("allProfiles")
