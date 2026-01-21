@@ -1,6 +1,5 @@
 package com.smashing.app.presentation.profile.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -36,7 +35,6 @@ fun NavController.navigateToReview(
 
 
 fun NavGraphBuilder.profileGraph(
-    innerPadding: PaddingValues,
     navController: NavController,
     updateBottomBar: (Boolean) -> Unit,
 ) {
@@ -61,6 +59,7 @@ fun NavGraphBuilder.profileGraph(
                 navigateToReview = { userId ->
                     navController.navigateToReview(userId = userId)
                 },
+                navigateUp = navController::navigateUp,
                 navigateToSentMatching = { navController.navigateToMatching(initTab = MatchingType.SEND) }
             )
         }

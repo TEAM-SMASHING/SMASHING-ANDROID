@@ -13,10 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
-import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
-import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
-import com.smashing.app.presentation.home.navigation.HomeUser
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
@@ -26,13 +23,11 @@ import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.noticeGraph
-import com.smashing.app.presentation.profile.navigation.navigateToReview
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
-import com.smashing.app.presentation.signup.navigation.SignUp
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
@@ -109,6 +104,9 @@ private fun MainNavHost(
                 appState.navController.navigateToSignUp(
                     kakaoId = kakaoId,
                     navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 )
@@ -130,6 +128,9 @@ private fun MainNavHost(
             navigateToRegion = {
                 appState.navController.navigateToRegion(
                     navOptions = navOptions {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     },
                 )
@@ -141,7 +142,7 @@ private fun MainNavHost(
                             inclusive = true
                         }
                         launchSingleTop = true
-                    }
+                    },
                 )
             },
             navigateUp = appState.navController::navigateUp,
@@ -193,7 +194,7 @@ private fun MainNavHost(
         )
 
         confirmReviewGraph(
-            navigateUp =  appState.navController::navigateUp,
+            navController = appState.navController,
         )
     }
 }

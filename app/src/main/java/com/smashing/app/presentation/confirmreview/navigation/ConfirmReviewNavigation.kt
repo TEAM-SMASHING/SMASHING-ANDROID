@@ -17,11 +17,11 @@ fun NavController.navigateToConfirmReview(
 )
 
 fun NavGraphBuilder.confirmReviewGraph(
-    navigateUp: () -> Unit,
+    navController: NavController,
 ) {
     composable<ConfirmReview> {
         ConfirmReviewRoute(
-            navigateUp = navigateUp,
+            navigateUp = navController::navigateUp,
         )
     }
 }

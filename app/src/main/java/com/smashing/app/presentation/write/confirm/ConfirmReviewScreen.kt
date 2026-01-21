@@ -95,6 +95,7 @@ private fun ConfirmReviewScreen(
         SmashingDefaultTopBar(
             title = "후기 작성",
             topBarType = TopBarType.BACK,
+            onClick = onBackClick,
         )
 
         Column(
@@ -105,7 +106,7 @@ private fun ConfirmReviewScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             WriteReviewContent(
-                nickname = uiState.receiver.name,
+                nickname = uiState.reviewerNickname,
                 textFieldState = reviewTextFieldState,
                 selectedReviewRating = uiState.selectedRating,
                 selectedReviewTagTypes = uiState.selectedTagList,
