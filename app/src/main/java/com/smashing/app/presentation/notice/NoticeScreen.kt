@@ -49,7 +49,11 @@ fun NoticeRoute(
                 NotificationType.MATCHING_REQUESTED,
                 NotificationType.MATCHING_ACCEPTED,
                 NotificationType.MATCHING_RESULT_SUBMITTED,
-                -> navigateToMatching(MatchingType.ACCEPTED)
+                NotificationType.RESULT_REJECTED_SCORE_MISMATCH,
+                NotificationType.RESULT_REJECTED_WIN_LOSE_REVERSED,
+                NotificationType.RESULT_REJECTED_SCORE_AND_WIN_LOSE_MISMATCH,
+                    -> navigateToMatching(MatchingType.ACCEPTED)
+
                 else -> Unit
             }
         },
@@ -78,11 +82,11 @@ private fun NoticeScreen(
         )
 
         if (uiState.loadState is NoticeUiState.Empty) {
-            Column (
+            Column(
                 modifier = Modifier
                     .fillMaxSize(),
-            ){
-                Spacer(Modifier.weight(230f/330f))
+            ) {
+                Spacer(Modifier.weight(230f / 330f))
 
                 AppIcon(
                     title = "아직 받은 후기가 없어요",
