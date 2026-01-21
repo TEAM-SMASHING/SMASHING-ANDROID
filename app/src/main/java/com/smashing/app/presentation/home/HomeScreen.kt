@@ -301,7 +301,7 @@ private fun HomeScreen(
                         myProfileId = uiState.activeUserProfile.profileId,
                         myNickname = uiState.activeUserProfile.nickname,
                         matchedUser = uiState.matchedUser,
-                        onClick = onClick@ { matching ->
+                        onClick = { matching ->
                             when (matching.resultStatus) {
                                 GameResultStatusType.PENDING_RESULT -> {
                                     navigateToSubmit(
@@ -322,13 +322,14 @@ private fun HomeScreen(
                                 }
 
                                 GameResultStatusType.WAITING_CONFIRMATION -> {
-                                    val submissionId = matching.latestSubmissionId ?: return@onClick
-                                    val isFirstAttempt = matching.latestAttemptNo == 1
-                                    navigateToConfirm(
-                                        submissionId,
-                                        matching.gameId,
-                                        isFirstAttempt,
-                                    )
+                                    matching.latestSubmissionId?.let { submissionId ->
+                                        val isFirstAttempt = matching.latestAttemptNo == 1
+                                        navigateToConfirm(
+                                            submissionId,
+                                            matching.gameId,
+                                            isFirstAttempt,
+                                        )
+                                    }
                                 }
 
                                 else -> Unit
@@ -482,7 +483,6 @@ private fun HomeTopBar(
     ) {
         RegionDropdown(
             selectedItem = userRegion,
-            //items 현재는 지역이 1개라 userRegion만 넣었습니다.
             items = listOf(
                 userRegion
             ).toImmutableList(),
