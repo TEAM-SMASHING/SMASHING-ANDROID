@@ -93,7 +93,7 @@ fun SmashingAreaTextField(
             SmashingBasicTextField(
                 state = state,
                 placeholder = placeholder,
-                placeholderColor = inputState.getContentColor(),
+                placeholderColor = SmashingTheme.colors.txtDisabled,
                 placeholderStyle = inputState.getTextStyle(),
                 textColor = inputState.getContentColor(),
                 textStyle = inputState.getTextStyle(),
