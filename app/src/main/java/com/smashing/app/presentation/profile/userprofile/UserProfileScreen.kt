@@ -50,6 +50,7 @@ private const val BTN_WEIGHT = 131f / 185f
 @Composable
 fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
+    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
 ) {
@@ -71,6 +72,7 @@ fun UserProfileRoute(
         reviews = uiState.gameReview,
         onYesClick = viewModel::onYesClick,
         onNoClick = viewModel::onNoClick,
+        onBackClick = navigateUp,
         onReviewClick = viewModel::navigateToAllReview,
         updateBottomBar = {},
         modifier = modifier,
@@ -83,6 +85,7 @@ private fun UserProfileScreen(
     uiState: UserProfileContract.State,
     reviews: ImmutableList<GameReview>,
     onReviewClick: () -> Unit,
+    onBackClick: () -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     onYesClick: () -> Unit,
     onNoClick: () -> Unit,
@@ -113,8 +116,8 @@ private fun UserProfileScreen(
 
         SmashingDefaultTopBar(
             title = stringResource(profile),
-            topBarType = TopBarType.DEFAULT,
-            onClick = null,
+            topBarType = TopBarType.BACK,
+            onClick = onBackClick,
         )
 
         Column(
@@ -198,6 +201,7 @@ private fun ProfileScreenPreview() {
             onNoClick = {},
             onYesClick = {},
             onCompeteClick = {},
+            onBackClick = {},
         )
     }
 }
