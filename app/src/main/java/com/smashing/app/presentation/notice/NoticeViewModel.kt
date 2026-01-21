@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.NotificationRepository
 import com.smashing.app.data.repository.api.ReviewRepository
-import com.smashing.app.domain.model.Notification
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,11 +67,9 @@ class NoticeViewModel @Inject constructor(
         ).onSuccess {
             _uiState.update { state ->
                 val updatedList = state.noticeList.map { notice ->
-                    if (notice.notificationId == notificationId && !notice.isRead) {
+                    if (notice.notificationId == notificationId && !notice.isRead)
                         notice.copy(isRead = true)
-                    } else {
-                        notice
-                    }
+                    else notice
                 }.toImmutableList()
 
                 state.copy(noticeList = updatedList)
