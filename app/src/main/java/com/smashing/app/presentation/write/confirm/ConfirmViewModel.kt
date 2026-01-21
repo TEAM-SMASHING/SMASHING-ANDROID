@@ -8,10 +8,12 @@ import androidx.navigation.toRoute
 import com.smashing.app.data.model.game.GameSubmissionDetail
 import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.repository.api.GameRepository
-import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.confirm.ConfirmContract.ConfirmUiState
+import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmResultSideEffect
+import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmReviewSideEffect
+import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
 import com.smashing.app.presentation.write.model.PlayerInfo
 import com.smashing.app.presentation.write.navigation.Confirm
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,12 +24,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ConfirmViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val userRepository: UserRepository,
     private val gameRepository: GameRepository,
 ) : ViewModel() {
     private val confirmRoute = savedStateHandle.toRoute<Confirm>()
@@ -140,7 +142,7 @@ class ConfirmViewModel @Inject constructor(
             submissionConfirm = submissionConfirm,
         ).onSuccess { reviewId ->
             updateConfirmUiState(uiState = ConfirmUiState.Success)
-            _sideEffect.emit(ConfirmContract.SideEffect.NavigateToConfirmReview(reviewId))
+            _sideEffect.emit(ConfirmReviewSideEffect.NavigateToConfirmReview(reviewId))
         }.onFailure { throwable ->
             updateConfirmUiState(
                 uiState = ConfirmUiState.Failure(
@@ -154,16 +156,49 @@ class ConfirmViewModel @Inject constructor(
         it.copy(confirmUiState = uiState)
     }
 
-    fun rejectSubmission(reason: String) = viewModelScope.launch {
-        _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
+    fun showDenyBottomSheet() = _uiState.update {
+        it.copy(showDenyBottomSheet = true)
+    }
+
+    fun hideDenyBottomSheet() = _uiState.update {
+        it.copy(showDenyBottomSheet = false)
+    }
+
+    fun showRejectDialog() = _uiState.update {
+        it.copy(showRejectDialog = true)
+    }
+
+    fun hideRejectDialog() = _uiState.update {
+        it.copy(showRejectDialog = false)
+    }
+
+    fun updateSelectedDenyReason(reason: ConfirmDenyType) = _uiState.update {
+        it.copy(selectedDenyReason = reason)
+    }
+
+    fun rejectSubmission() = viewModelScope.launch {
+        val reason = _uiState.value.selectedDenyReason
+        Timber.tag("ooo").d("$reason")
+        _uiState.update {
+            it.copy(
+                confirmUiState = ConfirmUiState.Loading,
+                showDenyBottomSheet = false,
+                showRejectDialog = false,
+            )
+        }
 
         gameRepository.postRejectSubmission(
             gameId = gameId,
             submissionId = submissionId,
             reason = reason,
         ).onSuccess {
-            updateConfirmUiState(uiState = ConfirmUiState.Success)
-            _sideEffect.emit(ConfirmContract.SideEffect.NavigateBack)
+            _uiState.update {
+                it.copy(
+                    confirmUiState = ConfirmUiState.Success,
+                    selectedDenyReason = null,
+                )
+            }
+            _sideEffect.emit(ConfirmResultSideEffect.NavigateBack)
         }.onFailure { throwable ->
             updateConfirmUiState(
                 uiState = ConfirmUiState.Failure(

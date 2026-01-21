@@ -7,9 +7,9 @@ import com.smashing.app.data.model.game.GameSubmission
 import com.smashing.app.data.model.game.GameSubmissionDetail
 import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.remote.datasource.api.GameRemoteDataSource
-import com.smashing.app.data.remote.dto.game.PostRejectSubmissionRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.GameRepository
+import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(
@@ -51,12 +51,12 @@ class GameRepositoryImpl @Inject constructor(
     override suspend fun postRejectSubmission(
         gameId: String,
         submissionId: String,
-        reason: String,
+        reason: ConfirmDenyType?,
     ): Result<Unit> = suspendRunCatching {
         gameRemoteDataSource.postRejectSubmission(
             gameId = gameId,
             submissionId = submissionId,
-            request = PostRejectSubmissionRequest(reason = reason),
-        ).requireData()
+            reason = reason,
+        )
     }
 }

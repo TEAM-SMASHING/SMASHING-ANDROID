@@ -84,7 +84,7 @@ private fun ConfirmReviewScreen(
                 rating = uiState.reviewRatingType.label,
                 reviewText = uiState.reviewText,
                 nickname = uiState.nickname,
-                tag = uiState.tags,
+                tags = uiState.tags,
                 modifier = Modifier.weight(1f),
             )
 

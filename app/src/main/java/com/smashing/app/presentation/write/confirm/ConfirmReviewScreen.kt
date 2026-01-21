@@ -33,6 +33,8 @@ import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.component.WriteReviewContent
+import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmReviewSideEffect
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun ConfirmReviewRoute(
@@ -47,10 +49,11 @@ fun ConfirmReviewRoute(
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<ConfirmReviewSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is ConfirmContract.SideEffect.NavigateBack -> navigateUp()
-                    is ConfirmContract.SideEffect.NavigateToConfirmReview -> {
+                    is ConfirmReviewSideEffect.NavigateBack -> navigateUp()
+                    is ConfirmReviewSideEffect.NavigateToConfirmReview -> {
                         navigateToConfirmReview(sideEffect.reviewId)
                     }
                 }

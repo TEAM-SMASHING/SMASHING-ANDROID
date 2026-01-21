@@ -75,15 +75,25 @@ fun CursorDto<AcceptedMatchingListResponse>.toAcceptedMatchingList(): CursorPage
 }
 
 private fun AcceptedMatchingListResponse.toAcceptedMatching(): AcceptedMatching {
-    val adjustedResultStatus = when {
-        resultStatus == GameResultStatusType.WAITING_CONFIRMATION.name &&
-        latestSubmitterId != this.opponentSummary.userId -> GameResultStatusType.PENDING_RESULT_CONFIRMED
-        else -> GameResultStatusType.findByResultStatus(resultStatus)
+    val currentStatus = GameResultStatusType.findByResultStatus(resultStatus)
+    val isSubmittedByMe = latestSubmitterId != opponentSummary.userId
+
+    val resultStatus = when {
+        isSubmittedByMe &&
+                currentStatus == GameResultStatusType.WAITING_CONFIRMATION ->
+            GameResultStatusType.PENDING_RESULT_CONFIRMED
+
+        !isSubmittedByMe &&
+                currentStatus == GameResultStatusType.RESULT_REJECTED ->
+            GameResultStatusType.PENDING_RESULT_CONFIRMED
+
+        else -> currentStatus
     }
-    
+
+
     return AcceptedMatching(
         gameId = gameId,
-        resultStatus = adjustedResultStatus,
+        resultStatus = resultStatus,
         createdAt = createdAt,
         userId = opponentSummary.userId,
         nickname = opponentSummary.nickname,

@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
@@ -105,7 +106,15 @@ fun NavGraphBuilder.writeGraph(
             ConfirmReviewRoute(
                 navigateUp = navController::navigateUp,
                 navigateToConfirmReview = { reviewId ->
-                    navController.navigateToConfirmReview(reviewId = reviewId)
+                    navController.navigateToConfirmReview(
+                        reviewId = reviewId,
+                        navOptions = navOptions {
+                            popUpTo<ConfirmReview> {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    )
                 },
                 viewModel = viewModel,
             )

@@ -26,8 +26,6 @@ class ConfirmReviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ConfirmReviewContract.State())
     val uiState = _uiState.asStateFlow()
 
-
-
     init {
         fetchReviewDetail()
     }

@@ -3,6 +3,7 @@ package com.smashing.app.presentation.write.confirm
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
+import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
 import com.smashing.app.presentation.write.model.PlayerInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
@@ -26,11 +27,23 @@ interface ConfirmContract {
         val revieweeNickname: String = "",
         val tag: ImmutableList<String> = persistentListOf(),
         val content: String? = null,
+        val showDenyBottomSheet: Boolean = false,
+        val showRejectDialog: Boolean = false,
+        val selectedDenyReason: ConfirmDenyType? = null,
     )
 
     sealed interface SideEffect {
-        data object NavigateBack : SideEffect
-        data class NavigateToConfirmReview(val reviewId: String) : SideEffect
+        sealed interface ConfirmResultSideEffect: SideEffect {
+            data object NavigateBack : ConfirmResultSideEffect
+        }
+
+        sealed interface ConfirmReviewSideEffect: SideEffect {
+            data object NavigateBack : ConfirmReviewSideEffect
+
+            data class NavigateToConfirmReview(
+                val reviewId: String
+            ) : ConfirmReviewSideEffect
+        }
     }
 
     sealed interface ConfirmUiState {

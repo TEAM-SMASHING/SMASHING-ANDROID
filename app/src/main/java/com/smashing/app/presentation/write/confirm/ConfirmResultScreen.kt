@@ -17,16 +17,16 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.confirm_result
 import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.button.SmashingButton
@@ -38,8 +38,10 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.write.component.WriteResultContent
+import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmResultSideEffect
 import com.smashing.app.presentation.write.confirm.type.ConfirmDenyType
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun ConfirmResultRoute(
@@ -49,15 +51,29 @@ fun ConfirmResultRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<ConfirmResultSideEffect>()
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is ConfirmResultSideEffect.NavigateBack -> navigateUp()
+                }
+            }
+    }
 
     ConfirmResultScreen(
         uiState = uiState,
-        isFirstAttempt = viewModel.isFirstAttempt,
         leftTextFieldState = viewModel.leftTextFieldState,
         rightTextFieldState = viewModel.rightTextFieldState,
         onBackClick = navigateUp,
         onConfirmClick = navigateToConfirmReview,
+        onDenyClick = if (viewModel.isFirstAttempt) viewModel::showDenyBottomSheet else viewModel::showRejectDialog,
+        onDenyBottomSheetDismiss = viewModel::hideDenyBottomSheet,
+        onDenyReasonSelect = viewModel::updateSelectedDenyReason,
         onRejectClick = viewModel::rejectSubmission,
+        onRejectDialogDismiss = viewModel::hideRejectDialog,
         modifier = modifier,
     )
 }
@@ -66,18 +82,18 @@ fun ConfirmResultRoute(
 @Composable
 private fun ConfirmResultScreen(
     uiState: ConfirmContract.State,
-    isFirstAttempt: Boolean,
     leftTextFieldState: TextFieldState,
     rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
     onConfirmClick: () -> Unit,
-    onRejectClick: (String) -> Unit,
+    onDenyClick: () -> Unit,
+    onDenyBottomSheetDismiss: () -> Unit,
+    onDenyReasonSelect: (ConfirmDenyType) -> Unit,
+    onRejectClick: () -> Unit,
+    onRejectDialogDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
-    var showDenyBottomSheet by remember { mutableStateOf(false) }
-    var showRejectDialog by remember { mutableStateOf(false) }
-    var selectedReason by remember { mutableStateOf("") }
     val bottomSheetItems = ConfirmDenyType.entries.map { it.description }.toPersistentList()
 
     Column(
@@ -132,7 +148,7 @@ private fun ConfirmResultScreen(
                     buttonStyle = ButtonStyle.DISABLED_ACTIVE,
                     text = "아니요",
                     modifier = Modifier.weight(131f),
-                    onClick = { if (isFirstAttempt) showDenyBottomSheet = true else showRejectDialog = true },
+                    onClick = onDenyClick,
                 )
                 SmashingButton(
                     buttonStyle = ButtonStyle.PRIMARY,
@@ -143,40 +159,31 @@ private fun ConfirmResultScreen(
             }
         }
 
-        if (showDenyBottomSheet) {
+        if (uiState.showDenyBottomSheet) {
             SmashingBottomSheet(
-                onDismissRequest = {
-                    showDenyBottomSheet = false
-                    selectedReason = ""
-                },
+                onDismissRequest = onDenyBottomSheetDismiss,
                 title = "어떤 내용이 잘못됐나요?",
                 items = bottomSheetItems,
-                selectedItem = selectedReason,
+                selectedItem = uiState.selectedDenyReason?.description ?: "",
                 contentToBtnPadding = 20.dp,
                 btnText = "제출하기",
-                onItemClick = { selectedReason = it },
-                onBtnClick = {
-                    showDenyBottomSheet = false
-                    if (selectedReason.isNotEmpty()) {
-                        onRejectClick(selectedReason)
-                    }
+                onItemClick = { description ->
+                    ConfirmDenyType.findByDescription(description)?.let(onDenyReasonSelect)
                 },
+                onBtnClick = onRejectClick,
             )
         }
 
-        if (showRejectDialog) {
+        if (uiState.showRejectDialog) {
             SmashingDialog(
                 title = "마지막 반려 기회에요",
                 subtitle = "이번에 반려 시 해당 매칭은 취소됩니다.",
                 type = DialogStyle.ALERT,
                 confirmText = "반려하기",
                 dismissText = "아니요",
-                onDismissRequest = { showRejectDialog = false },
-                onConfirmClick = {
-                    showRejectDialog = false
-                    onRejectClick("")
-                },
-                onDismissClick = { showRejectDialog = false },
+                onDismissRequest = onRejectDialogDismiss,
+                onConfirmClick = onRejectClick,
+                onDismissClick = onRejectDialogDismiss,
             )
         }
     }
@@ -188,12 +195,15 @@ private fun ConfirmResultScreenPreview() {
     SmashingAndroidTheme {
         ConfirmResultScreen(
             uiState = ConfirmContract.State(),
-            isFirstAttempt = true,
             leftTextFieldState = rememberTextFieldState(3.toString()),
             rightTextFieldState = rememberTextFieldState(1.toString()),
             onBackClick = {},
             onConfirmClick = {},
+            onDenyClick = {},
+            onDenyBottomSheetDismiss = {},
+            onDenyReasonSelect = {},
             onRejectClick = {},
+            onRejectDialogDismiss = {},
         )
     }
 }
