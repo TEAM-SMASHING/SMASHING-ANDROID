@@ -5,6 +5,7 @@ import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.search.GetNicknameUsersSearchResponse
 import com.smashing.app.data.remote.dto.search.GetRecommendedUsersResponse
 import com.smashing.app.data.remote.dto.search.GetRegionUsersSearchResponse
+import com.smashing.app.data.remote.dto.search.GetUserRegionResponse
 
 interface SearchRemoteDataSource {
     suspend fun getRegionUsersSearch(
@@ -19,5 +20,7 @@ interface SearchRemoteDataSource {
     ): BaseResponse<GetNicknameUsersSearchResponse>
 
     suspend fun getRecommendedUsers(): BaseResponse<GetRecommendedUsersResponse>
+
+    suspend fun getUserRegion(): BaseResponse<GetUserRegionResponse>
 
 }
