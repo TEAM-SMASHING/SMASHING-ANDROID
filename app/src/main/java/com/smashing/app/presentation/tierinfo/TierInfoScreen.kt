@@ -141,7 +141,7 @@ private fun TierInfoScreen(
                 .padding(
                     horizontal = 16.dp,
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
         ) {
             if (uiState.selectedTierInfoStyle != TierInfoStyle.CHALLENGER && uiState.selectedTierInfoStyle != TierInfoStyle.IRON) {
                 Text(
@@ -176,9 +176,11 @@ private fun TierInfoScreen(
             } else {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Spacer(modifier = Modifier.height(52.dp))
+                    Spacer(modifier = Modifier.height(80.dp))
                     AppIcon(
                         title = uiState.tierInfoDetail?.skills?.firstOrNull()?.name,
                         subtitle = uiState.tierInfoDetail?.skills?.firstOrNull()?.description,

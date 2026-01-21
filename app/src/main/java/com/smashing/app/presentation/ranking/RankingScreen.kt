@@ -53,6 +53,7 @@ import com.smashing.app.presentation.ranking.component.Ranker
 import kotlinx.collections.immutable.toImmutableList
 import com.smashing.app.core.designsystem.theme.primary300
 import com.smashing.app.core.extension.dropShadow
+import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.type.TierType
 
@@ -202,6 +203,9 @@ private fun RankingScreen(
                         bottom = 20.dp
                     )
                     .navigationBarsPadding()
+                    .noRippleClickable(
+                        onClick = {}
+                    )
             )
         }
     }
