@@ -107,26 +107,33 @@ class HomeViewModel @Inject constructor(
 
     fun fetchSelectSportProfile(profileId: String) {
         val currentState = uiState.value
-        if (currentState.activeUserProfile?.profileId == profileId) return
+        val currentActiveProfile = currentState.activeUserProfile ?: return
+        if (currentActiveProfile.profileId == profileId) return
+
+        val selectedProfile = currentState.allUserProfiles.find { it.profileId == profileId } ?: return
 
         val optimisticList = currentState.allUserProfiles.map { profile ->
-            if (profile.profileId == profileId) {
-                profile.copy(isActive = true)
-            } else {
-                profile.copy(isActive = false)
-            }
+            profile.copy(isActive = profile.profileId == profileId)
         }.toImmutableList()
 
+        val optimisticActiveProfile = currentActiveProfile.copy(
+            profileId = selectedProfile.profileId,
+            sportType = selectedProfile.sportCode,
+        )
+
         _uiState.update {
-            it.copy(allUserProfiles = optimisticList)
+            it.copy(
+                allUserProfiles = optimisticList,
+                activeUserProfile = optimisticActiveProfile,
+            )
         }
 
         viewModelScope.launch {
             myRepository.switchActiveMyProfile(profileId)
                 .onSuccess {
-                    fetchMyTierProfile()  // 프로필 정보 새로고침
-                    fetchRegionRankerList()  // 랭킹 새로고침 (스포츠 변경 시 필요할 수 있음)
-                    fetchRecommendedUserList()  // 추천 유저 새로고침
+                    fetchMyTierProfile()
+                    fetchRegionRankerList()
+                    fetchRecommendedUserList()
                 }
                 .onFailure { throwable ->
                     Timber.tag("HomeViewModel").e(throwable, "Failed to switch sport profile")
