@@ -57,7 +57,6 @@ fun MyPageData.toProfileInfo(): ProfileInfo {
         winCount = active.wins,
         loseCount = active.losses,
         reviewCount = active.reviews,
-
         nickname = this.nickname,
         genderType = GenderType.findByName(this.gender)
     )
