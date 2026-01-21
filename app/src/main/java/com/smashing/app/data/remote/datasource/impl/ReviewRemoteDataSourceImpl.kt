@@ -3,6 +3,7 @@ package com.smashing.app.data.remote.datasource.impl
 import com.smashing.app.data.remote.datasource.api.ReviewRemoteDataSource
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
+import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.remote.dto.review.MyProfileReviewListData
 import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 import com.smashing.app.data.remote.service.ReviewService
@@ -30,5 +31,9 @@ class ReviewRemoteDataSourceImpl @Inject constructor(
         size: Int?
     ): BaseResponse<MyProfileReviewListData> {
         return reviewService.getMyGameReviews(cursor, size)
+    }
+
+    override suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse> {
+        return reviewService.getMyRecentReviewStats()
     }
 }
