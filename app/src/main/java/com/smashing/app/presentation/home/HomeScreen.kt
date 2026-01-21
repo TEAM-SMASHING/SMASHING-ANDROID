@@ -76,6 +76,7 @@ fun HomeRoute(
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToRanking: () -> Unit,
+    navigateToMatchingAccepted: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -99,6 +100,7 @@ fun HomeRoute(
             )
         },
         navigateToRanking = navigateToRanking,
+        navigateToMatchingAccepted = navigateToMatchingAccepted,
         modifier = modifier,
     )
 }
@@ -110,6 +112,7 @@ private fun HomeScreen(
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: () -> Unit,
     navigateToRanking: () -> Unit,
+    navigateToMatchingAccepted: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -220,7 +223,7 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = {}
+                                    onClick = navigateToMatchingAccepted
                                 ),
                         )
                     }
@@ -664,6 +667,7 @@ private fun HomeScreenPreview() {
         navigateToRegionChange = {},
         navigateToTierInfo = {},
         navigateToRanking = {},
+        navigateToMatchingAccepted = {},
     )
 }
 
@@ -701,5 +705,7 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToRegionChange = {},
         navigateToTierInfo = {},
         navigateToRanking = {},
+        navigateToMatchingAccepted = {},
+
     )
 }

@@ -11,6 +11,8 @@ import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
+import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.ranking.navigation.navigateToRanking
 import com.smashing.app.presentation.region.navigation.getRegionResult
@@ -42,6 +44,9 @@ fun NavGraphBuilder.homeGraph(
                 navigateToRanking = navController::navigateToRanking,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(tierName = tierInfoStyle.name, sportName = sportType.code)
+                },
+                navigateToMatchingAccepted = {
+                    navController.navigateToMatching(initTab = MatchingType.ACCEPTED)
                 },
             )
         }
