@@ -140,7 +140,7 @@ private fun MyProfileScreen(
                 lpStatus = uiState.profileInfo.minLp,
                 totalLp = uiState.profileInfo.maxLp,
                 onAddSportClick = if (isMaxProfileReached) null else onAddSportClick,
-                onTierInfoClick = { navigateToTierInfo() }
+                onTierInfoClick = navigateToTierInfo,
             )
 
             ProfileStatsBar(

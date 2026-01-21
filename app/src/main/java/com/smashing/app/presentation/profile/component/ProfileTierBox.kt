@@ -154,7 +154,7 @@ fun ProfileTierBox(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(tier_description),
                     textStyle = SmashingTheme.typography.lg.semibold18,
-                    onClick = { onTierInfoClick.invoke() },
+                    onClick = onTierInfoClick,
                     buttonColor = SmashingBtnColor(
                         backgroundColor = SmashingTheme.colors.tierDiamondBg,
                         textColor = SmashingTheme.colors.txtEmphasis,
