@@ -14,6 +14,7 @@ import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
 import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
@@ -160,6 +161,11 @@ private fun MainNavHost(
                         }
                         launchSingleTop = true
                     }
+                )
+            },
+            navigateToConfirmReview = { reviewId ->
+                appState.navController.navigateToConfirmReview(
+                    reviewId = reviewId,
                 )
             },
             innerPadding = innerPadding,

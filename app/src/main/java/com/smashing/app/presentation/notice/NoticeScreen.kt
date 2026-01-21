@@ -33,6 +33,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun NoticeRoute(
     navigateUp: () -> Unit,
     navigateToMatching: (MatchingType) -> Unit,
+    navigateToConfirmReview: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NoticeViewModel = hiltViewModel(),
 ) {
@@ -52,9 +53,14 @@ fun NoticeRoute(
                 NotificationType.RESULT_REJECTED_SCORE_MISMATCH,
                 NotificationType.RESULT_REJECTED_WIN_LOSE_REVERSED,
                 NotificationType.RESULT_REJECTED_SCORE_AND_WIN_LOSE_MISMATCH,
+                NotificationType.RESULT_REJECTED_GAME_NOT_PLAYED_YET,
                     -> navigateToMatching(MatchingType.ACCEPTED)
-
-                else -> Unit
+                
+                NotificationType.REVIEW_RECEIVED -> {
+                    notice.relatedId?.let { reviewId ->
+                        navigateToConfirmReview(reviewId)
+                    }
+                }
             }
         },
     )
@@ -149,6 +155,8 @@ private fun NoticeScreenPreview() {
             isRead = index > 5,
             nickname = "a",
             timeAgo = "${index}분 전",
+            linkUrl = "/api/v1/reviews/review_$index",
+            relatedId = "review_$index",
         )
     }.toPersistentList()
 
