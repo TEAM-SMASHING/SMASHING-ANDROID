@@ -61,7 +61,7 @@ fun NavGraphBuilder.profileGraph(
                 navigateToReview = { userId ->
                     navController.navigateToReview(userId = userId)
                 },
-                navigateUp = { navController.navigateUp() },
+                navigateUp = navController::navigateUp,
             )
         }
 

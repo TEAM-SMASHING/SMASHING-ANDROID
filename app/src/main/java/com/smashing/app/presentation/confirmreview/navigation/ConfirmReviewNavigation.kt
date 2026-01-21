@@ -21,7 +21,7 @@ fun NavGraphBuilder.confirmReviewGraph(
 ) {
     composable<ConfirmReview> {
         ConfirmReviewRoute(
-            navigateUp = { navController.navigateUp() },
+            navigateUp = navController::navigateUp,
         )
     }
 }
