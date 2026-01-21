@@ -85,9 +85,9 @@ class HomeViewModel @Inject constructor(
             order = OrderType.OLDEST,
         )
             .onSuccess { cursorPage ->
-                val latestMatch = cursorPage.items.firstOrNull()
+                val oldestMatch = cursorPage.items.firstOrNull()
                 _uiState.update { currentState ->
-                    currentState.copy(matchedUser = latestMatch)
+                    currentState.copy(matchedUser = oldestMatch)
                 }
             }
             .onFailure { throwable ->
