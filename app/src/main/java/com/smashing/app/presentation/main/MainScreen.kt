@@ -91,6 +91,7 @@ private fun MainNavHost(
             innerPadding = innerPadding,
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
+            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         profileGraph(
