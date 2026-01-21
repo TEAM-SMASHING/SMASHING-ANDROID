@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.search
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,12 +44,22 @@ class SearchViewModel @Inject constructor(
                 if (searchInputText.isEmpty()) {
                     _uiState.update { it.copy(
                         suggestions = persistentListOf(),
-                        searchNickNameUsersUiState = SearchUiState.Empty,
+                        searchNickNameUsersUiState = SearchUiState.Idle,
                     ) }
                 } else {
                     fetchNickNameUsersList(searchInputText)
                 }
             }
+    }
+
+    fun clearSearchInput() {
+        searchInputState.clearText()
+        _uiState.update {
+            it.copy(
+                suggestions = persistentListOf(),
+                searchNickNameUsersUiState = SearchUiState.Idle,
+            )
+        }
     }
 
     fun updateSelectedRegion(region: String) {

@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +34,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun NoticeRoute(
     navigateUp: () -> Unit,
     navigateToMatching: (MatchingType) -> Unit,
+    navigateToConfirmReview: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NoticeViewModel = hiltViewModel(),
 ) {
@@ -44,13 +46,28 @@ fun NoticeRoute(
         onBackBtnClick = navigateUp,
         onLoadMore = viewModel::loadMore,
         onNoticeClick = { notice ->
-            viewModel.readNotification(notice.notificationId)
+            if (!notice.isRead) {
+                viewModel.readNotification(notice.notificationId)
+            }
+            
             when (notice.notificationType) {
-                NotificationType.MATCHING_REQUESTED,
+                NotificationType.MATCHING_REQUESTED -> {
+                    navigateToMatching(MatchingType.RECEIVE)
+                }
+
                 NotificationType.MATCHING_ACCEPTED,
                 NotificationType.MATCHING_RESULT_SUBMITTED,
-                -> navigateToMatching(MatchingType.ACCEPTED)
-                else -> Unit
+                NotificationType.RESULT_REJECTED_SCORE_MISMATCH,
+                NotificationType.RESULT_REJECTED_WIN_LOSE_REVERSED,
+                NotificationType.RESULT_REJECTED_SCORE_AND_WIN_LOSE_MISMATCH,
+                NotificationType.RESULT_REJECTED_GAME_NOT_PLAYED_YET,
+                    -> navigateToMatching(MatchingType.ACCEPTED)
+
+                NotificationType.REVIEW_RECEIVED -> {
+                    notice.relatedId?.let { reviewId ->
+                        navigateToConfirmReview(reviewId)
+                    }
+                }
             }
         },
     )
@@ -78,15 +95,17 @@ private fun NoticeScreen(
         )
 
         if (uiState.loadState is NoticeUiState.Empty) {
-            Column (
+            Column(
                 modifier = Modifier
                     .fillMaxSize(),
-            ){
-                Spacer(Modifier.weight(230f/330f))
+            ) {
+                Spacer(Modifier.weight(230f / 330f))
 
                 AppIcon(
                     title = "아직 받은 후기가 없어요",
                     isFilled = false,
+                    modifier = modifier
+                        .align(alignment = Alignment.CenterHorizontally),
                 )
 
                 Spacer(Modifier.weight(1f))
@@ -145,12 +164,14 @@ private fun NoticeScreenPreview() {
             isRead = index > 5,
             nickname = "a",
             timeAgo = "${index}분 전",
+            linkUrl = "/api/v1/reviews/review_$index",
+            relatedId = "review_$index",
         )
     }.toPersistentList()
 
     SmashingAndroidTheme {
         NoticeScreen(
-            uiState = NoticeContract.State(noticeList = mockList),
+            uiState = NoticeContract.State(loadState = NoticeUiState.Empty),
             onBackBtnClick = {},
             onLoadMore = {},
             onNoticeClick = {},

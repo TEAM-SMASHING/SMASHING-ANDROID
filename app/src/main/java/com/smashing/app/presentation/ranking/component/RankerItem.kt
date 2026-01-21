@@ -129,7 +129,6 @@ private fun RankerItem(
             PaddingValues(
                 start = 20.dp,
                 end = 20.dp,
-                top = 9.dp,
             )
         }
 

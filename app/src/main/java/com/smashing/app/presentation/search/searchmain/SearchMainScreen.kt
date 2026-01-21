@@ -17,11 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +28,8 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
@@ -101,18 +99,10 @@ private fun SearchMainScreen(
 
     val listState = rememberLazyGridState()
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (available.y < -10) {
-                    updateBottomBar(false)
-                } else if (available.y > 10) {
-                    updateBottomBar(true)
-                }
-                return Offset.Zero
-            }
-        }
-    }
+    val nestedScrollConnection = bottomBarNestedScrollConnection(
+        scrollStateHolder = ScrollStateHolder.LazyGrid(listState),
+        onBottomBarVisibilityChange = updateBottomBar,
+    )
 
     LaunchedEffect(uiState.searchList) {
         listState.scrollToItem(0)
@@ -180,44 +170,56 @@ private fun SearchMainScreen(
             )
         }
 
-        if(uiState.searchList.isNotEmpty()) {
-            listState.onBottomReached(
-                threshold = 3,
-                onLoadMore = onLoadMoreSearchList,
-                isLoading = currentIsLoading,
-            )
+        when(uiState.searchRegionUsersUiState) {
+            SearchContract.SearchUiState.Idle -> Unit
+            SearchContract.SearchUiState.Empty -> {
+                SearchEmpty(
+                    title = "해당 조건에 맞는 유저가 없어요",
+                    subTitle = "적용된 필터를 변경해보세요",
+                )
+            }
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = modifier
-                    .nestedScroll(nestedScrollConnection)
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
-                state = listState,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                items(
-                    items = uiState.searchList,
+            SearchContract.SearchUiState.Loading -> Unit
+            SearchContract.SearchUiState.Success -> {
+                listState.onBottomReached(
+                    threshold = 3,
+                    onLoadMore = onLoadMoreSearchList,
+                    isLoading = currentIsLoading,
+                )
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = modifier
+                        .nestedScroll(nestedScrollConnection)
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    state = listState,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Search(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.gender,
-                            tierType = it.tierType,
-                            onProfileClick = { onProfileClick(it.userId) },
-                            winCount = it.wins,
-                            loseCount = it.losses,
-                            reviewCount = it.reviews,
+                    items(
+                        items = uiState.searchList,
+                    ) {
+                        MatchingCard(
+                            cardState = MatchingCardState.Search(
+                                userId = it.userId,
+                                nickname = it.nickname,
+                                genderType = it.gender,
+                                tierType = it.tierType,
+                                onProfileClick = { onProfileClick(it.userId) },
+                                winCount = it.wins,
+                                loseCount = it.losses,
+                                reviewCount = it.reviews,
+                            )
                         )
-                    )
+                    }
                 }
             }
-        } else {
-            SearchEmpty(
-                title = "해당 조건에 맞는 유저가 없어요",
-                subTitle = "적용된 필터를 변경해보세요",
-            )
+            else -> {
+                SearchEmpty(
+                    title = "해당 조건에 맞는 유저가 없어요",
+                    subTitle = "적용된 필터를 변경해보세요",
+                )
+            }
         }
     }
 }
