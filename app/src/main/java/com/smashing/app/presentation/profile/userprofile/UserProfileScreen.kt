@@ -122,6 +122,7 @@ private fun UserProfileScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .nestedScroll(nestedScrollConnection)
+                .padding(bottom = 37.dp)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
         ) {
