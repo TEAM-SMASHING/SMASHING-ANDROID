@@ -32,8 +32,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -79,6 +83,7 @@ fun HomeRoute(
     navigateToMatchingAccepted: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
+    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -106,6 +111,7 @@ fun HomeRoute(
         navigateToUserProfile = navigateToUserProfile,
         navigateToSportAdd = navigateToSportAdd,
         onSportsChipClick = viewModel::fetchSelectSportProfile,
+        updateBottomBar = updateBottomBar,
         modifier = modifier,
     )
 }
@@ -121,6 +127,7 @@ private fun HomeScreen(
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
     onSportsChipClick: (String) -> Unit,
+    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
@@ -131,6 +138,19 @@ private fun HomeScreen(
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                if (available.y < -10) {
+                    updateBottomBar(false)
+                } else if (available.y > 10) {
+                    updateBottomBar(true)
+                }
+                return Offset.Zero
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -201,6 +221,7 @@ private fun HomeScreen(
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
+                    .nestedScroll(nestedScrollConnection)
                     .padding(
                         horizontal = 16.dp,
                     )
@@ -686,6 +707,7 @@ private fun HomeScreenPreview() {
         navigateToUserProfile = {},
         onSportsChipClick = {},
         navigateToSportAdd = {},
+        updateBottomBar = {},
     )
 }
 
@@ -727,5 +749,6 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToUserProfile = {},
         navigateToSportAdd = {},
         onSportsChipClick = {},
+        updateBottomBar = {},
     )
 }

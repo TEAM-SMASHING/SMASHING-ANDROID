@@ -80,6 +80,7 @@ private fun MainNavHost(
         homeGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
+            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         searchGraph(
