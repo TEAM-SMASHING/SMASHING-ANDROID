@@ -204,5 +204,6 @@ class UserProfileViewModel @Inject constructor(
                 }
             }
         }
+        showDialog()
     }
 }

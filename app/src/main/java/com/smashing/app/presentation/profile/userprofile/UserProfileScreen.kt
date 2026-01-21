@@ -76,9 +76,7 @@ fun UserProfileRoute(
         onNoClick = viewModel::onNoClick,
         onReviewClick = viewModel::navigateToAllReview,
         updateBottomBar = {},
-        onCompeteClick = {
-            viewModel.showDialog()
-            viewModel.requestCompetition() },
+        onCompeteClick = viewModel::requestCompetition,
         onConfirmClick = navigateToSentMatching,
         onDialogDismissClick = viewModel::dismissDialog,
         modifier = modifier,
