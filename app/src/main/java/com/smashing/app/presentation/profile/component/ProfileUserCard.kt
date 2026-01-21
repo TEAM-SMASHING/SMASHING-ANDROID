@@ -45,7 +45,8 @@ fun UserProfileCard(
     loseCount: Int,
     reviewCount: Long,
     modifier: Modifier = Modifier,
-    onCompeteClick: (() -> Unit)? = null
+    isCompeteEnabled: Boolean = false,
+    onCompeteClick: (() -> Unit)? = null,
 ) {
 
     Column(
@@ -121,6 +122,7 @@ fun UserProfileCard(
                 onClick = {},
                 modifier = Modifier
                     .fillMaxWidth(),
+                isEnabled = isCompeteEnabled
             )
         }
     }
@@ -161,7 +163,7 @@ private fun UserProfileCardPreview() {
             winCount = 254,
             loseCount = 38,
             reviewCount = 32,
-
+            isCompeteEnabled = true,
         )
     }
 }

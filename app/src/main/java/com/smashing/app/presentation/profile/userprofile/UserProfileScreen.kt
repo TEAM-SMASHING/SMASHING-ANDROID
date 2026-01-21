@@ -133,6 +133,7 @@ private fun UserProfileScreen(
                 loseCount = uiState.profileInfo.loseCount,
                 reviewCount = uiState.profileInfo.reviewCount,
                 onCompeteClick = onCompeteClick,
+                isCompeteEnabled = uiState.isCompeteButtonEnabled,
             )
 
             ProfileTierBox(
@@ -157,10 +158,13 @@ private fun UserProfileScreen(
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
             )
+        }
 
+        if ( uiState.isCompeteButtonEnabled == false ){
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
                     .padding(bottom = 52.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
