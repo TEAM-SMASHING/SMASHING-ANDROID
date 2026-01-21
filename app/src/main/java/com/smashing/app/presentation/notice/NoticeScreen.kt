@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -103,6 +104,8 @@ private fun NoticeScreen(
                 AppIcon(
                     title = "아직 받은 후기가 없어요",
                     isFilled = false,
+                    modifier = modifier
+                        .align(alignment = Alignment.CenterHorizontally),
                 )
 
                 Spacer(Modifier.weight(1f))
@@ -168,7 +171,7 @@ private fun NoticeScreenPreview() {
 
     SmashingAndroidTheme {
         NoticeScreen(
-            uiState = NoticeContract.State(noticeList = mockList),
+            uiState = NoticeContract.State(loadState = NoticeUiState.Empty),
             onBackBtnClick = {},
             onLoadMore = {},
             onNoticeClick = {},

@@ -119,7 +119,7 @@ fun ScoreInputTextField(
             },
             inputTransformation = digitOnlyFilter,
             placeholder = if (isFocused) "" else placeholder,
-            placeholderColor = inputState.getContentColor(),
+            placeholderColor = SmashingTheme.colors.txtDisabled,
             placeholderStyle = SmashingTheme.typography.sm.medium14.copy(
                 textAlign = TextAlign.Center,
             ),
