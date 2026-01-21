@@ -242,7 +242,6 @@ private fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    //TODO 아래 유저 ID에 profileId를 임시로 넣었어요. 받는 값에 유저ID가 없어...
                     CloseMatching(
                         myProfileId = uiState.activeUserProfile.profileId,
                         myNickname = uiState.activeUserProfile.nickname,

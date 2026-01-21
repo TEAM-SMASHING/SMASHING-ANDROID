@@ -154,12 +154,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun createDummyMatchedUser(): DummyMatchedUser? {
-        return DummyMatchedUser(
-            userId = "matchedUser1",
-            nickname = "더미하는김에긴닉네임",
-        )
-    }
 
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
         currentState.copy(loadState = state)
