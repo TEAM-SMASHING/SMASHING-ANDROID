@@ -20,6 +20,7 @@ import javax.inject.Inject
 class MyProfileViewModel @Inject constructor(
     private val myRepository: MyRepository,
     private val reviewRepository: ReviewRepository
+
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState.asStateFlow()
@@ -93,7 +94,7 @@ class MyProfileViewModel @Inject constructor(
             it.copy(reviewLoadState = MyProfileUiState.Loading)
         }
 
-        reviewRepository.getMyGameReviewsResponse(
+        reviewRepository.getMyGameReviews(
             cursor = null,
             size = PAGE_SIZE
         )

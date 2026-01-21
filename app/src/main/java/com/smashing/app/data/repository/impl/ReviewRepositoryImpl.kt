@@ -31,11 +31,11 @@ class ReviewRepositoryImpl @Inject constructor(
             ).requireData().toGameReviewList()
         }
 
-    override suspend fun getMyGameReviewsResponse(
+    override suspend fun getMyGameReviews(
         cursor: String?,
         size: Int?
     ): Result<CursorPage<GameReview>> = suspendRunCatching {
-        reviewRemoteDataSource.getMyGameReviewsResponse(cursor, size)
+        reviewRemoteDataSource.getMyGameReviews(cursor, size)
             .requireData()
             .toGameReviewPage()
     }
