@@ -39,7 +39,7 @@ class ConfirmReviewViewModel @Inject constructor(
             .onSuccess { review ->
                 _uiState.update { state ->
                     state.copy(
-                        nickname = review.reviewerNickname,
+                        nickname = review.revieweeNickname,
                         reviewRatingType = review.rating,
                         reviewText = review.content,
                         tags = review.tags.map { it.tagLabel }.toImmutableList(),

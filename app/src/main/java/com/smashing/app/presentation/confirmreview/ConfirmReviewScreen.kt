@@ -10,17 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
-import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
@@ -31,7 +26,6 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.ReviewRatingType
-import com.smashing.app.presentation.addsports.AddSportsUiState
 import com.smashing.app.presentation.confirmreview.component.ConfirmReviewCard
 import kotlinx.collections.immutable.persistentListOf
 
@@ -93,8 +87,6 @@ private fun ConfirmReviewScreen(
                 tag = uiState.tags,
                 modifier = Modifier.weight(1f),
             )
-
-            Spacer(modifier = Modifier.weight(1f))
 
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY,
