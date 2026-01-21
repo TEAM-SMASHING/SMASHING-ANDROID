@@ -51,7 +51,6 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
 import com.smashing.app.R.drawable.img_dummy_versus
-import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.data.type.GenderType
@@ -59,11 +58,9 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
@@ -73,18 +70,12 @@ import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.data.model.rank.UserRank
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.core.util.ScrollStateHolder
 import com.smashing.app.core.util.bottomBarNestedScrollConnection
-import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.getMatchButtonColor
 import com.smashing.app.core.designsystem.style.getMatchButtonTitle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
-import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.type.GameResultStatusType
 import kotlinx.collections.immutable.toImmutableList
 
