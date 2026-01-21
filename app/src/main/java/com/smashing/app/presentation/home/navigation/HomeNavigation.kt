@@ -20,6 +20,7 @@ import com.smashing.app.presentation.ranking.navigation.navigateToRanking
 import com.smashing.app.presentation.region.navigation.getRegionResult
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.removeRegionResult
+import com.smashing.app.presentation.search.navigation.navigateToSearch
 import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
@@ -55,6 +56,7 @@ fun NavGraphBuilder.homeGraph(
                     navController.navigateToUserProfile(userId = userId)
                 },
                 navigateToSportAdd = navController::navigateToAddSports,
+                navigateToSearch = navController::navigateToSearch,
                 updateBottomBar = updateBottomBar,
             )
         }

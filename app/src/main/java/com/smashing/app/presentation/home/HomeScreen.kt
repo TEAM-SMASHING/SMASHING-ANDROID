@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -53,6 +54,7 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
 import com.smashing.app.R.drawable.img_dummy_versus
+import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
@@ -63,6 +65,7 @@ import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
@@ -71,6 +74,8 @@ import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.getMatchButtonColor
+import com.smashing.app.core.designsystem.style.getMatchButtonTitle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.data.model.matching.AcceptedMatching
 import kotlinx.collections.immutable.toImmutableList
@@ -84,6 +89,7 @@ fun HomeRoute(
     navigateToMatchingAccepted: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
+    navigateToSearch: () -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -111,6 +117,7 @@ fun HomeRoute(
         navigateToMatchingAccepted = navigateToMatchingAccepted,
         navigateToUserProfile = navigateToUserProfile,
         navigateToSportAdd = navigateToSportAdd,
+        navigateToSearch = navigateToSearch,
         onSportsChipClick = viewModel::fetchSelectSportProfile,
         updateBottomBar = updateBottomBar,
         modifier = modifier,
@@ -127,6 +134,7 @@ private fun HomeScreen(
     navigateToMatchingAccepted: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
+    navigateToSearch: () -> Unit,
     onSportsChipClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -271,6 +279,10 @@ private fun HomeScreen(
                         myNickname = uiState.activeUserProfile.nickname,
                         matchedUser = uiState.matchedUser,
                         onClick = {},
+                        navigateToSearch = {
+                            updateBottomBar(true)
+                            navigateToSearch()
+                        },
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
@@ -463,6 +475,7 @@ private fun CloseMatching(
     myNickname: String,
     myProfileId: String,
     onClick: () -> Unit,
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier,
     matchedUser: AcceptedMatching? = null,  // 타입 변경
     buttonState: String = "dummy",
@@ -525,14 +538,39 @@ private fun CloseMatching(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        //TODO buttonState 타입 수정 후 실제 사용시에 수정 예정
-        SmashingButton(
-            buttonStyle = ButtonStyle.PRIMARY,
-            text = "결과 작성하기",
-            onClick = onClick,
-            modifier = Modifier
-                .fillMaxWidth(),
-        )
+        if (matchedUser != null) {
+            SmashingBaseButton(
+                text = matchedUser.resultStatus.getMatchButtonTitle(),
+                textStyle = SmashingTheme.typography.sm.medium14,
+                onClick = onClick,
+                buttonColor = matchedUser.resultStatus.getMatchButtonColor(),
+                contentPadding = PaddingValues(
+                    vertical = 4.dp,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 11.dp,
+                    ),
+                shape = RoundedCornerShape(4.dp),
+            )
+        } else {
+            SmashingBaseButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "매칭 탐색하러 가기",
+                textStyle = SmashingTheme.typography.lg.semibold18,
+                onClick = navigateToSearch,
+                buttonColor = SmashingBtnColor(
+                    backgroundColor = SmashingTheme.colors.tierDiamondBg,
+                    textColor = SmashingTheme.colors.txtEmphasis,
+                    disabledBackgroundColor = SmashingTheme.colors.tierDiamondBg,
+                    disabledTextColor = SmashingTheme.colors.txtEmphasis,
+                ),
+                contentPadding = PaddingValues(vertical = 10.dp),
+                shape = RoundedCornerShape(8.dp),
+                isRippleEnabled = false,
+            )
+        }
     }
 }
 
@@ -706,6 +744,7 @@ private fun HomeScreenPreview() {
         navigateToUserProfile = {},
         onSportsChipClick = {},
         navigateToSportAdd = {},
+        navigateToSearch = {},
         updateBottomBar = {},
     )
 }
@@ -747,6 +786,7 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToMatchingAccepted = {},
         navigateToUserProfile = {},
         navigateToSportAdd = {},
+        navigateToSearch = {},
         onSportsChipClick = {},
         updateBottomBar = {},
     )
