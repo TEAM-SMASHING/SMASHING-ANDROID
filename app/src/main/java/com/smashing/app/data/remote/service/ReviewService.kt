@@ -29,7 +29,7 @@ interface ReviewService {
         @Query("size") size: Int?,
     ): BaseResponse<MyProfileReviewListData>
 
-    @GET("/api/v1/users/{userId}/reviews/summary")
+    @GET("/api/v1/users/me/reviews/summary")
     suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse>
 
 
