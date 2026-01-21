@@ -22,7 +22,6 @@ class MyProfileViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository
 
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
@@ -76,6 +75,7 @@ class MyProfileViewModel @Inject constructor(
                 .onSuccess {
                     fetchProfileInfo()
                     fetchReviews()
+                    fetchMyRecentReviewStats()
                 }
                 .onFailure { exception ->
                     _uiState.update {
