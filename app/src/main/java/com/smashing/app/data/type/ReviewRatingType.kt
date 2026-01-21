@@ -1,5 +1,8 @@
 package com.smashing.app.data.type
 
+import androidx.annotation.DrawableRes
+import com.smashing.app.R
+
 enum class ReviewRatingType(
     val label: String,
 ) {
@@ -11,5 +14,9 @@ enum class ReviewRatingType(
     ),
     BEST(
         label = "최고에요",
-    )
+    );
+
+    companion object {
+        fun findReviewRatingType(name: String): ReviewRatingType = entries.find { it.name == name } ?: ReviewRatingType.GOOD
+    }
 }
