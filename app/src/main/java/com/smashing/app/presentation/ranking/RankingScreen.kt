@@ -181,27 +181,29 @@ private fun RankingScreen(
 
 
         }
-        MyRanking(
-            userId = uiState.userInfo?.userId ?: "",
-            nickname = uiState.userInfo?.nickname ?: "",
-            tier = uiState.userInfo?.tier ?: TierType.IRON,
-            lp = uiState.userInfo?.lp ?: 0,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .onGloballyPositioned { coordinates ->
-                    myRankingHeight = with(density) {
-                        coordinates.size.height.toDp()
+        if (uiState.userInfo != null) {
+            MyRanking(
+                userId = uiState.userInfo.userId,
+                nickname = uiState.userInfo.nickname,
+                tier = uiState.userInfo.tier,
+                lp = uiState.userInfo.lp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .onGloballyPositioned { coordinates ->
+                        myRankingHeight = with(density) {
+                            coordinates.size.height.toDp()
+                        }
                     }
-                }
-                .padding(
-                    horizontal = 16.dp,
-                )
-                .padding(
-                    bottom = 20.dp
-                )
-                .navigationBarsPadding()
-        )
+                    .padding(
+                        horizontal = 16.dp,
+                    )
+                    .padding(
+                        bottom = 20.dp
+                    )
+                    .navigationBarsPadding()
+            )
+        }
     }
 }
 
