@@ -1,7 +1,7 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
-import com.smashing.app.data.mapper.toRankingData
+import com.smashing.app.data.mapper.ranking.toRankingData
 import com.smashing.app.data.model.rank.Ranking
 import com.smashing.app.data.remote.datasource.api.RankingRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData

@@ -71,14 +71,14 @@ fun GameResultStatusType.getMatchButtonColor() = when(this) {
         textColor = colors.btnTxtRejected,
     )
 
-    GameResultStatusType.RESULT_CONFIRMED -> SmashingBtnColor(
-        backgroundColor = colors.btnBgPrimary300,
-        textColor = colors.txtEmphasis,
+    GameResultStatusType.PENDING_RESULT_CONFIRMED -> SmashingBtnColor(
+        backgroundColor = colors.btnBgPrimaryDisabled,
+        textColor = colors.btnTxtPrimaryDisabled,
     )
 
     GameResultStatusType.WAITING_CONFIRMATION -> SmashingBtnColor(
-        backgroundColor = colors.btnBgPrimaryDisabled,
-        textColor = colors.btnTxtPrimaryDisabled
+        backgroundColor = colors.btnBgPrimary300,
+        textColor = colors.txtEmphasis,
     )
 
     GameResultStatusType.CANCELED -> SmashingBtnColor(
@@ -96,8 +96,8 @@ fun GameResultStatusType.getMatchButtonColor() = when(this) {
 fun GameResultStatusType.getMatchButtonTitle() = when(this) {
     GameResultStatusType.PENDING_RESULT -> stringResource(matching_btn_write)
     GameResultStatusType.RESULT_REJECTED -> stringResource(matching_btn_rejected)
-    GameResultStatusType.RESULT_CONFIRMED -> stringResource(matching_btn_confirm)
-    GameResultStatusType.WAITING_CONFIRMATION -> stringResource(matching_btn_waiting_confirm)
+    GameResultStatusType.WAITING_CONFIRMATION -> stringResource(matching_btn_confirm)
+    GameResultStatusType.PENDING_RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
     GameResultStatusType.CANCELED -> stringResource(matching_btn_canceled)
     GameResultStatusType.UNKNOWN -> stringResource(matching_btn_unknown)
 }

@@ -14,5 +14,9 @@ enum class ReviewTagType(
     ),
     FAST_RESPONSE(
         tagLabel = "응답이 빨라요",
-    ),
+    );
+
+    companion object {
+        fun findReviewTagType(name: String): ReviewTagType? = entries.find { it.name == name }
+    }
 }

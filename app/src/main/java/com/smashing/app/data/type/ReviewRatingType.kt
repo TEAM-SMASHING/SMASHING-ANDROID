@@ -11,5 +11,9 @@ enum class ReviewRatingType(
     ),
     BEST(
         label = "최고에요",
-    )
+    );
+
+    companion object {
+        fun findReviewRatingType(name: String): ReviewRatingType = entries.find { it.name == name } ?: ReviewRatingType.GOOD
+    }
 }

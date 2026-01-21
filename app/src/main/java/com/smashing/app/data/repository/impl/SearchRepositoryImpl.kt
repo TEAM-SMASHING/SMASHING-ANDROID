@@ -1,8 +1,8 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
-import com.smashing.app.data.mapper.toSearchMainItemModelList
-import com.smashing.app.data.mapper.toSuggestionItemModel
+import com.smashing.app.data.mapper.search.toSearchMainItemModelList
+import com.smashing.app.data.mapper.search.toSuggestionItemModel
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.search.SearchMainItemModel
 import com.smashing.app.data.model.search.SuggestionItemModel

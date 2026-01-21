@@ -29,9 +29,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
+import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.type.SportType
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
@@ -41,7 +44,7 @@ import com.smashing.app.presentation.profile.component.UserProfileCard
 @Composable
 fun MyProfileRoute(
     navigateToSportAdd: () -> Unit,
-    navigateToTierGuide: () -> Unit,
+    navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToReview: (String?) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -53,6 +56,8 @@ fun MyProfileRoute(
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
         viewModel.fetchReviews()
+        viewModel.fetchMyRecentReviewStats()
+
     }
 
     MyProfileScreen(
@@ -61,7 +66,12 @@ fun MyProfileRoute(
         updateBottomBar = updateBottomBar,
         onSportClick = viewModel::selectProfileId,
         onAddSportClick = navigateToSportAdd,
-        onTierGuideClick = navigateToTierGuide,
+        navigateToTierInfo = {
+            navigateToTierInfo(
+                uiState.profileInfo.tierType.toTierInfoStyle(),
+                uiState.profileInfo.sportType
+            )
+        },
         onReviewClick = navigateToReview,
     )
 }
@@ -70,7 +80,7 @@ fun MyProfileRoute(
 private fun MyProfileScreen(
     uiState: MyProfileContract.State,
     onAddSportClick: () -> Unit,
-    onTierGuideClick: () -> Unit,
+    navigateToTierInfo: () -> Unit,
     onReviewClick: (String?) -> Unit,
     onSportClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
@@ -91,7 +101,6 @@ private fun MyProfileScreen(
             }
         }
     }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -128,11 +137,11 @@ private fun MyProfileScreen(
                 selectedProfileId = uiState.selectedSportProfileId,
                 onSportClick = onSportClick,
                 tierIconResId = uiState.profileInfo.tierType.img(),
-                progress = uiState.profileInfo.lp.toFloat() / uiState.profileInfo.maxLp,
-                lpStatus = uiState.profileInfo.minLp,
+                progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
+                lpStatus = uiState.profileInfo.maxLp - uiState.profileInfo.lp,
                 totalLp = uiState.profileInfo.maxLp,
                 onAddSportClick = if (isMaxProfileReached) null else onAddSportClick,
-                onTierInfoClick = onTierGuideClick,
+                onTierInfoClick = navigateToTierInfo,
             )
 
             ProfileStatsBar(
@@ -160,7 +169,7 @@ private fun ProfileScreenPreview() {
         MyProfileScreen(
             uiState = MyProfileContract.State(),
             onAddSportClick = {},
-            onTierGuideClick = {},
+            navigateToTierInfo = {},
             onReviewClick = {},
             onSportClick = {},
             updateBottomBar = {},
