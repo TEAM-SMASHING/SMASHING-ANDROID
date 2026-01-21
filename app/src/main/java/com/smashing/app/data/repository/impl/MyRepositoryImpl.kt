@@ -13,14 +13,9 @@ import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.MyRepository
 import javax.inject.Inject
 
-class MyRepositoryImpl : MyRepository {
-
+class MyRepositoryImpl @Inject constructor(
     private val myRemoteDataSource: MyRemoteDataSource
-
-    @Inject
-    constructor(myRemoteDataSource: MyRemoteDataSource) {
-        this.myRemoteDataSource = myRemoteDataSource
-    }
+) : MyRepository {
 
     override suspend fun getMyPageInfo(): Result<MyPageInfo> = suspendRunCatching {
         myRemoteDataSource.getMyProfile()
@@ -28,18 +23,17 @@ class MyRepositoryImpl : MyRepository {
             .toMyPageInfo()
     }
 
-
     override suspend fun switchActiveMyProfile(
         profileId: String
     ): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.putActiveMyProfile(MyProfileSwitchRequest(profileId = profileId))
     }
 
-
     override suspend fun addSportsProfile(info: AddSportsInfo): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.addSportProfile(info.toRequest())
 
     }
+
     override suspend fun getMyTierProfile(): Result<UserProfile> = suspendRunCatching {
         myRemoteDataSource.getMyTierProfile()
             .requireData()
