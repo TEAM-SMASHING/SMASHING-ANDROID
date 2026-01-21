@@ -259,7 +259,10 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = navigateToMatchingAccepted
+                                    onClick = {
+                                        updateBottomBar(true)
+                                        navigateToMatchingAccepted()
+                                    }
                                 ),
                         )
                     }
@@ -364,7 +367,10 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = navigateToRanking
+                                    onClick = {
+                                        updateBottomBar(true)
+                                        navigateToRanking()
+                                    }
                                 )
                         )
                     }
