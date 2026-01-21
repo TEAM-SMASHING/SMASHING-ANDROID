@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
@@ -35,9 +36,6 @@ fun NavController.navigateToReview(
 
 
 fun NavGraphBuilder.profileGraph(
-    navigateUp: () -> Unit,
-    navigateToReview: (String?) -> Unit,
-    navigateToAddSports: () -> Unit,
     innerPadding: PaddingValues,
     navController: NavController,
     updateBottomBar: (Boolean) -> Unit,
@@ -47,29 +45,32 @@ fun NavGraphBuilder.profileGraph(
     ) {
         composable<MyProfile> {
             MyProfileRoute(
-                navigateToSportAdd = navigateToAddSports,
-                navigateToReview = navigateToReview,
+                navigateToSportAdd = { navController.navigateToAddSports() },
+                navigateToReview = { userId -> navController.navigateToReview(userId = userId) },
                 updateBottomBar = updateBottomBar,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(
                         tierName = tierInfoStyle.name,
-                        sportName = sportType.code
+                        sportName = sportType.name,
                     )
                 },
             )
         }
         composable<UserProfile> {
             UserProfileRoute(
-                navigateToReview = navigateToReview,
-            )
-        }
-        composable<Review> {
-            AllReviewRoute(
-                modifier = Modifier.padding(innerPadding),
-                navigateUp = navigateUp,
+                navigateToReview = { userId ->
+                    navController.navigateToReview(userId = userId)
+                },
             )
         }
 
+        composable<Review> {
+            AllReviewRoute(
+                modifier = Modifier.padding(innerPadding),
+                // 4. 뒤로가기도 navController 사용
+                navigateUp = { navController.navigateUp() },
+            )
+        }
     }
 }
 
