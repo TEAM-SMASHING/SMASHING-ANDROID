@@ -21,4 +21,10 @@ class NotificationRemoteDataSourceImpl @Inject constructor(
             cursor = cursor,
             size = size,
         )
+
+    override suspend fun putNotificationRead(
+        notificationId: String,
+    ): BaseResponse<Unit> = notificationService.putNotificationRead(
+        notificationId = notificationId,
+    )
 }

@@ -10,4 +10,8 @@ interface NotificationRepository {
         cursor: String?,
         size: Long?,
     ): Result<CursorPage<Notification>>
+
+    suspend fun putNotificationRead(
+        notificationId: String,
+    ): Result<Unit>
 }

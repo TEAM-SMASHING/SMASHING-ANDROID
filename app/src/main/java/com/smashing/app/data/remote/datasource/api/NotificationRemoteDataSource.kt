@@ -11,4 +11,8 @@ interface NotificationRemoteDataSource {
         cursor: String?,
         size: Long?,
     ): BaseResponse<CursorDto<NotificationSummaryResponse>>
+
+    suspend fun putNotificationRead(
+        notificationId: String,
+    ): BaseResponse<Unit>
 }

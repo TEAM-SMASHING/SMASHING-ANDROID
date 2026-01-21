@@ -3,6 +3,7 @@ package com.smashing.app.presentation.notice
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.NotificationRepository
+import com.smashing.app.domain.model.Notification
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,7 @@ class NoticeViewModel @Inject constructor(
         fetchNotificationList()
     }
 
-    fun fetchNotificationList(isRefresh: Boolean = false) = viewModelScope.launch {
+    private fun fetchNotificationList(isRefresh: Boolean = false) = viewModelScope.launch {
         val currentState = _uiState.value
 
         val isFirstFetch = currentState.cursor.snapshotAt == null
@@ -46,7 +47,9 @@ class NoticeViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update { it.copy(loadState = NoticeUiState.Failure(throwable.message ?: "")) }
+            updateNoticeUiState(
+                uiState = NoticeUiState.Failure(throwable.message ?: "")
+            )
         }
     }
 
@@ -56,10 +59,32 @@ class NoticeViewModel @Inject constructor(
             fetchNotificationList()
         }
     }
+    
+    fun readNotification(notificationId: String) = viewModelScope.launch {
+        notificationRepository.putNotificationRead(
+            notificationId = notificationId,
+        ).onSuccess {
+
+        }.onFailure {
+            updateNoticeUiState(NoticeUiState.Failure(it.message ?: "Read Notification Error"))
+        }
+    }
 
     private fun updateNoticeUiState(uiState: NoticeUiState) = _uiState.update {
         it.copy(
             loadState = uiState,
+        )
+    }
+
+    fun updateIsChangeDialogVisible(isVisible: Boolean) = _uiState.update {
+        it.copy(
+            isChangeDialogVisible = isVisible,
+        )
+    }
+
+    fun updateSelectedNoticeItem(noticeItem: Notification) = _uiState.update {
+        it.copy(
+            selectedNoticeItem = noticeItem,
         )
     }
 

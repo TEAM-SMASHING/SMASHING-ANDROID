@@ -24,4 +24,12 @@ class NotificationRepositoryImpl @Inject constructor(
             size = size,
         ).requireData().toNotificationList()
     }
+
+    override suspend fun putNotificationRead(
+        notificationId: String,
+    ): Result<Unit> = suspendRunCatching {
+        notificationRemoteDataSource.putNotificationRead(
+            notificationId = notificationId,
+        )
+    }
 }

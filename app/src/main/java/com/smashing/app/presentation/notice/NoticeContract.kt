@@ -13,6 +13,8 @@ interface NoticeContract {
         val noticeList: ImmutableList<Notification> = persistentListOf(),
         val loadState: NoticeUiState = NoticeUiState.Idle,
         val cursor: Cursor = Cursor(),
+        val selectedNoticeItem: Notification = Notification(),
+        val isChangeDialogVisible: Boolean = false,
     )
 }
 

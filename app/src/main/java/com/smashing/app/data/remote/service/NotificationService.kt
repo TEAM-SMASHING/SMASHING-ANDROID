@@ -4,6 +4,8 @@ import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.notification.NotificationSummaryResponse
 import retrofit2.http.GET
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NotificationService {
@@ -17,4 +19,10 @@ interface NotificationService {
         @Query("size")
         size: Long?,
     ): BaseResponse<CursorDto<NotificationSummaryResponse>>
+
+    @PUT("/api/v1/notifications/{notificationId}/read")
+    suspend fun putNotificationRead(
+        @Path("notificationId")
+        notificationId: String,
+    ): BaseResponse<Unit>
 }
