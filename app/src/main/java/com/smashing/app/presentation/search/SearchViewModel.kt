@@ -6,6 +6,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.data.model.search.UserRegionItemModel
 import com.smashing.app.data.repository.api.SearchRepository
 import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import com.smashing.app.presentation.search.searchmain.style.GenderInfo
@@ -42,10 +43,12 @@ class SearchViewModel @Inject constructor(
             .debounce(SEARCH_NETWORK_DEBOUNCE)
             .collectLatest { searchInputText ->
                 if (searchInputText.isEmpty()) {
-                    _uiState.update { it.copy(
-                        suggestions = persistentListOf(),
-                        searchNickNameUsersUiState = SearchUiState.Idle,
-                    ) }
+                    _uiState.update {
+                        it.copy(
+                            suggestions = persistentListOf(),
+                            searchNickNameUsersUiState = SearchUiState.Idle,
+                        )
+                    }
                 } else {
                     fetchNickNameUsersList(searchInputText)
                 }
@@ -62,10 +65,28 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun updateSelectedRegion(region: String) {
-        _uiState.update {
-            it.copy(selectedRegion = region)
-        }
+    fun updateSelectedRegion() = viewModelScope.launch {
+        _uiState.update { it.copy(regionUiState = SearchUiState.Loading) }
+
+        searchRepository.getUserRegion()
+            .onSuccess { data ->
+                _uiState.update {
+                    it.copy(
+                        selectedRegion = data.region,
+                        regionItems = persistentListOf(data.region),
+                        regionUiState = SearchUiState.Success,
+                    )
+                }
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        regionUiState = SearchUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
+                    )
+                }
+            }
+
     }
 
     fun openTierBottomSheet() =

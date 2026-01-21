@@ -5,6 +5,7 @@ import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.data.model.search.SearchMainItemModel
+import com.smashing.app.data.model.search.UserRegionItemModel
 import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -13,8 +14,9 @@ import kotlinx.collections.immutable.toImmutableList
 interface SearchContract {
     @Immutable
     data class State(
-        val selectedRegion: String = "강서구",  // Todo: 디폴트 값 제거
-        val regionItems: ImmutableList<String> = persistentListOf("양천구", "강서구", "장신구"),
+        val selectedRegion: String = "",
+        val regionItems: ImmutableList<String> = persistentListOf(),
+        val regionUiState: SearchUiState = SearchUiState.Idle,
         val searchList: ImmutableList<SearchMainItemModel> = persistentListOf(),
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,
