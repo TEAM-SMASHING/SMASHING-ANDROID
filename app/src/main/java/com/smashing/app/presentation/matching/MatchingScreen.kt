@@ -80,6 +80,7 @@ fun MatchingRoute(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
@@ -105,6 +106,7 @@ fun MatchingRoute(
                         sideEffect.opponentUserId,
                         sideEffect.opponentNickname,
                         sideEffect.isFirstAttempt,
+                        sideEffect.submissionId,
                     )
 
                     is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(

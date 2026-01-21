@@ -24,6 +24,7 @@ fun NavController.navigateToSubmit(
     opponentUserId: String,
     opponentNickname: String,
     isFirstAttempt: Boolean,
+    submissionId: String? = null,
     navOptions: NavOptions? = null,
 ) = navigate(
     route = Submit(
@@ -31,6 +32,7 @@ fun NavController.navigateToSubmit(
         opponentUserId = opponentUserId,
         opponentNickname = opponentNickname,
         isFirstAttempt = isFirstAttempt,
+        submissionId = submissionId,
     ),
     navOptions = navOptions,
 )
@@ -129,6 +131,7 @@ data class Submit(
     val opponentUserId: String,
     val opponentNickname: String,
     val isFirstAttempt: Boolean,
+    val submissionId: String? = null,
 ) : Route
 
 @Serializable
