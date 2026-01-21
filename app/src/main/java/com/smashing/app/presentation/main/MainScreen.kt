@@ -145,6 +145,7 @@ private fun MainNavHost(
                     },
                 )
             },
+            navigateUp = appState.navController::navigateUp,
             innerPadding = innerPadding,
         )
 
@@ -193,7 +194,7 @@ private fun MainNavHost(
         )
 
         confirmReviewGraph(
-            navController = appState.navController
+            navController = appState.navController,
         )
     }
 }

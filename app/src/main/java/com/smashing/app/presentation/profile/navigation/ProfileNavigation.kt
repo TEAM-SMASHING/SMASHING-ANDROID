@@ -1,8 +1,5 @@
 package com.smashing.app.presentation.profile.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -11,6 +8,8 @@ import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
+import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
@@ -36,7 +35,6 @@ fun NavController.navigateToReview(
 
 
 fun NavGraphBuilder.profileGraph(
-    innerPadding: PaddingValues,
     navController: NavController,
     updateBottomBar: (Boolean) -> Unit,
 ) {
@@ -62,13 +60,12 @@ fun NavGraphBuilder.profileGraph(
                     navController.navigateToReview(userId = userId)
                 },
                 navigateUp = navController::navigateUp,
+                navigateToSentMatching = { navController.navigateToMatching(initTab = MatchingType.SEND) }
             )
         }
 
         composable<Review> {
             AllReviewRoute(
-                modifier = Modifier.padding(innerPadding),
-                // 4. 뒤로가기도 navController 사용
                 navigateUp = { navController.navigateUp() },
             )
         }
