@@ -10,11 +10,6 @@ import com.smashing.app.data.model.review.GameReview
 interface MyRepository {
     suspend fun getMyPageInfo(): Result<MyPageInfo>
 
-    suspend fun getMyGameReviews(
-        cursor: String?,
-        size: Int?,
-    ): Result<CursorPage<GameReview>>
-
     suspend fun switchActiveMyProfile(profileId: String): Result<Unit>
 
     suspend fun addSportsProfile(info: AddSportsInfo): Result<Unit>

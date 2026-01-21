@@ -18,4 +18,5 @@ data class AcceptedMatching(
     val isSubmitLocked: Boolean,
     val latestSubmissionId: String?,
     val latestAttemptNo: Int?,
+    val latestSubmitterId: String?,
 )

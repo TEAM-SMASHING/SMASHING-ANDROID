@@ -37,8 +37,6 @@ interface MatchingContract {
         data class NavigateToConfirm(
             val submissionId: String,
             val gameId: String,
-            val opponentUserId: String,
-            val opponentNickname: String,
             val isFirstAttempt: Boolean,
         ) : SideEffect
     }
