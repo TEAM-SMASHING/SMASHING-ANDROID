@@ -70,7 +70,7 @@ fun SearchTextField(
 
         SmashingBasicTextField(
             state = state,
-            placeholder = placeholder,
+            placeholder = if (isFocused) "" else placeholder,
             placeholderColor = SmashingTheme.colors.txtDisabled,
             placeholderStyle = SmashingTheme.typography.sm.medium14,
             textColor = SmashingTheme.colors.txtPrimary,

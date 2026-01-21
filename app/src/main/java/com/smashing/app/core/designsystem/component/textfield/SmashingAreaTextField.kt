@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingColors
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.bringIntoViewOnFocus
 import com.smashing.app.core.extension.checkLength
@@ -92,7 +93,7 @@ fun SmashingAreaTextField(
         ) {
             SmashingBasicTextField(
                 state = state,
-                placeholder = placeholder,
+                placeholder = if (isFocused) "" else placeholder,
                 placeholderColor = SmashingTheme.colors.txtDisabled,
                 placeholderStyle = inputState.getTextStyle(),
                 textColor = inputState.getContentColor(),
