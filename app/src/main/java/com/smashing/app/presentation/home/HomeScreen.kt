@@ -33,11 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -72,6 +69,8 @@ import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.presentation.home.component.SportsTierChip
 import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.core.extension.ScrollStateHolder
+import com.smashing.app.core.extension.bottomBarNestedScrollConnection
 import com.smashing.app.data.model.matching.AcceptedMatching
 import kotlinx.collections.immutable.toImmutableList
 
@@ -141,18 +140,10 @@ private fun HomeScreen(
     val density = LocalDensity.current
 
     val scrollState = rememberScrollState()
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (available.y < -10) {
-                    updateBottomBar(false)
-                } else if (available.y > 10) {
-                    updateBottomBar(true)
-                }
-                return Offset.Zero
-            }
-        }
-    }
+    val nestedScrollConnection = bottomBarNestedScrollConnection(
+        scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
+        onBottomBarVisibilityChange = updateBottomBar,
+    )
 
     Column(
         modifier = modifier
