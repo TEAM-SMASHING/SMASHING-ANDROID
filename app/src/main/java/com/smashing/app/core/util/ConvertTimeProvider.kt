@@ -1,17 +1,14 @@
 package com.smashing.app.core.util
 
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 object ConvertTimeProvider {
-    fun convertLocalDateTimeToTime(localDateTime: String): String {
+    fun convertLocalDateTimeToTime(time: String): String {
 
-        val createdTime = try {
-            LocalDateTime.parse(localDateTime)
-        } catch(_: Exception) {
-            return ""
-        }
+        val createdTime = parseToLocalDateTime(time) ?: return ""
 
         val now = LocalDateTime.now(ZoneId.systemDefault())
 
@@ -34,4 +31,9 @@ object ConvertTimeProvider {
 
         return convertedTime
     }
+
+    private fun parseToLocalDateTime(time: String): LocalDateTime? =
+        runCatching { OffsetDateTime.parse(time).toLocalDateTime() }
+            .recoverCatching { LocalDateTime.parse(time) }
+            .getOrNull()
 }
