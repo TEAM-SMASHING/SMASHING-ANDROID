@@ -1,4 +1,4 @@
-package com.smashing.app.core.extension
+package com.smashing.app.core.util
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.grid.LazyGridState

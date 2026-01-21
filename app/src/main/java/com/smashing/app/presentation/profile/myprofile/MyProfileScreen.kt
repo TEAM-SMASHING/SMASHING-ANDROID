@@ -30,8 +30,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.extension.ScrollStateHolder
-import com.smashing.app.core.extension.bottomBarNestedScrollConnection
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.type.SportType
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox

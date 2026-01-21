@@ -28,8 +28,8 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
-import com.smashing.app.core.extension.ScrollStateHolder
-import com.smashing.app.core.extension.bottomBarNestedScrollConnection
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
