@@ -14,12 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +30,8 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.ScrollStateHolder
+import com.smashing.app.core.extension.bottomBarNestedScrollConnection
 import com.smashing.app.data.type.SportType
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
@@ -89,18 +87,11 @@ private fun MyProfileScreen(
 ) {
     val isMaxProfileReached = uiState.sportProfileList.size >= 3
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (available.y < -10) {
-                    updateBottomBar(false)
-                } else if (available.y > 10) {
-                    updateBottomBar(true)
-                }
-                return Offset.Zero
-            }
-        }
-    }
+    val nestedScrollConnection = bottomBarNestedScrollConnection(
+        scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
+        onBottomBarVisibilityChange = updateBottomBar,
+    )
+
     Column(
         modifier = modifier
             .fillMaxSize()
