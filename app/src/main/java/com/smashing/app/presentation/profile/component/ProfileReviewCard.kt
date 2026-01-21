@@ -37,7 +37,6 @@ import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-private const val REVIEW_ITEM_COUNT = 3
 
 @Composable
 fun ReviewCard(
@@ -53,7 +52,7 @@ fun ReviewCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(SmashingTheme.colors.bgSurface)
-            .padding(vertical = 20.dp, horizontal = 16.dp),
+            .padding(vertical = 16.dp, horizontal = 16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -121,7 +120,7 @@ fun ReviewCard(
                         review = review,
                     )
 
-                    if (index < REVIEW_ITEM_COUNT - 1) {
+                    if (index < reviews.size - 1) {
                         HorizontalDivider(
                             modifier = Modifier.padding(vertical = 12.dp),
                             thickness = 1.dp,

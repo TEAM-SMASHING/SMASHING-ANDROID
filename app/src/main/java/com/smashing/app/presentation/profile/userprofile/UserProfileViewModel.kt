@@ -144,6 +144,18 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
+    fun showDialog() {
+        _uiState.update {
+            it.copy(isDialogVisible = true)
+        }
+    }
+
+    fun dismissDialog() {
+        _uiState.update {
+            it.copy(isDialogVisible = false)
+        }
+    }
+
     companion object {
         private const val CURSOR_SIZE = 3
     }
@@ -192,5 +204,6 @@ class UserProfileViewModel @Inject constructor(
                 }
             }
         }
+        showDialog()
     }
 }

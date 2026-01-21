@@ -38,6 +38,7 @@ class UserProfileContract {
         val isCompeteButtonEnabled: Boolean = true,
         val userProfileUiState: UserProfileUiState = UserProfileUiState.Idle,
         val userProfileCursor: Cursor = Cursor(),
+        val isDialogVisible: Boolean = false,
     ) {
         val isReviewEmpty: Boolean
             get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty

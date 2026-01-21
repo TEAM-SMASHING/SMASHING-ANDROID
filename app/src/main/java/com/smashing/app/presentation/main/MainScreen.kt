@@ -66,7 +66,7 @@ fun MainScreen(
         { message ->
             coroutineScope.launch {
                 if (!snackbarMutex.tryLock()) return@launch
-                
+
                 try {
                     launch {
                         delay(EXIT_MILLIS)
@@ -202,6 +202,7 @@ private fun MainNavHost(
                     },
                 )
             },
+            navigateUp = appState.navController::navigateUp,
             innerPadding = innerPadding,
         )
 
@@ -250,7 +251,7 @@ private fun MainNavHost(
         )
 
         confirmReviewGraph(
-            navigateUp = appState.navController::navigateUp,
+            navController = appState.navController,
         )
     }
 }

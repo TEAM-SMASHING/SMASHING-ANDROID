@@ -301,9 +301,9 @@
     <string name="matching_btn_waiting_confirm">결과 확인 대기 중</string>
     <string name="matching_btn_canceled">매칭 취소 대기 중</string>
     <string name="matching_btn_unknown">unknown</string>
-    <string name="matching_receive">받은 요청</string>
+    <string name="matching_receive">받은 매칭</string>
     <string name="matching_receive_empty">받은 요청이 없어요</string>
-    <string name="matching_send">보낸 요청</string>
+    <string name="matching_send">보낸 매칭</string>
     <string name="matching_send_empty">보낸 요청이 없어요</string>
     <string name="matching_confirm">매칭 확정</string>
     <string name="matching_confirm_empty">확정된 매칭이 없어요</string>
