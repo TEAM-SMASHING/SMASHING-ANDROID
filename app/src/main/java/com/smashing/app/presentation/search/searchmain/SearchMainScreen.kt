@@ -47,6 +47,10 @@ fun SearchMainRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(uiState.searchList) {
+        viewModel.fetchRegionUsersList(isRefresh = true)
+    }
+
     SearchMainScreen(
         uiState = uiState,
         onLoadMoreSearchList = viewModel::fetchRegionUsersList,

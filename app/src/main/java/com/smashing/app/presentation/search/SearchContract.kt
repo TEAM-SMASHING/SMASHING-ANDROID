@@ -13,8 +13,8 @@ import kotlinx.collections.immutable.toImmutableList
 interface SearchContract {
     @Immutable
     data class State(
-        val selectedRegion: String = "강서구",  // Todo: 디폴트 값 제거
-        val regionItems: ImmutableList<String> = persistentListOf("양천구", "강서구", "장신구"),
+        val selectedRegion: String = "",
+        val regionItems: ImmutableList<String> = persistentListOf(),
         val searchList: ImmutableList<SearchMainItemModel> = persistentListOf(),
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,

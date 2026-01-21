@@ -22,6 +22,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.noRippleClickable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SearchTopBar(
@@ -39,13 +40,14 @@ fun SearchTopBar(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-
         RegionDropdown(
             selectedItem = selectedRegion,
-            items = regionItems,
+            items = listOf(
+                selectedRegion
+            ).toImmutableList(),
             onClick = onRegionDropdownClick,
             onRegionChange = onRegionSelectClick,
-            isDivide = false,
+            isDivide = true
         )
 
         Spacer(modifier = Modifier.weight(1f))
