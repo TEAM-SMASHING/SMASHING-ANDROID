@@ -95,7 +95,6 @@ private fun ConfirmReviewScreen(
         SmashingDefaultTopBar(
             title = "후기 작성",
             topBarType = TopBarType.BACK,
-            onClick = onBackClick,
         )
 
         Column(
