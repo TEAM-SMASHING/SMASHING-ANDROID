@@ -53,6 +53,7 @@ fun MyProfileRoute(
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
         viewModel.fetchReviews()
+        viewModel.fetchMyRecentReviewStats()
 
     }
 
@@ -64,7 +65,8 @@ fun MyProfileRoute(
         onAddSportClick = navigateToSportAdd,
         onTierGuideClick = navigateToTierGuide,
         onReviewClick = { userId ->
-            navigateToReview(userId) },
+            navigateToReview(userId)
+        },
     )
 }
 
