@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import com.smashing.app.R
 import com.smashing.app.R.drawable.img_logo
 import com.smashing.app.R.string.login_description_athching
 import com.smashing.app.R.string.login_description_for_ports
@@ -40,7 +44,8 @@ import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToSi
 import com.smashing.app.presentation.login.component.KakaoLoginButton
 
 
-private const val LOGO_RATIO = 240 / 80f
+private const val LOGO_RATIO = 261 / 112f
+private const val PADDING_RATIO = 204 / 275f
 
 @Composable
 fun LoginRoute(
@@ -89,38 +94,14 @@ private fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.weight(0.74f))
+        Spacer(modifier = Modifier.weight(PADDING_RATIO))
 
         Image(
-            painter = painterResource(img_logo),
+            painter = painterResource(R.drawable.img_login_logo),
             contentDescription = null,
             modifier = Modifier
-                .width(240.dp)
+                .width(261.dp)
                 .aspectRatio(LOGO_RATIO),
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors.txtEmphasis)) {
-                    append(stringResource(login_description_s))
-                }
-
-                append(stringResource(login_description_for_ports))
-
-                withStyle(style = SpanStyle(color = colors.txtEmphasis)) {
-                    append(stringResource(login_description_m))
-                }
-
-                append(stringResource(login_description_athching))
-
-                withStyle(style = SpanStyle(color = colors.txtEmphasis)) {
-                    append(stringResource(login_description_ing))
-                }
-            },
-            color = colors.txtSecondary,
-            style = typography.md.semibold16,
         )
 
         Spacer(modifier = Modifier.weight(1f))
