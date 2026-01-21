@@ -47,7 +47,10 @@ fun NoticeRoute(
         onNoticeClick = { notice ->
             viewModel.readNotification(notice.notificationId)
             when (notice.notificationType) {
-                NotificationType.MATCHING_REQUESTED,
+                NotificationType.MATCHING_REQUESTED -> {
+                    navigateToMatching(MatchingType.RECEIVE)
+                }
+
                 NotificationType.MATCHING_ACCEPTED,
                 NotificationType.MATCHING_RESULT_SUBMITTED,
                 NotificationType.RESULT_REJECTED_SCORE_MISMATCH,
@@ -55,7 +58,7 @@ fun NoticeRoute(
                 NotificationType.RESULT_REJECTED_SCORE_AND_WIN_LOSE_MISMATCH,
                 NotificationType.RESULT_REJECTED_GAME_NOT_PLAYED_YET,
                     -> navigateToMatching(MatchingType.ACCEPTED)
-                
+
                 NotificationType.REVIEW_RECEIVED -> {
                     notice.relatedId?.let { reviewId ->
                         navigateToConfirmReview(reviewId)
