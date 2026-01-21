@@ -104,6 +104,10 @@ private fun UserProfileScreen(
         }
     }
 
+    if (uiState.profileInfo.nickname.isBlank()) {
+        return
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
