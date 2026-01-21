@@ -85,6 +85,7 @@ private fun MainNavHost(
 
         searchGraph(
             navController = appState.navController,
+            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         matchingGraph(
