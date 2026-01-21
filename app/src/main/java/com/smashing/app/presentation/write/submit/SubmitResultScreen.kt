@@ -57,7 +57,6 @@ fun SubmitResultRoute(
 
     SubmitResultScreen(
         uiState = uiState,
-        isFirstAttempt = viewModel.isFirstAttempt,
         modifier = modifier,
         onBackClick = navigateUp,
         onLeftDoneClick = viewModel::updateSubmitterScore,
@@ -74,7 +73,6 @@ fun SubmitResultRoute(
 @Composable
 private fun SubmitResultScreen(
     uiState: SubmitContract.State,
-    isFirstAttempt: Boolean,
     leftTextFieldState: TextFieldState,
     rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
@@ -155,7 +153,6 @@ private fun SubmitResultScreen(
 private fun SubmitScreenPreview() {
     SubmitResultScreen(
         uiState = SubmitContract.State(),
-        isFirstAttempt = true,
         leftTextFieldState = TextFieldState(),
         rightTextFieldState = TextFieldState(),
         onBackClick = {},
