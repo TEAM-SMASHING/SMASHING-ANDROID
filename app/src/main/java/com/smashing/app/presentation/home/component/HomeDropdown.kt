@@ -158,7 +158,7 @@ fun HomeDropdown(
                         SmashingChip(
                             text = sport.sportCode.sportName,
                             style = if (sport.isActive) ChipStyle.ACTIVE else ChipStyle.DISABLED,
-                            onClick = { onSportChipClick(sport.profileId) },  // profileId 전달
+                            onClick = { onSportChipClick(sport.profileId) },
                         )
                     }
                     if (onSportAddClick != null) {
