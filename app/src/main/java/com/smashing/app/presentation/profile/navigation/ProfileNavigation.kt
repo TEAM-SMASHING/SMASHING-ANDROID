@@ -1,8 +1,6 @@
 package com.smashing.app.presentation.profile.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -11,6 +9,8 @@ import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
+import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
@@ -61,6 +61,7 @@ fun NavGraphBuilder.profileGraph(
                 navigateToReview = { userId ->
                     navController.navigateToReview(userId = userId)
                 },
+                navigateToSentMatching = { navController.navigateToMatching(initTab = MatchingType.SEND) }
             )
         }
 
