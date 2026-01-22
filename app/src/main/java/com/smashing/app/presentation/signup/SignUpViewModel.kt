@@ -201,7 +201,7 @@ class SignUpViewModel @Inject constructor(
             authRepository.postSignUp(request = request)
                 .onSuccess {
                     sseManager.connect()
-                    _sideEffect.emit(NavigateToHome)
+                    updateCurrentStep()
                 }
                 .onFailure { error ->
                     Timber.tag("SignUp").e("회원가입 실패 $error")

@@ -7,6 +7,7 @@ import com.smashing.app.data.remote.dto.user.GetUserInfoDetailResponse
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
+import kotlin.Boolean
 
 
 fun GetUserInfoDetailResponse.toProfileInfo(): UserProfileInfo =
@@ -24,6 +25,9 @@ fun GetUserInfoDetailResponse.toProfileInfo(): UserProfileInfo =
             loseCount = selectedProfile.losses,
             reviewCount = selectedProfile.reviews,
         ),
+        isChallengeable = this.isChallengeable,
+        isAcceptable = this.isAcceptable,
+        receivedMatchingId = this.receivedMatchingId,
         sportProfile = allProfiles.map { it.toSportProfile() },
     )
 
