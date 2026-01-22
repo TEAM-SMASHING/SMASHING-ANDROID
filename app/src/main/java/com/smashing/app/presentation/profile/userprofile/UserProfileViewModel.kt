@@ -56,7 +56,6 @@ class UserProfileViewModel @Inject constructor(
                 userId = userId,
                 sportCode = sportCode,
             ).onSuccess { data ->
-                Timber.tag("userprofile").d("${data.isAcceptable}")
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = UserProfileUiState.Success,
@@ -69,8 +68,6 @@ class UserProfileViewModel @Inject constructor(
                             ?: data.profileInfo.profileId
                     )
                 }
-                Timber.tag("userprofile").d("${data.isAcceptable}")
-                Timber.tag("userprofile").d("${_uiState.value.isAcceptable}")
             }.onFailure { exception ->
                 _uiState.update {
                     it.copy(

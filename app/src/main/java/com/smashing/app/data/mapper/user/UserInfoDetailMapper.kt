@@ -28,7 +28,6 @@ fun GetUserInfoDetailResponse.toProfileInfo(): UserProfileInfo =
         isChallengeable = this.isChallengeable,
         isAcceptable = this.isAcceptable,
         receivedMatchingId = this.receivedMatchingId,
-
         sportProfile = allProfiles.map { it.toSportProfile() },
     )
 
