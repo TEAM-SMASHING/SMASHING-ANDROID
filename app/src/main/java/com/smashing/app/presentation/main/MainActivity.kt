@@ -39,6 +39,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        sseManager.disconnect()
+        if (!isChangingConfigurations) {
+            sseManager.disconnect()
+        }
     }
 }
