@@ -2,24 +2,22 @@ package com.smashing.app.presentation.matching
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -227,13 +225,14 @@ private fun MatchingScreen(
                     ) {
                         Spacer(Modifier.weight(171 / 252f))
 
-                        Image(
+                        Icon(
                             painter = painterResource(img_app_icon),
                             contentDescription = null,
+                            tint = Color.Unspecified,
                             modifier = Modifier
-                                .size(100.dp)
-                                .aspectRatio(1f)
-                                .padding(bottom = 16.dp),
+                                .padding(
+                                    bottom = 16.dp,
+                                ),
                         )
 
                         Text(
@@ -443,7 +442,9 @@ private fun MatchingList(
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
         MatchingScreen(
-            uiState = MatchingContract.State(),
+            uiState = MatchingContract.State(
+                receivedUiState = MatchingUiState.Empty,
+            ),
             onLoadMoreMatchingList = {},
             onTabClick = {},
             onDialogDismissClick = {},

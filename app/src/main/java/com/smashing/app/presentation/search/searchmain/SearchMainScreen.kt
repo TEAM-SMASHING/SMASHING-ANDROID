@@ -27,10 +27,11 @@ import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSh
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.core.util.ScrollStateHolder
 import com.smashing.app.core.util.bottomBarNestedScrollConnection
-import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
@@ -63,7 +64,8 @@ fun SearchMainRoute(
         onRegionDropdownClick = { },
         onSearchClick = navigateToSearchInput,
         onProfileClick = { userId ->
-            navigateToUserProfile(userId) },
+            navigateToUserProfile(userId)
+        },
         onTierItemClick = viewModel::updateSelectedTierItem,
         onGenderItemClick = viewModel::updateSelectedGenderItem,
         onTierBottomSheetOpen = viewModel::openTierBottomSheet,
@@ -118,6 +120,7 @@ private fun SearchMainScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = SmashingTheme.colors.bgCanvas)
             .systemBarsPadding(),
     ) {
 
@@ -175,7 +178,7 @@ private fun SearchMainScreen(
             )
         }
 
-        when(uiState.searchRegionUsersUiState) {
+        when (uiState.searchRegionUsersUiState) {
             SearchContract.SearchUiState.Idle -> Unit
             SearchContract.SearchUiState.Empty -> {
                 SearchEmpty(
@@ -219,6 +222,7 @@ private fun SearchMainScreen(
                     }
                 }
             }
+
             else -> {
                 SearchEmpty(
                     title = "해당 조건에 맞는 유저가 없어요",
