@@ -30,12 +30,14 @@ fun NavGraphBuilder.matchingGraph(
         isFirstAttempt: Boolean,
     ) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
+    navigateToProfile: (String) -> Unit,
 ) {
     composable<Matching> {
         MatchingRoute(
             navigateToSubmit = navigateToSubmit,
             navigateToConfirm = navigateToConfirm,
             updateBottomBar = updateBottomBar,
+            navigateToProfile = navigateToProfile,
         )
     }
 }

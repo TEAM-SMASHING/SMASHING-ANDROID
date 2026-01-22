@@ -36,6 +36,7 @@ import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.Notice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
+import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
@@ -150,6 +151,9 @@ private fun MainNavHost(
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
             updateBottomBar = appState::updateBottomBarVisible,
+            navigateToProfile = { userId ->
+                appState.navController.navigateToUserProfile(userId = userId)
+            },
         )
 
         profileGraph(
