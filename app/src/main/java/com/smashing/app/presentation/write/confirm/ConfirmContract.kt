@@ -23,8 +23,6 @@ interface ConfirmContract {
         val reviewId: String = "",
         val confirmUiState: ConfirmUiState = ConfirmUiState.Idle,
         val rating: String = "",
-        val reviewerNickname: String = "",
-        val revieweeNickname: String = "",
         val tag: ImmutableList<String> = persistentListOf(),
         val content: String? = null,
         val showDenyBottomSheet: Boolean = false,
@@ -33,11 +31,11 @@ interface ConfirmContract {
     )
 
     sealed interface SideEffect {
-        sealed interface ConfirmResultSideEffect: SideEffect {
+        sealed interface ConfirmResultSideEffect : SideEffect {
             data object NavigateBack : ConfirmResultSideEffect
         }
 
-        sealed interface ConfirmReviewSideEffect: SideEffect {
+        sealed interface ConfirmReviewSideEffect : SideEffect {
             data object NavigateBack : ConfirmReviewSideEffect
 
             data class NavigateToConfirmReview(

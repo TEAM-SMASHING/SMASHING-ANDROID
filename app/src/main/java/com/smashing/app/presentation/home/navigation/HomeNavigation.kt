@@ -71,7 +71,7 @@ fun NavGraphBuilder.homeGraph(
                         isFirstAttempt = isFirstAttempt,
                     )
                 },
-                navigateToConfirm = { submissionId, gameId , isFirstAttempt ->
+                navigateToConfirm = { submissionId, gameId, isFirstAttempt ->
                     navController.navigateToConfirm(
                         submissionId = submissionId,
                         gameId = gameId,
