@@ -176,7 +176,7 @@ private fun HomeScreen(
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
-    ) {
+) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
         // TODO: 로딩 또는 에러 UI 표시
         return
