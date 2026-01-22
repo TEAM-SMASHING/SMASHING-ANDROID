@@ -75,6 +75,8 @@ fun HomeDropdown(
 ) {
     val density = LocalDensity.current
 
+    val lookedMaxLp = maxLp + 1
+
     val transition = updateTransition(
         targetState = isExpanded,
         label = "HomeDropdown"
@@ -141,108 +143,110 @@ fun HomeDropdown(
                     )
                     .padding(
                         bottom = 8.dp,
-                    )
-                    .padding(
+                    ),
+            ) {
+                Column(
+                    modifier = Modifier.padding(
                         horizontal = 16.dp,
                     ),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.Start),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(7.dp)
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    sportList.forEach { sport ->
-                        SmashingChip(
-                            text = sport.sportCode.sportName,
-                            style = if (sport.isActive) ChipStyle.ACTIVE else ChipStyle.DISABLED,
-                            onClick = { onSportChipClick(sport.profileId) },
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(7.dp)
+                    ) {
+                        sportList.forEach { sport ->
+                            SmashingChip(
+                                text = sport.sportCode.sportName,
+                                style = if (sport.isActive) ChipStyle.ACTIVE else ChipStyle.DISABLED,
+                                onClick = { onSportChipClick(sport.profileId) },
+                            )
+                        }
+                        if (onSportAddClick != null) {
+                            SmashingChip(
+                                icon = ImageVector.vectorResource(ic_plus),
+                                style = ChipStyle.DISABLED,
+                                onClick = onSportAddClick,
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Image(
+                        painter = painterResource(id = tierType.img()),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(100.dp)
+                            .aspectRatio(1f)
+                    )
+
+                    TierBadge(
+                        tierType = tierType.getNextTier(),
+                        modifier = Modifier
+                            .align(Alignment.End),
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    SmashingProgressBar(
+                        progress = (lp - minLp) / (lookedMaxLp - minLp).toFloat(),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = (lookedMaxLp - minLp).toString(),
+                            style = SmashingTheme.typography.md.semibold16,
+                            color = SmashingTheme.colors.txtPrimary,
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "LP 남았어요!",
+                            style = SmashingTheme.typography.md.semibold16,
+                            color = SmashingTheme.colors.txtTertiary,
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = "LP",
+                            style = SmashingTheme.typography.md.semibold16,
+                            color = SmashingTheme.colors.txtTertiary,
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = lookedMaxLp.toString(),
+                            style = SmashingTheme.typography.md.semibold16,
+                            color = SmashingTheme.colors.txtPrimary,
                         )
                     }
-                    if (onSportAddClick != null) {
-                        SmashingChip(
-                            icon = ImageVector.vectorResource(ic_plus),
-                            style = ChipStyle.DISABLED,
-                            onClick = onSportAddClick,
-                        )
-                    }
-                }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-                Image(
-                    painter = painterResource(id = tierType.img()),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(100.dp)
-                        .aspectRatio(1f)
-                )
-
-                TierBadge(
-                    tierType = tierType.getNextTier(),
-                    modifier = Modifier
-                        .align(Alignment.End),
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                SmashingProgressBar(
-                    progress = (lp - minLp) / (maxLp - minLp).toFloat(),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = (maxLp - minLp).toString(),
-                        style = SmashingTheme.typography.md.semibold16,
-                        color = SmashingTheme.colors.txtPrimary,
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "LP 남았어요!",
-                        style = SmashingTheme.typography.md.semibold16,
-                        color = SmashingTheme.colors.txtTertiary,
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "LP",
-                        style = SmashingTheme.typography.md.semibold16,
-                        color = SmashingTheme.colors.txtTertiary,
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = maxLp.toString(),
-                        style = SmashingTheme.typography.md.semibold16,
-                        color = SmashingTheme.colors.txtPrimary,
+                    SmashingBaseButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "티어 설명",
+                        textStyle = SmashingTheme.typography.lg.semibold18,
+                        onClick = onTierClick,
+                        buttonColor = SmashingBtnColor(
+                            backgroundColor = SmashingTheme.colors.tierDiamondBg,
+                            textColor = SmashingTheme.colors.txtEmphasis,
+                            disabledBackgroundColor = SmashingTheme.colors.tierDiamondBg,
+                            disabledTextColor = SmashingTheme.colors.txtEmphasis,
+                        ),
+                        contentPadding = PaddingValues(vertical = 10.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        isRippleEnabled = false,
                     )
                 }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                SmashingBaseButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "티어 설명",
-                    textStyle = SmashingTheme.typography.lg.semibold18,
-                    onClick = onTierClick,
-                    buttonColor = SmashingBtnColor(
-                        backgroundColor = SmashingTheme.colors.tierDiamondBg,
-                        textColor = SmashingTheme.colors.txtEmphasis,
-                        disabledBackgroundColor = SmashingTheme.colors.tierDiamondBg,
-                        disabledTextColor = SmashingTheme.colors.txtEmphasis,
-                    ),
-                    contentPadding = PaddingValues(vertical = 10.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    isRippleEnabled = false,
-                )
-
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
@@ -250,7 +254,6 @@ fun HomeDropdown(
                         .fillMaxWidth()
                         .height(IntrinsicSize.Max)
                         .padding(
-                            horizontal = 14.dp,
                             vertical = 12.dp,
                         ),
                     horizontalArrangement = Arrangement.Center,
@@ -263,7 +266,8 @@ fun HomeDropdown(
                         modifier = Modifier.weight(1f)
                     )
                     VerticalDivider(
-                        modifier = Modifier.width(1.dp),
+                        modifier = Modifier
+                            .width(1.dp),
                         color = SmashingTheme.colors.borderSecondary,
                     )
                     MatchRecordItem(
@@ -273,14 +277,15 @@ fun HomeDropdown(
                         modifier = Modifier.weight(1f)
                     )
                     VerticalDivider(
-                        modifier = Modifier.width(1.dp),
+                        modifier = Modifier
+                            .width(1.dp),
                         color = SmashingTheme.colors.borderSecondary,
                     )
                     MatchRecordItem(
                         title = "${winRate(winCount = winCount, loseCount = loseCount)}%",
                         subTitle = "승률",
                         contentColor = SmashingTheme.colors.txtPrimary,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }

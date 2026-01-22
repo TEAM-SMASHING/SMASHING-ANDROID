@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -33,11 +34,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -53,27 +51,32 @@ import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
 import com.smashing.app.R.drawable.img_dummy_versus
-import com.smashing.app.core.designsystem.component.button.SmashingButton
+import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
+import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.data.model.rank.UserRank
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
+import com.smashing.app.core.designsystem.style.getMatchButtonColor
+import com.smashing.app.core.designsystem.style.getMatchButtonTitle
+import com.smashing.app.data.type.GameResultStatusType
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -85,6 +88,18 @@ fun HomeRoute(
     navigateToMatchingAccepted: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -119,6 +134,9 @@ fun HomeRoute(
         navigateToMatchingAccepted = navigateToMatchingAccepted,
         navigateToUserProfile = navigateToUserProfile,
         navigateToSportAdd = navigateToSportAdd,
+        navigateToSearch = navigateToSearch,
+        navigateToSubmit = navigateToSubmit,
+        navigateToConfirm = navigateToConfirm,
         onSportsChipClick = viewModel::fetchSelectSportProfile,
         updateBottomBar = updateBottomBar,
         modifier = modifier,
@@ -135,6 +153,18 @@ private fun HomeScreen(
     navigateToMatchingAccepted: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
     navigateToSportAdd: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
     onSportsChipClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -149,18 +179,10 @@ private fun HomeScreen(
     val density = LocalDensity.current
 
     val scrollState = rememberScrollState()
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (available.y < -10) {
-                    updateBottomBar(false)
-                } else if (available.y > 10) {
-                    updateBottomBar(true)
-                }
-                return Offset.Zero
-            }
-        }
-    }
+    val nestedScrollConnection = bottomBarNestedScrollConnection(
+        scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
+        onBottomBarVisibilityChange = updateBottomBar,
+    )
 
     Column(
         modifier = modifier
@@ -267,7 +289,10 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = navigateToMatchingAccepted
+                                    onClick = {
+                                        updateBottomBar(true)
+                                        navigateToMatchingAccepted()
+                                    }
                                 ),
                         )
                     }
@@ -278,7 +303,44 @@ private fun HomeScreen(
                         myProfileId = uiState.activeUserProfile.profileId,
                         myNickname = uiState.activeUserProfile.nickname,
                         matchedUser = uiState.matchedUser,
-                        onClick = {},
+                        onClick = { matching ->
+                            when (matching.resultStatus) {
+                                GameResultStatusType.PENDING_RESULT -> {
+                                    navigateToSubmit(
+                                        matching.gameId,
+                                        matching.userId,
+                                        matching.nickname,
+                                        true,
+                                    )
+                                }
+
+                                GameResultStatusType.RESULT_REJECTED -> {
+                                    navigateToSubmit(
+                                        matching.gameId,
+                                        matching.userId,
+                                        matching.nickname,
+                                        false,
+                                    )
+                                }
+
+                                GameResultStatusType.WAITING_CONFIRMATION -> {
+                                    matching.latestSubmissionId?.let { submissionId ->
+                                        val isFirstAttempt = matching.latestAttemptNo == 1
+                                        navigateToConfirm(
+                                            submissionId,
+                                            matching.gameId,
+                                            isFirstAttempt,
+                                        )
+                                    }
+                                }
+
+                                else -> Unit
+                            }
+                        },
+                        navigateToSearch = {
+                            updateBottomBar(true)
+                            navigateToSearch()
+                        },
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
@@ -372,7 +434,10 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = navigateToRanking
+                                    onClick = {
+                                        updateBottomBar(true)
+                                        navigateToRanking()
+                                    }
                                 )
                         )
                     }
@@ -423,7 +488,6 @@ private fun HomeTopBar(
     ) {
         RegionDropdown(
             selectedItem = userRegion,
-            //items 현재는 지역이 1개라 userRegion만 넣었습니다.
             items = listOf(
                 userRegion
             ).toImmutableList(),
@@ -470,10 +534,10 @@ private fun HomeTopBar(
 private fun CloseMatching(
     myNickname: String,
     myProfileId: String,
-    onClick: () -> Unit,
+    onClick: (AcceptedMatching) -> Unit,
     modifier: Modifier = Modifier,
-    matchedUser: AcceptedMatching? = null,  // 타입 변경
-    buttonState: String = "dummy",
+    matchedUser: AcceptedMatching? = null,
+    navigateToSearch: () -> Unit,
 ) {
     //TODO 매칭 상대에서 받는 데이터 확인 후에 nickName + userId 묶는 데이터 타입 추가
     Column(
@@ -488,7 +552,7 @@ private fun CloseMatching(
             )
             .padding(
                 top = 22.dp,
-                bottom = 24.dp,
+                bottom = 22.dp,
             ),
     ) {
         if (matchedUser != null) {
@@ -533,14 +597,37 @@ private fun CloseMatching(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        //TODO buttonState 타입 수정 후 실제 사용시에 수정 예정
-        SmashingButton(
-            buttonStyle = ButtonStyle.PRIMARY,
-            text = "결과 작성하기",
-            onClick = onClick,
-            modifier = Modifier
-                .fillMaxWidth(),
-        )
+        if (matchedUser != null) {
+            SmashingBaseButton(
+                text = matchedUser.resultStatus.getMatchButtonTitle(),
+                textStyle = SmashingTheme.typography.md.medium16,
+                onClick = { onClick(matchedUser) },
+                buttonColor = matchedUser.resultStatus.getMatchButtonColor(),
+                contentPadding = PaddingValues(
+                    vertical = 9.dp,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                isRippleEnabled = false,
+            )
+        } else {
+            SmashingBaseButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "매칭 탐색하러 가기",
+                textStyle = SmashingTheme.typography.md.medium16,
+                onClick = navigateToSearch,
+                buttonColor = SmashingBtnColor(
+                    backgroundColor = SmashingTheme.colors.btnBgPrimary300,
+                    textColor = SmashingTheme.colors.txtEmphasis,
+                    disabledBackgroundColor = SmashingTheme.colors.btnBgPrimary300,
+                    disabledTextColor = SmashingTheme.colors.txtEmphasis,
+                ),
+                contentPadding = PaddingValues(vertical = 9.dp),
+                shape = RoundedCornerShape(8.dp),
+                isRippleEnabled = false,
+            )
+        }
     }
 }
 
@@ -714,7 +801,10 @@ private fun HomeScreenPreview() {
         navigateToUserProfile = {},
         onSportsChipClick = {},
         navigateToSportAdd = {},
+        navigateToSearch = {},
         updateBottomBar = {},
+        navigateToSubmit = { _, _, _, _ -> },
+        navigateToConfirm = { _, _, _ -> },
     )
 }
 
@@ -755,7 +845,10 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToMatchingAccepted = {},
         navigateToUserProfile = {},
         navigateToSportAdd = {},
+        navigateToSearch = {},
         onSportsChipClick = {},
         updateBottomBar = {},
+        navigateToSubmit = { _, _, _, _ -> },
+        navigateToConfirm = { _, _, _ -> },
     )
 }
