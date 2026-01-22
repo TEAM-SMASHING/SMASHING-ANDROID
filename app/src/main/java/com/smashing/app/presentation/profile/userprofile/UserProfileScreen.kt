@@ -101,6 +101,10 @@ private fun UserProfileScreen(
     scrollState: ScrollState = rememberScrollState(),
 ) {
 
+    if(uiState.profileInfo.nickname.isBlank()){
+        return
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
