@@ -3,6 +3,7 @@ package com.smashing.app.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -114,7 +115,8 @@ fun MainScreen(
             },
             containerColor = SmashingTheme.colors.bgCanvas,
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(color = SmashingTheme.colors.bgCanvas),
         ) { innerPadding ->
             MainNavHost(
                 appState = appState,
@@ -228,7 +230,6 @@ private fun MainNavHost(
                     reviewId = reviewId,
                 )
             },
-            innerPadding = innerPadding,
         )
 
         writeGraph(
