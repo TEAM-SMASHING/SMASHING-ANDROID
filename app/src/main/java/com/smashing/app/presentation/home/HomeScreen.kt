@@ -36,17 +36,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
@@ -78,8 +83,10 @@ import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.component.HomeDropdown
+import com.smashing.app.presentation.home.component.RecommendedInfoPopup
 import com.smashing.app.presentation.home.component.SportsTierChip
 import kotlinx.collections.immutable.toImmutableList
+
 
 @Composable
 fun HomeRoute(
@@ -185,6 +192,12 @@ private fun HomeScreen(
     var topBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
+    var isInfoPopupVisible by remember { mutableStateOf(false) }
+
+    var popupOffset by remember { mutableStateOf(Offset.Zero) }
+    var popupWidth by remember { mutableStateOf(0.dp) }
+
+
     val scrollState = rememberScrollState()
     val nestedScrollConnection = bottomBarNestedScrollConnection(
         scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
@@ -262,15 +275,17 @@ private fun HomeScreen(
                     .nestedScroll(nestedScrollConnection)
                     .verticalScroll(scrollState)
                     .padding(
-                        horizontal = 16.dp,
-                    )
-                    .padding(
                         top = 12.dp,
                         bottom = 22.dp
                     )
                     .navigationBarsPadding(),
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 16.dp,
+                        ),
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -360,7 +375,10 @@ private fun HomeScreen(
                 ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 16.dp,
+                            ),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -377,17 +395,30 @@ private fun HomeScreen(
                             contentDescription = null,
                             tint = SmashingTheme.colors.iconTertiary,
                             modifier = Modifier
+                                .onGloballyPositioned { coordinates ->
+                                    val position = coordinates.positionInWindow()
+                                    val iconHeight = coordinates.size.height
+                                    val iconWidth = coordinates.size.width
+                                    popupOffset = Offset(
+                                        x = position.x + iconWidth / 2,
+                                        y = position.y + iconHeight
+                                    )
+                                }
                                 .noRippleClickable(
-                                    //TODO 알림 창 확인 후 구현
-                                    onClick = {}
+                                    onClick = { isInfoPopupVisible = !isInfoPopupVisible }
                                 ),
                         )
+
                     }
+
                     if (uiState.recommendedUserList.isNotEmpty()) {
                         LazyRow(
                             state = recommendedUserListState,
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            contentPadding = PaddingValues(
+                                horizontal = 16.dp,
+                            ),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             items(
@@ -422,7 +453,8 @@ private fun HomeScreen(
                                     shape = RoundedCornerShape(8.dp),
                                 )
                                 .padding(
-                                    vertical = 31.dp
+                                    vertical = 31.dp,
+                                    horizontal = 16.dp,
                                 )
                         )
                     }
@@ -430,6 +462,10 @@ private fun HomeScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Column(
+                    modifier = Modifier
+                        .padding(
+                        horizontal = 16.dp,
+                    ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
@@ -478,6 +514,34 @@ private fun HomeScreen(
                         .fillMaxSize()
                         .background(color = SmashingTheme.colors.bgDimmed)
                         .noRippleClickable(onClick = { isDropdownExpanded = false })
+                )
+            }
+        }
+        if (isInfoPopupVisible) {
+            Popup(
+                alignment = Alignment.TopStart,
+                offset = IntOffset(
+                    x = with(density) {
+                        (popupOffset.x - popupWidth.toPx() / 2).toInt()
+                    },
+                    y = with(density) {
+                        (popupOffset.y + 8.dp.toPx()).toInt()
+                    }
+                ),
+                onDismissRequest = { isInfoPopupVisible = false },
+                properties = PopupProperties(
+                    focusable = true,
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                ),
+            ) {
+                RecommendedInfoPopup(
+                    onDismiss = { isInfoPopupVisible = false },
+                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                        popupWidth = with(density) {
+                            coordinates.size.width.toDp()
+                        }
+                    }
                 )
             }
         }
