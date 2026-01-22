@@ -3,6 +3,7 @@ package com.smashing.app.presentation.login
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.core.network.sse.SseManager
 import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToSignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val sseManager: SseManager,
 ) : ViewModel() {
 
     private val _sideEffect = MutableSharedFlow<LoginContract.SideEffect>()
@@ -28,6 +30,7 @@ class LoginViewModel @Inject constructor(
                 authRepository.postKakaoLogin(token)
                     .onSuccess {
                         if (it.isCompletedSignUp) {
+                            sseManager.connect()
                             _sideEffect.emit(LoginContract.SideEffect.NavigateToHome)
                         } else {
                             _sideEffect.emit(NavigateToSignUp(it.kakaoId))

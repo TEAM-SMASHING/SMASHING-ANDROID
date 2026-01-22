@@ -1,6 +1,6 @@
 package com.smashing.app.data.di.auth
 
-import com.smashing.app.core.network.qualifier.NoAuth
+import com.smashing.app.core.network.di.NoAuth
 import com.smashing.app.data.remote.service.AuthService
 import dagger.Module
 import dagger.Provides
