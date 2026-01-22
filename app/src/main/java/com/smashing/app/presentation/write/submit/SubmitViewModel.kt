@@ -128,11 +128,12 @@ class SubmitViewModel @Inject constructor(
         val isSubmitterWinner = winnerId == state.submitter.userId
         state.copy(
             winnerId = winnerId,
-            isButtonEnabled = isScoreMatchingWinner(
-                isSubmitterWinner = isSubmitterWinner,
-                submitterScore = state.submitter.score,
-                receiverScore = state.receiver.score,
-            ),
+            isButtonEnabled = hasBothScoreInputs() &&
+                isScoreMatchingWinner(
+                    isSubmitterWinner = isSubmitterWinner,
+                    submitterScore = state.submitter.score,
+                    receiverScore = state.receiver.score,
+                ),
         )
     }
 
@@ -142,11 +143,13 @@ class SubmitViewModel @Inject constructor(
         
         state.copy(
             submitter = updatedSubmitter,
-            isButtonEnabled = state.winnerId != null && isScoreMatchingWinner(
-                isSubmitterWinner = isSubmitterWinner,
-                submitterScore = score,
-                receiverScore = state.receiver.score,
-            ),
+            isButtonEnabled = state.winnerId != null &&
+                hasBothScoreInputs() &&
+                isScoreMatchingWinner(
+                    isSubmitterWinner = isSubmitterWinner,
+                    submitterScore = score,
+                    receiverScore = state.receiver.score,
+                ),
         )
     }
 
@@ -156,11 +159,13 @@ class SubmitViewModel @Inject constructor(
         
         state.copy(
             receiver = updatedReceiver,
-            isButtonEnabled = state.winnerId != null && isScoreMatchingWinner(
-                isSubmitterWinner = isSubmitterWinner,
-                submitterScore = state.submitter.score,
-                receiverScore = score,
-            ),
+            isButtonEnabled = state.winnerId != null &&
+                hasBothScoreInputs() &&
+                isScoreMatchingWinner(
+                    isSubmitterWinner = isSubmitterWinner,
+                    submitterScore = state.submitter.score,
+                    receiverScore = score,
+                ),
         )
     }
 
@@ -170,6 +175,9 @@ class SubmitViewModel @Inject constructor(
         receiverScore: Int,
     ): Boolean = if (isSubmitterWinner) submitterScore > receiverScore
     else receiverScore > submitterScore
+
+    private fun hasBothScoreInputs(): Boolean =
+        leftTextFieldState.text.isNotBlank() && rightTextFieldState.text.isNotBlank()
 
     fun updateSelectedRatingType(type: ReviewRatingType) = _uiState.update { state ->
         state.copy(
