@@ -49,6 +49,7 @@ class UserProfileContract {
 
     sealed interface UserProfileUiState {
         data object Idle : UserProfileUiState
+        data object Empty : UserProfileUiState
         data object Loading : UserProfileUiState
         data object Success : UserProfileUiState
         data class Failure(

@@ -11,6 +11,7 @@ interface ReviewRepository {
         sportCode: String?,
         cursor: String?,
         size: Int?,
+        snapshotAt: String?,
     ): Result<CursorPage<GameReview>>
 
     suspend fun getReview(

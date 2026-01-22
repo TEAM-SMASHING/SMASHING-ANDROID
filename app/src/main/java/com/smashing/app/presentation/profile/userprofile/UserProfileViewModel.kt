@@ -125,13 +125,14 @@ class UserProfileViewModel @Inject constructor(
             sportCode = sportCode,
             cursor = null,
             size = CURSOR_SIZE,
-        ).onSuccess { cursorPage ->
+            snapshotAt = null,
+            ).onSuccess { cursorPage ->
             _uiState.update { state ->
                 state.copy(
                     gameReview = cursorPage.items.toImmutableList(),
                     userProfileCursor = cursorPage.cursor,
                     userProfileUiState = if (cursorPage.items.isEmpty()) {
-                        UserProfileUiState.Idle
+                        UserProfileUiState.Empty
                     } else {
                         UserProfileUiState.Success
                     },

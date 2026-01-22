@@ -67,6 +67,7 @@ class AllReviewViewModel @Inject constructor(
                 sportCode = sportCode,
                 cursor = if (isRefresh) null else currentState.reviewCursor.nextCursor,
                 size = CURSOR_SIZE,
+                snapshotAt = if (isRefresh) null else currentState.reviewCursor.snapshotAt,
             ).onSuccess { cursorPage ->
                 _uiState.update { state ->
                     state.copy(
