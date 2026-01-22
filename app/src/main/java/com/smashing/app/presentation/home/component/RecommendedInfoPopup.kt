@@ -40,7 +40,7 @@ fun RecommendedInfoPopup(
                 ),
         ) {
             Text(
-                text = "내 동내에서 LP ± 200점 범위 안의 5명의 유저가 랜덤으로 추천돼요!",
+                text = "내 동네에서 LP ± 200점 범위 안의 5명의 유저가 랜덤으로 추천돼요!",
                 style = SmashingTheme.typography.xxs.medium10,
                 color = SmashingTheme.colors.txtPrimaryReverse,
             )
