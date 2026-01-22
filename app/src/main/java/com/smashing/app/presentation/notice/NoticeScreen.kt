@@ -4,31 +4,34 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.core.designsystem.component.appicon.AppIcon
+import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
-import com.smashing.app.data.type.NotificationType
-import com.smashing.app.data.type.SportType
 import com.smashing.app.domain.model.Notification
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.component.NoticeItem
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun NoticeRoute(
@@ -39,37 +42,31 @@ fun NoticeRoute(
     viewModel: NoticeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NoticeContract.SideEffect.NavigateToMatching -> {
+                        navigateToMatching(sideEffect.type)
+                    }
+
+                    is NoticeContract.SideEffect.NavigateToConfirmReview -> {
+                        navigateToConfirmReview(sideEffect.reviewId)
+                    }
+                }
+            }
+    }
 
     NoticeScreen(
         modifier = modifier,
         uiState = uiState,
         onBackBtnClick = navigateUp,
         onLoadMore = viewModel::loadMore,
-        onNoticeClick = { notice ->
-            if (!notice.isRead) {
-                viewModel.readNotification(notice.notificationId)
-            }
-            
-            when (notice.notificationType) {
-                NotificationType.MATCHING_REQUESTED -> {
-                    navigateToMatching(MatchingType.RECEIVE)
-                }
-
-                NotificationType.MATCHING_ACCEPTED,
-                NotificationType.MATCHING_RESULT_SUBMITTED,
-                NotificationType.RESULT_REJECTED_SCORE_MISMATCH,
-                NotificationType.RESULT_REJECTED_WIN_LOSE_REVERSED,
-                NotificationType.RESULT_REJECTED_SCORE_AND_WIN_LOSE_MISMATCH,
-                NotificationType.RESULT_REJECTED_GAME_NOT_PLAYED_YET,
-                    -> navigateToMatching(MatchingType.ACCEPTED)
-
-                NotificationType.REVIEW_RECEIVED -> {
-                    notice.relatedId?.let { reviewId ->
-                        navigateToConfirmReview(reviewId)
-                    }
-                }
-            }
-        },
+        onNoticeClick = viewModel::onNoticeClick,
+        onConfirmChangeProfile = viewModel::changeMyProfile,
+        onDismissChangeProfile = { viewModel.updateIsChangeDialogVisible(false) },
     )
 }
 
@@ -79,6 +76,8 @@ private fun NoticeScreen(
     onBackBtnClick: () -> Unit,
     onLoadMore: () -> Unit,
     onNoticeClick: (Notification) -> Unit,
+    onConfirmChangeProfile: (String) -> Unit,
+    onDismissChangeProfile: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
@@ -86,7 +85,8 @@ private fun NoticeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas),
+            .background(color = SmashingTheme.colors.bgCanvas)
+            .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
             title = stringResource(R.string.notice),
@@ -137,15 +137,18 @@ private fun NoticeScreen(
                 isLoading = uiState.loadState is NoticeUiState.Loading,
             )
 
-//            if (uiState.isChangeDialogVisible) {
-//                SmashingDialog(
-//                    title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
-//                    subtitle = "종목은 재변경 가능합니다.",
-//                    confirmText = "변경하기",
-//                    dismissText = "아니요",
-//                    onConfirmClick =
-//                )
-//            }
+            if (uiState.isChangeDialogVisible) {
+                SmashingDialog(
+                    title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
+                    subtitle = "종목은 재변경 가능합니다.",
+                    type = DialogStyle.ALERT,
+                    confirmText = "변경하기",
+                    dismissText = "아니요",
+                    onConfirmClick = { onConfirmChangeProfile(uiState.selectedNoticeItem.userId) },
+                    onDismissClick = onDismissChangeProfile,
+                    onDismissRequest = onDismissChangeProfile,
+                )
+            }
         }
     }
 }
@@ -153,28 +156,14 @@ private fun NoticeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun NoticeScreenPreview() {
-    val mockList = List(20) { index ->
-        Notification(
-            notificationId = index.toString(),
-            title = "알림 제목 $index",
-            description = "이것은 $index 번째 알림 설명입니다.",
-            notificationType = if (index % 2 == 0) NotificationType.MATCHING_ACCEPTED else NotificationType.RESULT_REJECTED_SCORE_MISMATCH,
-            userId = "user_$index",
-            sportType = if (index % 2 == 0) SportType.TENNIS else SportType.PING_PONG,
-            isRead = index > 5,
-            nickname = "a",
-            timeAgo = "${index}분 전",
-            linkUrl = "/api/v1/reviews/review_$index",
-            relatedId = "review_$index",
-        )
-    }.toPersistentList()
-
     SmashingAndroidTheme {
         NoticeScreen(
             uiState = NoticeContract.State(loadState = NoticeUiState.Empty),
             onBackBtnClick = {},
             onLoadMore = {},
             onNoticeClick = {},
+            onConfirmChangeProfile = {},
+            onDismissChangeProfile = {},
         )
     }
 }

@@ -33,6 +33,7 @@ interface MatchingContract {
             val opponentUserId: String,
             val opponentNickname: String,
             val isFirstAttempt: Boolean,
+            val submissionId: String? = null,
         ) : SideEffect
         data class NavigateToConfirm(
             val submissionId: String,
