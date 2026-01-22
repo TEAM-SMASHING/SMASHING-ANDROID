@@ -146,7 +146,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @SSE
     fun provideEventSourceFactory(
         @SSE client: OkHttpClient,
     ): EventSource.Factory = EventSources.createFactory(client)

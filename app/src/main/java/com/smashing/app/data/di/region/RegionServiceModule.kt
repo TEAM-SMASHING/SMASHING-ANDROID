@@ -1,6 +1,6 @@
 package com.smashing.app.data.di.region
 
-import com.smashing.app.core.network.qualifier.Kakao
+import com.smashing.app.core.network.di.Kakao
 import com.smashing.app.data.remote.service.KakaoRegionService
 import com.smashing.app.data.remote.service.RegionService
 import dagger.Module
