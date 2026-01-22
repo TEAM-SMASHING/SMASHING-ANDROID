@@ -345,7 +345,7 @@ private fun MatchingList(
         when (uiState.selectedType) {
             MatchingType.RECEIVE -> items(
                 items = uiState.receivedList,
-                key = { it.matchingId }
+                key = { "${MatchingType.RECEIVE}_${it.matchingId}" }
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
@@ -370,7 +370,7 @@ private fun MatchingList(
 
             MatchingType.SEND -> items(
                 items = uiState.sentList,
-                key = { it.matchingId }
+                key = { "${MatchingType.SEND}_${it.matchingId}" }
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
@@ -394,7 +394,7 @@ private fun MatchingList(
 
             MatchingType.ACCEPTED -> items(
                 items = uiState.acceptedList,
-                key = { it.gameId }
+                key = { "${MatchingType.ACCEPTED}_${it.gameId}" }
             ) { matching ->
                 val isCanceled = matching.resultStatus == GameResultStatusType.CANCELED
 
