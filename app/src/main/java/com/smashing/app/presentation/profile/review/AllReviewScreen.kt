@@ -306,7 +306,7 @@ private fun PreviewNoTextReview() {
 
         AllReviewScreen(
             uiState = mockState,
-            reviews = persistentListOf(), // 리스트는 비어있음
+            reviews = persistentListOf(),
             onLoadMoreReviewList = {},
             onBackClick = {}
         )
@@ -334,7 +334,7 @@ private fun PreviewNoFastAndTextReview() {
 
         AllReviewScreen(
             uiState = mockState,
-            reviews = persistentListOf(), // 리스트 비어있음
+            reviews = persistentListOf(), 
             onLoadMoreReviewList = {},
             onBackClick = {}
         )
