@@ -14,7 +14,7 @@ data class GetUserInfoDetailResponse(
     @SerialName("isAcceptable")
     val isAcceptable: Boolean,
     @SerialName("receivedMatchingId")
-    val receivedMatchingId: String?,
+    val receivedMatchingId: String? = null,
     @SerialName("selectedProfile")
     val selectedProfile: SelectedProfile,
     @SerialName("allProfiles")
