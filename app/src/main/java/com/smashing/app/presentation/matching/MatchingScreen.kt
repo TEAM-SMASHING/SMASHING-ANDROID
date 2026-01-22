@@ -214,9 +214,9 @@ private fun MatchingScreen(
         )
 
         Crossfade(
-            targetState = currentUiState,
+            targetState = uiState.selectedType to currentUiState,
             label = MATCHING_CONTENT_CROSSFADE,
-        ) { state ->
+        ) { (_, state) ->
             when (state) {
                 is MatchingUiState.Empty -> {
                     Column(
@@ -268,7 +268,9 @@ private fun MatchingScreen(
                     )
                 }
 
-                else -> {}
+                else -> {
+                    Box(modifier = Modifier.fillMaxSize())
+                }
             }
         }
 
