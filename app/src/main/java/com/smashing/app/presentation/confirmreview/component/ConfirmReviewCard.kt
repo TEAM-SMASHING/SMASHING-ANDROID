@@ -42,8 +42,7 @@ fun ConfirmReviewCard(
     val hasReviewText = !reviewText.isNullOrBlank()
     val hasTags = tags.isNotEmpty()
     val isEmptyReview = !hasReviewText && !hasTags
-
-
+    
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -60,7 +59,6 @@ fun ConfirmReviewCard(
             rating = rating,
         )
         Spacer(modifier = Modifier.height(40.dp))
-
 
         if (hasReviewText) {
             Text(
@@ -82,7 +80,7 @@ fun ConfirmReviewCard(
         if (isEmptyReview) {
             Box(
                 modifier = Modifier
-                    .weight(1f) 
+                    .weight(1f)
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
@@ -93,7 +91,6 @@ fun ConfirmReviewCard(
                     textAlign = TextAlign.Center
                 )
             }
-
         }
         if (hasTags) {
             FlowRow(
@@ -111,6 +108,7 @@ fun ConfirmReviewCard(
         }
     }
 }
+
 @Composable
 private fun ReviewHeader(
     iconId: Int,
