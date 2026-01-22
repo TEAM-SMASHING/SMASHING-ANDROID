@@ -23,8 +23,8 @@ class MainActivity : ComponentActivity() {
         sseManager.start()
 
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(Color.BLACK),
-            navigationBarStyle = SystemBarStyle.dark(Color.BLACK),
+            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
         )
 
         setContent {
