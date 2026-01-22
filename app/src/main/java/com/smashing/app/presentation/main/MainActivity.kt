@@ -7,12 +7,20 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.network.sse.SseManager
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var sseManager: SseManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sseManager.start()
 
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(Color.BLACK),
@@ -28,5 +36,10 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sseManager.stop()
     }
 }
