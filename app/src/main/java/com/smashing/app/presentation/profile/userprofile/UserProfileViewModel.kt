@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -55,6 +56,7 @@ class UserProfileViewModel @Inject constructor(
                 userId = userId,
                 sportCode = sportCode,
             ).onSuccess { data ->
+                Timber.tag("userprofile").d("${data.isAcceptable}")
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = UserProfileUiState.Success,
@@ -67,6 +69,8 @@ class UserProfileViewModel @Inject constructor(
                             ?: data.profileInfo.profileId
                     )
                 }
+                Timber.tag("userprofile").d("${data.isAcceptable}")
+                Timber.tag("userprofile").d("${_uiState.value.isAcceptable}")
             }.onFailure { exception ->
                 _uiState.update {
                     it.copy(

@@ -170,29 +170,29 @@ private fun UserProfileScreen(
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
             )
-        }
 
-        if (true) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 12.dp, bottom = 52.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SmashingButton(
-                    buttonStyle = ButtonStyle.DISABLED_ACTIVE,
-                    text = "건너뛰기",
-                    modifier = Modifier.weight(BTN_WEIGHT),
-                    onClick = onNoClick,
-                )
-                SmashingButton(
-                    buttonStyle = ButtonStyle.PRIMARY,
-                    text = "수락",
-                    modifier = Modifier.weight(1f),
-                    onClick = onYesClick,
-                )
+            if(uiState.isAcceptable){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 15.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    SmashingButton(
+                        buttonStyle = ButtonStyle.DISABLED_ACTIVE,
+                        text = "건너뛰기",
+                        modifier = Modifier.weight(BTN_WEIGHT),
+                        onClick = onNoClick,
+                    )
+                    SmashingButton(
+                        buttonStyle = ButtonStyle.PRIMARY,
+                        text = "수락",
+                        modifier = Modifier.weight(1f),
+                        onClick = onYesClick,
+                    )
+                }
             }
+
         }
     }
 }
