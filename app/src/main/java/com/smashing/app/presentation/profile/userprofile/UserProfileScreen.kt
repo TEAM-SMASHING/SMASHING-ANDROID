@@ -3,6 +3,7 @@ package com.smashing.app.presentation.profile.userprofile
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +39,7 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
@@ -77,7 +79,6 @@ fun UserProfileRoute(
         onNoClick = viewModel::onNoClick,
         onBackClick = navigateUp,
         onReviewClick = viewModel::navigateToAllReview,
-        updateBottomBar = {},
         onCompeteClick = viewModel::requestCompetition,
         onConfirmClick = navigateToSentMatching,
         onDialogDismissClick = viewModel::dismissDialog,
@@ -91,7 +92,6 @@ private fun UserProfileScreen(
     reviews: ImmutableList<GameReview>,
     onReviewClick: () -> Unit,
     onBackClick: () -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     onYesClick: () -> Unit,
     onNoClick: () -> Unit,
     onCompeteClick: () -> Unit,
@@ -101,27 +101,14 @@ private fun UserProfileScreen(
     scrollState: ScrollState = rememberScrollState(),
 ) {
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (available.y < -10) {
-                    updateBottomBar(false)
-                } else if (available.y > 10) {
-                    updateBottomBar(true)
-                }
-                return Offset.Zero
-            }
-        }
-    }
-
-    if (uiState.profileInfo.nickname.isBlank()) {
+    if(uiState.profileInfo.nickname.isBlank()){
         return
     }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas)
+            .background(color = colors.bgCanvas)
             .systemBarsPadding(),
     ) {
 
@@ -135,7 +122,6 @@ private fun UserProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .nestedScroll(nestedScrollConnection)
                 .padding(bottom = 37.dp)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
@@ -148,7 +134,7 @@ private fun UserProfileScreen(
                 loseCount = uiState.profileInfo.loseCount,
                 reviewCount = uiState.profileInfo.reviewCount,
                 onCompeteClick = onCompeteClick,
-                isCompeteEnabled = uiState.isCompeteButtonEnabled,
+                isCompeteEnabled = uiState.isChallengeable,
             )
 
             if (uiState.isDialogVisible) {
@@ -188,31 +174,31 @@ private fun UserProfileScreen(
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
             )
-        }
 
-    if (uiState.isCompeteButtonEnabled == false) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 52.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            SmashingButton(
-                buttonStyle = ButtonStyle.DISABLED_ACTIVE,
-                text = "건너뛰기",
-                modifier = Modifier.weight(BTN_WEIGHT),
-                onClick = onNoClick,
-            )
-            SmashingButton(
-                buttonStyle = ButtonStyle.PRIMARY,
-                text = "수락",
-                modifier = Modifier.weight(1f),
-                onClick = onYesClick,
-            )
+            if(uiState.isAcceptable){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 15.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    SmashingButton(
+                        buttonStyle = ButtonStyle.DISABLED_ACTIVE,
+                        text = "건너뛰기",
+                        modifier = Modifier.weight(BTN_WEIGHT),
+                        onClick = onNoClick,
+                    )
+                    SmashingButton(
+                        buttonStyle = ButtonStyle.PRIMARY,
+                        text = "수락",
+                        modifier = Modifier.weight(1f),
+                        onClick = onYesClick,
+                    )
+                }
+            }
+
         }
     }
-}
 }
 
 
@@ -224,7 +210,6 @@ private fun ProfileScreenPreview() {
             uiState = UserProfileContract.State(),
             reviews = persistentListOf(),
             onReviewClick = {},
-            updateBottomBar = {},
             onNoClick = {},
             onYesClick = {},
             onCompeteClick = {},

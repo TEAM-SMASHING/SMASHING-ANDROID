@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -58,6 +59,9 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = UserProfileUiState.Success,
+                        isChallengeable = data.isChallengeable,
+                        isAcceptable = data.isAcceptable,
+                        receivedMatchingId = data.receivedMatchingId,
                         profileInfo = data.profileInfo,
                         sportProfileList = data.sportProfile.toImmutableList(),
                         selectedSportProfileId = data.sportProfile.find { it.isActive }?.profileId
@@ -176,7 +180,6 @@ class UserProfileViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     isMatchingRequest = false,
-                    isCompeteButtonEnabled = true
                 )
             }
         }

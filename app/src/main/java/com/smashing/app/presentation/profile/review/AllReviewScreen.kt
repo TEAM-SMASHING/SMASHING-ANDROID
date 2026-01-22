@@ -3,6 +3,7 @@ package com.smashing.app.presentation.profile.review
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,14 +29,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
+import com.smashing.app.R.drawable.img_app_icon
 import com.smashing.app.R.string.fair_play_review
 import com.smashing.app.R.string.fast_response_review
 import com.smashing.app.R.string.good_manner_review
@@ -46,7 +48,7 @@ import com.smashing.app.R.string.satisfaction_review
 import com.smashing.app.R.string.short_review
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
-import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
+import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -54,7 +56,6 @@ import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.presentation.profile.component.ReviewItem
-import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -69,9 +70,9 @@ fun AllReviewRoute(
     AllReviewScreen(
         modifier = modifier,
         uiState = uiState,
-        onLoadMoreReviewList = viewModel::fetchUserProfileReview,
-        onBackClick = navigateUp,
         reviews = uiState.gameReview,
+        onLoadMoreReviewList = { viewModel.fetchReviews(isInit = false) },
+        onBackClick = navigateUp
     )
 }
 
@@ -85,12 +86,17 @@ private fun AllReviewScreen(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    val currentIsLoading = uiState.reviewUiState is ReviewUiState.Loading
+    val currentIsLoading = uiState.reviewUiState is ReviewContract.ReviewUiState.Loading
+
+    val hasShortReview = uiState.gameReviewResult.run {
+        onTimeCount > 0 || goodMannerCount > 0 || fairPlayCount > 0 || fastResponseCount > 0
+    }
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas),
+        modifier = modifier.run {
+            fillMaxSize()
+                .background(color = SmashingTheme.colors.bgCanvas)
+        },
     ) {
         SmashingDefaultTopBar(
             modifier = Modifier.statusBarsPadding(),
@@ -98,6 +104,7 @@ private fun AllReviewScreen(
             topBarType = TopBarType.BACK,
             onClick = onBackClick,
         )
+
         if (uiState.isReviewEmpty) {
             Column(
                 modifier = Modifier
@@ -105,10 +112,9 @@ private fun AllReviewScreen(
                     .navigationBarsPadding(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-            )
-            {
+            ) {
                 Image(
-                    painter = painterResource(id = R.drawable.img_app_icon),
+                    painter = painterResource(id = img_app_icon),
                     contentDescription = null,
                 )
 
@@ -135,8 +141,6 @@ private fun AllReviewScreen(
                     .navigationBarsPadding(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
             ) {
-
-
                 item {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -152,22 +156,21 @@ private fun AllReviewScreen(
                             if (uiState.gameReviewResult.bestCount > 0) {
                                 SmashingChip(
                                     text = uiState.gameReviewResult.bestCount.toString(),
-                                    style = DISABLED,
+                                    style = ChipStyle.DISABLED,
                                     icon = ImageVector.vectorResource(id = ic_thumbs_up_double_lg),
                                 )
                             }
-
-                            if (uiState.gameReviewResult.goodCount > 0)
+                            if (uiState.gameReviewResult.goodCount > 0) {
                                 SmashingChip(
                                     text = uiState.gameReviewResult.goodCount.toString(),
-                                    style = DISABLED,
+                                    style = ChipStyle.DISABLED,
                                     icon = ImageVector.vectorResource(id = ic_thumbs_up_lg),
                                 )
-
+                            }
                             if (uiState.gameReviewResult.badCount > 0) {
                                 SmashingChip(
                                     text = uiState.gameReviewResult.badCount.toString(),
-                                    style = DISABLED,
+                                    style = ChipStyle.DISABLED,
                                     icon = ImageVector.vectorResource(id = ic_thumbs_down_lg),
                                 )
                             }
@@ -186,36 +189,42 @@ private fun AllReviewScreen(
                             color = SmashingTheme.colors.txtPrimary,
                         )
 
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            if (uiState.gameReviewResult.onTimeCount > 0) {
-                                SmashingChip(
-                                    text = "${stringResource(id = on_time_review)} ${uiState.gameReviewResult.onTimeCount}",
-                                    style = DISABLED,
-                                )
+                        if (hasShortReview) {
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                if (uiState.gameReviewResult.onTimeCount > 0) {
+                                    SmashingChip(
+                                        text = "${stringResource(id = on_time_review)} ${uiState.gameReviewResult.onTimeCount}",
+                                        style = ChipStyle.DISABLED,
+                                    )
+                                }
+                                if (uiState.gameReviewResult.goodMannerCount > 0) {
+                                    SmashingChip(
+                                        text = "${stringResource(id = good_manner_review)} ${uiState.gameReviewResult.goodMannerCount}",
+                                        style = ChipStyle.DISABLED,
+                                    )
+                                }
+                                if (uiState.gameReviewResult.fairPlayCount > 0) {
+                                    SmashingChip(
+                                        text = "${stringResource(id = fair_play_review)} ${uiState.gameReviewResult.fairPlayCount}",
+                                        style = ChipStyle.DISABLED,
+                                    )
+                                }
+                                if (uiState.gameReviewResult.fastResponseCount > 0) {
+                                    SmashingChip(
+                                        text = "${stringResource(id = fast_response_review)} ${uiState.gameReviewResult.fastResponseCount}",
+                                        style = ChipStyle.DISABLED,
+                                    )
+                                }
                             }
-
-                            if (uiState.gameReviewResult.goodMannerCount > 0) {
-                                SmashingChip(
-                                    text = "${stringResource(id = good_manner_review)} ${uiState.gameReviewResult.goodMannerCount}",
-                                    style = DISABLED,
-                                )
-                            }
-                            if (uiState.gameReviewResult.fairPlayCount > 0) {
-                                SmashingChip(
-                                    text = "${stringResource(id = fair_play_review)} ${uiState.gameReviewResult.fairPlayCount}",
-                                    style = DISABLED,
-                                )
-                            }
-                            if (uiState.gameReviewResult.fastResponseCount > 0) {
-                                SmashingChip(
-                                    text = "${stringResource(id = fast_response_review)} ${uiState.gameReviewResult.fastResponseCount}",
-                                    style = DISABLED,
-                                )
-                            }
+                        } else {
+                            ReviewEmptyPlaceholder(
+                                text = "아직 받은 빠른 후기가 없어요",
+                                modifier = Modifier.padding(vertical = 20.dp)
+                            )
                         }
                     }
                 }
@@ -231,16 +240,26 @@ private fun AllReviewScreen(
 
                 item { Spacer(modifier = Modifier.height(8.dp)) }
 
-                itemsIndexed(reviews) { index, review ->
-                    ReviewItem(
-                        review = review,
-                    )
+                if (reviews.isNotEmpty()) {
+                    itemsIndexed(reviews) { index, review ->
+                        ReviewItem(
+                            review = review,
+                        )
 
-                    if (index < reviews.lastIndex) {
-                        HorizontalDivider(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            thickness = 1.dp,
-                            color = SmashingTheme.colors.borderPrimary,
+                        if (index < reviews.lastIndex) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                thickness = 1.dp,
+                                color = SmashingTheme.colors.borderPrimary,
+                            )
+                        }
+                    }
+                    item { Spacer(modifier = Modifier.height(20.dp)) }
+                } else {
+                    item {
+                        ReviewEmptyPlaceholder(
+                            text = "아직 받은 후기가 없어요",
+                            modifier = Modifier.padding(vertical = 40.dp)
                         )
                     }
                 }
@@ -249,77 +268,92 @@ private fun AllReviewScreen(
     }
 }
 
+@Composable
+private fun ReviewEmptyPlaceholder(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            style = SmashingTheme.typography.sm.regular14,
+            color = SmashingTheme.colors.txtPrimary,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+
 @Preview
 @Composable
-private fun ReviewScreenPreview() {
+private fun PreviewNoTextReview() {
     SmashingAndroidTheme {
-        val emptyState = ReviewContract.State()
+        val mockResult = GameReviewResult(
+            bestCount = 10,
+            onTimeCount = 5,
+            goodMannerCount = 3,
+            fairPlayCount = 2,
+            fastResponseCount = 1
+        )
+
+        val mockState = ReviewContract.State(
+            gameReviewResult = mockResult,
+            reviewUiState = ReviewContract.ReviewUiState.Success
+        )
+
         AllReviewScreen(
-            uiState = emptyState,
-            onLoadMoreReviewList = {},
-            onBackClick = {},
+            uiState = mockState,
             reviews = persistentListOf(),
+            onLoadMoreReviewList = {},
+            onBackClick = {}
         )
     }
 }
 
 @Preview
 @Composable
-private fun AllReviewScreenPopulatedPreview() {
+private fun PreviewNoFastAndTextReview() {
     SmashingAndroidTheme {
-        val dummyResult = GameReviewResult(
-            bestCount = 15,
-            goodCount = 8,
-            badCount = 0,
-            onTimeCount = 10,
-            goodMannerCount = 12,
-            fairPlayCount = 5,
-            fastResponseCount = 20
+        val mockResult = GameReviewResult(
+            bestCount = 5,
+            goodCount = 2,
+            badCount = 1,
+            onTimeCount = 0,
+            goodMannerCount = 0,
+            fairPlayCount = 0,
+            fastResponseCount = 0
         )
 
-        val dummyReviews = persistentListOf(
-            GameReview(
-                gameReviewId = "1",
-                opponentNickname = "닝닝",
-                createdAt = "2일 전",
-                content = "즐거운 경기였습니다.",
-            ),
-            GameReview(
-                gameReviewId = "1",
-                opponentNickname = "닝닝",
-                createdAt = "2일 전",
-                content = "즐거운 경기였습니다.",
-
-                ),
-            GameReview(
-                gameReviewId = "1",
-                opponentNickname = "닝닝",
-                createdAt = "2일 전",
-                content = "즐거운 경기였습니다.",
-            ),
-            GameReview(
-                gameReviewId = "1",
-                opponentNickname = "닝닝",
-                createdAt = "2일 전",
-                content = "즐거운 경기였습니다.",
-            ),
-
-            GameReview(
-                gameReviewId = "1",
-                opponentNickname = "닝닝",
-                createdAt = "2일 전",
-                content = "즐거운 경기였습니다.",
-            )
+        val mockState = ReviewContract.State(
+            gameReviewResult = mockResult,
+            reviewUiState = ReviewContract.ReviewUiState.Success
         )
-        val populatedState = ReviewContract.State(
-            gameReviewResult = dummyResult,
-            gameReview = dummyReviews
-        )
+
         AllReviewScreen(
-            uiState = populatedState,
-            reviews = dummyReviews,
+            uiState = mockState,
+            reviews = persistentListOf(), 
             onLoadMoreReviewList = {},
-            onBackClick = {},
+            onBackClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewAllEmpty() {
+    SmashingAndroidTheme {
+        val mockState = ReviewContract.State(
+            reviewUiState = ReviewContract.ReviewUiState.Success
+        )
+
+        AllReviewScreen(
+            uiState = mockState,
+            reviews = persistentListOf(),
+            onLoadMoreReviewList = {},
+            onBackClick = {}
         )
     }
 }
