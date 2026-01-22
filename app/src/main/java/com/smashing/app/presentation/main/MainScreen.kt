@@ -141,10 +141,12 @@ private fun MainNavHost(
     ) {
         homeGraph(
             navController = appState.navController,
+            innerPadding = innerPadding,
         )
 
         searchGraph(
             navController = appState.navController,
+            innerPadding = innerPadding,
         )
 
         matchingGraph(
@@ -153,10 +155,12 @@ private fun MainNavHost(
             navigateToProfile = { userId ->
                 appState.navController.navigateToUserProfile(userId = userId)
             },
+            innerPadding = innerPadding,
         )
 
         profileGraph(
             navController = appState.navController,
+            innerPadding = innerPadding,
         )
         loginGraph(
             navigateToSignUp = { kakaoId ->

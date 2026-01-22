@@ -260,8 +260,7 @@ private fun HomeScreen(
                     .padding(
                         top = 12.dp,
                         bottom = 22.dp
-                    )
-                    .navigationBarsPadding(),
+                    ),
             ) {
                 Column {
                     Row(

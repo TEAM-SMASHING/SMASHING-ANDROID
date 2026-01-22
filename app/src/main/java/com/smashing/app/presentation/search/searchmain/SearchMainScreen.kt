@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -107,8 +106,7 @@ private fun SearchMainScreen(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
+            .fillMaxSize(),
     ) {
 
         SearchTopBar(
@@ -184,7 +182,7 @@ private fun SearchMainScreen(
 
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 10.dp),
                     state = listState,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
