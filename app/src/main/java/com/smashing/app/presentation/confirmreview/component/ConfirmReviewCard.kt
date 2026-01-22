@@ -42,7 +42,7 @@ fun ConfirmReviewCard(
     val hasReviewText = !reviewText.isNullOrBlank()
     val hasTags = tags.isNotEmpty()
     val isEmptyReview = !hasReviewText && !hasTags
-    
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -69,7 +69,10 @@ fun ConfirmReviewCard(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f, fill = false)
+                    .weight(
+                        weight = 1f,
+                        fill = false
+                    )
             )
         }
 
