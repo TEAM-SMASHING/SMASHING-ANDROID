@@ -7,9 +7,6 @@ import com.smashing.app.BuildConfig.KAKAO_BASE_URL
 import com.smashing.app.core.network.AuthInterceptor
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
-import com.smashing.app.core.network.qualifier.Auth
-import com.smashing.app.core.network.qualifier.Kakao
-import com.smashing.app.core.network.qualifier.NoAuth
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import dagger.Module
 import dagger.Provides
@@ -149,6 +146,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @SSE
     fun provideEventSourceFactory(
         @SSE client: OkHttpClient,
     ): EventSource.Factory = EventSources.createFactory(client)

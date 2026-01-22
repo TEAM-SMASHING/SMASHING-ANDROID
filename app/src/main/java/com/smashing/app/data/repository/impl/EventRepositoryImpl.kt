@@ -2,12 +2,8 @@ package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.common.di.ApplicationScope
 import com.smashing.app.core.common.type.event.SseEventType
-import com.smashing.app.data.mapper.toEvent
 import com.smashing.app.data.model.event.SseEvent
 import com.smashing.app.data.remote.datasource.api.RemoteEventDataSource
-import com.smashing.app.data.remote.dto.event.MatchingReceivedDto
-import com.smashing.app.data.remote.dto.event.MatchingUpdatedDto
-import com.smashing.app.data.remote.dto.event.NotificationCreatedDto
 import com.smashing.app.data.repository.api.EventRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,22 +32,22 @@ class EventRepositoryImpl @Inject constructor(
             .onEach { raw ->
                 val eventType = SseEventType.fromEventName(raw.eventName) ?: return@onEach
 
-                val event: SseEvent = runCatching {
-                    when (eventType) {
-                        SseEventType.SYSTEM_CONNECTED -> SseEvent.SystemConnected
+//                val event: SseEvent = runCatching {
+//                    when (eventType) {
+//                        SseEventType.SYSTEM_CONNECTED -> SseEvent.SystemConnected
+//
+//                        SseEventType.MATCHING_RECEIVED ->
+//                            json.decodeFromString<MatchingReceivedDto>(raw.data).toEvent()
+//
+//                        SseEventType.MATCHING_UPDATED ->
+//                            json.decodeFromString<MatchingUpdatedDto>(raw.data).toEvent()
+//
+//                        SseEventType.NOTIFICATION_CREATED ->
+//                            json.decodeFromString<NotificationCreatedDto>(raw.data).toEvent()
+//                    }
+//                }.getOrNull() ?: return@onEach
 
-                        SseEventType.MATCHING_RECEIVED ->
-                            json.decodeFromString<MatchingReceivedDto>(raw.data).toEvent()
-
-                        SseEventType.MATCHING_UPDATED ->
-                            json.decodeFromString<MatchingUpdatedDto>(raw.data).toEvent()
-
-                        SseEventType.NOTIFICATION_CREATED ->
-                            json.decodeFromString<NotificationCreatedDto>(raw.data).toEvent()
-                    }
-                }.getOrNull() ?: return@onEach
-
-                _events.tryEmit(event)
+//                _events.tryEmit(event)
             }
             .launchIn(externalScope)
     }
