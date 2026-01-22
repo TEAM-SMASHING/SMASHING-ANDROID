@@ -1,8 +1,9 @@
 package com.smashing.app.data.model.event
 
-import com.smashing.app.core.common.type.event.GameResultStatus
-import com.smashing.app.core.common.type.event.MatchingStatus
-import com.smashing.app.core.common.type.event.NotificationType
+import com.smashing.app.data.type.GameResultStatusType
+import com.smashing.app.data.type.MatchingStatusType
+import com.smashing.app.data.type.NotificationType
+import com.smashing.app.data.type.SportType
 
 sealed interface SseEvent {
 
@@ -11,7 +12,7 @@ sealed interface SseEvent {
     // 매칭 요청 받음
     data class MatchingReceived(
         val matchingId: String,
-        val sportId: Long,
+        val sportType: SportType,
         val receiverProfileId: String,
         val requester: Requester,
     ) : SseEvent
@@ -19,7 +20,7 @@ sealed interface SseEvent {
     // 매칭 상태 업데이트 (ACCEPTED, REJECTED, CANCELLED)
     data class MatchingUpdated(
         val matchingId: String,
-        val status: MatchingStatus,
+        val status: MatchingStatusType,
     ) : SseEvent
 
     // 매칭 요청 알림
@@ -28,7 +29,7 @@ sealed interface SseEvent {
         val notificationType: NotificationType,
         val notificationCreatedAt: String,
         val matchingId: String,
-        val sportId: Long,
+        val sportType: SportType,
         val receiverProfileId: String,
         val requester: UserSummary,
     ) : SseEvent
@@ -39,7 +40,7 @@ sealed interface SseEvent {
         val notificationType: NotificationType,
         val notificationCreatedAt: String,
         val matchingId: String,
-        val sportId: Long,
+        val sportType: SportType,
         val receiverProfileId: String,
         val acceptor: UserSummary,
     ) : SseEvent
@@ -47,7 +48,7 @@ sealed interface SseEvent {
     // 게임 상태 업데이트
     data class GameUpdated(
         val gameId: String,
-        val resultStatus: GameResultStatus,
+        val resultStatus: GameResultStatusType,
     ) : SseEvent
 
     // 게임 결과 제출 알림
@@ -55,7 +56,7 @@ sealed interface SseEvent {
         val notificationId: String,
         val notificationType: NotificationType,
         val notificationCreatedAt: String,
-        val sportId: Long,
+        val sportType: SportType,
         val receiverProfileId: String,
         val gameId: String,
         val submissionId: String,
@@ -67,7 +68,7 @@ sealed interface SseEvent {
         val notificationId: String,
         val notificationType: NotificationType,
         val notificationCreatedAt: String,
-        val sportId: Long,
+        val sportType: SportType,
         val receiverProfileId: String,
         val gameId: String,
         val submitter: UserSummary,
@@ -78,7 +79,7 @@ sealed interface SseEvent {
         val notificationId: String,
         val notificationType: NotificationType,
         val notificationCreatedAt: String,
-        val sportId: Long,
+        val sportType: SportType,
         val receiverProfileId: String,
         val gameId: String,
         val reviewId: String,
