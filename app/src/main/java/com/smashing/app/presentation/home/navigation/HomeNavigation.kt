@@ -81,7 +81,6 @@ fun NavGraphBuilder.homeGraph(
                     )
                 },
                 navigateToMyProfile = navController::navigateToMyProfile,
-                updateBottomBar = updateBottomBar,
             )
         }
 

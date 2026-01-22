@@ -93,6 +93,7 @@ fun HomeRoute(
         gameId: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -656,7 +657,6 @@ private fun HomeScreenPreview() {
         navigateToConfirm = { _, _, _ -> },
         navigateToMyProfile = {},
         onSportsChipClick = {},
-        updateBottomBar = {},
     )
 }
 
@@ -698,11 +698,9 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToUserProfile = {},
         navigateToSportAdd = {},
         navigateToSearch = {},
-        onSportsChipClick = {},
-        navigateToMyProfile = {},
         navigateToSubmit = { _, _, _, _ -> },
         navigateToConfirm = { _, _, _ -> },
+        navigateToMyProfile = {},
         onSportsChipClick = {},
-        updateBottomBar = {},
     )
 }
