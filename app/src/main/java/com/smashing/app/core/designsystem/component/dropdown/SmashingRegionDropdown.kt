@@ -113,9 +113,8 @@ fun RegionDropdown(
 
         SmashingDropdownMenu(
             items = (items.map {
-                DropdownItem.Additional(
-                    label = it,
-                    onClick = { },
+                DropdownItem.Normal(
+                    label = it
                 )
             } + DropdownItem.Additional(
                 label = stringResource(dropdown_region_select),
