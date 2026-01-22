@@ -625,7 +625,6 @@ private fun CloseMatching(
     matchedUser: AcceptedMatching? = null,
     navigateToSearch: () -> Unit,
 ) {
-    //TODO 매칭 상대에서 받는 데이터 확인 후에 nickName + userId 묶는 데이터 타입 추가
     Column(
         modifier = modifier
             .fillMaxWidth()
