@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
@@ -56,8 +55,6 @@ import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.model.search.SearchMainItemModel
