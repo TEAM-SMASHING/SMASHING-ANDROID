@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.review
 
 import com.smashing.app.data.model.review.ReviewDetail
 import com.smashing.app.data.remote.dto.review.GetReviewResponse

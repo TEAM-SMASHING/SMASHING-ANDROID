@@ -3,6 +3,7 @@ package com.smashing.app.data.type
 enum class GameResultStatusType {
     PENDING_RESULT,
     WAITING_CONFIRMATION,
+    RESULT_CONFIRMED,
     RESULT_REJECTED,
     CANCELED,
     PENDING_RESULT_CONFIRMED,

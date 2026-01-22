@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.main
+package com.smashing.app.presentation.main.state
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -11,6 +11,7 @@ import androidx.navigation.navOptions
 import com.smashing.app.core.extension.stateInWhileSubscribed
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
+import com.smashing.app.presentation.main.component.MainTab
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
 import com.smashing.app.presentation.search.navigation.navigateToSearch
