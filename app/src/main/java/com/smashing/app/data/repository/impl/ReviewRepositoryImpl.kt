@@ -45,9 +45,10 @@ class ReviewRepositoryImpl @Inject constructor(
 
     override suspend fun getMyGameReviews(
         cursor: String?,
-        size: Int?
+        size: Int?,
+        snapshotAt: String?,
     ): Result<CursorPage<GameReview>> = suspendRunCatching {
-        reviewRemoteDataSource.getMyGameReviews(cursor, size)
+        reviewRemoteDataSource.getMyGameReviews(cursor, size, snapshotAt)
             .requireData()
             .toGameReviewPage()
     }

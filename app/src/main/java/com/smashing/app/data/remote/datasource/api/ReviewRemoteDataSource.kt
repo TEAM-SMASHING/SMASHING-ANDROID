@@ -21,7 +21,7 @@ interface ReviewRemoteDataSource {
         snapshotAt: String?,
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>>
 
-    suspend fun getMyGameReviews(cursor: String?, size: Int?): BaseResponse<GetMyGameReviewsResponse>
+    suspend fun getMyGameReviews(cursor: String?, size: Int?, snapshotAt: String?): BaseResponse<GetMyGameReviewsResponse>
 
     suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse>
 }

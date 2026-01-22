@@ -96,7 +96,8 @@ class MyProfileViewModel @Inject constructor(
 
         reviewRepository.getMyGameReviews(
             cursor = null,
-            size = PAGE_SIZE
+            size = PAGE_SIZE,
+            snapshotAt = null,
         )
             .onSuccess { page ->
                 _uiState.update { currentState ->

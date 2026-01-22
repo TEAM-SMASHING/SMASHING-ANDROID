@@ -21,6 +21,7 @@ interface ReviewRepository {
     suspend fun getMyGameReviews(
         cursor: String?,
         size: Int?,
+        snapshotAt: String?,
     ): Result<CursorPage<GameReview>>
 
     suspend fun getUserRecentReviewStats(

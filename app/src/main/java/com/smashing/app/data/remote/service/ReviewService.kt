@@ -36,6 +36,7 @@ interface ReviewService {
     suspend fun getMyGameReviews(
         @Query("cursor") cursor: String?,
         @Query("size") size: Int?,
+        @Query("snapshotAt") snapshotAt: String?,
     ): BaseResponse<GetMyGameReviewsResponse>
 
     @GET("/api/v1/users/me/reviews/summary")

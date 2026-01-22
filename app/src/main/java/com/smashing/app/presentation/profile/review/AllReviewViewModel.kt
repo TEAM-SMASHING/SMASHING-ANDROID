@@ -143,7 +143,8 @@ class AllReviewViewModel @Inject constructor(
 
             reviewRepository.getMyGameReviews(
                 cursor = if (isInit) null else nextCursor,
-                size = PAGE_SIZE
+                size = PAGE_SIZE,
+                snapshotAt = if (isInit) null else _uiState.value.reviewCursor.snapshotAt,
             )
                 .onSuccess { page ->
                     nextCursor = page.cursor.nextCursor
