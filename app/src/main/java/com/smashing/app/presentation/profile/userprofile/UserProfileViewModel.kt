@@ -158,6 +158,7 @@ class UserProfileViewModel @Inject constructor(
         _uiState.update {
             it.copy(isDialogVisible = false)
         }
+        fetchProfileInfo()
     }
 
     companion object {
