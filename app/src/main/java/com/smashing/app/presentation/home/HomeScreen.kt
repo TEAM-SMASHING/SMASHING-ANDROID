@@ -58,7 +58,6 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
-import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.style.TierInfoStyle
@@ -121,11 +120,6 @@ fun HomeRoute(
     LaunchedEffect(uiState.recommendedUserList) {
         recommendedUserListState.scrollToItem(0)
     }
-
-    // TODO 토스트 예시
-    val show = LocalToastTrigger.current
-    show.invoke("토스트 테스트입니다.")
-    show.invoke("토스트 테스트입니다.")
 
     HomeScreen(
         uiState = uiState,
