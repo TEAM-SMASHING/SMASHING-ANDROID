@@ -67,22 +67,22 @@ class SubmitViewModel @Inject constructor(
     }
 
     private fun updateFromSubmissionDetail(submissionDetail: GameSubmissionDetail) {
+        val isSubmitterWinner =
+            submissionDetail.winner.userId == submissionDetail.submitter.userId
+
+        val submitter = PlayerInfo(
+            userId = submissionDetail.submitter.userId,
+            name = submissionDetail.submitter.nickname,
+            score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score,
+        )
+
+        val receiver = PlayerInfo(
+            userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
+            name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
+            score = if (isSubmitterWinner) submissionDetail.loser.score else submissionDetail.winner.score,
+        )
+
         _uiState.update { state ->
-            val isSubmitterWinner =
-                submissionDetail.winner.userId == submissionDetail.submitter.userId
-
-            val submitter = state.submitter.copy(
-                userId = submissionDetail.submitter.userId,
-                name = submissionDetail.submitter.nickname,
-                score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score,
-            )
-
-            val receiver = state.receiver.copy(
-                userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
-                name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
-                score = if (isSubmitterWinner) submissionDetail.loser.score else submissionDetail.winner.score,
-            )
-
             state.copy(
                 submitter = submitter,
                 receiver = receiver,

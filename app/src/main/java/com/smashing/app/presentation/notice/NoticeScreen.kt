@@ -102,7 +102,7 @@ private fun NoticeScreen(
                 Spacer(Modifier.weight(230f / 330f))
 
                 AppIcon(
-                    title = "아직 받은 후기가 없어요",
+                    title = "아직 받은 알림이 없어요",
                     isFilled = false,
                     modifier = modifier
                         .align(alignment = Alignment.CenterHorizontally),

@@ -98,9 +98,7 @@ private fun RegionScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                color = SmashingTheme.colors.bgCanvas,
-            ),
+            .background(color = SmashingTheme.colors.bgCanvas),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
@@ -160,7 +158,7 @@ private fun RegionItem(
         text = region.addressName,
         color = SmashingTheme.colors.txtSecondary,
         style = SmashingTheme.typography.sm.medium14,
-        modifier =  modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = 16.dp,

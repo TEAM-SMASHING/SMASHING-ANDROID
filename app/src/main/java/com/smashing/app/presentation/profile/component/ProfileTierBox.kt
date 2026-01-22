@@ -148,12 +148,13 @@ fun ProfileTierBox(
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
             if (onTierInfoClick != null) {
+                Spacer(modifier = Modifier.height(20.dp))
+
                 SmashingBaseButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(tier_description),
-                    textStyle = SmashingTheme.typography.lg.semibold18,
+                    textStyle = SmashingTheme.typography.md.semibold16,
                     onClick = onTierInfoClick,
                     buttonColor = SmashingBtnColor(
                         backgroundColor = SmashingTheme.colors.tierDiamondBg,

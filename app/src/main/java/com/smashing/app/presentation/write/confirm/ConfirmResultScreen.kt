@@ -37,9 +37,9 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.data.type.ConfirmDenyType
 import com.smashing.app.presentation.write.component.WriteResultContent
 import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmResultSideEffect
-import com.smashing.app.data.type.ConfirmDenyType
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.filterIsInstance
 
@@ -116,11 +116,11 @@ private fun ConfirmResultScreen(
                 .verticalScroll(scrollState),
         ) {
             WriteResultContent(
-                submitter = uiState.submitter,
-                receiver = uiState.receiver,
+                leftUserInfo = uiState.receiver,
+                rightUserInfo = uiState.submitter,
                 winnerId = uiState.winnerId,
-                leftTextFieldState = leftTextFieldState,
-                rightTextFieldState = rightTextFieldState,
+                leftTextFieldState = rightTextFieldState,
+                rightTextFieldState = leftTextFieldState,
                 isTextFieldsEnabled = false,
                 title = "경기 결과를 확인해주세요",
             )
