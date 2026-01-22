@@ -4,7 +4,7 @@ import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.mapper.my.toGameReviewResult
 import com.smashing.app.data.mapper.review.toGameReviewList
 import com.smashing.app.data.mapper.review.toGameReviewPage
-import com.smashing.app.data.mapper.toReviewDetail
+import com.smashing.app.data.mapper.review.toReviewDetail
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult

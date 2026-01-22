@@ -1,4 +1,4 @@
-package com.smashing.app.data.mapper
+package com.smashing.app.data.mapper.event
 
 import com.smashing.app.core.common.type.event.MatchingStatus
 import com.smashing.app.core.common.type.event.NotificationType

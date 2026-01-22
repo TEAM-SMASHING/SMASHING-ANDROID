@@ -137,8 +137,12 @@ object NetworkModule {
     @Provides
     @Singleton
     @SSE
-    fun provideSSEOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
-        // TODO: authInterceptor 추가 예정
+    fun provideSSEOkhttpClient(
+        loggingInterceptor: Interceptor,
+        @Auth headerInterceptor: AuthInterceptor,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .addInterceptor(headerInterceptor)
         .readTimeout(0, TimeUnit.MILLISECONDS)
         .retryOnConnectionFailure(true)
         .build()
