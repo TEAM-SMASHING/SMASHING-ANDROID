@@ -1,9 +1,18 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.common.di.ApplicationScope
-import com.smashing.app.core.common.type.event.SseEventType
+import com.smashing.app.data.type.SseEventType
+import com.smashing.app.data.mapper.event.toEvent
 import com.smashing.app.data.model.event.SseEvent
 import com.smashing.app.data.remote.datasource.api.RemoteEventDataSource
+import com.smashing.app.data.remote.dto.event.GameResultRejectedNotificationDto
+import com.smashing.app.data.remote.dto.event.GameResultSubmittedNotificationDto
+import com.smashing.app.data.remote.dto.event.GameUpdatedDto
+import com.smashing.app.data.remote.dto.event.MatchingAcceptNotificationDto
+import com.smashing.app.data.remote.dto.event.MatchingReceivedDto
+import com.smashing.app.data.remote.dto.event.MatchingRequestNotificationDto
+import com.smashing.app.data.remote.dto.event.MatchingUpdatedDto
+import com.smashing.app.data.remote.dto.event.ReviewReceivedNotificationDto
 import com.smashing.app.data.repository.api.EventRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,22 +41,40 @@ class EventRepositoryImpl @Inject constructor(
             .onEach { raw ->
                 val eventType = SseEventType.fromEventName(raw.eventName) ?: return@onEach
 
-//                val event: SseEvent = runCatching {
-//                    when (eventType) {
-//                        SseEventType.SYSTEM_CONNECTED -> SseEvent.SystemConnected
-//
-//                        SseEventType.MATCHING_RECEIVED ->
-//                            json.decodeFromString<MatchingReceivedDto>(raw.data).toEvent()
-//
-//                        SseEventType.MATCHING_UPDATED ->
-//                            json.decodeFromString<MatchingUpdatedDto>(raw.data).toEvent()
-//
-//                        SseEventType.NOTIFICATION_CREATED ->
-//                            json.decodeFromString<NotificationCreatedDto>(raw.data).toEvent()
-//                    }
-//                }.getOrNull() ?: return@onEach
+                val event: SseEvent = runCatching {
+                    when (eventType) {
+                        SseEventType.SYSTEM_CONNECTED -> SseEvent.SystemConnected
 
-//                _events.tryEmit(event)
+                        // 매칭 이벤트
+                        SseEventType.MATCHING_RECEIVED ->
+                            json.decodeFromString<MatchingReceivedDto>(raw.data).toEvent()
+
+                        SseEventType.MATCHING_UPDATED ->
+                            json.decodeFromString<MatchingUpdatedDto>(raw.data).toEvent()
+
+                        SseEventType.MATCHING_REQUEST_NOTIFICATION_CREATED ->
+                            json.decodeFromString<MatchingRequestNotificationDto>(raw.data).toEvent()
+
+                        SseEventType.MATCHING_ACCEPT_NOTIFICATION_CREATED ->
+                            json.decodeFromString<MatchingAcceptNotificationDto>(raw.data).toEvent()
+
+                        // 게임 이벤트
+                        SseEventType.GAME_UPDATED ->
+                            json.decodeFromString<GameUpdatedDto>(raw.data).toEvent()
+
+                        SseEventType.GAME_RESULT_SUBMITTED_NOTIFICATION_CREATED ->
+                            json.decodeFromString<GameResultSubmittedNotificationDto>(raw.data).toEvent()
+
+                        SseEventType.GAME_RESULT_REJECTED_NOTIFICATION_CREATED ->
+                            json.decodeFromString<GameResultRejectedNotificationDto>(raw.data).toEvent()
+
+                        // 리뷰 이벤트
+                        SseEventType.REVIEW_RECEIVED_NOTIFICATION_CREATED ->
+                            json.decodeFromString<ReviewReceivedNotificationDto>(raw.data).toEvent()
+                    }
+                }.getOrNull() ?: return@onEach
+
+                _events.tryEmit(event)
             }
             .launchIn(externalScope)
     }
