@@ -87,7 +87,6 @@ fun MatchingRoute(
         isFirstAttempt: Boolean,
     ) -> Unit,
     navigateToProfile: (String) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -144,7 +143,6 @@ fun MatchingRoute(
         onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
         onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
         onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
-        updateBottomBar = updateBottomBar,
         modifier = modifier,
     )
 }
@@ -165,18 +163,11 @@ private fun MatchingScreen(
     onAcceptedCloseClick: (String) -> Unit = {},
     onConfirmDeleteSentMatching: () -> Unit = {},
     onConfirmDeleteAcceptedMatching: () -> Unit = {},
-    updateBottomBar: (Boolean) -> Unit,
 ) {
     val gridState = rememberLazyGridState()
 
-    val nestedScrollConnection = bottomBarNestedScrollConnection(
-        scrollStateHolder = ScrollStateHolder.LazyGrid(gridState),
-        onBottomBarVisibilityChange = updateBottomBar,
-    )
-
     LaunchedEffect(uiState.selectedType) {
         gridState.scrollToItem(0)
-        updateBottomBar(true)
     }
 
     val emptyTitle = stringResource(
@@ -264,7 +255,6 @@ private fun MatchingScreen(
                         onAcceptedMatchingClick = onAcceptedMatchingClick,
                         onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
                         onAcceptedCloseClick = onAcceptedCloseClick,
-                        nestedScrollConnection = nestedScrollConnection,
                     )
                 }
 
@@ -318,7 +308,6 @@ private fun MatchingList(
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit,
     onAcceptedKakaoLinkClick: (String?) -> Unit,
     onAcceptedCloseClick: (String) -> Unit,
-    nestedScrollConnection: NestedScrollConnection,
     modifier: Modifier = Modifier,
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -340,7 +329,6 @@ private fun MatchingList(
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
         verticalArrangement = Arrangement.spacedBy(space = 10.dp),
         modifier = modifier
-            .nestedScroll(nestedScrollConnection),
     ) {
         when (uiState.selectedType) {
             MatchingType.RECEIVE -> items(
@@ -454,7 +442,6 @@ private fun MatchingScreenPreview() {
             onAcceptedCloseClick = {},
             onConfirmDeleteSentMatching = {},
             onConfirmDeleteAcceptedMatching = {},
-            updateBottomBar = {},
             modifier = Modifier
                 .background(Color.Black),
         )

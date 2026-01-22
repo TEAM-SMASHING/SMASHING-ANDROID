@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,8 +27,6 @@ import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.search.SearchContract
 import com.smashing.app.presentation.search.SearchViewModel
@@ -45,7 +42,6 @@ fun SearchMainRoute(
     navigateToRegionChange: () -> Unit,
     navigateToSearchInput: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -63,7 +59,8 @@ fun SearchMainRoute(
         onRegionDropdownClick = { },
         onSearchClick = navigateToSearchInput,
         onProfileClick = { userId ->
-            navigateToUserProfile(userId) },
+            navigateToUserProfile(userId)
+        },
         onTierItemClick = viewModel::updateSelectedTierItem,
         onGenderItemClick = viewModel::updateSelectedGenderItem,
         onTierBottomSheetOpen = viewModel::openTierBottomSheet,
@@ -74,7 +71,6 @@ fun SearchMainRoute(
         onGenderApplyClick = viewModel::applyGenderItem,
         onDeleteTierFilter = viewModel::clearFilterTier,
         onDeleteGenderFilter = viewModel::clearFilterGender,
-        updateBottomBar = updateBottomBar,
         modifier = modifier,
     )
 }
@@ -98,16 +94,10 @@ private fun SearchMainScreen(
     onGenderApplyClick: () -> Unit,
     onDeleteTierFilter: () -> Unit,
     onDeleteGenderFilter: () -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     val listState = rememberLazyGridState()
-
-    val nestedScrollConnection = bottomBarNestedScrollConnection(
-        scrollStateHolder = ScrollStateHolder.LazyGrid(listState),
-        onBottomBarVisibilityChange = updateBottomBar,
-    )
 
     LaunchedEffect(uiState.searchList) {
         listState.scrollToItem(0)
@@ -175,7 +165,7 @@ private fun SearchMainScreen(
             )
         }
 
-        when(uiState.searchRegionUsersUiState) {
+        when (uiState.searchRegionUsersUiState) {
             SearchContract.SearchUiState.Idle -> Unit
             SearchContract.SearchUiState.Empty -> {
                 SearchEmpty(
@@ -195,7 +185,6 @@ private fun SearchMainScreen(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = modifier
-                        .nestedScroll(nestedScrollConnection)
                         .padding(horizontal = 16.dp, vertical = 10.dp),
                     state = listState,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -219,6 +208,7 @@ private fun SearchMainScreen(
                     }
                 }
             }
+
             else -> {
                 SearchEmpty(
                     title = "해당 조건에 맞는 유저가 없어요",
@@ -250,7 +240,6 @@ private fun SearchScreenPreview() {
             onGenderApplyClick = {},
             onDeleteTierFilter = {},
             onDeleteGenderFilter = {},
-            updateBottomBar = {},
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }

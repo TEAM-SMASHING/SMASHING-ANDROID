@@ -36,7 +36,6 @@ fun NavController.navigateToReview(
 
 fun NavGraphBuilder.profileGraph(
     navController: NavController,
-    updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Profile>(
         startDestination = MyProfile,
@@ -45,7 +44,6 @@ fun NavGraphBuilder.profileGraph(
             MyProfileRoute(
                 navigateToSportAdd = { navController.navigateToAddSports() },
                 navigateToReview = { userId -> navController.navigateToReview(userId = userId) },
-                updateBottomBar = updateBottomBar,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(
                         tierName = tierInfoStyle.name,

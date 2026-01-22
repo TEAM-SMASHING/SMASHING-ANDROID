@@ -35,7 +35,6 @@ fun NavController.navigateToRegionChange(
 
 fun NavGraphBuilder.homeGraph(
     navController: NavController,
-    updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Home>(
         startDestination = HomeUser,
@@ -70,14 +69,13 @@ fun NavGraphBuilder.homeGraph(
                         isFirstAttempt = isFirstAttempt,
                     )
                 },
-                navigateToConfirm = { submissionId, gameId , isFirstAttempt ->
+                navigateToConfirm = { submissionId, gameId, isFirstAttempt ->
                     navController.navigateToConfirm(
                         submissionId = submissionId,
                         gameId = gameId,
                         isFirstAttempt = isFirstAttempt,
                     )
                 },
-                updateBottomBar = updateBottomBar,
             )
         }
 

@@ -25,7 +25,6 @@ fun NavController.navigateToSearchInput(
 ) = navigate(SearchInput, navOptions)
 
 fun NavGraphBuilder.searchGraph(
-    updateBottomBar: (Boolean) -> Unit,
     navController: NavHostController,
 ) {
     navigation<Search>(
@@ -38,7 +37,6 @@ fun NavGraphBuilder.searchGraph(
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToSearchInput = navController::navigateToSearchInput,
                 navigateToUserProfile = navController::navigateToUserProfile,
-                updateBottomBar = updateBottomBar,
                 viewModel = viewModel,
             )
         }

@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -68,8 +67,6 @@ import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.data.model.rank.UserRank
@@ -103,7 +100,6 @@ fun HomeRoute(
         gameId: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -147,7 +143,6 @@ fun HomeRoute(
         navigateToSubmit = navigateToSubmit,
         navigateToConfirm = navigateToConfirm,
         onSportsChipClick = viewModel::fetchSelectSportProfile,
-        updateBottomBar = updateBottomBar,
         recommendedUserListState = recommendedUserListState,
         modifier = modifier,
     )
@@ -176,7 +171,6 @@ private fun HomeScreen(
         isFirstAttempt: Boolean,
     ) -> Unit,
     onSportsChipClick: (String) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
 ) {
@@ -190,10 +184,6 @@ private fun HomeScreen(
     val density = LocalDensity.current
 
     val scrollState = rememberScrollState()
-    val nestedScrollConnection = bottomBarNestedScrollConnection(
-        scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
-        onBottomBarVisibilityChange = updateBottomBar,
-    )
 
     Column(
         modifier = modifier
@@ -263,7 +253,6 @@ private fun HomeScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .nestedScroll(nestedScrollConnection)
                     .verticalScroll(scrollState)
                     .padding(
                         horizontal = 16.dp,
@@ -300,10 +289,7 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = {
-                                        updateBottomBar(true)
-                                        navigateToMatchingAccepted()
-                                    }
+                                    onClick = navigateToMatchingAccepted
                                 ),
                         )
                     }
@@ -348,10 +334,7 @@ private fun HomeScreen(
                                 else -> Unit
                             }
                         },
-                        navigateToSearch = {
-                            updateBottomBar(true)
-                            navigateToSearch()
-                        },
+                        navigateToSearch = navigateToSearch,
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
@@ -453,10 +436,7 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = {
-                                        updateBottomBar(true)
-                                        navigateToRanking()
-                                    }
+                                    onClick = navigateToRanking
                                 )
                         )
                     }
@@ -818,7 +798,6 @@ private fun HomeScreenPreview() {
         onSportsChipClick = {},
         navigateToSportAdd = {},
         navigateToSearch = {},
-        updateBottomBar = {},
         navigateToSubmit = { _, _, _, _ -> },
         navigateToConfirm = { _, _, _ -> },
     )
@@ -863,7 +842,6 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToSportAdd = {},
         navigateToSearch = {},
         onSportsChipClick = {},
-        updateBottomBar = {},
         navigateToSubmit = { _, _, _, _ -> },
         navigateToConfirm = { _, _, _ -> },
     )

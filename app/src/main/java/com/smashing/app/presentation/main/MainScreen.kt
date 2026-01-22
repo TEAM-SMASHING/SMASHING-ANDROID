@@ -143,18 +143,15 @@ private fun MainNavHost(
     ) {
         homeGraph(
             navController = appState.navController,
-            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         searchGraph(
             navController = appState.navController,
-            updateBottomBar = appState::updateBottomBarVisible,
         )
 
         matchingGraph(
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
-            updateBottomBar = appState::updateBottomBarVisible,
             navigateToProfile = { userId ->
                 appState.navController.navigateToUserProfile(userId = userId)
             },
@@ -162,7 +159,6 @@ private fun MainNavHost(
 
         profileGraph(
             navController = appState.navController,
-            updateBottomBar = appState::updateBottomBarVisible,
         )
         loginGraph(
             navigateToSignUp = { kakaoId ->
