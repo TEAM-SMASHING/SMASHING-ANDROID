@@ -72,7 +72,7 @@ fun UserProfileRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToAllReview -> navigateToReview(sideEffect.userId)
-                    is ShowToast ->  show.invoke("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요.")
+                    is ShowToast ->  show.invoke(sideEffect.content)
                 }
             }
     }
@@ -109,9 +109,6 @@ private fun UserProfileScreen(
     var bottomBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
-    if(uiState.profileInfo.nickname.isBlank()){
-        return
-    }
 
     Column(
         modifier = modifier
