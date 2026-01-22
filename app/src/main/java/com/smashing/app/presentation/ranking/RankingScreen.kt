@@ -139,7 +139,7 @@ private fun RankingScreen(
                     contentPadding = PaddingValues(
                         start = 16.dp,
                         end = 16.dp,
-                        bottom = myRankingHeight + 20.dp,
+                        bottom = myRankingHeight + 12.dp,
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
