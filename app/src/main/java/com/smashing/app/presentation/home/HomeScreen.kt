@@ -279,15 +279,17 @@ private fun HomeScreen(
                     .nestedScroll(nestedScrollConnection)
                     .verticalScroll(scrollState)
                     .padding(
-                        horizontal = 16.dp,
-                    )
-                    .padding(
                         top = 12.dp,
                         bottom = 22.dp
                     )
                     .navigationBarsPadding(),
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 16.dp,
+                        ),
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -373,7 +375,10 @@ private fun HomeScreen(
                 ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 16.dp,
+                            ),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -411,6 +416,9 @@ private fun HomeScreen(
                             state = recommendedUserListState,
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            contentPadding = PaddingValues(
+                                horizontal = 16.dp,
+                            ),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             items(
@@ -445,7 +453,8 @@ private fun HomeScreen(
                                     shape = RoundedCornerShape(8.dp),
                                 )
                                 .padding(
-                                    vertical = 31.dp
+                                    vertical = 31.dp,
+                                    horizontal = 16.dp,
                                 )
                         )
                     }
@@ -453,6 +462,10 @@ private fun HomeScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Column(
+                    modifier = Modifier
+                        .padding(
+                        horizontal = 16.dp,
+                    ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
