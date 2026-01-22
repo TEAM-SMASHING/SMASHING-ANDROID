@@ -9,7 +9,6 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -33,9 +32,6 @@ class RemoteEventDataSourceImpl @Inject constructor(
             .build()
 
         val eventListener = object : EventSourceListener() {
-            override fun onOpen(eventSource: EventSource, response: Response) {
-                Timber.tag(TAG).d("SSE 연결 성공")
-            }
 
             override fun onEvent(
                 eventSource: EventSource,
@@ -43,7 +39,6 @@ class RemoteEventDataSourceImpl @Inject constructor(
                 type: String?,
                 data: String,
             ) {
-                Timber.tag(TAG).d("SSE 이벤트 수신 - type: $type, data: $data")
 
                 val eventName = type ?: return
 
@@ -56,12 +51,10 @@ class RemoteEventDataSourceImpl @Inject constructor(
             }
 
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
-                Timber.tag(TAG).e(t, "SSE 연결 실패 - response: ${response?.code}")
                 cleanup()
             }
 
             override fun onClosed(eventSource: EventSource) {
-                Timber.tag(TAG).d("SSE 연결 종료")
                 cleanup()
             }
         }
@@ -79,7 +72,7 @@ class RemoteEventDataSourceImpl @Inject constructor(
     }
 
     companion object {
-        private const val SSE_URL = "${BASE_URL}/api/v1/sse/subscribe"
+        private const val SSE_URL = "${BASE_URL}api/v1/sse/subscribe"
         private const val TAG = "SSE_LISTENER"
     }
 }
