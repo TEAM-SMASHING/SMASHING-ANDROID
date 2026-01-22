@@ -24,7 +24,7 @@
     <string name="login_description_ing">계속된다</string>
 
     <!--Ranking -->
-    <string name="ranking_tier_with_lp">%1$s · %2$dLP</string>
+    <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
 
     <!--Card  -->
     <string name="record">기록</string>
