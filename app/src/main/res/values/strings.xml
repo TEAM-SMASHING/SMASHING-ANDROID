@@ -336,7 +336,7 @@
     <string name="satisfaction_review">만족도</string>
     <string name="profile_rate_percent">%d%%</string>
     <!--Submit  -->
-    <string name="submit_matching_result">매칭 결과 작성</string>
+    <string name="submit_matching_result">결과 작성</string>
     <string name="submit_title">경기 결과를 작성해주세요</string>
     <string name="submit_description">악의적인 결과 작성 시 활동이 제한될 수 있어요</string>
     <string name="submit_winner">승자</string>

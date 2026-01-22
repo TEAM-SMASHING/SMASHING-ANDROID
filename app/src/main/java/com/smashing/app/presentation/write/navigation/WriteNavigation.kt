@@ -9,7 +9,6 @@ import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
-import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.write.confirm.ConfirmResultRoute
 import com.smashing.app.presentation.write.confirm.ConfirmReviewRoute
@@ -18,12 +17,14 @@ import com.smashing.app.presentation.write.submit.SubmitResultRoute
 import com.smashing.app.presentation.write.submit.SubmitReviewRoute
 import com.smashing.app.presentation.write.submit.SubmitViewModel
 import kotlinx.serialization.Serializable
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview as navigateToConfirmReviewDetail
 
 fun NavController.navigateToSubmit(
     gameId: String,
     opponentUserId: String,
     opponentNickname: String,
     isFirstAttempt: Boolean,
+    submissionId: String? = null,
     navOptions: NavOptions? = null,
 ) = navigate(
     route = Submit(
@@ -31,6 +32,7 @@ fun NavController.navigateToSubmit(
         opponentUserId = opponentUserId,
         opponentNickname = opponentNickname,
         isFirstAttempt = isFirstAttempt,
+        submissionId = submissionId,
     ),
     navOptions = navOptions,
 )
@@ -106,11 +108,11 @@ fun NavGraphBuilder.writeGraph(
             ConfirmReviewRoute(
                 navigateUp = navController::navigateUp,
                 navigateToConfirmReview = { reviewId ->
-                    navController.navigateToConfirmReview(
+                    navController.navigateToConfirmReviewDetail(
                         reviewId = reviewId,
                         navOptions = navOptions {
-                            popUpTo<ConfirmReview> {
-                                inclusive = true
+                            popUpTo<Confirm> {
+                                inclusive = false
                             }
                             launchSingleTop = true
                         }
@@ -129,6 +131,7 @@ data class Submit(
     val opponentUserId: String,
     val opponentNickname: String,
     val isFirstAttempt: Boolean,
+    val submissionId: String? = null,
 ) : Route
 
 @Serializable

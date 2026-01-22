@@ -61,10 +61,10 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.core.extension.openUrl
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.component.MatchingTabBar
@@ -79,12 +79,14 @@ fun MatchingRoute(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
         gameId: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
+    navigateToProfile: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
@@ -104,6 +106,7 @@ fun MatchingRoute(
                         sideEffect.opponentUserId,
                         sideEffect.opponentNickname,
                         sideEffect.isFirstAttempt,
+                        sideEffect.submissionId,
                     )
 
                     is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(
@@ -133,7 +136,7 @@ fun MatchingRoute(
         onTabClick = viewModel::selectMatchingTab,
         onDialogDismissClick = viewModel::hideDialogVisible,
         onReceivedAcceptClick = viewModel::acceptReceivedMatching,
-        onProfileClick = { userId -> /* TODO: Navigate to profile */ },
+        onProfileClick = navigateToProfile,
         onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
         onReceivedSkipClick = viewModel::rejectReceivedMatching,
         onAcceptedMatchingClick = viewModel::handleAcceptedMatchingClick,

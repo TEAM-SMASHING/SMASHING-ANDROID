@@ -103,7 +103,7 @@ private fun ConfirmReviewScreen(
     }
 }
 
-private fun ReviewRatingType.getReviewRatingTypeIcon() = when(this) {
+private fun ReviewRatingType.getReviewRatingTypeIcon() = when (this) {
     ReviewRatingType.BEST -> ic_thumbs_up_double_lg
     ReviewRatingType.GOOD -> ic_thumbs_up_lg
     ReviewRatingType.BAD -> ic_thumbs_down_lg

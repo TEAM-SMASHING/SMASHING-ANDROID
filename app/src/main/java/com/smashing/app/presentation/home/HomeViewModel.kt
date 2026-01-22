@@ -2,7 +2,6 @@ package com.smashing.app.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
@@ -53,21 +52,8 @@ class HomeViewModel @Inject constructor(
     fun fetchRecommendedUserList() = viewModelScope.launch {
         searchRepository.getRecommendedUsers()
             .onSuccess { recommendedUsers ->
-                val matchingCardList = recommendedUsers.map { user ->
-                    MatchingCardState.Search(
-                        userId = user.userId,
-                        nickname = user.nickname,
-                        genderType = user.gender,
-                        tierType = user.tierType,
-                        //TODO userId 기반 프로필 이동
-                        onProfileClick = {},
-                        winCount = user.wins,
-                        loseCount = user.losses,
-                        reviewCount = user.reviews,
-                    )
-                }.toImmutableList()
                 _uiState.update { currentState ->
-                    currentState.copy(recommendedUserList = matchingCardList)
+                    currentState.copy(recommendedUserList = recommendedUsers.toImmutableList())
                 }
             }
             .onFailure {
@@ -122,7 +108,8 @@ class HomeViewModel @Inject constructor(
         val currentActiveProfile = currentState.activeUserProfile ?: return
         if (currentActiveProfile.profileId == profileId) return
 
-        val selectedProfile = currentState.allUserProfiles.find { it.profileId == profileId } ?: return
+        val selectedProfile =
+            currentState.allUserProfiles.find { it.profileId == profileId } ?: return
 
         val optimisticList = currentState.allUserProfiles.map { profile ->
             profile.copy(isActive = profile.profileId == profileId)

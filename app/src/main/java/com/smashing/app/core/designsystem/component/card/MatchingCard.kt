@@ -69,6 +69,7 @@ fun MatchingCard(
     modifier: Modifier = Modifier,
 ) {
     val topPadding = if (cardState is MatchingCardState.Closable) 8.dp else 16.dp
+    val isSearch = cardState is Search
 
     Column(
         modifier = modifier
@@ -80,7 +81,14 @@ fun MatchingCard(
             .padding(
                 top = topPadding,
                 bottom = 16.dp,
-            ),
+            )
+            .let { base: Modifier ->
+                if (isSearch) {
+                    base.noRippleClickable(onClick = cardState.onProfileClick)
+                } else {
+                    base
+                }
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         (cardState as? MatchingCardState.Closable)?.let { closable ->
