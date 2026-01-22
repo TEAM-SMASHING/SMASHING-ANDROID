@@ -156,7 +156,7 @@ fun MainScreen(
                         alignment = Alignment.BottomCenter,
                     )
                     .padding(
-                        bottom = bottomBarHeight + 20.dp
+                        bottom = bottomBarHeight + 12.dp
                     )
                     .windowInsetsPadding(WindowInsets.ime),
             ) { data ->

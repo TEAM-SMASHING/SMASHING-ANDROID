@@ -250,7 +250,7 @@ private fun HomeScreen(
                     .verticalScroll(scrollState)
                     .padding(
                         top = 12.dp,
-                        bottom = 22.dp
+                        bottom = 20.dp
                     ),
             ) {
                 Column(
@@ -334,6 +334,7 @@ private fun HomeScreen(
                 }
                 Spacer(modifier = Modifier.height(32.dp))
                 Column(
+
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Row(
