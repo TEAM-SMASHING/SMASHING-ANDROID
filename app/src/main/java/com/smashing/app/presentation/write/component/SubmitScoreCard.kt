@@ -48,7 +48,7 @@ fun SubmitScoreCard(
                 shape = RoundedCornerShape(12.dp),
             )
             .padding(
-                horizontal = 16.dp,
+                horizontal = 8.dp,
             ),
     ) {
         ProfileInfo(

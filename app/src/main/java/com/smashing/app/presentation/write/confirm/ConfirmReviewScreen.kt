@@ -106,7 +106,7 @@ private fun ConfirmReviewScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             WriteReviewContent(
-                nickname = uiState.receiver.name,
+                nickname = uiState.submitter.name,
                 textFieldState = reviewTextFieldState,
                 selectedReviewRating = uiState.selectedRating,
                 selectedReviewTagTypes = uiState.selectedTagList,
