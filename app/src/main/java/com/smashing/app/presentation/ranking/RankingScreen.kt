@@ -61,6 +61,7 @@ import com.smashing.app.data.type.TierType
 fun RankingRoute(
     navigateUp: () -> Unit,
     navigateToProfile: (String) -> Unit,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RankingViewModel = hiltViewModel(),
 ) {
@@ -70,6 +71,7 @@ fun RankingRoute(
         uiState = uiState,
         navigateUp = navigateUp,
         navigateToProfile = navigateToProfile,
+        navigateToMyProfile = navigateToMyProfile,
         modifier = modifier,
     )
 }
@@ -79,6 +81,7 @@ private fun RankingScreen(
     uiState: RankingContract.State,
     navigateUp: () -> Unit,
     navigateToProfile: (String) -> Unit,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -118,7 +121,9 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
+                myNickname = uiState.userInfo?.nickname,
                 navigateToProfile = navigateToProfile,
+                navigateToMyProfile = navigateToMyProfile,
             )
 
             if (uiState.restRankingList.isNotEmpty()) {
@@ -139,7 +144,7 @@ private fun RankingScreen(
                     contentPadding = PaddingValues(
                         start = 16.dp,
                         end = 16.dp,
-                        bottom = myRankingHeight + 20.dp,
+                        bottom = myRankingHeight + 12.dp,
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -153,7 +158,13 @@ private fun RankingScreen(
                             rank = user.rank,
                             tier = user.tier,
                             lp = user.lp,
-                            onClick = { navigateToProfile(user.userId) },
+                            onClick = {
+                                if (user.nickname != uiState.userInfo?.nickname) {
+                                    navigateToProfile(user.userId)
+                                } else {
+                                    navigateToMyProfile()
+                                }
+                            },
                             modifier = Modifier
                                 .fillMaxWidth(),
                         )
@@ -305,6 +316,7 @@ fun RankingScreenPreview_OnlyFirst() {
         ),
         navigateUp = {},
         navigateToProfile = {},
+        navigateToMyProfile = {},
     )
 }
 
@@ -334,5 +346,6 @@ fun RankingScreenPreview() {
         ),
         navigateUp = {},
         navigateToProfile = {},
+        navigateToMyProfile = {},
     )
 }

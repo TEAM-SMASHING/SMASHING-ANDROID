@@ -56,6 +56,8 @@ import kotlinx.collections.immutable.toImmutableList
 fun Ranker(
     rankerList: ImmutableList<UserRank>?,
     navigateToProfile: (String) -> Unit,
+    myNickname: String?,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
@@ -71,7 +73,9 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
+            myNickname = myNickname ?: "",
             navigateToProfile = navigateToProfile,
+            navigateToMyProfile = navigateToMyProfile,
             contentWidth = firstWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -80,7 +84,9 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
+            myNickname = myNickname ?: "",
             navigateToProfile = navigateToProfile,
+            navigateToMyProfile = navigateToMyProfile,
             contentWidth = otherWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -89,7 +95,9 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
+            myNickname = myNickname ?: "",
             navigateToProfile = navigateToProfile,
+            navigateToMyProfile = navigateToMyProfile,
             contentWidth = otherWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -104,7 +112,9 @@ private fun RankerItem(
     rankerType: RankerType,
     contentWidth: Dp,
     sidePadding: Dp,
+    myNickname: String,
     navigateToProfile: (String) -> Unit,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val backgroundGradation = Brush.verticalGradient(
@@ -153,7 +163,13 @@ private fun RankerItem(
                         shape = CircleShape,
                     )
                     .noRippleClickable(
-                        onClick = { navigateToProfile(userRank.userId) }
+                        onClick = {
+                            if (userRank.nickname != myNickname) {
+                                navigateToProfile(userRank.userId)
+                            } else {
+                                navigateToMyProfile()
+                            }
+                        }
                     ),
             )
 
@@ -167,7 +183,13 @@ private fun RankerItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable(
-                        onClick = { navigateToProfile(userRank.userId) }
+                        onClick = {
+                            if (userRank.nickname != myNickname) {
+                                navigateToProfile(userRank.userId)
+                            } else {
+                                navigateToMyProfile()
+                            }
+                        }
                     ),
             )
         }
@@ -263,6 +285,8 @@ private fun RankerItemPreview_FirstPlace() {
         contentWidth = 120.dp,
         sidePadding = 16.dp,
         navigateToProfile = {},
+        myNickname = "",
+        navigateToMyProfile = {}
     )
 }
 
@@ -281,7 +305,9 @@ private fun RankerItemPreview_SecondPlace() {
         contentWidth = 100.dp,
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {}
+        navigateToProfile = {},
+        myNickname = "",
+        navigateToMyProfile = {}
     )
 }
 
@@ -294,7 +320,9 @@ private fun RankerItemPreview_EmptyPlace() {
         contentWidth = 100.dp,
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {}
+        navigateToProfile = {},
+        myNickname = "",
+        navigateToMyProfile = {},
     )
 }
 
@@ -330,6 +358,8 @@ private fun RankerPreview_AllThree() {
                 color = colors.bgCanvas,
             ),
         navigateToProfile = {},
+        myNickname = null,
+        navigateToMyProfile = {},
     )
 }
 
@@ -354,6 +384,8 @@ private fun RankerPreview_FirstAndSecond() {
             ),
         ).toImmutableList(),
         navigateToProfile = {},
+        myNickname = null,
+        navigateToMyProfile = {},
     )
 }
 
@@ -363,5 +395,7 @@ private fun RankerPreview_Empty() {
     Ranker(
         rankerList = null,
         navigateToProfile = {},
+        myNickname = null,
+        navigateToMyProfile = {},
     )
 }
