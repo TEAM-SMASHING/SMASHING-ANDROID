@@ -205,7 +205,7 @@ class MatchingViewModel @Inject constructor(
                     receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
                 )
             }
-
+            _sideEffect.emit(SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요."))
         }.onFailure { throwable ->
             updateReceivedUiState(
                 MatchingUiState.Failure(throwable.message ?: "Unknown error")

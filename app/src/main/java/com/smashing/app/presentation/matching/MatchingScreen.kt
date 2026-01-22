@@ -53,6 +53,7 @@ import com.smashing.app.R.string.matching_send_empty
 import com.smashing.app.R.string.no
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.DialogStyle
@@ -94,6 +95,7 @@ fun MatchingRoute(
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showToast = LocalToastTrigger.current
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -112,6 +114,10 @@ fun MatchingRoute(
                         sideEffect.gameId,
                         sideEffect.isFirstAttempt,
                     )
+
+                    is MatchingContract.SideEffect.ShowToast -> {
+                        showToast.invoke(sideEffect.message)
+                    }
                 }
             }
     }

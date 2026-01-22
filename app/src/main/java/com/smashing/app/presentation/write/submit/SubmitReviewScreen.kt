@@ -52,7 +52,7 @@ fun SubmitReviewRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is SubmitContract.SideEffect.NavigateToMatching -> navigateToMatching()
-                   
+
                 }
             }
     }
