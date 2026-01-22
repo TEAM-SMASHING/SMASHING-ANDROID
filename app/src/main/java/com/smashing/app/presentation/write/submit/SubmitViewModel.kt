@@ -204,6 +204,10 @@ class SubmitViewModel @Inject constructor(
 
     fun hideResubmitDialog() = _uiState.update { it.copy(isResubmitDialogVisible = false) }
 
+    fun showAlertDialog() = _uiState.update { it.copy(isAlertDialogOpen = true) }
+
+    fun hideAlertDialog() = _uiState.update { it.copy(isAlertDialogOpen = false) }
+
     fun hideConfirmDialog() = _uiState.update { it.copy(isConfirmDialogOpen = false) }
 
     fun updateIsConfirmDialogOpen() = viewModelScope.launch {
@@ -250,6 +254,7 @@ class SubmitViewModel @Inject constructor(
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Success,
                     isResubmitDialogVisible = false,
+                    isAlertDialogOpen = false,
                     isConfirmDialogOpen = false,
                 )
             }
@@ -259,6 +264,7 @@ class SubmitViewModel @Inject constructor(
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Failure("경기 결과 제출 실패"),
                     isResubmitDialogVisible = false,
+                    isAlertDialogOpen = false,
                     isConfirmDialogOpen = true,
                 )
             }
