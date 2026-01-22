@@ -62,15 +62,16 @@ fun NavGraphBuilder.homeGraph(
                 },
                 navigateToSportAdd = navController::navigateToAddSports,
                 navigateToSearch = navController::navigateToSearch,
-                navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt ->
+                navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId ->
                     navController.navigateToSubmit(
                         gameId = gameId,
                         opponentUserId = opponentUserId,
                         opponentNickname = opponentNickname,
                         isFirstAttempt = isFirstAttempt,
+                        submissionId = submissionId,
                     )
                 },
-                navigateToConfirm = { submissionId, gameId , isFirstAttempt ->
+                navigateToConfirm = { submissionId, gameId, isFirstAttempt ->
                     navController.navigateToConfirm(
                         submissionId = submissionId,
                         gameId = gameId,

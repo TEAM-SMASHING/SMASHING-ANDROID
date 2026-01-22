@@ -96,6 +96,7 @@ fun HomeRoute(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
@@ -163,6 +164,7 @@ private fun HomeScreen(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
@@ -316,16 +318,20 @@ private fun HomeScreen(
                                         matching.userId,
                                         matching.nickname,
                                         true,
+                                        null,
                                     )
                                 }
 
                                 GameResultStatusType.RESULT_REJECTED -> {
-                                    navigateToSubmit(
-                                        matching.gameId,
-                                        matching.userId,
-                                        matching.nickname,
-                                        false,
-                                    )
+                                    matching.latestSubmissionId?.let { submissionId ->
+                                        navigateToSubmit(
+                                            matching.gameId,
+                                            matching.userId,
+                                            matching.nickname,
+                                            false,
+                                            submissionId,
+                                        )
+                                    }
                                 }
 
                                 GameResultStatusType.WAITING_CONFIRMATION -> {
@@ -813,7 +819,7 @@ private fun HomeScreenPreview() {
         navigateToSportAdd = {},
         navigateToSearch = {},
         updateBottomBar = {},
-        navigateToSubmit = { _, _, _, _ -> },
+        navigateToSubmit = { _, _, _, _, _ -> },
         navigateToConfirm = { _, _, _ -> },
     )
 }
@@ -858,7 +864,7 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToSearch = {},
         onSportsChipClick = {},
         updateBottomBar = {},
-        navigateToSubmit = { _, _, _, _ -> },
+        navigateToSubmit = { _, _, _, _, _ -> },
         navigateToConfirm = { _, _, _ -> },
     )
 }
