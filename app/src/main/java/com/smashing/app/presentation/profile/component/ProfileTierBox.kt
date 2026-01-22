@@ -148,8 +148,9 @@ fun ProfileTierBox(
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
             if (onTierInfoClick != null) {
+                Spacer(modifier = Modifier.height(20.dp))
+
                 SmashingBaseButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(tier_description),
