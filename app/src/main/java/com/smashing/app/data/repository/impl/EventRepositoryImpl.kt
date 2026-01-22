@@ -51,7 +51,6 @@ class EventRepositoryImpl @Inject constructor(
                     when (eventType) {
                         SseEventType.SYSTEM_CONNECTED -> SseEvent.SystemConnected
 
-                        // 매칭 이벤트
                         SseEventType.MATCHING_RECEIVED ->
                             json.decodeFromString<MatchingReceivedDto>(raw.data).toEvent()
 
@@ -64,7 +63,6 @@ class EventRepositoryImpl @Inject constructor(
                         SseEventType.MATCHING_ACCEPT_NOTIFICATION_CREATED ->
                             json.decodeFromString<MatchingAcceptNotificationDto>(raw.data).toEvent()
 
-                        // 게임 이벤트
                         SseEventType.GAME_UPDATED ->
                             json.decodeFromString<GameUpdatedDto>(raw.data).toEvent()
 
@@ -74,7 +72,6 @@ class EventRepositoryImpl @Inject constructor(
                         SseEventType.GAME_RESULT_REJECTED_NOTIFICATION_CREATED ->
                             json.decodeFromString<GameResultRejectedNotificationDto>(raw.data).toEvent()
 
-                        // 리뷰 이벤트
                         SseEventType.REVIEW_RECEIVED_NOTIFICATION_CREATED ->
                             json.decodeFromString<ReviewReceivedNotificationDto>(raw.data).toEvent()
                     }
