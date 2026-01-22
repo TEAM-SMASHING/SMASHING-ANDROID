@@ -3,6 +3,7 @@ package com.smashing.app.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -38,6 +39,7 @@ import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.Notice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
+import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
@@ -115,7 +117,8 @@ fun MainScreen(
             },
             containerColor = SmashingTheme.colors.bgCanvas,
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(color = SmashingTheme.colors.bgCanvas),
         ) { innerPadding ->
             MainNavHost(
                 appState = appState,
@@ -139,7 +142,6 @@ private fun MainNavHost(
         startDestination = appState.startDestination,
     ) {
         homeGraph(
-            innerPadding = innerPadding,
             navController = appState.navController,
             updateBottomBar = appState::updateBottomBarVisible,
         )
@@ -153,6 +155,9 @@ private fun MainNavHost(
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
             updateBottomBar = appState::updateBottomBarVisible,
+            navigateToProfile = { userId ->
+                appState.navController.navigateToUserProfile(userId = userId)
+            },
         )
 
         profileGraph(
@@ -215,7 +220,6 @@ private fun MainNavHost(
                     reviewId = reviewId,
                 )
             },
-            innerPadding = innerPadding,
         )
 
         writeGraph(
