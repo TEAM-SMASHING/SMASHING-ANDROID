@@ -86,6 +86,11 @@ fun GameResultStatusType.getMatchButtonColor() = when(this) {
         textColor = colors.btnTxtPrimaryDisabled
     )
 
+    GameResultStatusType.RESULT_CONFIRMED -> SmashingBtnColor(
+        backgroundColor = colors.btnBgPrimaryDisabled,
+        textColor = colors.btnTxtPrimaryDisabled,
+    )
+
     GameResultStatusType.UNKNOWN -> SmashingBtnColor(
         backgroundColor = colors.btnBgPrimaryDisabled,
         textColor = colors.btnTxtPrimaryDisabled
@@ -99,6 +104,7 @@ fun GameResultStatusType.getMatchButtonTitle() = when(this) {
     GameResultStatusType.WAITING_CONFIRMATION -> stringResource(matching_btn_confirm)
     GameResultStatusType.PENDING_RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
     GameResultStatusType.CANCELED -> stringResource(matching_btn_canceled)
+    GameResultStatusType.RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
     GameResultStatusType.UNKNOWN -> stringResource(matching_btn_unknown)
 }
 
