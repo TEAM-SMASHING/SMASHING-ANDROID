@@ -568,7 +568,6 @@ private fun HomeTopBar(
             .fillMaxWidth()
             .padding(
                 horizontal = 16.dp,
-                vertical = 8.dp,
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -579,7 +578,9 @@ private fun HomeTopBar(
             ).toImmutableList(),
             onClick = onClickRegion,
             onRegionChange = onChangeRegion,
-            isDivide = true
+            isDivide = true,
+            modifier = Modifier
+                .padding(vertical = 12.dp)
         )
 
         Spacer(modifier = Modifier.weight(1f))

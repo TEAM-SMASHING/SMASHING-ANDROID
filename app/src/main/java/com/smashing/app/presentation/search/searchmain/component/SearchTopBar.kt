@@ -36,7 +36,7 @@ fun SearchTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
@@ -46,6 +46,8 @@ fun SearchTopBar(
             onClick = onRegionDropdownClick,
             onRegionChange = onRegionSelectClick,
             isDivide = false,
+            modifier = Modifier
+                .padding(vertical = 12.dp),
         )
 
         Spacer(modifier = Modifier.weight(1f))
