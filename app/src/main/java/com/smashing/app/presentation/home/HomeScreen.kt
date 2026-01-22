@@ -528,7 +528,7 @@ private fun HomeScreen(
                         (popupOffset.x - popupWidth.toPx() / 2).toInt()
                     },
                     y = with(density) {
-                        (popupOffset.y + 8.dp.toPx()).toInt()
+                        (popupOffset.y + 9.dp.toPx()).toInt()
                     }
                 ),
                 onDismissRequest = { isInfoPopupVisible = false },

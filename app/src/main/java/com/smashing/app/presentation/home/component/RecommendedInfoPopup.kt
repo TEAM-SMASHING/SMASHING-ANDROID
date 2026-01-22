@@ -22,9 +22,6 @@ fun RecommendedInfoPopup(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val bubbleColor = SmashingTheme.colors.bgCanvasReverse
-    val triangleWidth = 12.dp
-    val triangleHeight = 6.dp
 
     Box(
         modifier = modifier.wrapContentSize()
@@ -33,7 +30,7 @@ fun RecommendedInfoPopup(
             modifier = Modifier
                 .wrapContentSize()
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = bubbleColor)
+                .background(color = SmashingTheme.colors.bgCanvasReverse)
                 .padding(
                     vertical = 9.dp,
                     horizontal = 12.dp,
@@ -43,25 +40,6 @@ fun RecommendedInfoPopup(
                 text = "내 동네에서 LP ± 200점 범위 안의 5명의 유저가 랜덤으로 추천돼요!",
                 style = SmashingTheme.typography.xxs.medium10,
                 color = SmashingTheme.colors.txtPrimaryReverse,
-            )
-        }
-
-        Canvas(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(horizontal = 12.dp)
-                .height(triangleHeight)
-        ) {
-            val centerX = size.width / 2
-            val trianglePath = Path().apply {
-                moveTo(centerX - triangleWidth.toPx() / 2, 0f)
-                lineTo(centerX, -triangleHeight.toPx())
-                lineTo(centerX + triangleWidth.toPx() / 2, 0f)
-                close()
-            }
-            drawPath(
-                path = trianglePath,
-                color = bubbleColor
             )
         }
     }
