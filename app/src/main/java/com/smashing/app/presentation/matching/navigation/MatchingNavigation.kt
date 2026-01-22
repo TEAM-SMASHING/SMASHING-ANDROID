@@ -1,5 +1,7 @@
 package com.smashing.app.presentation.matching.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -20,6 +22,7 @@ fun NavGraphBuilder.matchingGraph(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
@@ -27,12 +30,14 @@ fun NavGraphBuilder.matchingGraph(
         isFirstAttempt: Boolean,
     ) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
+    navigateToProfile: (String) -> Unit,
 ) {
     composable<Matching> {
         MatchingRoute(
             navigateToSubmit = navigateToSubmit,
             navigateToConfirm = navigateToConfirm,
             updateBottomBar = updateBottomBar,
+            navigateToProfile = navigateToProfile,
         )
     }
 }

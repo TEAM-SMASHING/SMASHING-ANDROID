@@ -295,12 +295,14 @@ class MatchingViewModel @Inject constructor(
             }
 
             GameResultStatusType.RESULT_REJECTED -> {
+                val submissionId = matching.latestSubmissionId ?: return@launch
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
                         opponentUserId = matching.userId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = false,
+                        submissionId = submissionId,
                     )
                 )
             }
