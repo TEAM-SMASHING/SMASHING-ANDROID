@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,7 +40,12 @@ class EventRepositoryImpl @Inject constructor(
     init {
         remoteDataSource.rawEvents
             .onEach { raw ->
-                val eventType = SseEventType.fromEventName(raw.eventName) ?: return@onEach
+                Timber.tag(TAG).d("SSE Raw Event - name: %s, data: %s", raw.eventName, raw.data)
+
+                val eventType = SseEventType.fromEventName(raw.eventName) ?: run {
+                    Timber.tag(TAG).w("Unknown event type: %s", raw.eventName)
+                    return@onEach
+                }
 
                 val event: SseEvent = runCatching {
                     when (eventType) {
@@ -72,8 +78,11 @@ class EventRepositoryImpl @Inject constructor(
                         SseEventType.REVIEW_RECEIVED_NOTIFICATION_CREATED ->
                             json.decodeFromString<ReviewReceivedNotificationDto>(raw.data).toEvent()
                     }
+                }.onFailure { error ->
+                    Timber.tag(TAG).e(error, "SSE Event parsing failed - type: %s", eventType)
                 }.getOrNull() ?: return@onEach
 
+                Timber.tag(TAG).d("SSE Event emitted - %s", event)
                 _events.tryEmit(event)
             }
             .launchIn(externalScope)
@@ -81,4 +90,8 @@ class EventRepositoryImpl @Inject constructor(
 
     override fun connect() = remoteDataSource.connect()
     override fun disconnect() = remoteDataSource.disconnect()
+
+    companion object {
+        private const val TAG = "EventRepository"
+    }
 }
