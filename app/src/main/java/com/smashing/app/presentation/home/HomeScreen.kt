@@ -456,6 +456,9 @@ private fun HomeScreen(
                                     vertical = 31.dp,
                                     horizontal = 16.dp,
                                 )
+                                .padding(
+                                    horizontal = 16.dp,
+                                )
                         )
                     }
                 }
