@@ -104,7 +104,7 @@ private fun RegionScreen(
     ) {
         SmashingSearchTopBar(
             searchState = searchState,
-            placeholder = "주소를 검색해주세요",
+            placeholder = "도로명 주소를 검색해주세요",
             onBackClick = navigateUp,
             modifier = Modifier.fillMaxWidth()
         )

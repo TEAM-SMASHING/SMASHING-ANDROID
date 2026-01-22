@@ -201,7 +201,7 @@ private fun SignUpScreen(
                     )
 
                     6 -> SignUpLocation(
-                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
+                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "도로명 주소를 검색해주세요",
                         isAddressExist = if (uiState.selectedRegion != null) true else false,
                         onAddressClick = onAddressClick,
                     )

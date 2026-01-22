@@ -1,6 +1,6 @@
 package com.smashing.app.data.mapper.notification
 
-import com.smashing.app.core.util.ConvertTimeProvider
+import com.smashing.app.core.util.ConvertTimeProvider.calculateNotificationTime
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.remote.dto.cursor.CursorDto
@@ -29,7 +29,7 @@ private fun NotificationSummaryResponse.toNotification(): Notification {
         title = title,
         description = content,
         isRead = isRead,
-        timeAgo = ConvertTimeProvider.convertLocalDateTimeToTime(createdAt),
+        timeAgo = calculateNotificationTime(createdAt),
         linkUrl = linkUrl,
         relatedId = extractIdFromLinkUrl(linkUrl),
     )

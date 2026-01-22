@@ -37,13 +37,16 @@ fun SportSelector(
     modifier: Modifier = Modifier,
     title: String = stringResource(sign_up_sport_title),
     subTitle: String = stringResource(sign_up_sport_subtitle),
+    isSubTitle: Boolean= true,
 ) {
     Column(
         modifier = modifier,
     ) {
+
         SignUpTitle(
             title = title,
             subTitle = subTitle,
+            isSubTitle = isSubTitle,
         )
 
         Row(

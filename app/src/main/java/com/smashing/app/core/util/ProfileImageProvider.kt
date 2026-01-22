@@ -1,23 +1,14 @@
 package com.smashing.app.core.util
 
-import com.smashing.app.R.drawable.img_default_profile
-import com.smashing.app.R.drawable.img_profile_01
-import com.smashing.app.R.drawable.img_profile_02
-import com.smashing.app.R.drawable.img_profile_03
-import com.smashing.app.R.drawable.img_profile_04
-import com.smashing.app.R.drawable.img_profile_05
-import com.smashing.app.R.drawable.img_profile_06
-import com.smashing.app.R.drawable.img_profile_07
+import com.smashing.app.R.drawable.img_profile01_2
+import com.smashing.app.R.drawable.img_profile02_2
+import com.smashing.app.R.drawable.img_profile03_2
 
 object ProfileImageProvider {
     private val TEMP_PROFILE_IMAGE_URLS = listOf(
-        img_profile_01,
-        img_profile_02,
-        img_profile_03,
-        img_profile_04,
-        img_profile_05,
-        img_profile_06,
-        img_profile_07,
+        img_profile01_2,
+        img_profile02_2,
+        img_profile03_2,
     )
 
     /**

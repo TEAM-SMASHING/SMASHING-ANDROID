@@ -4,7 +4,7 @@ enum class ReviewRatingType(
     val label: String,
 ) {
     BAD(
-        label = "별로에요",
+        label = "별로예요",
     ),
     GOOD(
         label = "좋아요",

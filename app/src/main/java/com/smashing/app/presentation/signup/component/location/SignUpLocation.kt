@@ -69,7 +69,7 @@ fun SignUpLocation(
 private fun SignUpLocationPreview() {
     SmashingAndroidTheme {
         SignUpLocation(
-            addressText = "주소를 검색해주세요",
+            addressText = "도로명 주소를 검색해주세요",
             isAddressExist = false,
             onAddressClick = {},
             modifier = Modifier.background(color = colors.bgCanvas)
