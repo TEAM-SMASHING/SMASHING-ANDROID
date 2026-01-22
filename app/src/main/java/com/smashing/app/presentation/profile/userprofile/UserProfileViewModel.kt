@@ -8,6 +8,8 @@ import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
+import com.smashing.app.presentation.matching.MatchingUiState
+import com.smashing.app.presentation.matching.MatchingViewModel
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
@@ -165,11 +167,24 @@ class UserProfileViewModel @Inject constructor(
         private const val CURSOR_SIZE = 3
     }
 
-    fun onYesClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 수락 API 호출
-            _uiState.update {
-                it.copy(isMatchingRequest = false)
+    fun onYesClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if(receivedMatchingId != null){
+            matchingRepository.postAcceptedMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success
+                    )
+                }
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(throwable.message ?: "Unknown error")
+                    )
+                }
             }
         }
     }
