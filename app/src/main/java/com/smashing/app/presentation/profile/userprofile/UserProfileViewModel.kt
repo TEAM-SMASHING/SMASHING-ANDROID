@@ -169,8 +169,35 @@ class UserProfileViewModel @Inject constructor(
 
     fun onYesClick() = viewModelScope.launch {
         val receivedMatchingId = _uiState.value.receivedMatchingId
-        if(receivedMatchingId != null){
+        if (receivedMatchingId != null) {
             matchingRepository.postAcceptedMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                Timber.d("asd2")
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success
+                    )
+                }
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                Timber.d("asd3")
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+
+    fun onNoClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if (receivedMatchingId != null) {
+            matchingRepository.postRejectMatching(
                 matchingId = receivedMatchingId,
             ).onSuccess {
                 _uiState.update { currentState ->
@@ -182,27 +209,17 @@ class UserProfileViewModel @Inject constructor(
             }.onFailure { throwable ->
                 _uiState.update {
                     it.copy(
-                        loadState = UserProfileUiState.Failure(throwable.message ?: "Unknown error")
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
                     )
                 }
             }
         }
     }
 
-    fun onNoClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 거절/건너뛰기 API 호출
-
-            _uiState.update {
-                it.copy(
-                    isMatchingRequest = false,
-                )
-            }
-        }
-    }
 
     fun requestCompetition() {
-
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
             matchingRepository.postMatching(

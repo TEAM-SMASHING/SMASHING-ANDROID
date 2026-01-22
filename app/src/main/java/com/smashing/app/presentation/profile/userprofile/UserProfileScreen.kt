@@ -48,6 +48,7 @@ import com.smashing.app.presentation.profile.component.UserProfileCard
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import timber.log.Timber
 
 private const val BTN_WEIGHT = 131f / 185f
 
@@ -63,14 +64,9 @@ fun UserProfileRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .collect { sideEffect ->
-                when (sideEffect) {
-                    is NavigateToAllReview -> navigateToReview(sideEffect.userId)
-                }
-            }
-    }
+
+
+    LaunchedEffect(uiState.isAcceptable) { }
 
     UserProfileScreen(
         uiState = uiState,
@@ -186,13 +182,16 @@ private fun UserProfileScreen(
                         buttonStyle = ButtonStyle.DISABLED_ACTIVE,
                         text = "건너뛰기",
                         modifier = Modifier.weight(BTN_WEIGHT),
-                        onClick = onNoClick,
+                        onClick = { onNoClick()
+                            Timber.d("asdasdNo")
+                                  },
                     )
                     SmashingButton(
                         buttonStyle = ButtonStyle.PRIMARY,
                         text = "수락",
                         modifier = Modifier.weight(1f),
-                        onClick = onYesClick,
+                        onClick = { onYesClick()
+                            Timber.d("asdasdYes")},
                     )
                 }
             }
