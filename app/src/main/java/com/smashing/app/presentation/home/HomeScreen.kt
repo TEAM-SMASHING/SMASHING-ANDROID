@@ -447,6 +447,7 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
+                                .padding(horizontal = 16.dp)
                                 .fillMaxWidth()
                                 .background(
                                     color = SmashingTheme.colors.bgSurface,
@@ -455,10 +456,7 @@ private fun HomeScreen(
                                 .padding(
                                     vertical = 31.dp,
                                     horizontal = 16.dp,
-                                )
-                                .padding(
-                                    horizontal = 16.dp,
-                                )
+                                ),
                         )
                     }
                 }
@@ -467,8 +465,8 @@ private fun HomeScreen(
                 Column(
                     modifier = Modifier
                         .padding(
-                        horizontal = 16.dp,
-                    ),
+                            horizontal = 16.dp,
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
