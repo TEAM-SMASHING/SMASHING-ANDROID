@@ -1,15 +1,12 @@
 package com.smashing.app.presentation.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +19,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -35,34 +31,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
-import com.smashing.app.R.drawable.ic_bell
-import com.smashing.app.R.drawable.ic_bell_notification
-import com.smashing.app.R.drawable.img_dummy_versus
-import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.card.MatchingCard
-import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.getMatchButtonColor
-import com.smashing.app.core.designsystem.style.getMatchButtonTitle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -75,9 +65,12 @@ import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
+import com.smashing.app.presentation.home.component.CloseMatching
 import com.smashing.app.presentation.home.component.HomeDropdown
-import com.smashing.app.presentation.home.component.SportsTierChip
+import com.smashing.app.presentation.home.component.HomeTopBar
+import com.smashing.app.presentation.home.component.RecommendedInfoPopup
 import kotlinx.collections.immutable.toImmutableList
+
 
 @Composable
 fun HomeRoute(
@@ -142,6 +135,7 @@ fun HomeRoute(
         navigateToSearch = navigateToSearch,
         navigateToSubmit = navigateToSubmit,
         navigateToConfirm = navigateToConfirm,
+        navigateToMyProfile = navigateToMyProfile,
         onSportsChipClick = viewModel::fetchSelectSportProfile,
         recommendedUserListState = recommendedUserListState,
         modifier = modifier,
@@ -170,6 +164,7 @@ private fun HomeScreen(
         gameId: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
+    navigateToMyProfile: () -> Unit,
     onSportsChipClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
@@ -182,6 +177,12 @@ private fun HomeScreen(
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
+
+    var isInfoPopupVisible by remember { mutableStateOf(false) }
+
+    var popupOffset by remember { mutableStateOf(Offset.Zero) }
+    var popupWidth by remember { mutableStateOf(0.dp) }
+
 
     val scrollState = rememberScrollState()
 
@@ -255,14 +256,16 @@ private fun HomeScreen(
                 modifier = Modifier
                     .verticalScroll(scrollState)
                     .padding(
-                        horizontal = 16.dp,
-                    )
-                    .padding(
                         top = 12.dp,
                         bottom = 22.dp
                     ),
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 16.dp,
+                        ),
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -342,7 +345,10 @@ private fun HomeScreen(
                 ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 16.dp,
+                            ),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -359,17 +365,30 @@ private fun HomeScreen(
                             contentDescription = null,
                             tint = SmashingTheme.colors.iconTertiary,
                             modifier = Modifier
+                                .onGloballyPositioned { coordinates ->
+                                    val position = coordinates.positionInWindow()
+                                    val iconHeight = coordinates.size.height
+                                    val iconWidth = coordinates.size.width
+                                    popupOffset = Offset(
+                                        x = position.x + iconWidth / 2,
+                                        y = position.y + iconHeight
+                                    )
+                                }
                                 .noRippleClickable(
-                                    //TODO 알림 창 확인 후 구현
-                                    onClick = {}
+                                    onClick = { isInfoPopupVisible = !isInfoPopupVisible }
                                 ),
                         )
+
                     }
+
                     if (uiState.recommendedUserList.isNotEmpty()) {
                         LazyRow(
                             state = recommendedUserListState,
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            contentPadding = PaddingValues(
+                                horizontal = 16.dp,
+                            ),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             items(
@@ -398,20 +417,26 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
+                                .padding(horizontal = 16.dp)
                                 .fillMaxWidth()
                                 .background(
                                     color = SmashingTheme.colors.bgSurface,
                                     shape = RoundedCornerShape(8.dp),
                                 )
                                 .padding(
-                                    vertical = 31.dp
-                                )
+                                    vertical = 31.dp,
+                                    horizontal = 16.dp,
+                                ),
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 16.dp,
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
@@ -446,7 +471,13 @@ private fun HomeScreen(
                             tier = ranker.tier,
                             lp = ranker.lp,
                             userId = ranker.userId,
-                            onClick = { navigateToUserProfile(ranker.userId) },
+                            onClick = {
+                                if (ranker.nickname != uiState.activeUserProfile.nickname) {
+                                    navigateToUserProfile(ranker.userId)
+                                } else {
+                                    navigateToMyProfile()
+                                }
+                            },
                         )
                     }
                 }
@@ -460,209 +491,34 @@ private fun HomeScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun HomeTopBar(
-    userRegion: String,
-    userSport: SportType,
-    userTier: TierType,
-    onClickRegion: (String) -> Unit,
-    onChangeRegion: () -> Unit,
-    onClickSportChip: () -> Unit,
-    onClickNotice: () -> Unit,
-    modifier: Modifier = Modifier,
-    isNotice: Boolean = false,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        RegionDropdown(
-            selectedItem = userRegion,
-            items = listOf(
-                userRegion
-            ).toImmutableList(),
-            onClick = onClickRegion,
-            onRegionChange = onChangeRegion,
-            isDivide = true
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        SportsTierChip(
-            sportType = userSport,
-            tierType = userTier,
-            onClick = onClickSportChip,
-        )
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        if (!isNotice) {
-            Icon(
-                imageVector = ImageVector.vectorResource(ic_bell),
-                contentDescription = null,
-                tint = SmashingTheme.colors.iconPrimary,
-                modifier = Modifier
-                    .noRippleClickable(
-                        onClick = onClickNotice,
-                    )
-            )
-        } else {
-            Icon(
-                imageVector = ImageVector.vectorResource(ic_bell_notification),
-                contentDescription = null,
-                tint = SmashingTheme.colors.iconPrimary,
-                modifier = Modifier
-                    .noRippleClickable(
-                        onClick = onClickNotice,
-                    )
-            )
-        }
-    }
-}
-
-@Composable
-private fun CloseMatching(
-    myNickname: String,
-    myProfileId: String,
-    onClick: (AcceptedMatching) -> Unit,
-    modifier: Modifier = Modifier,
-    matchedUser: AcceptedMatching? = null,
-    navigateToSearch: () -> Unit,
-) {
-    //TODO 매칭 상대에서 받는 데이터 확인 후에 nickName + userId 묶는 데이터 타입 추가
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = SmashingTheme.colors.bgSurface,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .padding(
-                horizontal = 16.dp,
-            )
-            .padding(
-                top = 22.dp,
-                bottom = 22.dp,
-            ),
-    ) {
-        if (matchedUser != null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
+        if (isInfoPopupVisible) {
+            Popup(
+                alignment = Alignment.TopStart,
+                offset = IntOffset(
+                    x = with(density) {
+                        (popupOffset.x - popupWidth.toPx() / 2).toInt()
+                    },
+                    y = with(density) {
+                        (popupOffset.y + 9.dp.toPx()).toInt()
+                    }
+                ),
+                onDismissRequest = { isInfoPopupVisible = false },
+                properties = PopupProperties(
+                    focusable = true,
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                ),
             ) {
-                Image(
-                    painter = painterResource(id = img_dummy_versus),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                )
-
-                MatchedUserItem(
-                    userId = myProfileId,
-                    nickname = myNickname,
-                    modifier = Modifier.align(Alignment.CenterStart)
-                )
-
-                MatchedUserItem(
-                    userId = matchedUser.userId,
-                    nickname = matchedUser.nickname,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                RecommendedInfoPopup(
+                    onDismiss = { isInfoPopupVisible = false },
+                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                        popupWidth = with(density) {
+                            coordinates.size.width.toDp()
+                        }
+                    }
                 )
             }
-
-        } else {
-            Text(
-                text = stringResource(R.string.home_no_matching),
-                style = SmashingTheme.typography.md.medium16,
-                color = SmashingTheme.colors.txtTertiary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 37.dp,
-                        bottom = 23.dp,
-                    )
-            )
         }
-
-        Spacer(modifier = Modifier.height(22.dp))
-
-        if (matchedUser != null) {
-            SmashingBaseButton(
-                text = matchedUser.resultStatus.getMatchButtonTitle(),
-                textStyle = SmashingTheme.typography.md.medium16,
-                onClick = { onClick(matchedUser) },
-                buttonColor = matchedUser.resultStatus.getMatchButtonColor(),
-                contentPadding = PaddingValues(
-                    vertical = 9.dp,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
-                isRippleEnabled = false,
-            )
-        } else {
-            SmashingBaseButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "매칭 탐색하러 가기",
-                textStyle = SmashingTheme.typography.md.medium16,
-                onClick = navigateToSearch,
-                buttonColor = SmashingBtnColor(
-                    backgroundColor = SmashingTheme.colors.btnBgPrimary300,
-                    textColor = SmashingTheme.colors.txtEmphasis,
-                    disabledBackgroundColor = SmashingTheme.colors.btnBgPrimary300,
-                    disabledTextColor = SmashingTheme.colors.txtEmphasis,
-                ),
-                contentPadding = PaddingValues(vertical = 9.dp),
-                shape = RoundedCornerShape(8.dp),
-                isRippleEnabled = false,
-            )
-        }
-    }
-}
-
-@Composable
-private fun MatchedUserItem(
-    userId: String,
-    nickname: String,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .width(IntrinsicSize.Max),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(
-                    horizontal = 28.dp,
-                )
-        ) {
-            UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
-                modifier = Modifier
-                    .height(64.dp)
-                    .aspectRatio(1f)
-                    .clip(CircleShape),
-            )
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = nickname,
-            style = SmashingTheme.typography.sm.medium14,
-            color = SmashingTheme.colors.txtMuted,
-        )
     }
 }
 
@@ -794,11 +650,13 @@ private fun HomeScreenPreview() {
         navigateToRanking = {},
         navigateToMatchingAccepted = {},
         navigateToUserProfile = {},
-        onSportsChipClick = {},
         navigateToSportAdd = {},
         navigateToSearch = {},
         navigateToSubmit = { _, _, _, _ -> },
         navigateToConfirm = { _, _, _ -> },
+        navigateToMyProfile = {},
+        onSportsChipClick = {},
+        updateBottomBar = {},
     )
 }
 
@@ -841,7 +699,10 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToSportAdd = {},
         navigateToSearch = {},
         onSportsChipClick = {},
+        navigateToMyProfile = {},
         navigateToSubmit = { _, _, _, _ -> },
         navigateToConfirm = { _, _, _ -> },
+        onSportsChipClick = {},
+        updateBottomBar = {},
     )
 }

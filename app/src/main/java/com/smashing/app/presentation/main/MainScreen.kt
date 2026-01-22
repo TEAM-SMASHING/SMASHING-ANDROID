@@ -12,12 +12,16 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
@@ -31,13 +35,15 @@ import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
+import com.smashing.app.presentation.main.component.MainTab
+import com.smashing.app.presentation.main.state.MainAppState
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.Notice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
-import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
+import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
@@ -58,7 +64,10 @@ private const val EXIT_MILLIS = 3000L
 @Composable
 fun MainScreen(
     appState: MainAppState,
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
 
@@ -85,6 +94,16 @@ fun MainScreen(
                 }
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect
+            .flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { effect ->
+                when (effect) {
+                    is MainContract.SideEffect.ShowToast -> onShowToast(effect.message)
+                }
+            }
     }
 
     CompositionLocalProvider(

@@ -91,6 +91,7 @@ coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", versi
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinSerializationConverter" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+okhttp-sse = { module = "com.squareup.okhttp3:okhttp-sse", version.ref = "okhttp" }
 
 # Kakao
 kakao-sdk-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
@@ -133,6 +134,7 @@ network = [
     "retrofit-core",
     "retrofit-kotlin-serialization",
     "okhttp-logging",
+    "okhttp-sse",
 ]
 
 hilt = [
