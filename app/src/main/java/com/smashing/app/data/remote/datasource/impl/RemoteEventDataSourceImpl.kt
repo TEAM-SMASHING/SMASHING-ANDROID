@@ -21,6 +21,7 @@ class RemoteEventDataSourceImpl @Inject constructor(
         MutableSharedFlow<RawEventResponse>(replay = 0, extraBufferCapacity = 64)
     override val rawEvents: Flow<RawEventResponse> = _rawEvents
 
+    @Volatile
     private var eventSource: EventSource? = null
 
     override fun connect() {
