@@ -210,13 +210,13 @@ private fun UserProfileScreen(
                             buttonStyle = ButtonStyle.DISABLED_ACTIVE,
                             text = "건너뛰기",
                             modifier = Modifier.weight(BTN_WEIGHT),
-                            onClick = onYesClick,
+                            onClick = onNoClick,
                         )
                         SmashingButton(
                             buttonStyle = ButtonStyle.PRIMARY,
                             text = "수락",
                             modifier = Modifier.weight(1f),
-                            onClick = onNoClick,
+                            onClick = onYesClick,
                         )
                     }
                 }
