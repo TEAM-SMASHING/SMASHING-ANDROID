@@ -41,9 +41,10 @@ class SubmitViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        initUserInfo()
         if (!isFirstAttempt) {
             fetchPreviousSubmission()
+        } else {
+            initUserInfo()
         }
     }
 
