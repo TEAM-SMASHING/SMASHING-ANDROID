@@ -1,6 +1,7 @@
 package com.smashing.app.data.remote.dto.event
 
 import com.smashing.app.data.remote.dto.event.common.UserSummaryDto
+import com.smashing.app.data.type.NotificationType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,7 +12,7 @@ data class GameResultRejectedNotificationDto(
     @SerialName("notificationId")
     val notificationId: String,
     @SerialName("notificationType")
-    val notificationType: String,
+    val notificationType: NotificationType,
     @SerialName("notificationCreatedAt")
     val notificationCreatedAt: String,
     @SerialName("sportId")
