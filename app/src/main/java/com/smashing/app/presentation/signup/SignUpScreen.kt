@@ -94,16 +94,17 @@ fun SignUpRoute(
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
         onAddressClick = navigateToRegion,
-        onBackClick = if (uiState.currentStep ==1) {
+        onBackClick = if (uiState.currentStep == 1 || uiState.currentStep == 7) {
             navigateUp
         } else {
-            viewModel::deleteCurrentStep },
+            viewModel::deleteCurrentStep
+        },
         modifier = modifier,
         onBtnClick = {
-            if (uiState.currentStep < MAX_STEP + 1)
-                viewModel.updateCurrentStep()
-            else {
-                viewModel.postSignUp()
+            when (uiState.currentStep) {
+                1, 2, 3, 4, 5 -> viewModel.updateCurrentStep()
+                6 -> viewModel.postSignUp()
+                7 -> navigateToHome()
             }
         },
     )
@@ -121,14 +122,14 @@ private fun SignUpScreen(
     onGenderSelected: (GenderType) -> Unit,
     onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
-    onAddressClick:() -> Unit,
+    onAddressClick: () -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
 
-    if(uiState.currentStep > 1){
+    if (uiState.currentStep > 1) {
         BackHandler() {
             onBackClick()
         }
@@ -147,11 +148,13 @@ private fun SignUpScreen(
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SmashingDefaultTopBar(
-            title = "",
-            topBarType = TopBarType.BACK,
-            onClick = onBackClick,
-        )
+        if(uiState.currentStep <= MAX_STEP){
+            SmashingDefaultTopBar(
+                title = "",
+                topBarType = TopBarType.BACK,
+                onClick = onBackClick,
+            )
+        }
 
         Column(
             modifier = Modifier
