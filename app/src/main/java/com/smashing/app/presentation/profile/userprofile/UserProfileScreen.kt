@@ -3,7 +3,6 @@ package com.smashing.app.presentation.profile.userprofile
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,13 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,7 +32,6 @@ import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
@@ -100,11 +93,6 @@ private fun UserProfileScreen(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
-
-    if(uiState.profileInfo.nickname.isBlank()){
-        return
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -137,21 +125,6 @@ private fun UserProfileScreen(
                 isCompeteEnabled = uiState.isChallengeable,
             )
 
-            if (uiState.isDialogVisible) {
-
-                SmashingDialog(
-                    title = "경쟁 신청이 완료되었습니다!",
-                    subtitle = "매칭 관리 탭에서 매칭 정보를 확인해주세요.",
-                    type = DialogStyle.ALERT,
-                    confirmText = "바로가기",
-                    dismissText = "확인",
-                    onConfirmClick = onConfirmClick,
-                    onDismissClick = onDialogDismissClick,
-                    onDismissRequest = onDialogDismissClick,
-                )
-            }
-
-
             ProfileTierBox(
                 tierType = uiState.profileInfo.tierType,
                 sportProfileList = uiState.sportProfileList,
@@ -175,7 +148,7 @@ private fun UserProfileScreen(
                 badCount = uiState.gameReviewResult.badCount,
             )
 
-            if(uiState.isAcceptable){
+            if (uiState.isAcceptable) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -196,7 +169,20 @@ private fun UserProfileScreen(
                     )
                 }
             }
+        }
 
+
+        if (uiState.isDialogVisible) {
+            SmashingDialog(
+                title = "경쟁 신청이 완료되었습니다!",
+                subtitle = "매칭 관리 탭에서 매칭 정보를 확인해주세요.",
+                type = DialogStyle.ALERT,
+                confirmText = "바로가기",
+                dismissText = "확인",
+                onConfirmClick = onConfirmClick,
+                onDismissClick = onDialogDismissClick,
+                onDismissRequest = onDialogDismissClick,
+            )
         }
     }
 }

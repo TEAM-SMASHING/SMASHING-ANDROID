@@ -187,10 +187,7 @@ private fun HomeScreen(
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
 ) {
-    val activeUserProfile = uiState.activeUserProfile ?: run {
-        // TODO: 로딩 또는 에러 UI 표시
-        return
-    }
+    if (uiState.activeUserProfile == null) return
 
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }
@@ -260,9 +257,7 @@ private fun HomeScreen(
                     isDropdownExpanded = false
                 }
             },
-            onTierClick = {
-                navigateToTierInfo()
-            },
+            onTierClick = navigateToTierInfo,
             onDismiss = {
                 isDropdownExpanded = false
             },
@@ -464,8 +459,8 @@ private fun HomeScreen(
                 Column(
                     modifier = Modifier
                         .padding(
-                        horizontal = 16.dp,
-                    ),
+                            horizontal = 16.dp,
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {

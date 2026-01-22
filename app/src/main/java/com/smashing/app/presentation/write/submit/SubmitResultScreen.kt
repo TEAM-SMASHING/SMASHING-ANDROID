@@ -108,8 +108,8 @@ private fun SubmitResultScreen(
                 .verticalScroll(scrollState),
         ) {
             WriteResultContent(
-                submitter = uiState.submitter,
-                receiver = uiState.receiver,
+                leftUserInfo = uiState.submitter,
+                rightUserInfo = uiState.receiver,
                 winnerId = uiState.winnerId,
                 leftTextFieldState = leftTextFieldState,
                 rightTextFieldState = rightTextFieldState,
