@@ -1,9 +1,13 @@
 package com.smashing.app.presentation.notice
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.NotificationRepository
-import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.domain.model.Notification
+import com.smashing.app.presentation.notice.navigation.Notice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,13 +18,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoticeViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val notificationRepository: NotificationRepository,
-    private val myRepository: ReviewRepository,
+    private val myRepository: MyRepository,
 ) : ViewModel() {
+    val profileId = savedStateHandle.toRoute<Notice>().profileId
     private val _uiState = MutableStateFlow(NoticeContract.State())
     val uiState = _uiState.asStateFlow()
 
     init {
+        _uiState.update { it.copy(currentProfileId = profileId) }
         fetchNotificationList()
     }
 
@@ -77,6 +84,22 @@ class NoticeViewModel @Inject constructor(
         }.onFailure {
             updateNoticeUiState(NoticeUiState.Failure(it.message ?: "Read Notification Error"))
         }
+    }
+
+    fun updateSelectedNoticeItem(noticeItem: Notification) = _uiState.update {
+        it.copy(selectedNoticeItem = noticeItem)
+    }
+
+    fun changeMyProfile(profileId: String) = viewModelScope.launch {
+        myRepository.switchActiveMyProfile(profileId)
+            .onSuccess {
+                _uiState.update { it.copy(currentProfileId = profileId) }
+                updateIsChangeDialogVisible(false)
+            }
+            .onFailure {
+                updateNoticeUiState(NoticeUiState.Failure(it.message ?: "프로필 전환 실패"))
+                updateIsChangeDialogVisible(false)
+            }
     }
 
     private fun updateNoticeUiState(uiState: NoticeUiState) = _uiState.update {

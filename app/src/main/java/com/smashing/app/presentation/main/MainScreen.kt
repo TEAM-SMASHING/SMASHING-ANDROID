@@ -137,7 +137,6 @@ private fun MainNavHost(
         startDestination = appState.startDestination,
     ) {
         homeGraph(
-            innerPadding = innerPadding,
             navController = appState.navController,
             updateBottomBar = appState::updateBottomBarVisible,
         )

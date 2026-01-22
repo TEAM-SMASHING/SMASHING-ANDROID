@@ -78,7 +78,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
-    navigateToNotice: () -> Unit,
+    navigateToNotice: (String) -> Unit,
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToRanking: () -> Unit,
@@ -105,7 +105,9 @@ fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
-        navigateToNotice = navigateToNotice,
+        navigateToNotice = {
+            uiState.activeUserProfile?.profileId?.let(navigateToNotice)
+        },
         navigateToRegionChange = navigateToRegionChange,
         navigateToTierInfo = {
             navigateToTierInfo(

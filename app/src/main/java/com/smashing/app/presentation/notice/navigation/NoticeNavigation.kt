@@ -13,8 +13,9 @@ import com.smashing.app.presentation.notice.NoticeRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToNotice(
+    profileId: String,
     navOptions: NavOptions? = null
-) = navigate(Notice, navOptions)
+) = navigate(Notice(profileId = profileId), navOptions)
 
 fun NavGraphBuilder.noticeGraph(
     innerPadding: PaddingValues,
@@ -22,7 +23,7 @@ fun NavGraphBuilder.noticeGraph(
     navigateToMatching: (MatchingType) -> Unit,
     navigateToConfirmReview: (String) -> Unit,
 ) {
-    composable<Notice> {
+    composable<Notice> { backStackEntry ->
         NoticeRoute(
             modifier = Modifier.padding(innerPadding),
             navigateUp = navigateUp,
@@ -33,4 +34,6 @@ fun NavGraphBuilder.noticeGraph(
 }
 
 @Serializable
-data object Notice : Route
+data class Notice(
+    val profileId: String,
+) : Route

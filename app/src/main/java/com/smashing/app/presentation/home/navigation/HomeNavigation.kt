@@ -1,6 +1,5 @@
 package com.smashing.app.presentation.home.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -32,7 +31,6 @@ fun NavController.navigateToRegionChange(
 ) = navigate(RegionChange, navOptions)
 
 fun NavGraphBuilder.homeGraph(
-    innerPadding: PaddingValues,
     navController: NavController,
     updateBottomBar: (Boolean) -> Unit,
 ) {
@@ -42,11 +40,16 @@ fun NavGraphBuilder.homeGraph(
         composable<HomeUser> {
             HomeRoute(
                 modifier = Modifier,
-                navigateToNotice = navController::navigateToNotice,
+                navigateToNotice = { profileId ->
+                    navController.navigateToNotice(profileId = profileId)
+                },
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToRanking = navController::navigateToRanking,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
-                    navController.navigateToTierInfo(tierName = tierInfoStyle.name, sportName = sportType.sportName)
+                    navController.navigateToTierInfo(
+                        tierName = tierInfoStyle.name,
+                        sportName = sportType.sportName
+                    )
                 },
                 navigateToMatchingAccepted = {
                     navController.navigateToMatching(initTab = MatchingType.ACCEPTED)

@@ -48,6 +48,12 @@ fun NoticeRoute(
         onBackBtnClick = navigateUp,
         onLoadMore = viewModel::loadMore,
         onNoticeClick = { notice ->
+            if (notice.userId != uiState.currentProfileId) {
+                viewModel.updateSelectedNoticeItem(notice)
+                viewModel.updateIsChangeDialogVisible(true)
+                return@NoticeScreen
+            }
+
             if (!notice.isRead) {
                 viewModel.readNotification(notice.notificationId)
             }
@@ -72,6 +78,8 @@ fun NoticeRoute(
                 }
             }
         },
+        onConfirmChangeProfile = viewModel::changeMyProfile,
+        onDismissChangeProfile = { viewModel.updateIsChangeDialogVisible(false) },
     )
 }
 
@@ -81,6 +89,8 @@ private fun NoticeScreen(
     onBackBtnClick: () -> Unit,
     onLoadMore: () -> Unit,
     onNoticeClick: (Notification) -> Unit,
+    onConfirmChangeProfile: (String) -> Unit,
+    onDismissChangeProfile: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
@@ -146,10 +156,9 @@ private fun NoticeScreen(
                     type = DialogStyle.ALERT,
                     confirmText = "변경하기",
                     dismissText = "아니요",
-                    onConfirmClick = {},
-                    onDismissClick = {},
-                    onDismissRequest = {},
-
+                    onConfirmClick = { onConfirmChangeProfile(uiState.selectedNoticeItem.userId) },
+                    onDismissClick = onDismissChangeProfile,
+                    onDismissRequest = onDismissChangeProfile,
                 )
             }
         }
@@ -181,6 +190,8 @@ private fun NoticeScreenPreview() {
             onBackBtnClick = {},
             onLoadMore = {},
             onNoticeClick = {},
+            onConfirmChangeProfile = {},
+            onDismissChangeProfile = {},
         )
     }
 }
