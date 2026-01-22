@@ -52,31 +52,32 @@ import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
 import com.smashing.app.R.drawable.img_dummy_versus
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
-import com.smashing.app.core.designsystem.component.image.UrlImage
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.getMatchButtonColor
+import com.smashing.app.core.designsystem.style.getMatchButtonTitle
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
+import com.smashing.app.core.util.ScrollStateHolder
+import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.data.model.rank.UserRank
+import com.smashing.app.data.model.search.SearchMainItemModel
+import com.smashing.app.data.type.GameResultStatusType
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.home.component.HomeDropdown
 import com.smashing.app.presentation.home.component.SportsTierChip
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
-import com.smashing.app.core.designsystem.style.getMatchButtonColor
-import com.smashing.app.core.designsystem.style.getMatchButtonTitle
-import com.smashing.app.data.type.GameResultStatusType
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -381,12 +382,19 @@ private fun HomeScreen(
                             items(
                                 items = uiState.recommendedUserList,
                                 key = { it.userId }
-                            ) { cardState ->
+                            ) { user ->
+                                val cardState = MatchingCardState.Search(
+                                    userId = user.userId,
+                                    nickname = user.nickname,
+                                    genderType = user.gender,
+                                    tierType = user.tierType,
+                                    onProfileClick = { navigateToUserProfile(user.userId) },
+                                    winCount = user.wins,
+                                    loseCount = user.losses,
+                                    reviewCount = user.reviews,
+                                )
                                 MatchingCard(
                                     cardState = cardState,
-                                    modifier = Modifier.noRippleClickable(
-                                        onClick = { navigateToUserProfile(cardState.userId) }
-                                    )
                                 )
                             }
                         }
@@ -758,35 +766,32 @@ private fun HomeScreenPreview() {
                 ),
             ).toImmutableList(),
             recommendedUserList = listOf(
-                MatchingCardState.Search(
+                SearchMainItemModel(
                     userId = "match1",
                     nickname = "탁구의신",
-                    genderType = GenderType.MALE,
+                    gender = GenderType.MALE,
                     tierType = TierType.DIAMOND_1,
-                    onProfileClick = {},
-                    winCount = 254,
-                    loseCount = 38,
-                    reviewCount = 32,
+                    wins = 254,
+                    losses = 38,
+                    reviews = 32,
                 ),
-                MatchingCardState.Search(
+                SearchMainItemModel(
                     userId = "match2",
                     nickname = "테니스마스터",
-                    genderType = GenderType.FEMALE,
+                    gender = GenderType.FEMALE,
                     tierType = TierType.PLATINUM_2,
-                    onProfileClick = {},
-                    winCount = 180,
-                    loseCount = 45,
-                    reviewCount = 28,
+                    wins = 180,
+                    losses = 45,
+                    reviews = 28,
                 ),
-                MatchingCardState.Search(
+                SearchMainItemModel(
                     userId = "match3",
                     nickname = "배드민턴킹",
-                    genderType = GenderType.MALE,
+                    gender = GenderType.MALE,
                     tierType = TierType.GOLD_1,
-                    onProfileClick = {},
-                    winCount = 150,
-                    loseCount = 60,
-                    reviewCount = 25,
+                    wins = 150,
+                    losses = 60,
+                    reviews = 25,
                 ),
             ).toImmutableList(),
             matchedUser = null,
@@ -834,7 +839,7 @@ private fun HomeScreenEmptyValuePreview() {
                     lp = 2500,
                 ),
             ).toImmutableList(),
-            recommendedUserList = listOf<MatchingCardState.Search>().toImmutableList(),
+            recommendedUserList = listOf<SearchMainItemModel>().toImmutableList(),
             loadState = HomeUiState.Success,
             isNotice = false,
         ),
