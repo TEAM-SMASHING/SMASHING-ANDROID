@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
@@ -637,7 +638,7 @@ private fun CloseMatching(
             )
             .padding(
                 top = 22.dp,
-                bottom = 22.dp,
+                bottom = 24.dp,
             ),
     ) {
         if (matchedUser != null) {
@@ -649,6 +650,10 @@ private fun CloseMatching(
                     painter = painterResource(id = img_dummy_versus),
                     contentDescription = null,
                     modifier = Modifier
+                        .size(
+                            width = 100.dp,
+                            height = 108.dp,
+                        )
                         .align(Alignment.Center),
                 )
 
@@ -674,8 +679,8 @@ private fun CloseMatching(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        top = 37.dp,
-                        bottom = 23.dp,
+                        top = 30.dp,
+                        bottom = 2.dp,
                     )
             )
         }
@@ -698,7 +703,8 @@ private fun CloseMatching(
             )
         } else {
             SmashingBaseButton(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(bottom = 28.dp),
                 text = "매칭 탐색하러 가기",
                 textStyle = SmashingTheme.typography.md.medium16,
                 onClick = navigateToSearch,
