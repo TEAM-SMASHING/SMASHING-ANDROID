@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.smashing.app.core.local.datastore.di.TokenDataStore
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -14,9 +13,6 @@ import javax.inject.Inject
 class LocalTokenDataSourceImpl @Inject constructor(
     @TokenDataStore private val dataStore: DataStore<Preferences>,
 ) : LocalTokenDataSource {
-
-    override val accessTokenFlow: Flow<String?> = dataStore.data
-        .map { prefs -> prefs[ACCESS_TOKEN] }
 
     override suspend fun getAccessToken(): String? = dataStore.data
         .map { prefs ->
