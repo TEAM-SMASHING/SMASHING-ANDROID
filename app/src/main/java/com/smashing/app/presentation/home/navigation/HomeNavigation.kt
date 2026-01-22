@@ -14,6 +14,7 @@ import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.ranking.navigation.navigateToRanking
 import com.smashing.app.presentation.region.navigation.getRegionResult
@@ -70,13 +71,14 @@ fun NavGraphBuilder.homeGraph(
                         isFirstAttempt = isFirstAttempt,
                     )
                 },
-                navigateToConfirm = { submissionId, gameId , isFirstAttempt ->
+                navigateToConfirm = { submissionId, gameId, isFirstAttempt ->
                     navController.navigateToConfirm(
                         submissionId = submissionId,
                         gameId = gameId,
                         isFirstAttempt = isFirstAttempt,
                     )
                 },
+                navigateToMyProfile = navController::navigateToMyProfile,
                 updateBottomBar = updateBottomBar,
             )
         }

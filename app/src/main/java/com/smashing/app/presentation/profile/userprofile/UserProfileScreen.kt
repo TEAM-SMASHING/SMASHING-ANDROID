@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -110,7 +109,7 @@ private fun UserProfileScreen(
         return
     }
 
-    Column (
+    Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = colors.bgCanvas)
@@ -125,7 +124,7 @@ private fun UserProfileScreen(
 
         Box(
             modifier = Modifier.weight(1f)
-        ){
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
