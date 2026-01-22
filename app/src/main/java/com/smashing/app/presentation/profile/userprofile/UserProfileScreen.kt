@@ -34,6 +34,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ButtonStyle
@@ -47,6 +48,7 @@ import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.ShowToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -61,6 +63,7 @@ fun UserProfileRoute(
     viewModel: UserProfileViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
+    val show = LocalToastTrigger.current
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -69,6 +72,7 @@ fun UserProfileRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToAllReview -> navigateToReview(sideEffect.userId)
+                    is ShowToast ->  show.invoke("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요.")
                 }
             }
     }

@@ -8,8 +8,6 @@ import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
-import com.smashing.app.presentation.matching.MatchingUiState
-import com.smashing.app.presentation.matching.MatchingViewModel
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
@@ -22,7 +20,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -173,15 +170,16 @@ class UserProfileViewModel @Inject constructor(
             matchingRepository.postAcceptedMatching(
                 matchingId = receivedMatchingId,
             ).onSuccess {
-                Timber.d("asd2")
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = UserProfileUiState.Success
                     )
                 }
+                _sideEffect.emit(
+                    UserProfileContract.SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요.")
+                )
                 fetchProfileInfo()
             }.onFailure { throwable ->
-                Timber.d("asd3")
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
