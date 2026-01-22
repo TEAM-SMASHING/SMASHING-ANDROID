@@ -195,6 +195,7 @@ class SearchViewModel @Inject constructor(
             size = CURSOR_SIZE,
             gender = currentState.selectedGenderItem?.genderName,
             tier = currentState.selectedTierItem?.name,
+            snapshotAt = if (isRefresh) null else currentState.searchRegionUsersCursor.snapshotAt,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
                 state.copy(

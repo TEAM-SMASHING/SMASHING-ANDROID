@@ -21,13 +21,15 @@ class SearchRepositoryImpl @Inject constructor(
         cursor: String?,
         size: Int?,
         gender: String?,
-        tier: String?
+        tier: String?,
+        snapshotAt: String?,
     ): Result<CursorPage<SearchMainItemModel>> = suspendRunCatching {
         searchRemoteDataSource.getRegionUsersSearch(
             cursor = cursor,
             size = size,
             gender = gender,
             tier = tier,
+            snapshotAt = snapshotAt,
         ).requireData().toSearchMainItemModelList()
     }
 
