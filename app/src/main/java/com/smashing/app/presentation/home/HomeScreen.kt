@@ -315,6 +315,7 @@ private fun HomeScreen(
                                         matching.userId,
                                         matching.nickname,
                                         true,
+                                        matching.latestSubmissionId,
                                     )
                                 }
 
@@ -324,6 +325,7 @@ private fun HomeScreen(
                                         matching.userId,
                                         matching.nickname,
                                         false,
+                                        matching.latestSubmissionId,
                                     )
                                 }
 
@@ -663,8 +665,8 @@ private fun HomeScreenPreview() {
         navigateToUserProfile = {},
         navigateToSportAdd = {},
         navigateToSearch = {},
-        navigateToSubmit = { _, _, _, _ -> },
-        navigateToConfirm = { _, _, _ -> },
+        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
+        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
         navigateToMyProfile = {},
         onSportsChipClick = {},
         updateBottomBar = {},
@@ -710,8 +712,8 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToSportAdd = {},
         navigateToSearch = {},
         navigateToMyProfile = {},
-        navigateToSubmit = { _, _, _, _ -> },
-        navigateToConfirm = { _, _, _ -> },
+        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
+        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
         onSportsChipClick = {},
         updateBottomBar = {},
     )
