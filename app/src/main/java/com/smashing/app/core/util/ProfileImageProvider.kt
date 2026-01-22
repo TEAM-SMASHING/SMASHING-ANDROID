@@ -1,5 +1,6 @@
 package com.smashing.app.core.util
 
+import com.smashing.app.R.drawable.img_default_profile
 import com.smashing.app.R.drawable.img_profile_01
 import com.smashing.app.R.drawable.img_profile_02
 import com.smashing.app.R.drawable.img_profile_03
@@ -24,7 +25,7 @@ object ProfileImageProvider {
      * @param nickname 사용자 식별자 (null일 경우 기본 이미지 반환)
      */
     fun getTempImg(nickname: String?): Int {
-        if (nickname.isNullOrBlank()) return TEMP_PROFILE_IMAGE_URLS.first()
+        if (nickname.isNullOrBlank()) return img_default_profile
 
         val index = nickname.fold(0) { acc, char -> acc + char.code } % TEMP_PROFILE_IMAGE_URLS.size
         return TEMP_PROFILE_IMAGE_URLS[index]
