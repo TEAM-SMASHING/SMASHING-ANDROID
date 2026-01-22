@@ -336,7 +336,7 @@ class MatchingViewModel @Inject constructor(
     }
 
     companion object {
-        private const val CURSOR_SIZE = 4L
+        private const val CURSOR_SIZE = 20L
         private const val TAG = "MatchingViewModel"
     }
 }
