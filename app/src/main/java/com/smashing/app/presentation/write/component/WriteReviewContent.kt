@@ -76,7 +76,7 @@ fun WriteReviewContent(
         Spacer(Modifier.height(28.dp))
 
         Text(
-            text = "빠른 후기를 선택해 주세요",
+            text = "빠른 후기를 선택해주세요",
             style = SmashingTheme.typography.md.medium16,
             color = SmashingTheme.colors.txtPrimary,
         )
