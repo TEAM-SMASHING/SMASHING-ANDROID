@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -105,12 +107,18 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val recommendedUserListState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchMyTierProfile()
         viewModel.fetchRegionRankerList()
         viewModel.fetchRecommendedUserList()
         viewModel.fetchMatchedUser()
+    }
+
+
+    LaunchedEffect(uiState.recommendedUserList) {
+        recommendedUserListState.scrollToItem(0)
     }
 
     // TODO 토스트 예시
@@ -137,6 +145,7 @@ fun HomeRoute(
         navigateToConfirm = navigateToConfirm,
         onSportsChipClick = viewModel::fetchSelectSportProfile,
         updateBottomBar = updateBottomBar,
+        recommendedUserListState = recommendedUserListState,
         modifier = modifier,
     )
 }
@@ -166,7 +175,8 @@ private fun HomeScreen(
     onSportsChipClick: (String) -> Unit,
     updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-) {
+    recommendedUserListState: LazyListState = rememberLazyListState(),
+    ) {
     val activeUserProfile = uiState.activeUserProfile ?: run {
         // TODO: 로딩 또는 에러 UI 표시
         return
@@ -372,6 +382,7 @@ private fun HomeScreen(
                     }
                     if (uiState.recommendedUserList.isNotEmpty()) {
                         LazyRow(
+                            state = recommendedUserListState,
                             modifier = Modifier
                                 .fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
