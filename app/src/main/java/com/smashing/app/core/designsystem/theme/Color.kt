@@ -1,8 +1,5 @@
 package com.smashing.app.core.designsystem.theme
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +7,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -44,6 +44,7 @@ val orangeSub = Color(0xFF4E2F0B)
 
 val yellowMain = Color(0xFFD1CC44)
 val yellowSub = Color(0xFF4E460B)
+val yellowKakao = Color(0xFFFEE500)
 
 val greenMain = Color(0xFF0DD74D)
 val greenSub = Color(0xFF0B4E2F)
@@ -73,8 +74,10 @@ data class SmashingColors(
     val txtSecondary: Color,
     val txtTertiary: Color,
     val txtDisabled: Color,
-    val txtBlue: Color,
+    val txtEmphasis: Color,
+    val txtMuted: Color,
     val txtRed: Color,
+    val txtKakaoLinkGray: Color,
 
     // Background
     val bgCanvas: Color,
@@ -84,6 +87,7 @@ data class SmashingColors(
     val bgOverlay: Color,
     val bgSelected: Color,
     val bgDimmed: Color,
+    val bgKakao: Color,
 
     // Button
     val btnTxtPrimaryActive: Color,
@@ -97,6 +101,8 @@ data class SmashingColors(
     val btnBgSecondaryActive: Color,
     val btnBgTertiaryActive: Color,
     val btnBgTertiaryPressed: Color,
+    val btnBgRejected: Color,
+    val btnBgPrimary300: Color,
 
     // Border
     val borderPrimary: Color,
@@ -107,6 +113,7 @@ data class SmashingColors(
 
     // Icon
     val iconPrimary: Color,
+    val iconPrimaryReverse: Color,
     val iconSecondary: Color,
     val iconTertiary: Color,
     val iconError: Color,
@@ -150,8 +157,10 @@ val defaultSmashingColors = SmashingColors(
     txtSecondary = gray200,
     txtTertiary = gray400,
     txtDisabled = gray500,
-    txtBlue = primary200,
+    txtEmphasis = primary200,
+    txtMuted = primary100,
     txtRed = redMain,
+    txtKakaoLinkGray = gray300,
 
     // Background
     bgCanvas = black,
@@ -161,6 +170,7 @@ val defaultSmashingColors = SmashingColors(
     bgOverlay = gray700,
     bgSelected = white,
     bgDimmed = alpha,
+    bgKakao = yellowKakao,
 
     // Button
     btnTxtPrimaryActive = black,
@@ -174,6 +184,8 @@ val defaultSmashingColors = SmashingColors(
     btnBgSecondaryActive = primary200,
     btnBgTertiaryActive = gray600,
     btnBgTertiaryPressed = gray800,
+    btnBgRejected = redSub,
+    btnBgPrimary300 = primary300,
 
     // Border
     borderPrimary = gray700,
@@ -184,6 +196,7 @@ val defaultSmashingColors = SmashingColors(
 
     // Icon
     iconPrimary = white,
+    iconPrimaryReverse = black,
     iconSecondary = gray300,
     iconTertiary = gray500,
     iconError = redMain,
@@ -216,7 +229,7 @@ val defaultSmashingColors = SmashingColors(
     stateCheck = primary100,
     stateWarning = redMain,
     stateSuccess = greenMain,
-    stateProgressTrack = gray300,
+    stateProgressTrack = gray700,
     stateProgressFill = primary200,
 )
 val LocalSmashingColors = staticCompositionLocalOf { defaultSmashingColors }

@@ -2,43 +2,148 @@ package com.smashing.app.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.common.state.UiState
-import com.smashing.app.data.model.DummyUser
-import com.smashing.app.data.repository.api.DummyRepository
+import com.smashing.app.data.repository.api.MatchingRepository
+import com.smashing.app.data.repository.api.MyRepository
+import com.smashing.app.data.repository.api.RankingRepository
+import com.smashing.app.data.repository.api.SearchRepository
+import com.smashing.app.data.type.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val dummyRepository: DummyRepository,
+    private val rankingRepository: RankingRepository,
+    private val searchRepository: SearchRepository,
+    private val myRepository: MyRepository,
+    private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
 
-    fun fetchDummyUsers() = viewModelScope.launch {
-        updateDummyUiState(UiState.Loading)
-        dummyRepository.fetchDummyUserList(page = 1).onSuccess { userList ->
-            if (userList.isNotEmpty()) {
-                updateDummyUiState(UiState.Success(userList.toImmutableList()))
-            } else {
-                updateDummyUiState(UiState.Idle)
+    fun fetchMyTierProfile() = viewModelScope.launch {
+        myRepository.getMyTierProfile()
+            .onSuccess { userProfile ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        activeUserProfile = userProfile.activeUserProfile,
+                        allUserProfiles = userProfile.allProfiles.toImmutableList(),
+                    )
+                }
             }
-        }.onFailure {
-            updateDummyUiState(UiState.Failure(it.message ?: "Unknown Error"))
+            .onFailure { throwable ->
+                Timber.tag("HomeViewModel").e(throwable, "Failed to fetch my tier profile")
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = HomeUiState.Failure(
+                            throwable.message ?: "프로필을 불러오는데 실패했습니다."
+                        )
+                    )
+                }
+            }
+    }
+
+    fun fetchRecommendedUserList() = viewModelScope.launch {
+        searchRepository.getRecommendedUsers()
+            .onSuccess { recommendedUsers ->
+                _uiState.update { currentState ->
+                    currentState.copy(recommendedUserList = recommendedUsers.toImmutableList())
+                }
+            }
+            .onFailure {
+                _uiState.update { currentState ->
+                    currentState.copy(recommendedUserList = persistentListOf())
+                }
+            }
+    }
+
+    fun fetchMatchedUser() = viewModelScope.launch {
+        matchingRepository.getMeAcceptedMatchingList(
+            snapshotAt = null,
+            cursor = null,
+            size = 1,
+            order = OrderType.OLDEST,
+        )
+            .onSuccess { cursorPage ->
+                val oldestMatch = cursorPage.items.firstOrNull()
+                _uiState.update { currentState ->
+                    currentState.copy(matchedUser = oldestMatch)
+                }
+            }
+            .onFailure { throwable ->
+                Timber.tag("HomeViewModel").e(throwable, "Failed to fetch matched user")
+                _uiState.update { currentState ->
+                    currentState.copy(matchedUser = null)
+                }
+            }
+    }
+
+
+    fun fetchRegionRankerList() = viewModelScope.launch {
+        updateLoadState(HomeUiState.Loading)
+
+        rankingRepository.getRankingList()
+            .onSuccess { rankingData ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = HomeUiState.Success,
+                        topRankerList = rankingData.topUsers.take(5).toImmutableList(),
+                        regionRankerList = rankingData.topUsers.toImmutableList(),
+                    )
+                }
+            }
+            .onFailure { throwable ->
+                updateLoadState(HomeUiState.Failure(throwable.message ?: "Unknown error"))
+            }
+    }
+
+    fun fetchSelectSportProfile(profileId: String) {
+        val currentState = uiState.value
+        val currentActiveProfile = currentState.activeUserProfile ?: return
+        if (currentActiveProfile.profileId == profileId) return
+
+        val selectedProfile =
+            currentState.allUserProfiles.find { it.profileId == profileId } ?: return
+
+        val optimisticList = currentState.allUserProfiles.map { profile ->
+            profile.copy(isActive = profile.profileId == profileId)
+        }.toImmutableList()
+
+        val optimisticActiveProfile = currentActiveProfile.copy(
+            profileId = selectedProfile.profileId,
+            sportType = selectedProfile.sportCode,
+        )
+
+        _uiState.update {
+            it.copy(
+                allUserProfiles = optimisticList,
+                activeUserProfile = optimisticActiveProfile,
+            )
+        }
+
+        viewModelScope.launch {
+            myRepository.switchActiveMyProfile(profileId)
+                .onSuccess {
+                    fetchMyTierProfile()
+                    fetchRegionRankerList()
+                    fetchRecommendedUserList()
+                    fetchMatchedUser()
+                }
+                .onFailure { throwable ->
+                    Timber.tag("HomeViewModel").e(throwable, "Failed to switch sport profile")
+                    fetchMyTierProfile()
+                }
         }
     }
 
-    private fun updateDummyUiState(value: UiState<ImmutableList<DummyUser>>) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                dummyUsersLoadState = value,
-            )
-        }
+
+    private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
+        currentState.copy(loadState = state)
     }
 }

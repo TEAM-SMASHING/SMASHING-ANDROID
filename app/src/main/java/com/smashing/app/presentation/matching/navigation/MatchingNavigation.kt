@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.matching.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -9,21 +8,41 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.presentation.matching.MatchingRoute
+import com.smashing.app.presentation.matching.type.MatchingType
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMatching(
-    navOptions: NavOptions? = null
-) = navigate(Matching, navOptions)
+    initTab: MatchingType = MatchingType.RECEIVE,
+    navOptions: NavOptions? = null,
+) = navigate(Matching(initTab = initTab), navOptions)
 
 fun NavGraphBuilder.matchingGraph(
-    innerPadding: PaddingValues,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+        submissionId: String?,
+    ) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
+    updateBottomBar: (Boolean) -> Unit,
+    navigateToProfile: (String) -> Unit,
 ) {
     composable<Matching> {
         MatchingRoute(
-            modifier = Modifier.padding(innerPadding),
+            navigateToSubmit = navigateToSubmit,
+            navigateToConfirm = navigateToConfirm,
+            updateBottomBar = updateBottomBar,
+            navigateToProfile = navigateToProfile,
         )
     }
 }
 
 @Serializable
-data object Matching : MainTabRoute
+data class Matching(
+    val initTab: MatchingType = MatchingType.RECEIVE,
+) : MainTabRoute
