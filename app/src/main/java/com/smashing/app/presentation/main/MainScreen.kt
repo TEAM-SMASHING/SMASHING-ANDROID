@@ -111,7 +111,7 @@ fun MainScreen(
     CompositionLocalProvider(
         LocalToastTrigger provides onShowToast,
     ) {
-        Scaffold(
+         Scaffold(
             snackbarHost = {
                 val bottomPadding by animateDpAsState(
                     targetValue = if (isBottomBarVisible) 20.dp else 46.dp,
