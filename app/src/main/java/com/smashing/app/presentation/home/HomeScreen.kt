@@ -464,8 +464,8 @@ private fun HomeScreen(
                 Column(
                     modifier = Modifier
                         .padding(
-                        horizontal = 16.dp,
-                    ),
+                            horizontal = 16.dp,
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
