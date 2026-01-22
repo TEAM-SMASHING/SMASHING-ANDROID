@@ -82,7 +82,7 @@ fun ConfirmReviewCard(
         if (isEmptyReview) {
             Box(
                 modifier = Modifier
-                    .weight(1f) // 빈 공간 꽉 채워서 중앙 정렬
+                    .weight(1f) 
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
