@@ -74,6 +74,5 @@ class RemoteEventDataSourceImpl @Inject constructor(
 
     companion object {
         private const val SSE_URL = "${BASE_URL}api/v1/sse/subscribe"
-        private const val TAG = "SSE_LISTENER"
     }
 }
