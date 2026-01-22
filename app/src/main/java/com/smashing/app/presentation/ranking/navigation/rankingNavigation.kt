@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
@@ -27,7 +28,15 @@ fun NavGraphBuilder.rankingGraph(
             navigateToProfile = { userId ->
                 navController.navigateToUserProfile(userId = userId)
             },
-            navigateToMyProfile = navController::navigateToMyProfile,
+            navigateToMyProfile = {
+                navController.navigateToMyProfile(
+                    navOptions = navOptions {
+                        popUpTo(RankingPage) {
+                            inclusive = true
+                        }
+                    }
+                )
+            },
         )
     }
 }
