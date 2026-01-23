@@ -2,6 +2,7 @@ package com.smashing.app.presentation.confirmreview.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R
@@ -41,7 +43,6 @@ fun ConfirmReviewCard(
     val hasTags = tags.isNotEmpty()
     val isEmptyReview = !hasReviewText && !hasTags
 
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -50,7 +51,8 @@ fun ConfirmReviewCard(
                 shape = RoundedCornerShape(8.dp),
             )
             .padding(vertical = 24.dp, horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
         ReviewHeader(
             iconId = iconId,
@@ -64,23 +66,35 @@ fun ConfirmReviewCard(
                 style = SmashingTheme.typography.md.medium16,
                 color = SmashingTheme.colors.txtSecondary,
                 textAlign = TextAlign.Left,
-                modifier = Modifier.fillMaxWidth()
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(
+                        weight = 1f,
+                        fill = false
+                    )
             )
         }
-        
+
         if (hasReviewText) {
             Spacer(modifier = Modifier.height(40.dp))
         }
 
         if (isEmptyReview) {
-            Text(
-                text = nickname + "님이 구체적인 후기는 남기지 않았어요",
-                style = SmashingTheme.typography.md.regular16,
-                color = SmashingTheme.colors.txtTertiary,
-                textAlign = TextAlign.Center
-            )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = nickname + "님이 구체적인 후기는 남기지 않았어요",
+                    style = SmashingTheme.typography.md.regular16,
+                    color = SmashingTheme.colors.txtTertiary,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
-
         if (hasTags) {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
