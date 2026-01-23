@@ -1,2 +1,130 @@
 # SMASHING-ANDROID
-SMASHING Android 레포지토리입니다🏸
+
+# <img src="![로고.png](../../../Desktop/%EB%A1%9C%EA%B3%A0.png)" /> 스매싱
+
+**스매싱 -스포츠인을 위한 매칭은 계속된다**
+
+<img width="4935" height="1758" alt="img_smashing_banner" src="![thro.png](../../../Desktop/thro.png)"/>
+
+> **스매싱**은 **2030 세대의 스포츠 자아 완성을 돕는 **게이미키케이션 기반** 스포츠 매칭 플랫폼 입니다.".<br/>
+
+## Features
+
+<details>
+     <summary> <h3>온보딩 홈 추천하기</h3> </summary>
+
+|                                                    온보딩                                                    |                                                     홈                                                     |                                                   금액 추천                                                   |                                                   추천 결과                                                   |
+|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|
+| <img width="200" src="https://github.com/user-attachments/assets/5d15c778-a231-4068-96e9-b5fd19f43142" /> | <img width="200" src="https://github.com/user-attachments/assets/ff5b2c7d-db33-4d7a-a660-9899f511576d" /> | <img width="200" src="https://github.com/user-attachments/assets/09cb3506-2118-4cf3-ae2f-08a69e9814f7" /> | <img width="200" src="https://github.com/user-attachments/assets/4e8ca714-c4b1-4d84-9ba1-6d577ed537d3" /> |
+
+## 🏸주요 기능
+
+![스크린샷, 2026-01-23 오후 8.12.03.png](../../../Downloads/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%2C%202026-01-23%20%EC%98%A4%ED%9B%84%208.12.03.png)
+
+## **✨ Contributors**
+
+|                                                    🏸공승준<br/>[@seungjunGong](https://github.com/seungjunGong)                                                    |                  🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol)                  |               🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf)                |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
+|                                          <img src="![승준.jpeg](../../../Desktop/%EC%8A%B9%EC%A4%80.jpeg)"height="280" />                                          | <img src="![형철오빠.jpeg](../../../Desktop/%ED%98%95%EC%B2%A0%EC%98%A4%EB%B9%A0.jpeg)"height="280" /> | <img src=" ![지민.jpeg](../../../Desktop/%EC%A7%80%EB%AF%BC.jpeg)"height="280" /> |
+|                                                                     `매칭 관리`,`매칭 결과 작성`,`알림`                                                                      |                                                `홈`                                                 |                               `온보딩`,`로그인`,`매칭 탐색`                               |
+|                                                      🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda)                                                      |
+| :---------------------------------------------![유빈.jpeg](../../../Desktop/%EC%9C%A0%EB%B9%88.jpeg)-------------------------------------------------------------: |                                               :---:                                                |
+|                                          <img src="![유빈.jpeg](../../../Desktop/%EC%9C%A0%EB%B9%88.jpeg)"height="280" />                                          |
+|                                                                         `프로필`,`매칭 결과 확인`                                                                         |
+
+<br/>
+
+## **⚒️ Tech Stacks**
+
+| 항목               | 기술 스택                                                  |
+|------------------|--------------------------------------------------------|
+| Architecture     | Google Recommended Architecture                        |
+| Pattern          | MVVM                                                   |  
+| DI               | Hilt                                                   |
+| Asynchronous     | Coroutine, Flow                                        |
+| Network          | Retrofit2, OkHttp                                      |
+| Navigation       | Single Activity Architecture (SAA), Jetpack Navigation |
+| UI Framework     | Jetpack Compose                                        |
+| Image Processing | Coil, Lottie                                           |
+| Logging          | Timber                                                 |
+
+<br/>
+
+> **📌 도입 기술 선정 이유**
+
+**1️⃣ Architecture: Google Recommended Architecture** <br/>
+서비스의 규모나 복잡도를 고려했을 때 도메인 레이어까지 고정적으로 가져가기보다는<br/>
+기본적인 아키텍처 구조는 따르되, 도메인 레이어는 필요한 경우에만 유연하게 추가할 수 있도록 구성했습니다.
+초기에는 가볍게 시작하고, 기능이 확장될수록 자연스럽게 구조를 확장해갈 수 있다고 판단했습니다.
+
+**2️⃣ Pattern: MVVM (Model-View-ViewModel)** <br/>
+팀원 대부분이 익숙하게 사용해온 패턴이며, ViewModel을 중심으로 상태를 관리하기 때문에 Jetpack Compose와의 궁합이 좋아 선택하게 되었습니다.
+UI와 로직을 명확히 분리할 수 있어서 협업 시 역할 구분이 쉬워지고, 테스트나 유지보수 측면에서도 유리합니다.
+
+**3️⃣ Dependency Injection: Hilt** <br/>
+구글에서 권장하는 DI 라이브러리로, 보일러플레이트 코드를 줄이면서 의존성 관리의 일관성과 재사용성을 확보할 수 있어 도입했습니다.
+또한 내부적으로 제공하는 컴포넌트들의 라이프사이클을 자동으로 관리해주기 때문에, 초기 설정 부담을 줄이고 생산성과 유지보수 효율을 높일 수 있습니다.
+
+<br/>
+
+## **📗 Convention**
+
+📌 [컨벤션 문서 보러가기](https://www.notion.so/20221444hanyubin/2f0913d4ef84800ea953f5ad720c98ac?source=copy_link)
+
+- **Github Convention**
+- **Naming Convention**
+- **Packaging Convention**
+
+<br/>  
+
+## **🗂️ Project Structure**
+
+```
+Google Recommned Architecture
+🗃️ smashing.app
+├─ 🗃️ core                          
+│  ├─ 🗃️ common                     
+│  │  ├─ 📁 navigation              
+│  │  ├─ 📁 state                   
+│  │  └─ 📁 type                    
+│  ├─ 🗃️ designsystem               
+│  │  ├─ 📁 component               
+│  │  └─ 📁 theme                   
+│  ├─ 📁 extension                  
+│  ├─ 🗃️ local
+│  │  ├─ 📁 datastore               
+│  │  └─ 📁 room                    
+│  ├─ 🗃️ network                    
+│  └─ 📁 util                       
+│
+├─ 🗃️ data                         
+│  ├─ 🗃️ di(feature 기반)
+│  ├─ 🗃️ local
+│  │  ├─ 📁 datasource
+│  │  │  ├─ 📁 api                  
+│  │  │  └─ 📁 impl                
+│  │  └─ 📁 entity 
+│  ├─ 🗃️ remote
+│  │  ├─ 📁 datasource
+│  │  │  ├─ 📁 api                  
+│  │  │  └─ 📁 impl                 
+│  │  ├─ 📁 dto                     
+│  │  └─ 📁 service                 
+│  ├─ 🗃️ mapper(dto ↔ model 변환)
+│  ├─ 🗃️ model(feature 기반)
+│  └─ 🗃️ repository
+│     ├─ 📁 api                     
+│     └─ 📁 impl                   
+│
+├─ 🗃️ domain                        
+│  ├─ 📁 model                      
+│  ├─ 📁 usecase                    
+│  └─ 📁 mapper                    
+│
+└─ 🗃️ presentation                  
+   ├─ 📁 main                 
+   └─ 📁 home
+      ...
+```
+
+</details>
