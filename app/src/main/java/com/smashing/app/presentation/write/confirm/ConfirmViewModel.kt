@@ -120,18 +120,19 @@ class ConfirmViewModel @Inject constructor(
 
     fun confirmSubmission() = viewModelScope.launch {
         val state = _uiState.value
-        _uiState.update { 
-            it.copy(
-                confirmUiState = ConfirmUiState.Loading,
-                showConfirmDialog = false,
-            ) 
-        }
 
         val submissionConfirm = SubmissionConfirm(
             rating = state.selectedRating ?: return@launch,
             content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
             tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() },
         )
+
+        _uiState.update {
+            it.copy(
+                confirmUiState = ConfirmUiState.Loading,
+                showConfirmDialog = false,
+            )
+        }
 
         gameRepository.postConfirmSubmission(
             gameId = gameId,
