@@ -105,6 +105,7 @@ private fun SearchMainScreen(
 
     val listState = rememberLazyGridState()
 
+    //Todo: 스크롤 수정
 //    var isFirstLoad by remember { mutableStateOf(true) }
 //
 //    LaunchedEffect(uiState.searchList) {
