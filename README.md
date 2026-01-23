@@ -1,13 +1,13 @@
 # SMASHING-ANDROID
 
-<img width="4096" height="4096" alt="Image" src="https://github.com/user-attachments/assets/b2c823be-d58b-4770-87a5-25ad4b77da68" /> 
+<img width="200" alt="Image" src="https://github.com/user-attachments/assets/b2c823be-d58b-4770-87a5-25ad4b77da68" />
 
 # 스매싱
 
 **스매싱 - 스포츠인을 위한 매칭은 계속된다**
 
 
-<img width="5760" height="3240" alt="Image" src="https://github.com/user-attachments/assets/6cbeb050-50df-4f5c-9084-721ab8689100" />
+<img width="100%" alt="Image" src="https://github.com/user-attachments/assets/6cbeb050-50df-4f5c-9084-721ab8689100" />
 
 > **스매싱**은 **2030 세대의 스포츠 자아 완성을 돕는 게이미키케이션 기반** 스포츠 매칭 플랫폼 입니다.
 
@@ -15,36 +15,30 @@
 
 ## 🏸주요 기능
 
-<img width="590" height="831" alt="Image"
-src="https://github.com/user-attachments/assets/5a24f127-4690-4b6a-bd92-f149c91edd9b" /
+<img width="590" alt="Image" src="https://github.com/user-attachments/assets/5a24f127-4690-4b6a-bd92-f149c91edd9b" />
 
 ## **✨ Contributors**
 
-|                🏸공승준<br/>[@seungjunGong](https://github.com/seungjunGong)                 |             🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol)              |                    🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf)                     |
-|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
-| ![Image](https://github.com/user-attachments/assets/6f6be45f-f50e-4524-85ee-04d18de151ca) | ![Image](https://github.com/user-attachments/assets/73ae097d-a726-4f73-b626-e76e0303c125) | ![Image](https://github.com/user-attachments/assets/97c337ad-cc2d-4c71-93f2-24018106ce26) |
-|                                  `매칭 관리`,`매칭 결과 작성`,`알림`                                  |                                            `홈`                                            |                                    `온보딩`,`로그인`,`매칭 탐색`                                    |
-
-|                  🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda)                   |
-|:-----------------------------------------------------------------------------------------:|
-| ![Image](https://github.com/user-attachments/assets/f24a040c-50e9-4c6a-85bd-6eb8941cd572) |
-|                                     `프로필`,`매칭 결과 확인`                                      |
+| 🏸공승준<br/>[@seungjunGong](https://github.com/seungjunGong) | 🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol) | 🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf) | 🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda) |
+| :---: | :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/6f6be45f-f50e-4524-85ee-04d18de151ca" width="100%" /> | <img src="https://github.com/user-attachments/assets/73ae097d-a726-4f73-b626-e76e0303c125" width="100%" /> | <img src="https://github.com/user-attachments/assets/97c337ad-cc2d-4c71-93f2-24018106ce26" width="100%" /> | <img src="https://github.com/user-attachments/assets/f24a040c-50e9-4c6a-85bd-6eb8941cd572" width="100%" /> |
+| `매칭 관리`,`매칭 결과 작성`,`알림` | `홈` | `온보딩`,`로그인`,`매칭 탐색` | `프로필`,`매칭 결과 확인` |
 
 <br/>
 
 ## **⚒️ Tech Stacks**
 
-| 항목               | 기술 스택                                                  |
-|------------------|--------------------------------------------------------|
-| Architecture     | Google Recommended Architecture                        |
-| Pattern          | MVVM                                                   |
-| DI               | Hilt                                                   |
-| Asynchronous     | Coroutine, Flow                                        |
-| Network          | Retrofit2, OkHttp                                      |
-| Navigation       | Single Activity Architecture (SAA), Jetpack Navigation |
-| UI Framework     | Jetpack Compose                                        |
-| Image Processing | Coil, Lottie                                           |
-| Logging          | Timber                                                 |
+| 항목 | 기술 스택 |
+| :--- | :--- |
+| Architecture | Google Recommended Architecture |
+| Pattern | MVVM |
+| DI | Hilt |
+| Asynchronous | Coroutine, Flow |
+| Network | Retrofit2, OkHttp |
+| Navigation | Single Activity Architecture (SAA), Jetpack Navigation |
+| UI Framework | Jetpack Compose |
+| Image Processing | Coil, Lottie |
+| Logging | Timber |
 
 <br/>
 
@@ -73,53 +67,53 @@ UI와 로직을 명확히 분리할 수 있어서 협업 시 역할 구분이 �
 - **Naming Convention**
 - **Packaging Convention**
 
-<br/>  
+<br/>
 
 ## **🗂️ Project Structure**
 
 ```text
 Google Recommned Architecture
 🗃️ smashing.app
-├─ 🗃️ core                          
-│  ├─ 🗃️ common                     
-│  │  ├─ 📁 navigation              
-│  │  ├─ 📁 state                   
-│  │  └─ 📁 type                    
-│  ├─ 🗃️ designsystem               
-│  │  ├─ 📁 component               
-│  │  └─ 📁 theme                   
-│  ├─ 📁 extension                  
+├─ 🗃️ core
+│  ├─ 🗃️ common
+│  │  ├─ 📁 navigation
+│  │  ├─ 📁 state
+│  │  └─ 📁 type
+│  ├─ 🗃️ designsystem
+│  │  ├─ 📁 component
+│  │  └─ 📁 theme
+│  ├─ 📁 extension
 │  ├─ 🗃️ local
-│  │  ├─ 📁 datastore               
-│  │  └─ 📁 room                    
-│  ├─ 🗃️ network                    
-│  └─ 📁 util                       
+│  │  ├─ 📁 datastore
+│  │  └─ 📁 room
+│  ├─ 🗃️ network
+│  └─ 📁 util
 │
-├─ 🗃️ data                         
+├─ 🗃️ data
 │  ├─ 🗃️ di(feature 기반)
 │  ├─ 🗃️ local
 │  │  ├─ 📁 datasource
-│  │  │  ├─ 📁 api                  
-│  │  │  └─ 📁 impl                
-│  │  └─ 📁 entity 
+│  │  │  ├─ 📁 api
+│  │  │  └─ 📁 impl
+│  │  └─ 📁 entity
 │  ├─ 🗃️ remote
 │  │  ├─ 📁 datasource
-│  │  │  ├─ 📁 api                  
-│  │  │  └─ 📁 impl                 
-│  │  ├─ 📁 dto                     
-│  │  └─ 📁 service                 
+│  │  │  ├─ 📁 api
+│  │  │  └─ 📁 impl
+│  │  ├─ 📁 dto
+│  │  └─ 📁 service
 │  ├─ 🗃️ mapper(dto ↔ model 변환)
 │  ├─ 🗃️ model(feature 기반)
 │  └─ 🗃️ repository
-│     ├─ 📁 api                     
-│     └─ 📁 impl                   
+│     ├─ 📁 api
+│     └─ 📁 impl
 │
-├─ 🗃️ domain                        
-│  ├─ 📁 model                      
-│  ├─ 📁 usecase                    
-│  └─ 📁 mapper                    
+├─ 🗃️ domain
+│  ├─ 📁 model
+│  ├─ 📁 usecase
+│  └─ 📁 mapper
 │
-└─ 🗃️ presentation                  
-   ├─ 📁 main                 
+└─ 🗃️ presentation
+   ├─ 📁 main
    └─ 📁 home
       ...
