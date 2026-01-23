@@ -28,6 +28,7 @@ interface ConfirmContract {
         val showDenyBottomSheet: Boolean = false,
         val showRejectDialog: Boolean = false,
         val selectedDenyReason: ConfirmDenyType? = null,
+        val showConfirmDialog: Boolean = false,
     )
 
     sealed interface SideEffect {

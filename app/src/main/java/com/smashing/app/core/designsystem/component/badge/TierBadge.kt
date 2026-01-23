@@ -59,6 +59,7 @@ private fun getTierBadgeColors(
     DIAMOND_1, DIAMOND_2, DIAMOND_3 -> colors.tierDiamondBg to colors.tierDiamondTxt
     CHALLENGER -> colors.tierChallengerBg to colors.tierChallengerTxt
     IRON -> colors.tierIronBg to colors.tierIronTxt
+    MAX -> colors.tierMaxBg to colors.tierMaxTxt
 }
 
 @Preview(showBackground = true)

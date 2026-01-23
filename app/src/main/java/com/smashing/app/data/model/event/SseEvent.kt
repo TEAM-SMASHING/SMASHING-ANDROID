@@ -48,6 +48,8 @@ sealed interface SseEvent {
     // 게임 상태 업데이트
     data class GameUpdated(
         val gameId: String,
+        val submissionId: String?,
+        val attemptNo: Int?,
         val resultStatus: GameResultStatusType,
     ) : SseEvent
 
@@ -71,7 +73,7 @@ sealed interface SseEvent {
         val sportType: SportType,
         val receiverProfileId: String,
         val gameId: String,
-        val submitter: UserSummary,
+        val rejector: UserSummary,
     ) : SseEvent
 
     // 후기 수신 알림

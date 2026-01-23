@@ -21,6 +21,10 @@ data class GameResultRejectedNotificationDto(
     val receiverProfileId: String,
     @SerialName("gameId")
     val gameId: String,
-    @SerialName("submitter")
-    val submitter: UserSummaryDto,
+    @SerialName("submissionId")
+    val submissionId: String,
+    @SerialName("reason")
+    val reason: String,
+    @SerialName("rejector")
+    val rejector: UserSummaryDto,
 )

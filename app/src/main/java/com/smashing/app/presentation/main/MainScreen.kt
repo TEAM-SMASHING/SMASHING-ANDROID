@@ -151,7 +151,7 @@ fun MainScreen(
             }
             SnackbarHost(
                 hostState = snackBarHostState,
-                modifier =  Modifier
+                modifier = Modifier
                     .align(
                         alignment = Alignment.BottomCenter,
                     )
