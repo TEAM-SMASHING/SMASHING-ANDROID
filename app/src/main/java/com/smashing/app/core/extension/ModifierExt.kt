@@ -1,12 +1,15 @@
 package com.smashing.app.core.extension
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.BringIntoViewResponder
 import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewResponder
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +25,8 @@ import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.core.graphics.plus
 import kotlinx.coroutines.delay
 
 /**
@@ -51,7 +56,7 @@ fun Modifier.noRippleClickable(
 fun Modifier.bringIntoViewOnFocus(
     isFocused: Boolean,
     extraBottom: Dp,
-    delayMillis: Long = 400L,
+    delayMillis: Long = 0L,
 ): Modifier = composed {
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     var layoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
@@ -95,4 +100,26 @@ fun Modifier.clearFocus(
         doOnClear()
         focusManager.clearFocus()
     })
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+fun Modifier.preventCursorScroll(): Modifier = composed {
+    val density = LocalDensity.current
+    val imeBottom = WindowInsets.ime.getBottom(density)
+    val extraBottomPx = imeBottom.toFloat()
+
+    this.bringIntoViewResponder(
+        object : BringIntoViewResponder {
+            override fun calculateRectForParent(localRect: Rect): Rect {
+                return Rect(
+                    left = localRect.left,
+                    top = localRect.top,
+                    right = localRect.right,
+                    bottom = extraBottomPx,
+                )
+            }
+            override suspend fun bringChildIntoView(localRect: () -> Rect?) {
+            }
+        }
+    )
 }
