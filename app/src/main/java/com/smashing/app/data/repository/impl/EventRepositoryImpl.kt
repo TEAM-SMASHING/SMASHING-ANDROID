@@ -40,10 +40,7 @@ class EventRepositoryImpl @Inject constructor(
     init {
         remoteDataSource.rawEvents
             .onEach { raw ->
-                Timber.tag(TAG).d("SSE Raw Event - name: %s, data: %s", raw.eventName, raw.data)
-
                 val eventType = SseEventType.fromEventName(raw.eventName) ?: run {
-                    Timber.tag(TAG).w("Unknown event type: %s", raw.eventName)
                     return@onEach
                 }
 
