@@ -1,5 +1,7 @@
 package com.smashing.app.presentation.home.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -35,15 +37,15 @@ fun NavController.navigateToRegionChange(
 ) = navigate(RegionChange, navOptions)
 
 fun NavGraphBuilder.homeGraph(
+    innerPadding: PaddingValues,
     navController: NavController,
-    updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Home>(
         startDestination = HomeUser,
     ) {
         composable<HomeUser> {
             HomeRoute(
-                modifier = Modifier,
+                modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
                 navigateToNotice = { profileId ->
                     navController.navigateToNotice(profileId = profileId)
                 },
@@ -80,7 +82,6 @@ fun NavGraphBuilder.homeGraph(
                     )
                 },
                 navigateToMyProfile = navController::navigateToMyProfile,
-                updateBottomBar = updateBottomBar,
             )
         }
 

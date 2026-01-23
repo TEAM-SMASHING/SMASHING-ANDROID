@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -16,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,8 +28,6 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.type.SportType
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
@@ -44,7 +40,6 @@ fun MyProfileRoute(
     navigateToSportAdd: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToReview: (String?) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
@@ -61,7 +56,6 @@ fun MyProfileRoute(
     MyProfileScreen(
         modifier = modifier,
         uiState = uiState,
-        updateBottomBar = updateBottomBar,
         onSportClick = viewModel::selectProfileId,
         onAddSportClick = navigateToSportAdd,
         navigateToTierInfo = {
@@ -81,23 +75,16 @@ private fun MyProfileScreen(
     navigateToTierInfo: () -> Unit,
     onReviewClick: (String?) -> Unit,
     onSportClick: (String) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val isMaxProfileReached = uiState.sportProfileList.size >= 3
 
-    val nestedScrollConnection = bottomBarNestedScrollConnection(
-        scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
-        onBottomBarVisibilityChange = updateBottomBar,
-    )
-
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas)
-            .systemBarsPadding(),
-    ) {
+            .background(color = SmashingTheme.colors.bgCanvas),
+        ) {
 
         SmashingDefaultTopBar(
             title = stringResource(profile),
@@ -108,7 +95,6 @@ private fun MyProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .nestedScroll(nestedScrollConnection)
                 .verticalScroll(scrollState)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
@@ -147,8 +133,7 @@ private fun MyProfileScreen(
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
             )
-
-            Spacer(Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(0.dp))
         }
     }
 }
@@ -163,7 +148,6 @@ private fun ProfileScreenPreview() {
             navigateToTierInfo = {},
             onReviewClick = {},
             onSportClick = {},
-            updateBottomBar = {},
         )
     }
 }
