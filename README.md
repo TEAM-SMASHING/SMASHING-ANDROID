@@ -15,7 +15,7 @@
 
 ## 🏸주요 기능
 
-<img width="590" alt="Image" src="https://github.com/user-attachments/assets/5a24f127-4690-4b6a-bd92-f149c91edd9b" />
+<img width="590" height="831" alt="스크린샷, 2026-01-23 오후 8 12 03" src="https://github.com/user-attachments/assets/56a29b3f-c67e-4be3-8323-ee43b8a74582" />
 
 ## **✨ Contributors**
 
