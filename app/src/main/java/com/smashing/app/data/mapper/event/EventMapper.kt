@@ -99,7 +99,7 @@ fun GameResultRejectedNotificationDto.toEvent(): SseEvent.GameResultRejectedNoti
         sportType = SportType.findSportType(sportId),
         receiverProfileId = receiverProfileId,
         gameId = gameId,
-        submitter = submitter.toDomain(),
+        submitter = rejector.toDomain(),
     )
 
 fun ReviewReceivedNotificationDto.toEvent(): SseEvent.ReviewReceivedNotification =
