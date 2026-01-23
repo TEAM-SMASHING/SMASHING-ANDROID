@@ -51,7 +51,7 @@ fun Modifier.noRippleClickable(
 fun Modifier.bringIntoViewOnFocus(
     isFocused: Boolean,
     extraBottom: Dp,
-    delayMillis: Long = 400L,
+    delayMillis: Long = 0L,
 ): Modifier = composed {
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     var layoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
