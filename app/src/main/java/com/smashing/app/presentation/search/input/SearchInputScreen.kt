@@ -72,7 +72,7 @@ private fun SearchInputScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas)
+            .background(color = colors.bgCanvas)
             .systemBarsPadding(),
     ) {
         SmashingSearchTopBar(
