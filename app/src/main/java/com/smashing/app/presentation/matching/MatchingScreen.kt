@@ -327,7 +327,7 @@ private fun MatchingList(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         state = gridState,
-        contentPadding = PaddingValues(bottom = 12.dp),
+        contentPadding = PaddingValues(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
         verticalArrangement = Arrangement.spacedBy(space = 10.dp),
         modifier = modifier

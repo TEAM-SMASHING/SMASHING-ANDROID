@@ -3,6 +3,7 @@ package com.smashing.app.presentation.search.searchmain
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -101,16 +105,21 @@ private fun SearchMainScreen(
 
     val listState = rememberLazyGridState()
 
-    LaunchedEffect(uiState.searchList) {
-        listState.scrollToItem(0)
-    }
+//    var isFirstLoad by remember { mutableStateOf(true) }
+//
+//    LaunchedEffect(uiState.searchList) {
+//        if (isFirstLoad && uiState.searchList.isNotEmpty()) {
+//            listState.scrollToItem(0)
+//            isFirstLoad = false
+//        }
+//    }
 
     val currentIsLoading = uiState.searchRegionUsersUiState is SearchContract.SearchUiState.Loading
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas)
+            .background(color = colors.bgCanvas)
     ) {
 
         SearchTopBar(
@@ -187,10 +196,12 @@ private fun SearchMainScreen(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                        .padding(top = 10.dp)
+                        .padding(horizontal = 16.dp),
                     state = listState,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(bottom = 20.dp)
                 ) {
                     items(
                         items = uiState.searchList,
