@@ -9,7 +9,7 @@
 
 <img width="100%" alt="Image" src="https://github.com/user-attachments/assets/6cbeb050-50df-4f5c-9084-721ab8689100" />
 
-> **스매싱**은 **2030 세대의 스포츠 자아 완성을 돕는 게이미키케이션 기반** 스포츠 매칭 플랫폼 입니다.
+> **스매싱**은 **2030 세대의 스포츠 자아 완성을 돕는 게이미피케이션 기반** 스포츠 매칭 플랫폼 입니다.
 
 <br/>
 
@@ -23,7 +23,7 @@
 | 🏸공승준(LEAD)<br/>[@seungjunGong](https://github.com/seungjunGong) | 🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol) | 🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf) | 🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda) |
 | :---: | :---: | :---: | :---: |
 | <img src="https://github.com/user-attachments/assets/6f6be45f-f50e-4524-85ee-04d18de151ca" height="200" /> | <img src="https://github.com/user-attachments/assets/73ae097d-a726-4f73-b626-e76e0303c125" height="200" /> | <img src="https://github.com/user-attachments/assets/97c337ad-cc2d-4c71-93f2-24018106ce26" height="200" /> | <img src="https://github.com/user-attachments/assets/f24a040c-50e9-4c6a-85bd-6eb8941cd572" height="200" /> |
-| `매칭 관리`,`매칭 결과 작성`,`알림` | `홈`,`랭킹`, `지역 검색`| `온보딩`,`로그인`,`매칭 탐색` | `프로필`,`매칭 결과 확인` |
+| `매칭 관리`,`매칭 결과 작성`,<br/>`알림` | `홈`,`랭킹`,<br/> `지역 검색`| `온보딩`,`로그인`,<br/>`매칭 탐색` | `프로필`,<br/>`매칭 결과 확인` |
 
 <br/>
 
@@ -35,7 +35,7 @@
 | Pattern | MVVM |
 | DI | Hilt |
 | Asynchronous | Coroutine, Flow |
-| Network | Retrofit2, OkHttp |
+| Network | Retrofit2, OkHttp, OkHttp-SSE |
 | Navigation | Single Activity Architecture (SAA), Jetpack Navigation |
 | UI Framework | Jetpack Compose |
 | Image Processing | Coil, Lottie |
