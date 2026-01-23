@@ -15,14 +15,15 @@
 
 ## 🏸주요 기능
 
-<img width="590" height="831" alt="스크린샷, 2026-01-23 오후 8 12 03" src="https://github.com/user-attachments/assets/56a29b3f-c67e-4be3-8323-ee43b8a74582" />
+![폼보드-2](https://github.com/user-attachments/assets/e2ab9997-d3a1-4dd0-b41d-741e7a3ae40f)
+
 
 ## **✨ Contributors**
 
 | 🏸공승준<br/>[@seungjunGong](https://github.com/seungjunGong) | 🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol) | 🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf) | 🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda) |
 | :---: | :---: | :---: | :---: |
 | <img src="https://github.com/user-attachments/assets/6f6be45f-f50e-4524-85ee-04d18de151ca" height="200" /> | <img src="https://github.com/user-attachments/assets/73ae097d-a726-4f73-b626-e76e0303c125" height="200" /> | <img src="https://github.com/user-attachments/assets/97c337ad-cc2d-4c71-93f2-24018106ce26" height="200" /> | <img src="https://github.com/user-attachments/assets/f24a040c-50e9-4c6a-85bd-6eb8941cd572" height="200" /> |
-| `매칭 관리`,`매칭 결과 작성`,`알림` | `홈` | `온보딩`,`로그인`,`매칭 탐색` | `프로필`,`매칭 결과 확인` |
+| `매칭 관리`,`매칭 결과 작성`,`알림` | `홈`, `랭킹`| `온보딩`,`로그인`,`매칭 탐색` | `프로필`,`매칭 결과 확인` |
 
 <br/>
 
