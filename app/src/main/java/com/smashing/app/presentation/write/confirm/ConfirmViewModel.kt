@@ -120,7 +120,12 @@ class ConfirmViewModel @Inject constructor(
 
     fun confirmSubmission() = viewModelScope.launch {
         val state = _uiState.value
-        _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
+        _uiState.update { 
+            it.copy(
+                confirmUiState = ConfirmUiState.Loading,
+                showConfirmDialog = false,
+            ) 
+        }
 
         val submissionConfirm = SubmissionConfirm(
             rating = state.selectedRating ?: return@launch,
@@ -162,6 +167,14 @@ class ConfirmViewModel @Inject constructor(
 
     fun hideRejectDialog() = _uiState.update {
         it.copy(showRejectDialog = false)
+    }
+
+    fun showConfirmDialog() = _uiState.update {
+        it.copy(showConfirmDialog = true)
+    }
+
+    fun hideConfirmDialog() = _uiState.update {
+        it.copy(showConfirmDialog = false)
     }
 
     fun updateSelectedDenyReason(reason: ConfirmDenyType) = _uiState.update {
