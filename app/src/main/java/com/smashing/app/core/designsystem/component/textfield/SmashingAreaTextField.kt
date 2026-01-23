@@ -38,6 +38,7 @@ import com.smashing.app.core.designsystem.theme.SmashingColors
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.bringIntoViewOnFocus
 import com.smashing.app.core.extension.checkLength
+import com.smashing.app.core.extension.preventCursorScroll
 
 private const val AREA_RATIO = 296 / 128f
 
@@ -85,8 +86,9 @@ fun SmashingAreaTextField(
             .padding(horizontal = 16.dp, vertical = 14.dp)
             .bringIntoViewOnFocus(
                 isFocused = isFocused,
-                extraBottom = 13.dp,
-            ),
+                extraBottom = 0.dp
+            )
+            .preventCursorScroll(),
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
