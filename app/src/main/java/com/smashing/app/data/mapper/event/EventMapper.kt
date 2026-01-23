@@ -76,6 +76,7 @@ fun MatchingAcceptNotificationDto.toEvent(): SseEvent.MatchingAcceptNotification
 fun GameUpdatedDto.toEvent(): SseEvent.GameUpdated =
     SseEvent.GameUpdated(
         gameId = gameId,
+        submissionId = submissionId,
         resultStatus = GameResultStatusType.findByResultStatus(resultStatus),
     )
 
@@ -99,7 +100,7 @@ fun GameResultRejectedNotificationDto.toEvent(): SseEvent.GameResultRejectedNoti
         sportType = SportType.findSportType(sportId),
         receiverProfileId = receiverProfileId,
         gameId = gameId,
-        submitter = rejector.toDomain(),
+        rejector = rejector.toDomain(),
     )
 
 fun ReviewReceivedNotificationDto.toEvent(): SseEvent.ReviewReceivedNotification =
