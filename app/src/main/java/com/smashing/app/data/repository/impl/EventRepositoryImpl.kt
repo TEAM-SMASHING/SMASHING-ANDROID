@@ -40,6 +40,8 @@ class EventRepositoryImpl @Inject constructor(
     init {
         remoteDataSource.rawEvents
             .onEach { raw ->
+                Timber.tag(SSE_LOG_TAG).d("SSE Raw Event - name: %s, data: %s", raw.eventName, raw.data)
+
                 val eventType = SseEventType.fromEventName(raw.eventName) ?: run {
                     return@onEach
                 }
@@ -73,10 +75,10 @@ class EventRepositoryImpl @Inject constructor(
                             json.decodeFromString<ReviewReceivedNotificationDto>(raw.data).toEvent()
                     }
                 }.onFailure { error ->
-                    Timber.tag(TAG).e(error, "SSE Event parsing failed - type: %s", eventType)
+                    Timber.tag(SSE_LOG_TAG).e(error, "SSE Event parsing failed - type: %s", eventType)
                 }.getOrNull() ?: return@onEach
 
-                Timber.tag(TAG).d("SSE Event emitted - %s", event)
+                Timber.tag(SSE_LOG_TAG).d("event emitted - %s", event)
                 _events.tryEmit(event)
             }
             .launchIn(externalScope)
@@ -86,6 +88,6 @@ class EventRepositoryImpl @Inject constructor(
     override fun disconnect() = remoteDataSource.disconnect()
 
     companion object {
-        private const val TAG = "EventRepository"
+        private const val SSE_LOG_TAG = "SSE LOG"
     }
 }

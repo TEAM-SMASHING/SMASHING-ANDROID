@@ -30,7 +30,7 @@ class LoginViewModel @Inject constructor(
                 authRepository.postKakaoLogin(token)
                     .onSuccess {
                         if (it.isCompletedSignUp) {
-                            sseManager.connect()
+                            sseManager.onUserLoggedIn()
                             _sideEffect.emit(LoginContract.SideEffect.NavigateToHome)
                         } else {
                             _sideEffect.emit(NavigateToSignUp(it.kakaoId))

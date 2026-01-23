@@ -200,7 +200,7 @@ class SignUpViewModel @Inject constructor(
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {
-                    sseManager.connect()
+                    sseManager.onUserLoggedIn()
                     updateCurrentStep()
                 }
                 .onFailure { error ->

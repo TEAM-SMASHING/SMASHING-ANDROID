@@ -37,6 +37,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        sseManager.connect()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        sseManager.disconnect()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         if (!isChangingConfigurations) {
