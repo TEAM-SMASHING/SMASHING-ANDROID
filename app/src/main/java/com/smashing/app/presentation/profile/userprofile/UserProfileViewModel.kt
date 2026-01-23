@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -158,35 +157,67 @@ class UserProfileViewModel @Inject constructor(
         _uiState.update {
             it.copy(isDialogVisible = false)
         }
+        fetchProfileInfo()
     }
 
     companion object {
         private const val CURSOR_SIZE = 3
     }
 
-    fun onYesClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 수락 API 호출
-            _uiState.update {
-                it.copy(isMatchingRequest = false)
-            }
-        }
-    }
-
-    fun onNoClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 거절/건너뛰기 API 호출
-
-            _uiState.update {
-                it.copy(
-                    isMatchingRequest = false,
+    fun onYesClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if (receivedMatchingId != null) {
+            matchingRepository.postAcceptedMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success
+                    )
+                }
+                _sideEffect.emit(
+                    UserProfileContract.SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요.")
                 )
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
+                    )
+                }
             }
         }
     }
+
+
+    fun onNoClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if (receivedMatchingId != null) {
+            matchingRepository.postRejectMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success
+                    )
+                }
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error"
+                        )
+                    )
+                }
+            }
+        }
+    }
+
 
     fun requestCompetition() {
-
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
             matchingRepository.postMatching(

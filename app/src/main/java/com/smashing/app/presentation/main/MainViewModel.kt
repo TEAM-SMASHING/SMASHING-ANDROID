@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.model.event.SseEvent
 import com.smashing.app.data.repository.api.EventRepository
-import com.smashing.app.data.type.GameResultStatusType
+import com.smashing.app.data.type.MatchingStatusType
 import com.smashing.app.presentation.main.MainContract.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,8 +35,8 @@ class MainViewModel @Inject constructor(
                         )
                     }
 
-                    is SseEvent.GameUpdated -> {
-                        if (event.resultStatus == GameResultStatusType.WAITING_CONFIRMATION) {
+                    is SseEvent.MatchingUpdated -> {
+                        if (event.status == MatchingStatusType.ACCEPTED) {
                             _sideEffect.emit(
                                 SideEffect.ShowToast("누군가가 매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요.")
                             )

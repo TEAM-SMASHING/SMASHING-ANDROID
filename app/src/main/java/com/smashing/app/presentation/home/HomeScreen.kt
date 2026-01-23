@@ -49,7 +49,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
-import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
@@ -84,6 +83,7 @@ fun HomeRoute(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
@@ -108,11 +108,6 @@ fun HomeRoute(
     LaunchedEffect(uiState.recommendedUserList) {
         recommendedUserListState.scrollToItem(0)
     }
-
-    // TODO 토스트 예시
-    val show = LocalToastTrigger.current
-    show.invoke("토스트 테스트입니다.")
-    show.invoke("토스트 테스트입니다.")
 
     HomeScreen(
         uiState = uiState,
@@ -156,6 +151,7 @@ private fun HomeScreen(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
@@ -303,6 +299,7 @@ private fun HomeScreen(
                                         matching.userId,
                                         matching.nickname,
                                         true,
+                                        matching.latestSubmissionId,
                                     )
                                 }
 
@@ -312,6 +309,7 @@ private fun HomeScreen(
                                         matching.userId,
                                         matching.nickname,
                                         false,
+                                        matching.latestSubmissionId,
                                     )
                                 }
 
@@ -646,8 +644,8 @@ private fun HomeScreenPreview() {
         navigateToUserProfile = {},
         navigateToSportAdd = {},
         navigateToSearch = {},
-        navigateToSubmit = { _, _, _, _ -> },
-        navigateToConfirm = { _, _, _ -> },
+        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
+        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
         navigateToMyProfile = {},
         onSportsChipClick = {},
     )
@@ -691,9 +689,9 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToUserProfile = {},
         navigateToSportAdd = {},
         navigateToSearch = {},
-        navigateToSubmit = { _, _, _, _ -> },
-        navigateToConfirm = { _, _, _ -> },
         navigateToMyProfile = {},
+        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
+        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
         onSportsChipClick = {},
     )
 }

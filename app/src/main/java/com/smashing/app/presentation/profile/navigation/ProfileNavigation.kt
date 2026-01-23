@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
@@ -46,7 +47,7 @@ fun NavGraphBuilder.profileGraph(
     ) {
         composable<MyProfile> {
             MyProfileRoute(
-                navigateToSportAdd = { navController.navigateToAddSports() },
+                navigateToSportAdd = navController::navigateToAddSports,
                 navigateToReview = { userId -> navController.navigateToReview(userId = userId) },
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(
@@ -57,19 +58,30 @@ fun NavGraphBuilder.profileGraph(
                 modifier = Modifier.padding(innerPadding)
             )
         }
+
         composable<UserProfile> {
             UserProfileRoute(
                 navigateToReview = { userId ->
                     navController.navigateToReview(userId = userId)
                 },
                 navigateUp = navController::navigateUp,
-                navigateToSentMatching = { navController.navigateToMatching(initTab = MatchingType.SEND) }
+                navigateToSentMatching = {
+                    navController.navigateToMatching(
+                        initTab = MatchingType.SEND,
+                        navOptions = navOptions {
+                            popUpTo<UserProfile> {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    )
+                }
             )
         }
 
         composable<Review> {
             AllReviewRoute(
-                navigateUp = { navController.navigateUp() },
+                navigateUp = navController::navigateUp,
             )
         }
     }
@@ -93,5 +105,3 @@ data class Review(
     val sportCode: String?,
     val isUser: Boolean = true,
 ) : Route
-
-

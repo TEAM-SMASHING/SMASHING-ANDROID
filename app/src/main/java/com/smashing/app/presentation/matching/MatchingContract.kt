@@ -40,6 +40,10 @@ interface MatchingContract {
             val gameId: String,
             val isFirstAttempt: Boolean,
         ) : SideEffect
+        
+        data class ShowToast(
+            val message: String,
+        ) : SideEffect
     }
 }
 
