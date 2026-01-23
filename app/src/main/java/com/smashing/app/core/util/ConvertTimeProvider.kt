@@ -37,13 +37,19 @@ object ConvertTimeProvider {
 
         return convertedTime
     }
+
     fun calculateNotificationTime(timeString: String): String {
         return runCatching {
             val cleanTime = timeString.replace(" ", "T")
 
-            val localDateTime = LocalDateTime.parse(cleanTime, DateTimeFormatter.ISO_DATE_TIME)
+            val localDateTime = try {
+                LocalDateTime.parse(cleanTime, DateTimeFormatter.ISO_DATE_TIME)
+            } catch (e: Exception) {
+                val fallbackFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                LocalDateTime.parse(timeString, fallbackFormatter)
+            }
 
-            val createdTime = localDateTime.atZone(ZoneId.of("UTC")).toInstant()
+            val createdTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).toInstant()
             val now = Instant.now()
 
             val duration = Duration.between(createdTime, now)
@@ -62,7 +68,9 @@ object ConvertTimeProvider {
                 days < 365 -> "${days / 30}달 전"
                 else -> "${days / 365}년 전"
             }
-        }.getOrElse { "" }
+        }.getOrElse {
+            ""
+        }
     }
 
     private fun parseToInstant(time: String): Instant? =
