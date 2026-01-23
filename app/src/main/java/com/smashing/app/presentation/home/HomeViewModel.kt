@@ -36,6 +36,13 @@ class HomeViewModel @Inject constructor(
         fetchMatchedUser()
     }
 
+    fun refreshHomeData() {
+        fetchMyTierProfile()
+        fetchRegionRankerList()
+        fetchRecommendedUserList()
+        fetchMatchedUser()
+    }
+
     fun fetchMyTierProfile() = viewModelScope.launch {
         myRepository.getMyTierProfile()
             .onSuccess { userProfile ->
