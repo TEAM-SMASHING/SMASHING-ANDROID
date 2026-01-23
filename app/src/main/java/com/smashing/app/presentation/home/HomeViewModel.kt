@@ -93,14 +93,18 @@ class HomeViewModel @Inject constructor(
             order = OrderType.OLDEST,
         )
             .onSuccess { cursorPage ->
-                val activeMatching = cursorPage.items.firstOrNull { it.resultStatus != GameResultStatusType.CANCELED }
-                
+                val activeMatching =
+                    cursorPage.items.firstOrNull { it.resultStatus != GameResultStatusType.CANCELED }
+
                 if (activeMatching != null) {
                     _uiState.update { currentState ->
                         currentState.copy(matchedUser = activeMatching)
                     }
                 } else if (cursorPage.cursor.hasNext) {
-                    fetchMatchedUserInternal(cursorPage.cursor.snapshotAt, cursorPage.cursor.nextCursor)
+                    fetchMatchedUserInternal(
+                        cursorPage.cursor.snapshotAt,
+                        cursorPage.cursor.nextCursor
+                    )
                 } else {
                     _uiState.update { currentState ->
                         currentState.copy(matchedUser = null)
@@ -220,7 +224,7 @@ class HomeViewModel @Inject constructor(
                             matchedUser = currentMatchedUser.copy(
                                 resultStatus = GameResultStatusType.RESULT_REJECTED,
                                 latestSubmissionId = event.submissionId,
-                                latestAttemptNo = 1,
+                                latestAttemptNo = event.attemptNo,
                             )
                         )
                     }
