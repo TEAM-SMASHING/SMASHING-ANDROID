@@ -23,7 +23,7 @@
 | 🏸공승준(LEAD)<br/>[@seungjunGong](https://github.com/seungjunGong) | 🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol) | 🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf) | 🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda) |
 | :---: | :---: | :---: | :---: |
 | <img src="https://github.com/user-attachments/assets/6f6be45f-f50e-4524-85ee-04d18de151ca" height="200" /> | <img src="https://github.com/user-attachments/assets/73ae097d-a726-4f73-b626-e76e0303c125" height="200" /> | <img src="https://github.com/user-attachments/assets/97c337ad-cc2d-4c71-93f2-24018106ce26" height="200" /> | <img src="https://github.com/user-attachments/assets/f24a040c-50e9-4c6a-85bd-6eb8941cd572" height="200" /> |
-| `매칭 관리`,`매칭 결과 작성`,`알림` | `홈`, `랭킹`| `온보딩`,`로그인`,`매칭 탐색` | `프로필`,`매칭 결과 확인` |
+| `매칭 관리`,`매칭 결과 작성`,`알림` | `홈`,`랭킹`, `지역 검색`| `온보딩`,`로그인`,`매칭 탐색` | `프로필`,`매칭 결과 확인` |
 
 <br/>
 
@@ -77,16 +77,20 @@ Google Recommned Architecture
 🗃️ smashing.app
 ├─ 🗃️ core
 │  ├─ 🗃️ common
+│  │  ├─ 📁 constant
+│  │  ├─ 📁 di
 │  │  ├─ 📁 navigation
 │  │  ├─ 📁 state
 │  │  └─ 📁 type
 │  ├─ 🗃️ designsystem
 │  │  ├─ 📁 component
+│  │  ├─ 📁 mapper
+│  │  ├─ 📁 state
+│  │  ├─ 📁 style
 │  │  └─ 📁 theme
 │  ├─ 📁 extension
 │  ├─ 🗃️ local
-│  │  ├─ 📁 datastore
-│  │  └─ 📁 room
+│  │  └─ 📁 datastore
 │  ├─ 🗃️ network
 │  └─ 📁 util
 │
@@ -96,7 +100,6 @@ Google Recommned Architecture
 │  │  ├─ 📁 datasource
 │  │  │  ├─ 📁 api
 │  │  │  └─ 📁 impl
-│  │  └─ 📁 entity
 │  ├─ 🗃️ remote
 │  │  ├─ 📁 datasource
 │  │  │  ├─ 📁 api
@@ -106,9 +109,9 @@ Google Recommned Architecture
 │  ├─ 🗃️ mapper(dto ↔ model 변환)
 │  ├─ 🗃️ model(feature 기반)
 │  └─ 🗃️ repository
-│     ├─ 📁 api
-│     └─ 📁 impl
-│
+│  │  ├─ 📁 api
+│  │  └─ 📁 impl
+│  ├─ 🗃️type
 ├─ 🗃️ domain
 │  ├─ 📁 model
 │  ├─ 📁 usecase
