@@ -73,7 +73,7 @@ UI와 로직을 명확히 분리할 수 있어서 협업 시 역할 구분이 �
 ## **🗂️ Project Structure**
 
 ```text
-Google Recommned Architecture
+Google Recommended Architecture
 🗃️ smashing.app
 ├─ 🗃️ core
 │  ├─ 🗃️ common
