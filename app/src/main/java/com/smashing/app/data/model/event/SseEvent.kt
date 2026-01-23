@@ -49,6 +49,7 @@ sealed interface SseEvent {
     data class GameUpdated(
         val gameId: String,
         val submissionId: String?,
+        val attemptNo: Int?,
         val resultStatus: GameResultStatusType,
     ) : SseEvent
 

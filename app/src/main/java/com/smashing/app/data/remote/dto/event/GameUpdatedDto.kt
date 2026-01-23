@@ -11,6 +11,8 @@ data class GameUpdatedDto(
     val gameId: String,
     @SerialName("submissionId")
     val submissionId: String?,
+    @SerialName("submissionAttemptNo")
+    val submissionAttemptNo: Int?,
     @SerialName("resultStatus")
     val resultStatus: String,
 )

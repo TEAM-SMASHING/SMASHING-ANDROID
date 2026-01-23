@@ -343,129 +343,131 @@ class MatchingViewModel @Inject constructor(
     private fun observeSseEvents() = viewModelScope.launch {
         eventRepository.events.collect { event ->
             when (event) {
-                is SseEvent.MatchingUpdated -> {
-                    when (event.status) {
-                        MatchingStatusType.CANCELLED -> {
-                            _uiState.update { currentState ->
-                                val updatedList = currentState.receivedList
-                                    .filter { it.matchingId != event.matchingId }
-                                    .toImmutableList()
-                                currentState.copy(
-                                    receivedList = updatedList,
-                                    receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
-                                )
-                            }
-                        }
+                is SseEvent.MatchingUpdated -> handleMatchingUpdated(event)
+                is SseEvent.MatchingReceived -> handleMatchingReceived(event)
+                is SseEvent.GameUpdated -> handleGameUpdated(event)
+                else -> Unit
+            }
+        }
+    }
 
-                        MatchingStatusType.ACCEPTED -> {
-                            _uiState.update { currentState ->
-                                val updatedList = currentState.sentList
-                                    .filter { it.matchingId != event.matchingId }
-                                    .toImmutableList()
-                                currentState.copy(
-                                    sentList = updatedList,
-                                    sentUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
-                                )
-                            }
-                        }
-
-                        else -> Unit
-                    }
-                }
-
-                is SseEvent.MatchingReceived -> {
-                    val newMatching = ReceivedMatching(
-                        matchingId = event.matchingId,
-                        userId = event.requester.userId,
-                        nickname = event.requester.nickname,
-                        genderType = event.requester.genderType,
-                        tierType = event.requester.tierType,
-                        reviewCount = event.requester.reviewCount,
-                        winCount = event.requester.winCount,
-                        loseCount = event.requester.loseCount,
-                        createdAt = "",
+    private fun handleMatchingUpdated(event: SseEvent.MatchingUpdated) {
+        when (event.status) {
+            MatchingStatusType.CANCELLED -> {
+                _uiState.update { currentState ->
+                    val updatedList = currentState.receivedList
+                        .filter { it.matchingId != event.matchingId }
+                        .toImmutableList()
+                    currentState.copy(
+                        receivedList = updatedList,
+                        receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
                     )
+                }
+            }
 
-                    _uiState.update { currentState ->
-                        val updatedList =
-                            (listOf(newMatching) + currentState.receivedList).toImmutableList()
+            MatchingStatusType.ACCEPTED, MatchingStatusType.REJECTED -> {
+                _uiState.update { currentState ->
+                    val updatedList = currentState.sentList
+                        .filter { it.matchingId != event.matchingId }
+                        .toImmutableList()
+                    currentState.copy(
+                        sentList = updatedList,
+                        sentUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                    )
+                }
+            }
+
+            else -> Unit
+        }
+    }
+
+    private fun handleMatchingReceived(event: SseEvent.MatchingReceived) {
+        val newMatching = ReceivedMatching(
+            matchingId = event.matchingId,
+            userId = event.requester.userId,
+            nickname = event.requester.nickname,
+            genderType = event.requester.genderType,
+            tierType = event.requester.tierType,
+            reviewCount = event.requester.reviewCount,
+            winCount = event.requester.winCount,
+            loseCount = event.requester.loseCount,
+            createdAt = "",
+        )
+
+        _uiState.update { currentState ->
+            val updatedList = (listOf(newMatching) + currentState.receivedList).toImmutableList()
+            currentState.copy(
+                receivedList = updatedList,
+                receivedUiState = MatchingUiState.Success,
+            )
+        }
+    }
+
+    private fun handleGameUpdated(event: SseEvent.GameUpdated) {
+        when (event.resultStatus) {
+            GameResultStatusType.RESULT_CONFIRMED -> {
+                _uiState.update { currentState ->
+                    val updatedList = currentState.acceptedList
+                        .filter { it.gameId != event.gameId }
+                        .toImmutableList()
+                    currentState.copy(
+                        acceptedList = updatedList,
+                        acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                    )
+                }
+            }
+
+            GameResultStatusType.WAITING_CONFIRMATION -> {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        acceptedList = currentState.acceptedList.map { matching ->
+                            if (matching.gameId == event.gameId) {
+                                matching.copy(
+                                    resultStatus = GameResultStatusType.WAITING_CONFIRMATION,
+                                    latestSubmissionId = event.submissionId,
+                                    latestAttemptNo = event.attemptNo,
+                                )
+                            } else {
+                                matching
+                            }
+                        }.toImmutableList()
+                    )
+                }
+            }
+
+            GameResultStatusType.RESULT_REJECTED -> {
+                _uiState.update { currentState ->
+                    val targetMatching =
+                        currentState.acceptedList.find { it.gameId == event.gameId }
+                    val shouldDelete = (targetMatching?.latestAttemptNo ?: 0) >= 2
+
+                    if (shouldDelete) {
+                        val updatedList = currentState.acceptedList
+                            .filter { it.gameId != event.gameId }
+                            .toImmutableList()
                         currentState.copy(
-                            receivedList = updatedList,
-                            receivedUiState = MatchingUiState.Success,
+                            acceptedList = updatedList,
+                            acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                        )
+                    } else {
+                        currentState.copy(
+                            acceptedList = currentState.acceptedList.map { matching ->
+                                if (matching.gameId == event.gameId) {
+                                    matching.copy(
+                                        resultStatus = GameResultStatusType.RESULT_REJECTED,
+                                        latestSubmissionId = event.submissionId,
+                                        latestAttemptNo = 1,
+                                    )
+                                } else {
+                                    matching
+                                }
+                            }.toImmutableList()
                         )
                     }
                 }
-
-                is SseEvent.GameUpdated -> {
-                    when (event.resultStatus) {
-                        GameResultStatusType.RESULT_CONFIRMED -> {
-                            _uiState.update { currentState ->
-                                val updatedList = currentState.acceptedList
-                                    .filter { it.gameId != event.gameId }
-                                    .toImmutableList()
-                                currentState.copy(
-                                    acceptedList = updatedList,
-                                    acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
-                                )
-                            }
-                        }
-
-                        GameResultStatusType.WAITING_CONFIRMATION -> {
-                            _uiState.update { currentState ->
-                                currentState.copy(
-                                    acceptedList = currentState.acceptedList.map { matching ->
-                                        if (matching.gameId == event.gameId) {
-                                            matching.copy(
-                                                resultStatus = GameResultStatusType.WAITING_CONFIRMATION,
-                                                latestSubmissionId = event.submissionId,
-                                                latestAttemptNo = 1,
-                                            )
-                                        } else {
-                                            matching
-                                        }
-                                    }.toImmutableList()
-                                )
-                            }
-                        }
-
-                        GameResultStatusType.RESULT_REJECTED -> {
-                            _uiState.update { currentState ->
-                                val targetMatching =
-                                    currentState.acceptedList.find { it.gameId == event.gameId }
-                                val shouldDelete = (targetMatching?.latestAttemptNo ?: 0) >= 1
-
-                                if (shouldDelete) {
-                                    val updatedList = currentState.acceptedList
-                                        .filter { it.gameId != event.gameId }
-                                        .toImmutableList()
-                                    currentState.copy(
-                                        acceptedList = updatedList,
-                                        acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
-                                    )
-                                } else {
-                                    currentState.copy(
-                                        acceptedList = currentState.acceptedList.map { matching ->
-                                            if (matching.gameId == event.gameId) {
-                                                matching.copy(
-                                                    resultStatus = GameResultStatusType.RESULT_REJECTED,
-                                                    latestSubmissionId = event.submissionId,
-                                                    latestAttemptNo = 1,
-                                                )
-                                            } else {
-                                                matching
-                                            }
-                                        }.toImmutableList()
-                                    )
-                                }
-                            }
-                        }
-
-                        else -> Unit
-                    }
-                }
-
-                else -> Unit
             }
+
+            else -> Unit
         }
     }
 

@@ -77,6 +77,7 @@ fun GameUpdatedDto.toEvent(): SseEvent.GameUpdated =
     SseEvent.GameUpdated(
         gameId = gameId,
         submissionId = submissionId,
+        attemptNo = submissionAttemptNo,
         resultStatus = GameResultStatusType.findByResultStatus(resultStatus),
     )
 
