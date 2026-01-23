@@ -18,32 +18,30 @@ class SseManager @Inject constructor(
     private var isConnected = false
     private val mutex = Mutex()
 
-    /**
-     * SSE 연결 시작 (로그인 성공 후 호출)
-     */
     fun connect() {
         scope.launch {
             mutex.withLock {
                 if (isConnected) {
+                    Timber.tag(TAG).d("connect - already connected")
                     return@launch
                 }
 
+                Timber.tag(TAG).d("connect - initiating SSE connection")
                 eventRepository.connect()
                 isConnected = true
             }
         }
     }
 
-    /**
-     * SSE 연결 해제 (로그아웃 또는 앱 종료 시 호출)
-     */
     fun disconnect() {
         scope.launch {
             mutex.withLock {
                 if (!isConnected) {
+                    Timber.tag(TAG).d("disconnect - not connected")
                     return@launch
                 }
 
+                Timber.tag(TAG).d("disconnect - terminating SSE connection")
                 eventRepository.disconnect()
                 isConnected = false
             }
@@ -51,6 +49,6 @@ class SseManager @Inject constructor(
     }
 
     companion object {
-        private const val TAG = "SseManager"
+        private const val TAG = "SSE LOG"
     }
 }
