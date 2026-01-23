@@ -53,7 +53,6 @@ fun NavGraphBuilder.searchGraph(
                 navigateToSearchMain = navController::navigateUp,
                 navigateToUserProfile = navController::navigateToUserProfile,
                 viewModel = viewModel,
-                modifier = Modifier.padding(innerPadding)
             )
         }
     }
