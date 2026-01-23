@@ -5,7 +5,7 @@ import com.smashing.app.R
 import com.smashing.app.data.type.TierType
 
 @DrawableRes
-fun TierType.img() = when(this){
+fun TierType.img() = when (this) {
     TierType.IRON -> R.drawable.img_tier_iron
     TierType.BRONZE_3,
     TierType.BRONZE_2,
@@ -23,4 +23,5 @@ fun TierType.img() = when(this){
     TierType.DIAMOND_2,
     TierType.DIAMOND_1 -> R.drawable.img_tier_diamond
     TierType.CHALLENGER -> R.drawable.img_tier_challenger
+    TierType.MAX -> R.drawable.img_tier_challenger
 }
