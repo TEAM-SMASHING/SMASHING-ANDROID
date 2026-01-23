@@ -17,6 +17,7 @@ import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
+import com.smashing.app.presentation.search.navigation.Search
 import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
@@ -69,7 +70,7 @@ fun NavGraphBuilder.profileGraph(
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,
                         navOptions = navOptions {
-                            popUpTo<UserProfile> {
+                            popUpTo<Search> {
                                 inclusive = true
                             }
                             launchSingleTop = true
