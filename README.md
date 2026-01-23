@@ -1,36 +1,34 @@
 # SMASHING-ANDROID
 
-# <img src="![로고.png](../../../Desktop/%EB%A1%9C%EA%B3%A0.png)" /> 스매싱
+<img width="4096" height="4096" alt="Image" src="https://github.com/user-attachments/assets/b2c823be-d58b-4770-87a5-25ad4b77da68" /> 
 
-**스매싱 -스포츠인을 위한 매칭은 계속된다**
+# 스매싱
 
-<img width="4935" height="1758" alt="img_smashing_banner" src="![thro.png](../../../Desktop/thro.png)"/>
+**스매싱 - 스포츠인을 위한 매칭은 계속된다**
 
-> **스매싱**은 **2030 세대의 스포츠 자아 완성을 돕는 **게이미키케이션 기반** 스포츠 매칭 플랫폼 입니다.".<br/>
 
-## Features
+<img width="5760" height="3240" alt="Image" src="https://github.com/user-attachments/assets/6cbeb050-50df-4f5c-9084-721ab8689100" />
 
-<details>
-     <summary> <h3>온보딩 홈 추천하기</h3> </summary>
+> **스매싱**은 **2030 세대의 스포츠 자아 완성을 돕는 게이미키케이션 기반** 스포츠 매칭 플랫폼 입니다.
 
-|                                                    온보딩                                                    |                                                     홈                                                     |                                                   금액 추천                                                   |                                                   추천 결과                                                   |
-|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------:|
-| <img width="200" src="https://github.com/user-attachments/assets/5d15c778-a231-4068-96e9-b5fd19f43142" /> | <img width="200" src="https://github.com/user-attachments/assets/ff5b2c7d-db33-4d7a-a660-9899f511576d" /> | <img width="200" src="https://github.com/user-attachments/assets/09cb3506-2118-4cf3-ae2f-08a69e9814f7" /> | <img width="200" src="https://github.com/user-attachments/assets/4e8ca714-c4b1-4d84-9ba1-6d577ed537d3" /> |
+<br/>
 
 ## 🏸주요 기능
 
-![스크린샷, 2026-01-23 오후 8.12.03.png](../../../Downloads/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%2C%202026-01-23%20%EC%98%A4%ED%9B%84%208.12.03.png)
+<img width="590" height="831" alt="Image"
+src="https://github.com/user-attachments/assets/5a24f127-4690-4b6a-bd92-f149c91edd9b" /
 
 ## **✨ Contributors**
 
-|                                                    🏸공승준<br/>[@seungjunGong](https://github.com/seungjunGong)                                                    |                  🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol)                  |               🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf)                |
-|:----------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
-|                                          <img src="![승준.jpeg](../../../Desktop/%EC%8A%B9%EC%A4%80.jpeg)"height="280" />                                          | <img src="![형철오빠.jpeg](../../../Desktop/%ED%98%95%EC%B2%A0%EC%98%A4%EB%B9%A0.jpeg)"height="280" /> | <img src=" ![지민.jpeg](../../../Desktop/%EC%A7%80%EB%AF%BC.jpeg)"height="280" /> |
-|                                                                     `매칭 관리`,`매칭 결과 작성`,`알림`                                                                      |                                                `홈`                                                 |                               `온보딩`,`로그인`,`매칭 탐색`                               |
-|                                                      🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda)                                                      |
-| :---------------------------------------------![유빈.jpeg](../../../Desktop/%EC%9C%A0%EB%B9%88.jpeg)-------------------------------------------------------------: |                                               :---:                                                |
-|                                          <img src="![유빈.jpeg](../../../Desktop/%EC%9C%A0%EB%B9%88.jpeg)"height="280" />                                          |
-|                                                                         `프로필`,`매칭 결과 확인`                                                                         |
+|                🏸공승준<br/>[@seungjunGong](https://github.com/seungjunGong)                 |             🎮신형철<br/>[@ShinHyeongcheol](https://github.com/ShinHyeongcheol)              |                    🍑이지민<br/>[@vahkjsdf](https://github.com/vahkjsdf)                     |
+|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
+| ![Image](https://github.com/user-attachments/assets/6f6be45f-f50e-4524-85ee-04d18de151ca) | ![Image](https://github.com/user-attachments/assets/73ae097d-a726-4f73-b626-e76e0303c125) | ![Image](https://github.com/user-attachments/assets/97c337ad-cc2d-4c71-93f2-24018106ce26) |
+|                                  `매칭 관리`,`매칭 결과 작성`,`알림`                                  |                                            `홈`                                            |                                    `온보딩`,`로그인`,`매칭 탐색`                                    |
+
+|                  🐰한유빈<br/>[@oilbeaneda](https://github.com/oilbeaneda)                   |
+|:-----------------------------------------------------------------------------------------:|
+| ![Image](https://github.com/user-attachments/assets/f24a040c-50e9-4c6a-85bd-6eb8941cd572) |
+|                                     `프로필`,`매칭 결과 확인`                                      |
 
 <br/>
 
@@ -39,7 +37,7 @@
 | 항목               | 기술 스택                                                  |
 |------------------|--------------------------------------------------------|
 | Architecture     | Google Recommended Architecture                        |
-| Pattern          | MVVM                                                   |  
+| Pattern          | MVVM                                                   |
 | DI               | Hilt                                                   |
 | Asynchronous     | Coroutine, Flow                                        |
 | Network          | Retrofit2, OkHttp                                      |
@@ -79,7 +77,7 @@ UI와 로직을 명확히 분리할 수 있어서 협업 시 역할 구분이 �
 
 ## **🗂️ Project Structure**
 
-```
+```text
 Google Recommned Architecture
 🗃️ smashing.app
 ├─ 🗃️ core                          
@@ -125,6 +123,3 @@ Google Recommned Architecture
    ├─ 📁 main                 
    └─ 📁 home
       ...
-```
-
-</details>
