@@ -78,7 +78,7 @@ object ConvertTimeProvider {
             OffsetDateTime.parse(time).toInstant()
         }
             .recoverCatching {
-                LocalDateTime.parse(time).atZone(ZoneId.of("UTC")).toInstant()
+                LocalDateTime.parse(time).atZone(ZoneId.of("Asia/Seoul")).toInstant()
             }
             .getOrNull()
 }
