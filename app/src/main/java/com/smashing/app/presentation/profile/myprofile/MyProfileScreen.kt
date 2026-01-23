@@ -133,8 +133,7 @@ private fun MyProfileScreen(
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
             )
-
-            Spacer(Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(0.dp))
         }
     }
 }
