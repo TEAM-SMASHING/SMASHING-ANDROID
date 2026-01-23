@@ -376,8 +376,6 @@ class MatchingViewModel @Inject constructor(
                     )
                 }
             }
-
-            else -> Unit
         }
     }
 
