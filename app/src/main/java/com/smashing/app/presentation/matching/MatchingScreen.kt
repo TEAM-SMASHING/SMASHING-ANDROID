@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -26,8 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -62,8 +60,6 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.core.extension.openUrl
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.component.MatchingTabBar
@@ -86,7 +82,6 @@ fun MatchingRoute(
         isFirstAttempt: Boolean,
     ) -> Unit,
     navigateToProfile: (String) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -148,7 +143,6 @@ fun MatchingRoute(
         onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
         onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
         onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
-        updateBottomBar = updateBottomBar,
         modifier = modifier,
     )
 }
@@ -169,18 +163,11 @@ private fun MatchingScreen(
     onAcceptedCloseClick: (String) -> Unit = {},
     onConfirmDeleteSentMatching: () -> Unit = {},
     onConfirmDeleteAcceptedMatching: () -> Unit = {},
-    updateBottomBar: (Boolean) -> Unit,
 ) {
     val gridState = rememberLazyGridState()
 
-    val nestedScrollConnection = bottomBarNestedScrollConnection(
-        scrollStateHolder = ScrollStateHolder.LazyGrid(gridState),
-        onBottomBarVisibilityChange = updateBottomBar,
-    )
-
     LaunchedEffect(uiState.selectedType) {
         gridState.scrollToItem(0)
-        updateBottomBar(true)
     }
 
     val emptyTitle = stringResource(
@@ -201,7 +188,6 @@ private fun MatchingScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas)
-            .systemBarsPadding()
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -269,7 +255,6 @@ private fun MatchingScreen(
                         onAcceptedMatchingClick = onAcceptedMatchingClick,
                         onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
                         onAcceptedCloseClick = onAcceptedCloseClick,
-                        nestedScrollConnection = nestedScrollConnection,
                     )
                 }
 
@@ -325,7 +310,6 @@ private fun MatchingList(
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit,
     onAcceptedKakaoLinkClick: (String?) -> Unit,
     onAcceptedCloseClick: (String) -> Unit,
-    nestedScrollConnection: NestedScrollConnection,
     modifier: Modifier = Modifier,
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -347,7 +331,6 @@ private fun MatchingList(
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
         verticalArrangement = Arrangement.spacedBy(space = 10.dp),
         modifier = modifier
-            .nestedScroll(nestedScrollConnection),
     ) {
         when (uiState.selectedType) {
             MatchingType.RECEIVE -> items(
@@ -463,7 +446,6 @@ private fun MatchingScreenPreview() {
             onAcceptedCloseClick = {},
             onConfirmDeleteSentMatching = {},
             onConfirmDeleteAcceptedMatching = {},
-            updateBottomBar = {},
             modifier = Modifier
                 .background(Color.Black),
         )

@@ -1,5 +1,8 @@
 package com.smashing.app.presentation.profile.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -37,7 +40,7 @@ fun NavController.navigateToReview(
 
 fun NavGraphBuilder.profileGraph(
     navController: NavController,
-    updateBottomBar: (Boolean) -> Unit,
+    innerPadding: PaddingValues,
 ) {
     navigation<Profile>(
         startDestination = MyProfile,
@@ -46,13 +49,13 @@ fun NavGraphBuilder.profileGraph(
             MyProfileRoute(
                 navigateToSportAdd = navController::navigateToAddSports,
                 navigateToReview = { userId -> navController.navigateToReview(userId = userId) },
-                updateBottomBar = updateBottomBar,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(
                         tierName = tierInfoStyle.name,
                         sportName = sportType.name,
                     )
                 },
+                modifier = Modifier.padding(innerPadding)
             )
         }
 
