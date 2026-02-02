@@ -1,7 +1,7 @@
 package com.smashing.app.data.di.event
 
-import com.smashing.app.data.remote.datasource.api.RemoteEventDataSource
-import com.smashing.app.data.remote.datasource.impl.RemoteEventDataSourceImpl
+import com.smashing.app.data.remote.datasource.api.EventRemoteDataSource
+import com.smashing.app.data.remote.datasource.impl.EventRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,6 +15,6 @@ abstract class EventDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindRemoteEventDataSource(
-        remoteEventDataSourceImpl: RemoteEventDataSourceImpl,
-    ): RemoteEventDataSource
+        eventDataSourceImpl: EventRemoteDataSourceImpl,
+    ): EventRemoteDataSource
 }

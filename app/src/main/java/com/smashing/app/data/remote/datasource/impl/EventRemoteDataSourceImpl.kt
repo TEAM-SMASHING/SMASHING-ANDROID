@@ -3,7 +3,7 @@ package com.smashing.app.data.remote.datasource.impl
 import com.smashing.app.BuildConfig.BASE_URL
 import com.smashing.app.core.common.di.ApplicationScope
 import com.smashing.app.core.network.sse.SseConnectionState
-import com.smashing.app.data.remote.datasource.api.RemoteEventDataSource
+import com.smashing.app.data.remote.datasource.api.EventRemoteDataSource
 import com.smashing.app.data.remote.dto.event.RawEventResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -19,10 +19,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RemoteEventDataSourceImpl @Inject constructor(
+class EventRemoteDataSourceImpl @Inject constructor(
     private val eventSourceFactory: EventSource.Factory,
     @ApplicationScope private val scope: CoroutineScope,
-) : RemoteEventDataSource {
+) : EventRemoteDataSource {
 
     private val _rawEvents = MutableSharedFlow<RawEventResponse>(
         replay = 0,
