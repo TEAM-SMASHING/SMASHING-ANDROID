@@ -107,7 +107,6 @@ fun WriteReviewContent(
         SmashingAreaTextField(
             state = textFieldState,
             placeholder = "매칭 후기를 작성해주세요",
-            modifier = Modifier,
         )
     }
 }
