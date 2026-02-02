@@ -18,7 +18,7 @@ class SseManager @Inject constructor(
     private val eventRepository: EventRepository,
     @ApplicationScope private val scope: CoroutineScope,
 ) {
-    private var shouldConnect = false
+    private var isConnected = false
     private val mutex = Mutex()
 
     private val _isUserLoggedIn = MutableStateFlow(false)
@@ -27,7 +27,7 @@ class SseManager @Inject constructor(
     fun onUserLoggedIn() {
         scope.launch {
             mutex.withLock {
-                shouldConnect = true
+                isConnected = true
                 _isUserLoggedIn.value = true
 
                 Timber.tag(TAG).d("User logged in - connecting SSE")
@@ -39,7 +39,7 @@ class SseManager @Inject constructor(
     fun onUserLoggedOut() {
         scope.launch {
             mutex.withLock {
-                shouldConnect = false
+                isConnected = false
                 _isUserLoggedIn.value = false
 
                 Timber.tag(TAG).d("User logged out - disconnecting SSE")
@@ -51,7 +51,7 @@ class SseManager @Inject constructor(
     fun connect() {
         scope.launch {
             mutex.withLock {
-                if (!shouldConnect) {
+                if (!isConnected) {
                     Timber.tag(TAG).d("Connect - user not logged in, skipping")
                     return@launch
                 }
