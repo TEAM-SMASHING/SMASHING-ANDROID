@@ -1,11 +1,9 @@
 package com.smashing.app.data.remote.datasource.impl
 
 import com.smashing.app.BuildConfig.BASE_URL
-import com.smashing.app.core.common.di.ApplicationScope
 import com.smashing.app.core.network.sse.SseConnectionState
 import com.smashing.app.data.remote.datasource.api.EventRemoteDataSource
 import com.smashing.app.data.remote.dto.event.RawEventResponse
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +19,6 @@ import javax.inject.Singleton
 @Singleton
 class EventRemoteDataSourceImpl @Inject constructor(
     private val eventSourceFactory: EventSource.Factory,
-    @ApplicationScope private val scope: CoroutineScope,
 ) : EventRemoteDataSource {
 
     private val _rawEvents = MutableSharedFlow<RawEventResponse>(
@@ -73,9 +70,12 @@ class EventRemoteDataSourceImpl @Inject constructor(
                 response: Response?
             ) {
                 _connectionState.value = SseConnectionState.Error(t, 0)
+                eventSource.cancel()
+                this@EventRemoteDataSourceImpl.eventSource = null
             }
 
             override fun onClosed(eventSource: EventSource) {
+                this@EventRemoteDataSourceImpl.eventSource = null
                 _connectionState.value = SseConnectionState.Disconnected
             }
         })
