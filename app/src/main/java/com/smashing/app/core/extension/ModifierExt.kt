@@ -7,9 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.BringIntoViewResponder
 import androidx.compose.foundation.relocation.bringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewResponder
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +24,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.plus
 import kotlinx.coroutines.delay
 
 /**
@@ -55,20 +52,21 @@ fun Modifier.noRippleClickable(
  */
 fun Modifier.bringIntoViewOnFocus(
     isFocused: Boolean,
-    extraBottom: Dp,
-    delayMillis: Long = 0L,
+    extraBottom: Dp = 0.dp,
+    delayMillis: Long = 200L,
 ): Modifier = composed {
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     var layoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
     val density = LocalDensity.current
     val imeBottom = WindowInsets.ime.getBottom(density)
-    val isImeVisible = imeBottom > 0
     val extraBottomPx = with(density) { extraBottom.toPx() }
 
-    LaunchedEffect(isImeVisible, isFocused) {
-        if (!isFocused) return@LaunchedEffect
+    LaunchedEffect(isFocused, imeBottom) {
+        if (!isFocused || imeBottom <= 0) return@LaunchedEffect
         val coords = layoutCoordinates ?: return@LaunchedEffect
+
+        delay(delayMillis)
 
         val original = coords.boundsInParent()
         val targetRect = Rect(
@@ -78,7 +76,6 @@ fun Modifier.bringIntoViewOnFocus(
             bottom = original.bottom + extraBottomPx,
         )
 
-        delay(delayMillis)
         bringIntoViewRequester.bringIntoView(targetRect)
     }
 
@@ -102,24 +99,21 @@ fun Modifier.clearFocus(
     })
 }
 
+/**
+ * 텍스트 입력 시 커서 위치로 인한 자동 스크롤을 방지
+ * BasicTextField의 기본 bringIntoView 동작을 차단
+ */
 @OptIn(ExperimentalFoundationApi::class)
-fun Modifier.preventCursorScroll(): Modifier = composed {
-    val density = LocalDensity.current
-    val imeBottom = WindowInsets.ime.getBottom(density)
-    val extraBottomPx = imeBottom.toFloat()
-
-    this.bringIntoViewResponder(
-        object : BringIntoViewResponder {
-            override fun calculateRectForParent(localRect: Rect): Rect {
-                return Rect(
-                    left = localRect.left,
-                    top = localRect.top,
-                    right = localRect.right,
-                    bottom = extraBottomPx,
-                )
-            }
-            override suspend fun bringChildIntoView(localRect: () -> Rect?) {
+fun Modifier.preventCursorScroll(): Modifier = this.then(
+    object : androidx.compose.ui.layout.LayoutModifier {
+        override fun androidx.compose.ui.layout.MeasureScope.measure(
+            measurable: androidx.compose.ui.layout.Measurable,
+            constraints: androidx.compose.ui.unit.Constraints
+        ): androidx.compose.ui.layout.MeasureResult {
+            val placeable = measurable.measure(constraints)
+            return layout(placeable.width, placeable.height) {
+                placeable.place(0, 0)
             }
         }
-    )
-}
+    }
+)

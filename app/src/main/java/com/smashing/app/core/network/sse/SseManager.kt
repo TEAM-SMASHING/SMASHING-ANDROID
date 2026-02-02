@@ -3,6 +3,9 @@ package com.smashing.app.core.network.sse
 import com.smashing.app.core.common.di.ApplicationScope
 import com.smashing.app.data.repository.api.EventRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -18,39 +21,57 @@ class SseManager @Inject constructor(
     private var isConnected = false
     private val mutex = Mutex()
 
-    /**
-     * SSE 연결 시작 (로그인 성공 후 호출)
-     */
-    fun connect() {
+    private val _isUserLoggedIn = MutableStateFlow(false)
+    val isUserLoggedIn: StateFlow<Boolean> = _isUserLoggedIn.asStateFlow()
+
+    fun onUserLoggedIn() {
         scope.launch {
             mutex.withLock {
-                if (isConnected) {
-                    return@launch
-                }
-
-                eventRepository.connect()
                 isConnected = true
+                _isUserLoggedIn.value = true
+
+                Timber.tag(TAG).d("User logged in - connecting SSE")
+                eventRepository.connect()
             }
         }
     }
 
-    /**
-     * SSE 연결 해제 (로그아웃 또는 앱 종료 시 호출)
-     */
-    fun disconnect() {
+    fun onUserLoggedOut() {
+        scope.launch {
+            mutex.withLock {
+                isConnected = false
+                _isUserLoggedIn.value = false
+
+                Timber.tag(TAG).d("User logged out - disconnecting SSE")
+                eventRepository.disconnect()
+            }
+        }
+    }
+
+    fun connect() {
         scope.launch {
             mutex.withLock {
                 if (!isConnected) {
+                    Timber.tag(TAG).d("Connect - user not logged in, skipping")
                     return@launch
                 }
 
+                Timber.tag(TAG).d("Connect - starting SSE")
+                eventRepository.connect()
+            }
+        }
+    }
+
+    fun disconnect() {
+        scope.launch {
+            mutex.withLock {
+                Timber.tag(TAG).d("Disconnect - stopping SSE")
                 eventRepository.disconnect()
-                isConnected = false
             }
         }
     }
 
     companion object {
-        private const val TAG = "SseManager"
+        private const val TAG = "SSE LOG"
     }
 }
