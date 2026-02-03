@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.repository.api.RankingRepository
+import com.smashing.app.data.repository.api.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RankingViewModel @Inject constructor(
     private val rankingRepository: RankingRepository,
-) : ViewModel() {
+    private val userRepository: UserRepository,
+    ) : ViewModel() {
     private val _uiState = MutableStateFlow(RankingContract.State())
     val uiState = _uiState.asStateFlow()
 
@@ -29,6 +31,8 @@ class RankingViewModel @Inject constructor(
         rankingRepository.getRankingList()
             .onSuccess { rankingData ->
                 val userRankList = rankingData.topUsers
+                val storedUserId = userRepository.getUserId()
+
                 _uiState.update { currentState ->
                     currentState.copy(
                         rankingUiState = RankingUiState.Success,
@@ -37,6 +41,7 @@ class RankingViewModel @Inject constructor(
                         restRankingList = userRankList.drop(3).toImmutableList(),
                         userInfo = rankingData.myRank?.let { user ->
                             UserRank(
+                                userId = storedUserId ?: "",
                                 nickname = user.nickname,
                                 tier = user.tierType,
                                 lp = user.lp,
