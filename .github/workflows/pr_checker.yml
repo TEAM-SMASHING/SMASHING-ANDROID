@@ -40,7 +40,7 @@ jobs:
         run: |
           if [ -n "$DEBUG_KEYSTORE_BASE64" ]; then
             mkdir -p ./keystore
-            echo "${DEBUG_KEYSTORE_BASE64}" | base64 --decode > ./keystore/smashing-debug-key.jks
+            echo "$DEBUG_KEYSTORE_BASE64" | base64 --decode > ./keystore/smashing-debug-key.jks
           else
             echo "DEBUG_KEYSTORE_BASE64 not found."
           fi
