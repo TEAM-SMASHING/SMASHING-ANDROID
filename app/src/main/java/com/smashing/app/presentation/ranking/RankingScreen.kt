@@ -158,7 +158,7 @@ private fun RankingScreen(
                             tier = user.tier,
                             lp = user.lp,
                             onClick = {
-                                if (user.nickname != uiState.userInfo?.nickname) {
+                                if (user.userId != uiState.userInfo?.userId) {
                                     navigateToProfile(user.userId)
                                 } else {
                                     navigateToMyProfile()
