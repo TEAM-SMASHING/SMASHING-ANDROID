@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -195,10 +194,7 @@ private fun RankingScreen(
         }
         if (uiState.userInfo != null) {
             MyRanking(
-                userId = uiState.userInfo.userId,
-                nickname = uiState.userInfo.nickname,
-                tier = uiState.userInfo.tier,
-                lp = uiState.userInfo.lp,
+                myRank = uiState.userInfo,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
@@ -224,10 +220,7 @@ private fun RankingScreen(
 
 @Composable
 private fun MyRanking(
-    userId: String,
-    nickname: String,
-    tier: TierType,
-    lp: Int,
+    myRank: UserRank,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -249,9 +242,9 @@ private fun MyRanking(
 
     ) {
         UrlImage(
-            placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+            placeholderDrawable = ProfileImageProvider.getTempImg(myRank.nickname),
             modifier = Modifier
-                .height(40.dp)
+                .size(40.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape),
         )
@@ -259,19 +252,18 @@ private fun MyRanking(
         Spacer(modifier = Modifier.width(10.dp))
 
         Column(
-            modifier = Modifier,
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = nickname,
+                text = myRank.nickname,
                 style = typography.sm.medium14,
                 color = colors.txtPrimary,
             )
             Text(
                 text = stringResource(
                     ranking_tier_with_lp,
-                    tier.tierName,
-                    lp,
+                    myRank.tier.tierName,
+                    myRank.lp,
                 ),
                 style = typography.xs.regular12,
                 color = colors.txtTertiary,
@@ -281,10 +273,10 @@ private fun MyRanking(
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = painterResource(id = tier.img()),
+            painter = painterResource(id = myRank.tier.img()),
             contentDescription = null,
             modifier = Modifier
-                .height(40.dp)
+                .size(40.dp)
                 .aspectRatio(1f)
         )
     }
