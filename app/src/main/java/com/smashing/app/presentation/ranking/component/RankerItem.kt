@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -160,7 +161,7 @@ private fun RankerItem(
             UrlImage(
                 placeholderDrawable = ProfileImageProvider.getTempImg(userRank.nickname),
                 modifier = Modifier
-                    .height(40.dp)
+                    .size(40.dp)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .border(
@@ -239,7 +240,7 @@ private fun RankerItem(
                         painter = painterResource(id = userRank.tier.img()),
                         contentDescription = null,
                         modifier = Modifier
-                            .height(if (rankerType == FIRST) 60.dp else 40.dp)
+                            .size(if (rankerType == FIRST) 60.dp else 40.dp)
                             .aspectRatio(1f),
                     )
 
