@@ -80,7 +80,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
-            myUserId = myUserId ?: "",
+            myUserId = myUserId,
             navigateToProfile = navigateToProfile,
             navigateToMyProfile = navigateToMyProfile,
             contentWidth = firstWidth,
@@ -91,7 +91,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
-            myUserId = myUserId ?: "",
+            myUserId = myUserId,
             navigateToProfile = navigateToProfile,
             navigateToMyProfile = navigateToMyProfile,
             contentWidth = otherWidth,
@@ -102,7 +102,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
-            myUserId = myUserId ?: "",
+            myUserId = myUserId,
             navigateToProfile = navigateToProfile,
             navigateToMyProfile = navigateToMyProfile,
             contentWidth = otherWidth,
@@ -119,7 +119,7 @@ private fun RankerItem(
     rankerType: RankerType,
     contentWidth: Dp,
     sidePadding: Dp,
-    myUserId: String,
+    myUserId: String?,
     navigateToProfile: (String) -> Unit,
     navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
