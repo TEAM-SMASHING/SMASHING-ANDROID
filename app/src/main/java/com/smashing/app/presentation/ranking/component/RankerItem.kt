@@ -51,6 +51,10 @@ import com.smashing.app.presentation.ranking.type.RankerType.THIRD
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+private val SIDE_PADDING = 16.dp
+private val RANKER_FIRST_EXTRA_WIDTH = 10.dp
+private const val RANKER_FIRST_WIDTH_RATIO = 0.34f
+private const val RANKER_OTHER_WIDTH_RATIO = 0.33f
 
 @Composable
 fun Ranker(
@@ -64,11 +68,13 @@ fun Ranker(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        val screenWidth = maxWidth
 
-        val sidePadding = screenWidth * 0.04f
-        val firstWidth = screenWidth * 0.342f
-        val otherWidth = screenWidth * 0.29f
+        val sidePadding = SIDE_PADDING
+        val centerExtraWidth = RANKER_FIRST_EXTRA_WIDTH
+
+        val contentAreaWidth = maxWidth - sidePadding * 2 - centerExtraWidth
+        val firstWidth = contentAreaWidth * RANKER_FIRST_WIDTH_RATIO + centerExtraWidth
+        val otherWidth = contentAreaWidth * RANKER_OTHER_WIDTH_RATIO
 
         RankerItem(
             userRank = rankerList?.getOrNull(0),
