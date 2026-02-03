@@ -56,7 +56,7 @@ import kotlinx.collections.immutable.toImmutableList
 fun Ranker(
     rankerList: ImmutableList<UserRank>?,
     navigateToProfile: (String) -> Unit,
-    myNickname: String?,
+    myUserId: String?,
     navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,7 +73,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
-            myNickname = myNickname ?: "",
+            myUserId = myUserId ?: "",
             navigateToProfile = navigateToProfile,
             navigateToMyProfile = navigateToMyProfile,
             contentWidth = firstWidth,
@@ -84,7 +84,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
-            myNickname = myNickname ?: "",
+            myUserId = myUserId ?: "",
             navigateToProfile = navigateToProfile,
             navigateToMyProfile = navigateToMyProfile,
             contentWidth = otherWidth,
@@ -95,7 +95,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
-            myNickname = myNickname ?: "",
+            myUserId = myUserId ?: "",
             navigateToProfile = navigateToProfile,
             navigateToMyProfile = navigateToMyProfile,
             contentWidth = otherWidth,
@@ -112,7 +112,7 @@ private fun RankerItem(
     rankerType: RankerType,
     contentWidth: Dp,
     sidePadding: Dp,
-    myNickname: String,
+    myUserId: String,
     navigateToProfile: (String) -> Unit,
     navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
@@ -164,7 +164,7 @@ private fun RankerItem(
                     )
                     .noRippleClickable(
                         onClick = {
-                            if (userRank.nickname != myNickname) {
+                            if (userRank.userId != myUserId) {
                                 navigateToProfile(userRank.userId)
                             } else {
                                 navigateToMyProfile()
@@ -184,7 +184,7 @@ private fun RankerItem(
                     .fillMaxWidth()
                     .noRippleClickable(
                         onClick = {
-                            if (userRank.nickname != myNickname) {
+                            if (userRank.userId != myUserId) {
                                 navigateToProfile(userRank.userId)
                             } else {
                                 navigateToMyProfile()
@@ -285,7 +285,7 @@ private fun RankerItemPreview_FirstPlace() {
         contentWidth = 120.dp,
         sidePadding = 16.dp,
         navigateToProfile = {},
-        myNickname = "",
+        myUserId = "",
         navigateToMyProfile = {}
     )
 }
@@ -306,7 +306,7 @@ private fun RankerItemPreview_SecondPlace() {
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
         navigateToProfile = {},
-        myNickname = "",
+        myUserId = "",
         navigateToMyProfile = {}
     )
 }
@@ -321,7 +321,7 @@ private fun RankerItemPreview_EmptyPlace() {
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
         navigateToProfile = {},
-        myNickname = "",
+        myUserId = "",
         navigateToMyProfile = {},
     )
 }
@@ -358,7 +358,7 @@ private fun RankerPreview_AllThree() {
                 color = colors.bgCanvas,
             ),
         navigateToProfile = {},
-        myNickname = null,
+        myUserId = null,
         navigateToMyProfile = {},
     )
 }
@@ -384,7 +384,7 @@ private fun RankerPreview_FirstAndSecond() {
             ),
         ).toImmutableList(),
         navigateToProfile = {},
-        myNickname = null,
+        myUserId = null,
         navigateToMyProfile = {},
     )
 }
@@ -395,7 +395,7 @@ private fun RankerPreview_Empty() {
     Ranker(
         rankerList = null,
         navigateToProfile = {},
-        myNickname = null,
+        myUserId = null,
         navigateToMyProfile = {},
     )
 }

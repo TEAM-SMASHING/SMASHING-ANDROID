@@ -120,7 +120,7 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
-                myNickname = uiState.userInfo?.nickname,
+                myUserId = uiState.userInfo?.userId,
                 navigateToProfile = navigateToProfile,
                 navigateToMyProfile = navigateToMyProfile,
             )
