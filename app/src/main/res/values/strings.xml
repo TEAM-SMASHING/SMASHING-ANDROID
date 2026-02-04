@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">스매싱</string>
     <!--Common  -->
     <string name="home">홈</string>
     <string name="matching_search">매칭 탐색</string>

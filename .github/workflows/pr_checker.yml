@@ -34,6 +34,17 @@ jobs:
             echo "LOCAL_PROPERTIES not found."
           fi
 
+      - name: Restore debug keystore
+        env:
+          DEBUG_KEYSTORE_BASE64: ${{ secrets.DEBUG_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$DEBUG_KEYSTORE_BASE64" ]; then
+            mkdir -p ./keystore
+            echo "$DEBUG_KEYSTORE_BASE64" | base64 --decode > ./keystore/smashing-debug-key.jks
+          else
+            echo "DEBUG_KEYSTORE_BASE64 not found."
+          fi
+
       - name: Build Debug APK
         run: ./gradlew :app:assembleDebug
 
