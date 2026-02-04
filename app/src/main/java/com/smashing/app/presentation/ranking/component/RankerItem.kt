@@ -60,9 +60,9 @@ private const val RANKER_OTHER_WIDTH_RATIO = 0.33f
 @Composable
 fun Ranker(
     rankerList: ImmutableList<UserRank>?,
-    navigateToProfile: (String) -> Unit,
     myUserId: String?,
     navigateToMyProfile: () -> Unit,
+    navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
@@ -77,12 +77,18 @@ fun Ranker(
         val firstWidth = contentAreaWidth * RANKER_FIRST_WIDTH_RATIO + centerExtraWidth
         val otherWidth = contentAreaWidth * RANKER_OTHER_WIDTH_RATIO
 
+        val onProfileClick: (String) -> Unit = { userId ->
+            if (userId != myUserId) {
+                navigateToProfile(userId)
+            } else {
+                navigateToMyProfile()
+            }
+        }
+
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
-            myUserId = myUserId,
-            navigateToProfile = navigateToProfile,
-            navigateToMyProfile = navigateToMyProfile,
+            onProfileClick = onProfileClick,
             contentWidth = firstWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -91,9 +97,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
-            myUserId = myUserId,
-            navigateToProfile = navigateToProfile,
-            navigateToMyProfile = navigateToMyProfile,
+            onProfileClick = onProfileClick,
             contentWidth = otherWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -102,9 +106,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
-            myUserId = myUserId,
-            navigateToProfile = navigateToProfile,
-            navigateToMyProfile = navigateToMyProfile,
+            onProfileClick = onProfileClick,
             contentWidth = otherWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -119,9 +121,7 @@ private fun RankerItem(
     rankerType: RankerType,
     contentWidth: Dp,
     sidePadding: Dp,
-    myUserId: String?,
-    navigateToProfile: (String) -> Unit,
-    navigateToMyProfile: () -> Unit,
+    onProfileClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val backgroundGradation = Brush.verticalGradient(
@@ -170,13 +170,7 @@ private fun RankerItem(
                         shape = CircleShape,
                     )
                     .noRippleClickable(
-                        onClick = {
-                            if (userRank.userId != myUserId) {
-                                navigateToProfile(userRank.userId)
-                            } else {
-                                navigateToMyProfile()
-                            }
-                        }
+                        onClick = { onProfileClick(userRank.userId) }
                     ),
             )
 
@@ -190,13 +184,7 @@ private fun RankerItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable(
-                        onClick = {
-                            if (userRank.userId != myUserId) {
-                                navigateToProfile(userRank.userId)
-                            } else {
-                                navigateToMyProfile()
-                            }
-                        }
+                        onClick = { onProfileClick(userRank.userId) }
                     ),
             )
         }
@@ -291,9 +279,7 @@ private fun RankerItemPreview_FirstPlace() {
         rankerType = FIRST,
         contentWidth = 120.dp,
         sidePadding = 16.dp,
-        navigateToProfile = {},
-        myUserId = "",
-        navigateToMyProfile = {}
+        onProfileClick = {},
     )
 }
 
@@ -312,9 +298,7 @@ private fun RankerItemPreview_SecondPlace() {
         contentWidth = 100.dp,
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {},
-        myUserId = "",
-        navigateToMyProfile = {}
+        onProfileClick = {},
     )
 }
 
@@ -327,9 +311,7 @@ private fun RankerItemPreview_EmptyPlace() {
         contentWidth = 100.dp,
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {},
-        myUserId = "",
-        navigateToMyProfile = {},
+        onProfileClick = {},
     )
 }
 
