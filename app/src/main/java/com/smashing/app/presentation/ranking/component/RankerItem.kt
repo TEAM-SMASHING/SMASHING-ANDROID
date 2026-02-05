@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -51,31 +52,43 @@ import com.smashing.app.presentation.ranking.type.RankerType.THIRD
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+private val SIDE_PADDING = 16.dp
+private val RANKER_FIRST_EXTRA_WIDTH = 10.dp
+private const val RANKER_FIRST_WIDTH_RATIO = 0.34f
+private const val RANKER_OTHER_WIDTH_RATIO = 0.33f
 
 @Composable
 fun Ranker(
     rankerList: ImmutableList<UserRank>?,
-    navigateToProfile: (String) -> Unit,
-    myNickname: String?,
+    myUserId: String?,
     navigateToMyProfile: () -> Unit,
+    navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        val screenWidth = maxWidth
 
-        val sidePadding = screenWidth * 0.04f
-        val firstWidth = screenWidth * 0.342f
-        val otherWidth = screenWidth * 0.29f
+        val sidePadding = SIDE_PADDING
+        val centerExtraWidth = RANKER_FIRST_EXTRA_WIDTH
+
+        val contentAreaWidth = maxWidth - sidePadding * 2 - centerExtraWidth
+        val firstWidth = contentAreaWidth * RANKER_FIRST_WIDTH_RATIO + centerExtraWidth
+        val otherWidth = contentAreaWidth * RANKER_OTHER_WIDTH_RATIO
+
+        val onProfileClick: (String) -> Unit = { userId ->
+            if (userId != myUserId) {
+                navigateToProfile(userId)
+            } else {
+                navigateToMyProfile()
+            }
+        }
 
         RankerItem(
             userRank = rankerList?.getOrNull(0),
             rankerType = FIRST,
-            myNickname = myNickname ?: "",
-            navigateToProfile = navigateToProfile,
-            navigateToMyProfile = navigateToMyProfile,
+            onProfileClick = onProfileClick,
             contentWidth = firstWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -84,9 +97,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(1),
             rankerType = SECOND,
-            myNickname = myNickname ?: "",
-            navigateToProfile = navigateToProfile,
-            navigateToMyProfile = navigateToMyProfile,
+            onProfileClick = onProfileClick,
             contentWidth = otherWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -95,9 +106,7 @@ fun Ranker(
         RankerItem(
             userRank = rankerList?.getOrNull(2),
             rankerType = THIRD,
-            myNickname = myNickname ?: "",
-            navigateToProfile = navigateToProfile,
-            navigateToMyProfile = navigateToMyProfile,
+            onProfileClick = onProfileClick,
             contentWidth = otherWidth,
             sidePadding = sidePadding,
             modifier = Modifier
@@ -112,9 +121,7 @@ private fun RankerItem(
     rankerType: RankerType,
     contentWidth: Dp,
     sidePadding: Dp,
-    myNickname: String,
-    navigateToProfile: (String) -> Unit,
-    navigateToMyProfile: () -> Unit,
+    onProfileClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val backgroundGradation = Brush.verticalGradient(
@@ -154,7 +161,7 @@ private fun RankerItem(
             UrlImage(
                 placeholderDrawable = ProfileImageProvider.getTempImg(userRank.nickname),
                 modifier = Modifier
-                    .height(40.dp)
+                    .size(40.dp)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .border(
@@ -163,13 +170,7 @@ private fun RankerItem(
                         shape = CircleShape,
                     )
                     .noRippleClickable(
-                        onClick = {
-                            if (userRank.nickname != myNickname) {
-                                navigateToProfile(userRank.userId)
-                            } else {
-                                navigateToMyProfile()
-                            }
-                        }
+                        onClick = { onProfileClick(userRank.userId) }
                     ),
             )
 
@@ -183,13 +184,7 @@ private fun RankerItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable(
-                        onClick = {
-                            if (userRank.nickname != myNickname) {
-                                navigateToProfile(userRank.userId)
-                            } else {
-                                navigateToMyProfile()
-                            }
-                        }
+                        onClick = { onProfileClick(userRank.userId) }
                     ),
             )
         }
@@ -233,7 +228,7 @@ private fun RankerItem(
                         painter = painterResource(id = userRank.tier.img()),
                         contentDescription = null,
                         modifier = Modifier
-                            .height(if (rankerType == FIRST) 60.dp else 40.dp)
+                            .size(if (rankerType == FIRST) 60.dp else 40.dp)
                             .aspectRatio(1f),
                     )
 
@@ -284,9 +279,7 @@ private fun RankerItemPreview_FirstPlace() {
         rankerType = FIRST,
         contentWidth = 120.dp,
         sidePadding = 16.dp,
-        navigateToProfile = {},
-        myNickname = "",
-        navigateToMyProfile = {}
+        onProfileClick = {},
     )
 }
 
@@ -305,9 +298,7 @@ private fun RankerItemPreview_SecondPlace() {
         contentWidth = 100.dp,
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {},
-        myNickname = "",
-        navigateToMyProfile = {}
+        onProfileClick = {},
     )
 }
 
@@ -320,9 +311,7 @@ private fun RankerItemPreview_EmptyPlace() {
         contentWidth = 100.dp,
         sidePadding = 16.dp,
         modifier = Modifier.padding(horizontal = 8.dp),
-        navigateToProfile = {},
-        myNickname = "",
-        navigateToMyProfile = {},
+        onProfileClick = {},
     )
 }
 
@@ -358,7 +347,7 @@ private fun RankerPreview_AllThree() {
                 color = colors.bgCanvas,
             ),
         navigateToProfile = {},
-        myNickname = null,
+        myUserId = null,
         navigateToMyProfile = {},
     )
 }
@@ -384,7 +373,7 @@ private fun RankerPreview_FirstAndSecond() {
             ),
         ).toImmutableList(),
         navigateToProfile = {},
-        myNickname = null,
+        myUserId = null,
         navigateToMyProfile = {},
     )
 }
@@ -395,7 +384,7 @@ private fun RankerPreview_Empty() {
     Ranker(
         rankerList = null,
         navigateToProfile = {},
-        myNickname = null,
+        myUserId = null,
         navigateToMyProfile = {},
     )
 }
