@@ -10,15 +10,15 @@ data class MyPageInfo(
 )
 
 data class ProfileInfo(
-    val profileId: String = "",
-    val sportType: SportType = SportType.PING_PONG,
-    val nickname: String = "",
-    val genderType: GenderType = GenderType.MALE,
-    val tierType: TierType = TierType.IRON,
-    val lp: Int = 0,
-    val minLp: Int = 0,
-    val maxLp: Int = 1,
-    val winCount: Int = 0,
-    val loseCount: Int = 0,
-    val reviewCount: Long = 0,
+    val profileId: String,
+    val sportType: SportType,
+    val nickname: String,
+    val genderType: GenderType,
+    val tierType: TierType,
+    val lp: Int,
+    val minLp: Int,
+    val maxLp: Int,
+    val winCount: Int,
+    val loseCount: Int,
+    val reviewCount: Long,
 )

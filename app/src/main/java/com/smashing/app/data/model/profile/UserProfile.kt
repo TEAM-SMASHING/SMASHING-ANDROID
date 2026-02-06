@@ -1,4 +1,4 @@
-package com.smashing.app.data.model.my
+package com.smashing.app.data.model.profile
 
 data class UserProfile(
     val activeUserProfile: ActiveUserProfile,

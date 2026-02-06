@@ -3,7 +3,6 @@ package com.smashing.app.presentation.profile.userprofile
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.type.GenderType

@@ -4,9 +4,9 @@ import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.mapper.my.toMyPageInfo
 import com.smashing.app.data.mapper.my.toRequest
 import com.smashing.app.data.mapper.my.toUserProfile
-import com.smashing.app.data.model.my.UserProfile
+import com.smashing.app.data.model.profile.UserProfile
 import com.smashing.app.data.model.profile.MyPageInfo
-import com.smashing.app.data.model.my.AddSportsInfo
+import com.smashing.app.data.model.profile.AddSportsInfo
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData

@@ -48,7 +48,7 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.model.my.UserProfileItem
+import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import kotlinx.collections.immutable.ImmutableList

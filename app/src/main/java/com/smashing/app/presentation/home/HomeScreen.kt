@@ -58,7 +58,7 @@ import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.data.model.my.ActiveUserProfile
+import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.model.search.SearchMainItemModel
 import com.smashing.app.data.type.GameResultStatusType
