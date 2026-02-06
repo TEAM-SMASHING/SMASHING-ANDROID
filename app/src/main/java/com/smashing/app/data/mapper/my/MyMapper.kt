@@ -6,6 +6,7 @@ import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.AddSportsInfo
+import com.smashing.app.data.model.profile.SportProfile
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.AllProfileDto
