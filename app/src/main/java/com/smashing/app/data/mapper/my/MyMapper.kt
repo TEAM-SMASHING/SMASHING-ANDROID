@@ -1,12 +1,12 @@
 package com.smashing.app.data.mapper.my
 
-import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.my.ActiveUserProfile
 import com.smashing.app.data.model.my.UserProfile
 import com.smashing.app.data.model.my.UserProfileItem
 import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.my.AddSportsInfo
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.AllProfileDto
@@ -96,7 +96,5 @@ fun GetMyRecentReviewStatsResponse.toGameReviewResult(): GameReviewResult =
         fairPlayCount = this.tagCounts.fairPlay,
         fastResponseCount = this.tagCounts.fastResponse,
     )
-
-
 
 

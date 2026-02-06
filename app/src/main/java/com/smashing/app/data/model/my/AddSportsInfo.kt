@@ -1,4 +1,4 @@
-package com.smashing.app.data.model.profile.my
+package com.smashing.app.data.model.my
 
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
