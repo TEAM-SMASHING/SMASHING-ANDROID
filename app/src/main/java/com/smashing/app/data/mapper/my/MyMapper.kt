@@ -2,11 +2,10 @@ package com.smashing.app.data.mapper.my
 
 import com.smashing.app.data.model.profile.ActiveUserProfile
 import com.smashing.app.data.model.profile.UserProfile
-import com.smashing.app.data.model.profile.UserProfileItem
 import com.smashing.app.data.model.profile.MyPageInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.AddSportsInfo
-import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.AllProfileDto
@@ -37,10 +36,10 @@ private fun GetMyTierProfileResponse.toActiveUserProfile(): ActiveUserProfile = 
     losses = activeProfile.losses,
 )
 
-private fun GetMyTierProfileResponse.ProfileItemResponse.toUserProfileItem(): UserProfileItem =
-    UserProfileItem(
+private fun GetMyTierProfileResponse.ProfileItemResponse.toUserProfileItem(): ProfileItem =
+    ProfileItem(
         profileId = profileId,
-        sportCode = SportType.findSportTypeToSportCode(sportCode),
+        sportType = SportType.findSportTypeToSportCode(sportCode),
         isActive = isActive,
     )
 
@@ -62,8 +61,8 @@ fun MyPageData.toProfileInfo(): ProfileInfo {
     )
 }
 
-fun AllProfileDto.toSportProfile(): SportProfile {
-    return SportProfile(
+fun AllProfileDto.toSportProfile(): ProfileItem {
+    return ProfileItem(
         profileId = this.profileId,
         sportType = findSportTypeToSportCode(this.sportCode),
         isActive = this.isActive

@@ -3,7 +3,7 @@ package com.smashing.app.presentation.profile.userprofile
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.type.GenderType
@@ -29,7 +29,7 @@ class UserProfileContract {
             reviewCount = 0,
             sportType = SportType.PING_PONG,
         ),
-        val sportProfileList: ImmutableList<SportProfile> = persistentListOf(),
+        val sportProfileList: ImmutableList<ProfileItem> = persistentListOf(),
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),

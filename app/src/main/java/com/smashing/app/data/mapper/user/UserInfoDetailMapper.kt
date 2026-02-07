@@ -1,13 +1,12 @@
 package com.smashing.app.data.mapper.user
 
 import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.model.profile.UserProfileInfo
 import com.smashing.app.data.remote.dto.user.GetUserInfoDetailResponse
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
-
 
 fun GetUserInfoDetailResponse.toProfileInfo(): UserProfileInfo =
     UserProfileInfo(
@@ -31,8 +30,8 @@ fun GetUserInfoDetailResponse.toProfileInfo(): UserProfileInfo =
     )
 
 
-fun GetUserInfoDetailResponse.Profile.toSportProfile(): SportProfile =
-    SportProfile(
+fun GetUserInfoDetailResponse.Profile.toSportProfile(): ProfileItem =
+    ProfileItem(
         profileId = profileId,
         sportType = SportType.findSportTypeToSportCode(this.sportCode),
         isActive = isSelected,

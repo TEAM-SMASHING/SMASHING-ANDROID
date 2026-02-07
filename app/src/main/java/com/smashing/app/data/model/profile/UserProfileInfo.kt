@@ -5,5 +5,5 @@ data class UserProfileInfo(
     val isChallengeable: Boolean,
     val isAcceptable: Boolean,
     val receivedMatchingId:	String?,
-    val sportProfile: List<SportProfile>,
+    val sportProfile: List<ProfileItem>,
 )

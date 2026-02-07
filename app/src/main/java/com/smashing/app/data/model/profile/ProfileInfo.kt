@@ -6,7 +6,7 @@ import com.smashing.app.data.type.TierType
 
 data class MyPageInfo(
     val profileInfo: ProfileInfo,
-    val sportProfiles: List<SportProfile>,
+    val sportProfiles: List<ProfileItem>,
 )
 
 data class ProfileInfo(

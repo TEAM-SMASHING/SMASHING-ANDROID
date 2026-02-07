@@ -152,7 +152,7 @@ class HomeViewModel @Inject constructor(
 
         val optimisticActiveProfile = currentActiveProfile.copy(
             profileId = selectedProfile.profileId,
-            sportType = selectedProfile.sportCode,
+            sportType = selectedProfile.sportType,
         )
 
         _uiState.update {
