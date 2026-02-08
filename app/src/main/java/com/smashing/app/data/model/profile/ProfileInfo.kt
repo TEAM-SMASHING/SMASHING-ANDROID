@@ -12,5 +12,4 @@ data class ProfileInfo(
     val maxLp: Int,
     val winCount: Int,
     val loseCount: Int,
-    val reviewCount: Long,
 )

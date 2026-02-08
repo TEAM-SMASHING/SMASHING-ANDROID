@@ -8,5 +8,6 @@ data class UserProfileInfo(
     val nickname: String,
     val genderType: GenderType,
     val userProfileInfo: ProfileInfo,
+    val reviewCount:Long,
     val userSportProfile: List<ProfileItem>,
 )
