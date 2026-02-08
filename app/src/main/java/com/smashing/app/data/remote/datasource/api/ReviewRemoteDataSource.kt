@@ -3,7 +3,7 @@ package com.smashing.app.data.remote.datasource.api
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.review.GetReviewResponse
-import com.smashing.app.data.remote.dto.review.GetMyGameReviewsResponse
+import com.smashing.app.data.remote.dto.my.GetMyGameReviewsResponse
 import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 

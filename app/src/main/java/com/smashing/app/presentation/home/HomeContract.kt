@@ -2,7 +2,7 @@ package com.smashing.app.presentation.home
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.matching.AcceptedMatching
-import com.smashing.app.data.model.profile.ActiveUserProfile
+import com.smashing.app.data.model.profile.user.UserProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.model.search.SearchMainItemModel
@@ -13,7 +13,7 @@ interface HomeContract {
     @Immutable
     data class State(
         val loadState: HomeUiState = HomeUiState.Idle,
-        val activeUserProfile: ActiveUserProfile? = null,
+        val activeUserProfile: UserProfileInfo? = null,
         val allUserProfiles: ImmutableList<ProfileItem> = persistentListOf(),
         val topRankerList: ImmutableList<UserRank> = persistentListOf(),
         val regionRankerList: ImmutableList<UserRank> = persistentListOf(),

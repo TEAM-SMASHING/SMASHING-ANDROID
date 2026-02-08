@@ -2,7 +2,7 @@ package com.smashing.app.data.mapper.user
 
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
-import com.smashing.app.data.model.profile.UserProfileInfo
+import com.smashing.app.data.model.profile.user.UserProfileInfo
 import com.smashing.app.data.remote.dto.user.GetUserInfoDetailResponse
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType

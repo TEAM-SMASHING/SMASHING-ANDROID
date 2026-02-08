@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.addsports
 
 import androidx.compose.runtime.Immutable
-import com.smashing.app.data.model.profile.AddSportsInfo
 import com.smashing.app.data.type.SportType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
