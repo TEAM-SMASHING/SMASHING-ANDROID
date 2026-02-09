@@ -38,8 +38,8 @@ data class GetMyTierProfileResponse(
     data class MyProfileItemResponse(
         @SerialName("profileId")
         val profileId: String,
-        @SerialName("sportType")
-        val sportType: String,
+        @SerialName("sportCode")
+        val sportCode: String,
         @SerialName("isActive")
         val isActive: Boolean,
     )

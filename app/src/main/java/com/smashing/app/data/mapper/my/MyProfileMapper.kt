@@ -30,7 +30,7 @@ private fun GetMyTierProfileResponse.toProfileTierInfo(): ProfileInfo {
     val active = this.activeProfile
     return ProfileInfo(
         profileId = active.profileId,
-        sportType = findSportTypeToSportCode(active.sportCode),
+        sportType = SportType.findSportTypeToSportCode(active.sportCode),
         tierType = TierType.findTierType(active.tierCode),
         lp = active.lp,
         minLp = active.minLp,
@@ -43,7 +43,7 @@ private fun GetMyTierProfileResponse.toProfileTierInfo(): ProfileInfo {
 private fun GetMyTierProfileResponse.MyProfileItemResponse.toMyProfileItem(): ProfileItem =
     ProfileItem(
         profileId = profileId,
-        sportType = SportType.findSportTypeToSportCode(sportType),
+        sportType = SportType.findSportTypeToSportCode(sportCode),
         isActive = isActive,
     )
 
