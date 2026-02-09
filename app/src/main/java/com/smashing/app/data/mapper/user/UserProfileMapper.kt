@@ -11,12 +11,12 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 
 fun GetUserInfoDetailResponse.toUserProfileInfo(): UserProfileInfo =
-     UserProfileInfo(
+    UserProfileInfo(
         nickname = this.nickname,
         genderType = GenderType.findByName(this.gender),
         userProfileInfo = this.selectedProfile.toSelectedProfile(),
         reviewCount = this.selectedProfile.reviews,
-        userProfileItem = this.allProfiles.map { it.toUserProfileItem()},
+        userProfileItem = this.allProfiles.map { it.toUserProfileItem() },
         isChallengeable = this.isChallengeable,
         isAcceptable = this.isAcceptable,
         receivedMatchingId = this.receivedMatchingId,
@@ -32,7 +32,7 @@ fun GetUserInfoDetailResponse.SelectedProfile.toSelectedProfile(): ProfileInfo {
         minLp = minLp,
         maxLp = maxLp,
         winCount = wins,
-        loseCount =losses,
+        loseCount = losses,
     )
 }
 

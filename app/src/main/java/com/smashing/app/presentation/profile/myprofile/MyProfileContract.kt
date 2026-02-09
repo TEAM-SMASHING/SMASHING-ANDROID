@@ -24,7 +24,7 @@ interface MyProfileContract {
             myProfileInfo = ProfileInfo(
                 profileId = "",
                 sportType = SportType.PING_PONG,
-                tierType = TierType.GOLD_1,
+                tierType = TierType.IRON,
                 lp = 0,
                 minLp = 0,
                 maxLp = 1,
