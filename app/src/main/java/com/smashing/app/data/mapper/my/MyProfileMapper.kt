@@ -3,8 +3,8 @@ package com.smashing.app.data.mapper.my
 import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
-import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.profile.home.MyProfileTierInfo
+import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.GetMyProfileResponse
@@ -14,19 +14,18 @@ import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportCode
 import com.smashing.app.data.type.TierType
-import kotlin.collections.map
 
 fun GetMyTierProfileResponse.toMyProfileTierInfo(): MyProfileTierInfo {
     return MyProfileTierInfo(
         nickname = this.nickname,
         region = this.region,
-        myProfileInfo = this.toProfileTierInfo(),
-        myProfileItem = this.allProfiles.map { it.toMyProfileItem() },
+        myProfileInfo = this.toProfileInfo(),
+        myProfileItem = this.allProfiles.map { it.toProfileItem() },
     )
 }
 
 
-private fun GetMyTierProfileResponse.toProfileTierInfo(): ProfileInfo {
+private fun GetMyTierProfileResponse.toProfileInfo(): ProfileInfo {
     val active = this.activeProfile
     return ProfileInfo(
         profileId = active.profileId,
@@ -40,7 +39,7 @@ private fun GetMyTierProfileResponse.toProfileTierInfo(): ProfileInfo {
     )
 }
 
-private fun GetMyTierProfileResponse.MyProfileItemResponse.toMyProfileItem(): ProfileItem =
+private fun GetMyTierProfileResponse.MyProfileItemResponse.toProfileItem(): ProfileItem =
     ProfileItem(
         profileId = profileId,
         sportType = SportType.findSportTypeToSportCode(sportCode),
@@ -53,7 +52,7 @@ fun GetMyProfileResponse.toMyProfileInfo(): MyProfileInfo {
         genderType = GenderType.findByName(this.gender),
         myProfileInfo = this.toProfileInfo(),
         reviewCount = this.activeProfile.reviews,
-        myProfileItem = this.allProfiles.map { it.toMyProfileItem() },
+        myProfileItem = this.allProfiles.map { it.toProfileItem() },
     )
 }
 
@@ -71,7 +70,7 @@ private fun GetMyProfileResponse.toProfileInfo(): ProfileInfo {
     )
 }
 
-private fun GetMyProfileResponse.MyProfileItemResponse.toMyProfileItem(): ProfileItem {
+private fun GetMyProfileResponse.MyProfileItemResponse.toProfileItem(): ProfileItem {
     return ProfileItem(
         profileId = this.profileId,
         sportType = findSportTypeToSportCode(this.sportCode),
