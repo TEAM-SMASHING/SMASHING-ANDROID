@@ -9,5 +9,8 @@ data class UserProfileInfo(
     val genderType: GenderType,
     val userProfileInfo: ProfileInfo,
     val reviewCount:Long,
-    val userSportProfile: List<ProfileItem>,
+    val isChallengeable: Boolean,
+    val isAcceptable: Boolean,
+    val receivedMatchingId:	String?,
+    val userProfileItem: List<ProfileItem>,
 )
