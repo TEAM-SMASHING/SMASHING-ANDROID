@@ -21,7 +21,7 @@ fun GetMyTierProfileResponse.toMyProfileTierInfo(): MyProfileTierInfo {
         nickname = this.nickname,
         region = this.region,
         myProfileInfo = this.toProfileTierInfo(),
-        myProfileItem = this.allProfiles.map { it.toMyProfileItem() }
+        myProfileItem = this.allProfiles.map { it.toMyProfileItem() },
     )
 }
 
@@ -53,7 +53,7 @@ fun GetMyProfileResponse.toMyProfileInfo(): MyProfileInfo {
         genderType = GenderType.findByName(this.gender),
         myProfileInfo = this.toProfileInfo(),
         reviewCount = this.activeProfile.reviews,
-        myProfileItem = this.allProfiles.map { it.toMyProfileItem() }
+        myProfileItem = this.allProfiles.map { it.toMyProfileItem() },
     )
 }
 
@@ -75,7 +75,7 @@ private fun GetMyProfileResponse.MyProfileItemResponse.toMyProfileItem(): Profil
     return ProfileItem(
         profileId = this.profileId,
         sportType = findSportTypeToSportCode(this.sportCode),
-        isActive = this.isActive
+        isActive = this.isActive,
     )
 }
 
