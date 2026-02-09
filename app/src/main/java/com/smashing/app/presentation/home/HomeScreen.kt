@@ -58,7 +58,8 @@ import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.data.model.profile.user.UserProfileInfo
+import com.smashing.app.data.model.profile.ProfileInfo
+import com.smashing.app.data.model.profile.my.MyProfileTierInfo
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.model.search.SearchMainItemModel
 import com.smashing.app.data.type.GameResultStatusType
@@ -121,13 +122,14 @@ fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         navigateToNotice = {
-            uiState.activeUserProfile?.profileId?.let(navigateToNotice)
+            uiState.activeMyProfile?.myProfileInfo?.profileId?.let(navigateToNotice)
         },
         navigateToRegionChange = navigateToRegionChange,
         navigateToTierInfo = {
             navigateToTierInfo(
-                uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON,
-                uiState.activeUserProfile?.sportType ?: SportType.BADMINTON,
+                uiState.activeMyProfile?.myProfileInfo?.tierType?.toTierInfoStyle()
+                    ?: TierInfoStyle.IRON,
+                uiState.activeMyProfile?.myProfileInfo?.sportType ?: SportType.BADMINTON,
             )
         },
         navigateToRanking = navigateToRanking,
@@ -172,7 +174,7 @@ private fun HomeScreen(
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
 ) {
-    if (uiState.activeUserProfile == null) return
+    if (uiState.activeMyProfile == null) return
 
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }
@@ -205,9 +207,9 @@ private fun HomeScreen(
                 .statusBarsPadding()
         ) {
             HomeTopBar(
-                userRegion = uiState.activeUserProfile.region,
-                userSport = uiState.activeUserProfile.sportType,
-                userTier = uiState.activeUserProfile.tierType,
+                userRegion = uiState.activeMyProfile.region,
+                userSport = uiState.activeMyProfile.myProfileInfo.sportType,
+                userTier = uiState.activeMyProfile.myProfileInfo.tierType,
                 onClickRegion = {},
                 onChangeRegion = navigateToRegionChange,
                 onClickSportChip = { isDropdownExpanded = !isDropdownExpanded },
@@ -218,19 +220,19 @@ private fun HomeScreen(
 
         HomeDropdown(
             isExpanded = isDropdownExpanded,
-            activeSport = uiState.activeUserProfile.sportType,
-            sportList = uiState.allUserProfiles.toImmutableList(),
-            tierType = uiState.activeUserProfile.tierType,
-            lp = uiState.activeUserProfile.lp,
-            minLp = uiState.activeUserProfile.minLp,
-            maxLp = uiState.activeUserProfile.maxLp,
-            winCount = uiState.activeUserProfile.wins,
-            loseCount = uiState.activeUserProfile.losses,
+            activeSport = uiState.activeMyProfile.myProfileInfo.sportType,
+            sportList = uiState.activeMyProfile.myProfileItem.toImmutableList(),
+            tierType = uiState.activeMyProfile.myProfileInfo.tierType,
+            lp = uiState.activeMyProfile.myProfileInfo.lp,
+            minLp = uiState.activeMyProfile.myProfileInfo.minLp,
+            maxLp = uiState.activeMyProfile.myProfileInfo.maxLp,
+            winCount = uiState.activeMyProfile.myProfileInfo.winCount,
+            loseCount = uiState.activeMyProfile.myProfileInfo.loseCount,
             onSportChipClick = { profileId ->
                 onSportsChipClick(profileId)
                 isDropdownExpanded = false
             },
-            onSportAddClick = if (uiState.allUserProfiles.size >= 3) {
+            onSportAddClick = if (uiState.activeMyProfile.myProfileItem.size >= 3) {
                 null
             } else {
                 {
@@ -272,7 +274,7 @@ private fun HomeScreen(
                     ) {
                         Column {
                             Text(
-                                text = "${uiState.activeUserProfile.nickname}님,",
+                                text = "${uiState.activeMyProfile.nickname}님,",
                                 style = SmashingTheme.typography.lg.semibold18,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
@@ -297,8 +299,8 @@ private fun HomeScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     CloseMatching(
-                        myProfileId = uiState.activeUserProfile.profileId,
-                        myNickname = uiState.activeUserProfile.nickname,
+                        myProfileId = uiState.activeMyProfile.myProfileInfo.profileId,
+                        myNickname = uiState.activeMyProfile.nickname,
                         matchedUser = uiState.matchedUser,
                         onClick = { matching ->
                             when (matching.resultStatus) {
@@ -354,7 +356,7 @@ private fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "${uiState.activeUserProfile.nickname}님을 위한 추천",
+                            text = "${uiState.activeMyProfile.nickname}님을 위한 추천",
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -473,7 +475,7 @@ private fun HomeScreen(
                             lp = ranker.lp,
                             userId = ranker.userId,
                             onClick = {
-                                if (ranker.nickname != uiState.activeUserProfile.nickname) {
+                                if (ranker.nickname != uiState.activeMyProfile.nickname) {
                                     navigateToUserProfile(ranker.userId)
                                 } else {
                                     navigateToMyProfile()
@@ -528,18 +530,21 @@ private fun HomeScreen(
 private fun HomeScreenPreview() {
     HomeScreen(
         uiState = HomeContract.State(
-            activeUserProfile = UserProfileInfo(
+            activeMyProfile = MyProfileTierInfo(
                 nickname = "Test",
                 region = "서울",
-                profileId = "0USP111222333",
-                sportType = SportType.TENNIS,
-                tierType = TierType.GOLD_1,
-                lp = 123,
-                minLp = 100,
-                maxLp = 500,
-                wins = 10,
-                losses = 7,
-            ),
+                myProfileInfo = ProfileInfo(
+                    profileId = "0USP111222333",
+                    sportType = SportType.TENNIS,
+                    tierType = TierType.GOLD_1,
+                    lp = 123,
+                    minLp = 100,
+                    maxLp = 500,
+                    winCount = 10,
+                    loseCount = 7,
+                ),
+                myProfileItem = listOf(),
+                ),
             topRankerList = listOf(
                 UserRank(
                     userId = "user1",
@@ -665,17 +670,21 @@ private fun HomeScreenPreview() {
 private fun HomeScreenEmptyValuePreview() {
     HomeScreen(
         uiState = HomeContract.State(
-            activeUserProfile = UserProfileInfo(
+            activeMyProfile = MyProfileTierInfo(
                 nickname = "Test",
                 region = "서울",
-                profileId = "0USP111222333",
-                sportType = SportType.TENNIS,
-                tierType = TierType.GOLD_1,
-                lp = 123,
-                minLp = 100,
-                maxLp = 500,
-                wins = 10,
-                losses = 7,
+                myProfileInfo =
+                    ProfileInfo(
+                        profileId = "0USP111222333",
+                        sportType = SportType.TENNIS,
+                        tierType = TierType.GOLD_1,
+                        lp = 123,
+                        minLp = 100,
+                        maxLp = 500,
+                        winCount = 10,
+                        loseCount = 7,
+                    ),
+                myProfileItem = listOf(),
             ),
             topRankerList = listOf(
                 UserRank(
