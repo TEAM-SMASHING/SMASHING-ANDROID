@@ -28,15 +28,13 @@ class MyProfileViewModel @Inject constructor(
     fun fetchProfileInfo() {
         viewModelScope.launch {
             _uiState.update { it.copy(profileLoadState = MyProfileUiState.Loading) }
-            myRepository.getMyPageInfo()
+            myRepository.getMyProfileInfo()
                 .onSuccess { data ->
                     _uiState.update { currentState ->
                         currentState.copy(
                             profileLoadState = MyProfileUiState.Success,
-                            profileInfo = data.profileInfo,
-                            sportProfileList = data.sportProfiles.toPersistentList(),
-                            selectedSportProfileId = data.sportProfiles.find { it.isActive }?.profileId
-                                ?: data.profileInfo.profileId
+                            myProfileInfo = data,
+                            selectedSportProfileId = data.myProfileInfo.profileId,
                         )
                     }
                 }
@@ -56,18 +54,18 @@ class MyProfileViewModel @Inject constructor(
         val currentState = uiState.value
         if (currentState.selectedSportProfileId == profileId) return
 
-        val optimisticList = currentState.sportProfileList.map { profile ->
-            if (profile.profileId == profileId) {
-                profile.copy(isActive = true)
-            } else {
-                profile.copy(isActive = false)
-            }
-        }.toPersistentList()
+        val currentInfo = currentState.myProfileInfo
+        val optimisticList = currentState.sportProfileList.map { item ->
+            item.copy(isActive = item.profileId == profileId)
+        }
+        val updatedMyProfileInfo = currentInfo.copy(
+            myProfileItem = optimisticList
+        )
 
         _uiState.update {
             it.copy(
                 selectedSportProfileId = profileId,
-                sportProfileList = optimisticList
+                myProfileInfo = updatedMyProfileInfo
             )
         }
         viewModelScope.launch {

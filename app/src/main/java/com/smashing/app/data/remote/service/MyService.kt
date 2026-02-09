@@ -2,9 +2,8 @@ package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
-import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
+import com.smashing.app.data.remote.dto.my.GetMyProfileResponse
 import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
-import com.smashing.app.data.remote.dto.my.MyPageData
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,7 +12,7 @@ import retrofit2.http.PUT
 
 interface MyService {
     @GET("/api/v1/users/me/profiles")
-    suspend fun getMyProfile(): BaseResponse<MyPageData>
+    suspend fun getMyProfile(): BaseResponse<GetMyProfileResponse>
 
     @PUT("/api/v1/users/me/active-profile")
     suspend fun putActiveMyProfile(
