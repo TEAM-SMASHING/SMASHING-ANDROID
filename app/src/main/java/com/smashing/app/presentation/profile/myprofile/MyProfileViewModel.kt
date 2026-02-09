@@ -42,7 +42,7 @@ class MyProfileViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             profileLoadState = MyProfileUiState.Failure(
-                                exception.message ?: "오류 발생"
+                                exception.message ?: "오류 발생",
                             )
                         )
                     }
@@ -59,13 +59,13 @@ class MyProfileViewModel @Inject constructor(
             item.copy(isActive = item.profileId == profileId)
         }
         val updatedMyProfileInfo = currentInfo.copy(
-            myProfileItem = optimisticList
+            myProfileItem = optimisticList,
         )
 
         _uiState.update {
             it.copy(
                 selectedSportProfileId = profileId,
-                myProfileInfo = updatedMyProfileInfo
+                myProfileInfo = updatedMyProfileInfo,
             )
         }
         viewModelScope.launch {
@@ -79,7 +79,7 @@ class MyProfileViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             profileLoadState = MyProfileUiState.Failure(
-                                exception.message ?: "프로필 변경 실패"
+                                exception.message ?: "프로필 변경 실패",
                             )
                         )
                     }
@@ -94,13 +94,13 @@ class MyProfileViewModel @Inject constructor(
 
         reviewRepository.getMyGameReviews(
             cursor = null,
-            size = PAGE_SIZE
+            size = PAGE_SIZE,
         )
             .onSuccess { page ->
                 _uiState.update { currentState ->
                     currentState.copy(
                         reviewLoadState = MyProfileUiState.Success,
-                        gameReview = page.items.toPersistentList()
+                        gameReview = page.items.toPersistentList(),
                     )
                 }
             }
@@ -108,7 +108,7 @@ class MyProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         reviewLoadState = MyProfileUiState.Failure(
-                            exception.message ?: "리뷰를 불러오는데 실패했습니다."
+                            exception.message ?: "리뷰를 불러오는데 실패했습니다.",
                         )
                     )
                 }
@@ -136,7 +136,7 @@ class MyProfileViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     reviewLoadState = MyProfileUiState.Failure(
-                        exception.message ?: "오류 발생"
+                        exception.message ?: "오류 발생",
                     )
                 )
             }

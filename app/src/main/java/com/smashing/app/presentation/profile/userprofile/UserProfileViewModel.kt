@@ -66,7 +66,7 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
-                            exception.message ?: "오류 발생"
+                            exception.message ?: "오류 발생",
                         )
                     )
                 }
@@ -135,7 +135,7 @@ class UserProfileViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     userProfileUiState = UserProfileUiState.Failure(
-                        throwable.message ?: "Unknown error"
+                        throwable.message ?: "Unknown error",
                     )
                 )
             }
@@ -171,14 +171,14 @@ class UserProfileViewModel @Inject constructor(
                     )
                 }
                 _sideEffect.emit(
-                    UserProfileContract.SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요.")
+                    UserProfileContract.SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요."),
                 )
                 fetchProfileInfo()
             }.onFailure { throwable ->
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
-                            throwable.message ?: "Unknown error"
+                            throwable.message ?: "Unknown error",
                         )
                     )
                 }
@@ -195,7 +195,7 @@ class UserProfileViewModel @Inject constructor(
             ).onSuccess {
                 _uiState.update { currentState ->
                     currentState.copy(
-                        loadState = UserProfileUiState.Success
+                        loadState = UserProfileUiState.Success,
                     )
                 }
                 fetchProfileInfo()
@@ -203,7 +203,7 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
-                            throwable.message ?: "Unknown error"
+                            throwable.message ?: "Unknown error",
                         )
                     )
                 }
@@ -227,7 +227,7 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
-                            exception.message ?: "오류 발생"
+                            exception.message ?: "오류 발생",
                         )
                     )
                 }

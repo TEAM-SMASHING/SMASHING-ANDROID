@@ -72,7 +72,7 @@ fun AllReviewRoute(
         uiState = uiState,
         reviews = uiState.gameReview,
         onLoadMoreReviewList = { viewModel.fetchReviews(isInit = false) },
-        onBackClick = navigateUp
+        onBackClick = navigateUp,
     )
 }
 
@@ -275,13 +275,13 @@ private fun ReviewEmptyPlaceholder(
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             style = SmashingTheme.typography.sm.regular14,
             color = SmashingTheme.colors.txtPrimary,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -301,7 +301,7 @@ private fun PreviewNoTextReview() {
 
         val mockState = ReviewContract.State(
             gameReviewResult = mockResult,
-            reviewUiState = ReviewContract.ReviewUiState.Success
+            reviewUiState = ReviewContract.ReviewUiState.Success,
         )
 
         AllReviewScreen(
@@ -324,12 +324,12 @@ private fun PreviewNoFastAndTextReview() {
             onTimeCount = 0,
             goodMannerCount = 0,
             fairPlayCount = 0,
-            fastResponseCount = 0
+            fastResponseCount = 0,
         )
 
         val mockState = ReviewContract.State(
             gameReviewResult = mockResult,
-            reviewUiState = ReviewContract.ReviewUiState.Success
+            reviewUiState = ReviewContract.ReviewUiState.Success,
         )
 
         AllReviewScreen(
@@ -346,7 +346,7 @@ private fun PreviewNoFastAndTextReview() {
 private fun PreviewAllEmpty() {
     SmashingAndroidTheme {
         val mockState = ReviewContract.State(
-            reviewUiState = ReviewContract.ReviewUiState.Success
+            reviewUiState = ReviewContract.ReviewUiState.Success,
         )
 
         AllReviewScreen(
