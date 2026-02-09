@@ -1,13 +1,12 @@
-package com.smashing.app.data.model.profile.my
+package com.smashing.app.data.model.profile.home
 
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
-import com.smashing.app.data.type.GenderType
 
-data class MyProfileInfo(
+
+data class MyProfileTierInfo(
     val nickname: String,
-    val genderType: GenderType,
+    val region: String,
     val myProfileInfo: ProfileInfo,
-    val reviewCount:Long,
     val myProfileItem: List<ProfileItem>,
 )

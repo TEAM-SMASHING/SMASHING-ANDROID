@@ -2,10 +2,8 @@ package com.smashing.app.data.mapper.user
 
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
-import com.smashing.app.data.model.profile.my.MyProfileTierInfo
 import com.smashing.app.data.model.profile.user.UserProfileInfo
 import com.smashing.app.data.model.review.GameReviewResult
-import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
 import com.smashing.app.data.remote.dto.user.GetUserInfoDetailResponse
 import com.smashing.app.data.remote.dto.user.GetUserRecentReviewStatsResponse
 import com.smashing.app.data.type.GenderType

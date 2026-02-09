@@ -4,7 +4,7 @@ import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.model.profile.my.MyProfileInfo
-import com.smashing.app.data.model.profile.my.MyProfileTierInfo
+import com.smashing.app.data.model.profile.home.MyProfileTierInfo
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.GetMyProfileResponse

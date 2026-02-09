@@ -2,7 +2,7 @@ package com.smashing.app.data.repository.api
 
 import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.profile.my.MyProfileInfo
-import com.smashing.app.data.model.profile.my.MyProfileTierInfo
+import com.smashing.app.data.model.profile.home.MyProfileTierInfo
 
 
 interface MyRepository {

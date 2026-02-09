@@ -6,7 +6,7 @@ import com.smashing.app.data.mapper.my.toMyProfileTierInfo
 import com.smashing.app.data.mapper.my.toRequest
 import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.profile.my.MyProfileInfo
-import com.smashing.app.data.model.profile.my.MyProfileTierInfo
+import com.smashing.app.data.model.profile.home.MyProfileTierInfo
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData

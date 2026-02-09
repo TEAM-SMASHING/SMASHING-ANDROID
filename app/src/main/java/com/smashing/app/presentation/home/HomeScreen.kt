@@ -59,7 +59,7 @@ import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.my.MyProfileTierInfo
+import com.smashing.app.data.model.profile.home.MyProfileTierInfo
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.model.search.SearchMainItemModel
 import com.smashing.app.data.type.GameResultStatusType

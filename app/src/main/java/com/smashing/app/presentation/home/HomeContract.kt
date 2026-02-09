@@ -5,7 +5,7 @@ import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.profile.user.UserProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.model.profile.my.MyProfileInfo
-import com.smashing.app.data.model.profile.my.MyProfileTierInfo
+import com.smashing.app.data.model.profile.home.MyProfileTierInfo
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.model.search.SearchMainItemModel
 import kotlinx.collections.immutable.ImmutableList
