@@ -32,12 +32,14 @@ class ReviewRemoteDataSourceImpl @Inject constructor(
             size = size,
         )
 
-    override suspend fun getMyGameReviews(
+    override suspend fun getMyRecentReviewList(
         cursor: String?,
         size: Int?
-    ): BaseResponse<GetMyRecentReviewListResponse> {
-        return reviewService.getMyGameReviews(cursor, size)
-    }
+    ): BaseResponse<CursorDto<GetMyRecentReviewListResponse>> =
+        reviewService.getMyRecentReviewList(
+            cursor = cursor,
+            size = size,
+        )
 
     override suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse> {
         return reviewService.getMyRecentReviewStats()

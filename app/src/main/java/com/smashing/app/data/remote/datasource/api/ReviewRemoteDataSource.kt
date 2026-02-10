@@ -20,7 +20,10 @@ interface ReviewRemoteDataSource {
         size: Int?,
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>>
 
-    suspend fun getMyGameReviews(cursor: String?, size: Int?): BaseResponse<GetMyRecentReviewListResponse>
+    suspend fun getMyRecentReviewList(
+        cursor: String?,
+        size: Int?
+    ): BaseResponse<CursorDto<GetMyRecentReviewListResponse>>
 
     suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse>
 }
