@@ -92,7 +92,7 @@ class MyProfileViewModel @Inject constructor(
             it.copy(reviewLoadState = MyProfileUiState.Loading)
         }
 
-        reviewRepository.getMyGameReviews(
+        reviewRepository.getMyRecentReviewList(
             cursor = null,
             size = PAGE_SIZE,
         )

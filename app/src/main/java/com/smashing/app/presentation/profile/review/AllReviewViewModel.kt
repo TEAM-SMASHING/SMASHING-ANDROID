@@ -140,7 +140,7 @@ class AllReviewViewModel @Inject constructor(
                 nextCursor = null
             }
 
-            reviewRepository.getMyGameReviews(
+            reviewRepository.getMyRecentReviewList(
                 cursor = if (isInit) null else nextCursor,
                 size = PAGE_SIZE
             )
