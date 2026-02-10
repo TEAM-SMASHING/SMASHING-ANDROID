@@ -28,15 +28,13 @@ class MyProfileViewModel @Inject constructor(
     fun fetchProfileInfo() {
         viewModelScope.launch {
             _uiState.update { it.copy(profileLoadState = MyProfileUiState.Loading) }
-            myRepository.getMyPageInfo()
+            myRepository.getMyProfileInfo()
                 .onSuccess { data ->
                     _uiState.update { currentState ->
                         currentState.copy(
                             profileLoadState = MyProfileUiState.Success,
-                            profileInfo = data.profileInfo,
-                            sportProfileList = data.sportProfiles.toPersistentList(),
-                            selectedSportProfileId = data.sportProfiles.find { it.isActive }?.profileId
-                                ?: data.profileInfo.profileId
+                            myProfileInfo = data,
+                            selectedSportProfileId = data.myProfileInfo.profileId,
                         )
                     }
                 }
@@ -44,7 +42,7 @@ class MyProfileViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             profileLoadState = MyProfileUiState.Failure(
-                                exception.message ?: "오류 발생"
+                                exception.message ?: "오류 발생",
                             )
                         )
                     }
@@ -56,18 +54,18 @@ class MyProfileViewModel @Inject constructor(
         val currentState = uiState.value
         if (currentState.selectedSportProfileId == profileId) return
 
-        val optimisticList = currentState.sportProfileList.map { profile ->
-            if (profile.profileId == profileId) {
-                profile.copy(isActive = true)
-            } else {
-                profile.copy(isActive = false)
-            }
-        }.toPersistentList()
+        val currentInfo = currentState.myProfileInfo
+        val optimisticList = currentState.sportProfileList.map { item ->
+            item.copy(isActive = item.profileId == profileId)
+        }
+        val updatedMyProfileInfo = currentInfo.copy(
+            myProfileItem = optimisticList,
+        )
 
         _uiState.update {
             it.copy(
                 selectedSportProfileId = profileId,
-                sportProfileList = optimisticList
+                myProfileInfo = updatedMyProfileInfo,
             )
         }
         viewModelScope.launch {
@@ -81,7 +79,7 @@ class MyProfileViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             profileLoadState = MyProfileUiState.Failure(
-                                exception.message ?: "프로필 변경 실패"
+                                exception.message ?: "프로필 변경 실패",
                             )
                         )
                     }
@@ -96,13 +94,13 @@ class MyProfileViewModel @Inject constructor(
 
         reviewRepository.getMyGameReviews(
             cursor = null,
-            size = PAGE_SIZE
+            size = PAGE_SIZE,
         )
             .onSuccess { page ->
                 _uiState.update { currentState ->
                     currentState.copy(
                         reviewLoadState = MyProfileUiState.Success,
-                        gameReview = page.items.toPersistentList()
+                        gameReview = page.items.toPersistentList(),
                     )
                 }
             }
@@ -110,7 +108,7 @@ class MyProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         reviewLoadState = MyProfileUiState.Failure(
-                            exception.message ?: "리뷰를 불러오는데 실패했습니다."
+                            exception.message ?: "리뷰를 불러오는데 실패했습니다.",
                         )
                     )
                 }
@@ -138,7 +136,7 @@ class MyProfileViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     reviewLoadState = MyProfileUiState.Failure(
-                        exception.message ?: "오류 발생"
+                        exception.message ?: "오류 발생",
                     )
                 )
             }

@@ -45,11 +45,10 @@ class HomeViewModel @Inject constructor(
 
     fun fetchMyTierProfile() = viewModelScope.launch {
         myRepository.getMyTierProfile()
-            .onSuccess { userProfile ->
+            .onSuccess { myTierProfile ->
                 _uiState.update { currentState ->
                     currentState.copy(
-                        activeUserProfile = userProfile.activeUserProfile,
-                        allUserProfiles = userProfile.allProfiles.toImmutableList(),
+                        activeMyProfile = myTierProfile
                     )
                 }
             }
@@ -140,25 +139,27 @@ class HomeViewModel @Inject constructor(
 
     fun fetchSelectSportProfile(profileId: String) {
         val currentState = uiState.value
-        val currentActiveProfile = currentState.activeUserProfile ?: return
-        if (currentActiveProfile.profileId == profileId) return
+        val currentActiveProfile = currentState.activeMyProfile ?: return
+        if (currentActiveProfile.myProfileInfo.profileId == profileId) return
 
         val selectedProfile =
-            currentState.allUserProfiles.find { it.profileId == profileId } ?: return
+            currentActiveProfile.myProfileItem.find { it.profileId == profileId } ?: return
 
-        val optimisticList = currentState.allUserProfiles.map { profile ->
+        val optimisticList = currentState.activeMyProfile.myProfileItem.map { profile ->
             profile.copy(isActive = profile.profileId == profileId)
         }.toImmutableList()
 
         val optimisticActiveProfile = currentActiveProfile.copy(
-            profileId = selectedProfile.profileId,
-            sportType = selectedProfile.sportCode,
+            myProfileInfo =currentActiveProfile.myProfileInfo.copy(
+                profileId = selectedProfile.profileId,
+                sportType = selectedProfile.sportType,
+            ),
+            myProfileItem = optimisticList,
         )
 
         _uiState.update {
             it.copy(
-                allUserProfiles = optimisticList,
-                activeUserProfile = optimisticActiveProfile,
+                activeMyProfile = optimisticActiveProfile,
             )
         }
 
