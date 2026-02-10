@@ -4,8 +4,8 @@ import com.smashing.app.data.remote.datasource.api.ReviewRemoteDataSource
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.review.GetReviewDetailResponse
-import com.smashing.app.data.remote.dto.my.GetMyGameReviewListResponse
-import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
+import com.smashing.app.data.remote.dto.review.GetMyRecentReviewListResponse
+import com.smashing.app.data.remote.dto.my.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 import com.smashing.app.data.remote.service.ReviewService
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class ReviewRemoteDataSourceImpl @Inject constructor(
     override suspend fun getMyGameReviews(
         cursor: String?,
         size: Int?
-    ): BaseResponse<GetMyGameReviewListResponse> {
+    ): BaseResponse<GetMyRecentReviewListResponse> {
         return reviewService.getMyGameReviews(cursor, size)
     }
 

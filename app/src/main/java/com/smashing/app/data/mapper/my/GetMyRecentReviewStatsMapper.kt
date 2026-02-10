@@ -1,7 +1,7 @@
 package com.smashing.app.data.mapper.my
 
 import com.smashing.app.data.model.review.GameReviewResult
-import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
+import com.smashing.app.data.remote.dto.my.GetMyRecentReviewStatsResponse
 
 fun GetMyRecentReviewStatsResponse.toGameReviewResult(): GameReviewResult =
     GameReviewResult(

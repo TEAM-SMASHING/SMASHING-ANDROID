@@ -3,8 +3,8 @@ package com.smashing.app.data.remote.datasource.api
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.review.GetReviewDetailResponse
-import com.smashing.app.data.remote.dto.my.GetMyGameReviewListResponse
-import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
+import com.smashing.app.data.remote.dto.review.GetMyRecentReviewListResponse
+import com.smashing.app.data.remote.dto.my.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 
 interface ReviewRemoteDataSource {
@@ -20,7 +20,7 @@ interface ReviewRemoteDataSource {
         size: Int?,
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>>
 
-    suspend fun getMyGameReviews(cursor: String?, size: Int?): BaseResponse<GetMyGameReviewListResponse>
+    suspend fun getMyGameReviews(cursor: String?, size: Int?): BaseResponse<GetMyRecentReviewListResponse>
 
     suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse>
 }

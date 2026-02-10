@@ -1,4 +1,4 @@
-package com.smashing.app.data.remote.dto.my
+package com.smashing.app.data.remote.dto.review
 
 
 import kotlinx.serialization.SerialName
@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class GetMyGameReviewListResponse(
+data class GetMyRecentReviewListResponse(
     @SerialName("snapshotAt")
     val snapshotAt: String,
     @SerialName("nextCursor")
