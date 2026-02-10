@@ -3,48 +3,13 @@ package com.smashing.app.data.mapper.my
 import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
-import com.smashing.app.data.model.profile.home.MyProfileTierInfo
 import com.smashing.app.data.model.profile.my.MyProfileInfo
-import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.GetMyProfileResponse
-import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
-import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportCode
 import com.smashing.app.data.type.TierType
 
-fun GetMyTierProfileResponse.toMyProfileTierInfo(): MyProfileTierInfo {
-    return MyProfileTierInfo(
-        nickname = this.nickname,
-        region = this.region,
-        myProfileInfo = this.toProfileInfo(),
-        myProfileItem = this.allProfiles.map { it.toProfileItem() },
-    )
-}
-
-
-private fun GetMyTierProfileResponse.toProfileInfo(): ProfileInfo {
-    val active = this.activeProfile
-    return ProfileInfo(
-        profileId = active.profileId,
-        sportType = SportType.findSportTypeToSportCode(active.sportCode),
-        tierType = TierType.findTierType(active.tierCode),
-        lp = active.lp,
-        minLp = active.minLp,
-        maxLp = active.maxLp,
-        winCount = active.wins,
-        loseCount = active.losses,
-    )
-}
-
-private fun GetMyTierProfileResponse.MyProfileItemResponse.toProfileItem(): ProfileItem =
-    ProfileItem(
-        profileId = profileId,
-        sportType = SportType.findSportTypeToSportCode(sportCode),
-        isActive = isActive,
-    )
 
 fun GetMyProfileResponse.toMyProfileInfo(): MyProfileInfo {
     return MyProfileInfo(
@@ -86,16 +51,4 @@ fun AddSportsInfo.toRequest():
         experienceRange = this.selectedSkill?.skillCode ?: "LT_3_MONTHS",
     )
 }
-
-fun GetMyRecentReviewStatsResponse.toGameReviewResult(): GameReviewResult =
-    GameReviewResult(
-        bestCount = this.ratingCounts.best,
-        goodCount = this.ratingCounts.good,
-        badCount = this.ratingCounts.bad,
-        goodMannerCount = this.tagCounts.goodManner,
-        onTimeCount = this.tagCounts.onTime,
-        fairPlayCount = this.tagCounts.fairPlay,
-        fastResponseCount = this.tagCounts.fastResponse,
-    )
-
 
