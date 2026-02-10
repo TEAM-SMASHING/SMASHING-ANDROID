@@ -35,9 +35,9 @@ class AddSportsViewModel @Inject constructor(
     private fun fetchAvailableSports() {
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = AddSportsUiState.Loading) }
-            myRepository.getMyPageInfo()
+            myRepository.getMyProfileInfo()
                 .onSuccess { myPageData ->
-                    val myExistingSportCodes: List<String> = myPageData.sportProfiles.map {
+                    val myExistingSportCodes: List<String> = myPageData.myProfileItem.map {
                         it.sportType.code
                     }
 

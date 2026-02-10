@@ -48,7 +48,7 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.model.my.UserProfileItem
+import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import kotlinx.collections.immutable.ImmutableList
@@ -58,7 +58,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun HomeDropdown(
     activeSport: SportType,
-    sportList: ImmutableList<UserProfileItem>,
+    sportList: ImmutableList<ProfileItem>,
     tierType: TierType,
     lp: Int,
     minLp: Int,
@@ -160,7 +160,7 @@ fun HomeDropdown(
                     ) {
                         sportList.forEach { sport ->
                             SmashingChip(
-                                text = sport.sportCode.sportName,
+                                text = sport.sportType.sportName,
                                 style = if (sport.isActive) ChipStyle.ACTIVE else ChipStyle.DISABLED,
                                 onClick = { onSportChipClick(sport.profileId) },
                             )
@@ -341,19 +341,19 @@ private fun HomeDropdownPreview() {
             HomeDropdown(
                 activeSport = SportType.TENNIS,
                 sportList = listOf(
-                    UserProfileItem(
+                    ProfileItem(
                         profileId = "0USP111222333",
-                        sportCode = SportType.TENNIS,
+                        sportType = SportType.TENNIS,
                         isActive = true,
                     ),
-                    UserProfileItem(
+                    ProfileItem(
                         profileId = "0USP111222333",
-                        sportCode = SportType.PING_PONG,
+                        sportType = SportType.PING_PONG,
                         isActive = false,
                     ),
-                    UserProfileItem(
+                    ProfileItem(
                         profileId = "0USP111222333",
-                        sportCode = SportType.BADMINTON,
+                        sportType = SportType.BADMINTON,
                         isActive = false,
                     ),
                 ).toImmutableList(),

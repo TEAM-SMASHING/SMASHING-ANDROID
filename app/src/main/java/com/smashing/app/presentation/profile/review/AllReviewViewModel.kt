@@ -87,7 +87,7 @@ class AllReviewViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         reviewUiState = ReviewUiState.Failure(
-                            throwable.message ?: "Unknown error"
+                            throwable.message ?: "Unknown error",
                         )
                     )
                 }
@@ -119,7 +119,7 @@ class AllReviewViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         loadState = ReviewUiState.Failure(
-                            exception.message ?: "오류 발생"
+                            exception.message ?: "오류 발생",
                         )
                     )
                 }
@@ -157,7 +157,7 @@ class AllReviewViewModel @Inject constructor(
 
                         currentState.copy(
                             reviewUiState = ReviewUiState.Success,
-                            gameReview = newReviews
+                            gameReview = newReviews,
                         )
                     }
                 }
@@ -165,7 +165,7 @@ class AllReviewViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             reviewUiState = ReviewUiState.Failure(
-                                exception.message ?: "리뷰를 불러오는데 실패했습니다."
+                                exception.message ?: "리뷰를 불러오는데 실패했습니다.",
                             )
                         )
                     }
