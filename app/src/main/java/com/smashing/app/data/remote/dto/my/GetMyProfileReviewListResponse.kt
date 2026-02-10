@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class GetMyGameReviewsResponse(
+data class GetMyGameReviewListResponse(
     @SerialName("snapshotAt")
     val snapshotAt: String,
     @SerialName("nextCursor")
@@ -14,11 +14,11 @@ data class GetMyGameReviewsResponse(
     @SerialName("hasNext")
     val hasNext: Boolean,
     @SerialName("results")
-    val results: List<MyReviewsDto>
+    val results: List<GetMyReviewResultsResponse>
 )
 
 @Serializable
-data class MyReviewsDto(
+data class GetMyReviewResultsResponse(
     @SerialName("gameReviewId")
     val gameReviewId: String,
     @SerialName("opponentNickname")

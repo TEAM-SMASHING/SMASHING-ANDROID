@@ -2,9 +2,9 @@ package com.smashing.app.data.mapper.review
 
 import com.smashing.app.core.util.ConvertTimeProvider.convertLocalDateTimeToTime
 import com.smashing.app.data.model.review.GameReview
-import com.smashing.app.data.remote.dto.my.MyReviewsDto
+import com.smashing.app.data.remote.dto.my.GetMyReviewResultsResponse
 
-fun MyReviewsDto.toGameReview(): GameReview {
+fun GetMyReviewResultsResponse.toGameReview(): GameReview {
     return GameReview(
         gameReviewId = this.gameReviewId,
         opponentNickname = this.nickname,
