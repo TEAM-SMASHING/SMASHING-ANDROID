@@ -1,10 +1,8 @@
 package com.smashing.app.data.mapper.my
 
-import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.profile.ProfileInfo
 import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.model.profile.my.MyProfileInfo
-import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.GetMyProfileResponse
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType.Companion.findSportTypeToSportCode
@@ -43,12 +41,4 @@ private fun GetMyProfileResponse.MyProfileItemResponse.toProfileItem(): ProfileI
     )
 }
 
-fun AddSportsInfo.toRequest():
-        AddSportProfileRequest {
-    val sportCode = requireNotNull(this.selectedSports?.code) { "sportCode is required" }
-    return AddSportProfileRequest(
-        sportCode = sportCode,
-        experienceRange = this.selectedSkill?.skillCode ?: "LT_3_MONTHS",
-    )
-}
 
