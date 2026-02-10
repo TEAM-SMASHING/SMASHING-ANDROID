@@ -1,7 +1,7 @@
 package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
-import com.smashing.app.data.remote.dto.review.GetReviewResponse
+import com.smashing.app.data.remote.dto.review.GetReviewDetailResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.my.GetMyGameReviewsResponse
 import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
@@ -16,7 +16,7 @@ interface ReviewService {
     suspend fun getReview(
         @Path("reviewId")
         reviewId: String,
-    ): BaseResponse<GetReviewResponse>
+    ): BaseResponse<GetReviewDetailResponse>
 
     @GET("/api/v1/users/{userId}/reviews/recent")
     suspend fun getUserRecentReviewList(
