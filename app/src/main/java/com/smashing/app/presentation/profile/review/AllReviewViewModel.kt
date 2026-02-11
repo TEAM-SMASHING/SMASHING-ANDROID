@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
@@ -106,15 +105,7 @@ class AllReviewViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = ReviewUiState.Success,
-                        gameReviewResult = GameReviewResult(
-                            bestCount = data.bestCount,
-                            goodCount = data.goodCount,
-                            badCount = data.badCount,
-                            goodMannerCount = data.goodMannerCount,
-                            onTimeCount = data.onTimeCount,
-                            fairPlayCount = data.fairPlayCount,
-                            fastResponseCount = data.fastResponseCount,
-                        ),
+                        gameReviewResult = data,
                     )
                 }
             }.onFailure { exception ->
@@ -182,15 +173,7 @@ class AllReviewViewModel @Inject constructor(
             _uiState.update { currentState ->
                 currentState.copy(
                     loadState = ReviewUiState.Success,
-                    gameReviewResult = GameReviewResult(
-                        bestCount = data.bestCount,
-                        goodCount = data.goodCount,
-                        badCount = data.badCount,
-                        goodMannerCount = data.goodMannerCount,
-                        onTimeCount = data.onTimeCount,
-                        fairPlayCount = data.fairPlayCount,
-                        fastResponseCount = data.fastResponseCount,
-                    ),
+                    gameReviewResult = data,
                 )
             }
         }.onFailure { exception ->

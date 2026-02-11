@@ -2,7 +2,6 @@ package com.smashing.app.presentation.profile.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract.MyProfileUiState
@@ -121,15 +120,7 @@ class MyProfileViewModel @Inject constructor(
             _uiState.update { currentState ->
                 currentState.copy(
                     reviewLoadState = MyProfileUiState.Success,
-                    gameReviewResult = GameReviewResult(
-                        bestCount = data.bestCount,
-                        goodCount = data.goodCount,
-                        badCount = data.badCount,
-                        goodMannerCount = data.goodMannerCount,
-                        onTimeCount = data.onTimeCount,
-                        fairPlayCount = data.fairPlayCount,
-                        fastResponseCount = data.fastResponseCount,
-                    ),
+                    gameReviewResult = data,
                 )
             }
         }.onFailure { exception ->
