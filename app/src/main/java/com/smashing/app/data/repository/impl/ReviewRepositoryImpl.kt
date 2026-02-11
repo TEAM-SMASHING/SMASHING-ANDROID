@@ -43,10 +43,9 @@ class ReviewRepositoryImpl @Inject constructor(
         size: Int?
     ): Result<CursorPage<GameReview>> =
         suspendRunCatching {
-        reviewRemoteDataSource.getMyRecentReviewList(
-            cursor = cursor,
-            size = size
-        ).requireData().toGameReviewList()
-    }
-
+            reviewRemoteDataSource.getMyRecentReviewList(
+                cursor = cursor,
+                size = size
+            ).requireData().toGameReviewList()
+        }
 }
