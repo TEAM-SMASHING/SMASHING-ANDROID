@@ -43,9 +43,9 @@ class AllReviewViewModel @Inject constructor(
     private var isLoading: Boolean = false
 
     init {
-        fetchMyRecentReviewStats()
         if (userId == null && isUser) {
             fetchMyProfileReview(true)
+            fetchMyRecentReviewStats()
         } else {
             fetchUserRecentReviewStats()
             fetchUserProfileReview(true)
