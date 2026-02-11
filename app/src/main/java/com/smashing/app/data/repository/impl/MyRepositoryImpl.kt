@@ -1,12 +1,14 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
+import com.smashing.app.data.mapper.my.toGameReviewResult
 import com.smashing.app.data.mapper.my.toMyProfileInfo
 import com.smashing.app.data.mapper.my.toMyProfileTierInfo
 import com.smashing.app.data.mapper.my.toRequest
 import com.smashing.app.data.model.addsports.AddSportsInfo
 import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.profile.home.MyProfileTierInfo
+import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData
@@ -40,5 +42,12 @@ class MyRepositoryImpl @Inject constructor(
         info: AddSportsInfo
     ): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.addSportProfile(info.toRequest())
+    }
+
+    override suspend fun getMyRecentReviewStats(
+    ): Result<GameReviewResult> = suspendRunCatching {
+        myRemoteDataSource.getMyRecentReviewStats()
+            .requireData()
+            .toGameReviewResult()
     }
 }

@@ -116,7 +116,7 @@ class MyProfileViewModel @Inject constructor(
     }
 
     fun fetchMyRecentReviewStats() = viewModelScope.launch {
-        reviewRepository.getUserRecentReviewStats(
+        myRepository.getMyRecentReviewStats(
         ).onSuccess { data ->
             _uiState.update { currentState ->
                 currentState.copy(

@@ -1,10 +1,9 @@
 package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
-import com.smashing.app.data.remote.dto.review.GetReviewDetailResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.review.GetMyRecentReviewListResponse
-import com.smashing.app.data.remote.dto.my.GetMyRecentReviewStatsResponse
+import com.smashing.app.data.remote.dto.review.GetReviewDetailResponse
 import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -35,9 +34,5 @@ interface ReviewService {
         @Query("cursor") cursor: String?,
         @Query("size") size: Int?,
     ): BaseResponse<CursorDto<GetMyRecentReviewListResponse>>
-
-    @GET("/api/v1/users/me/reviews/summary")
-    suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse>
-
 
 }

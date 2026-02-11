@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.review.GameReviewResult
+import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
@@ -25,6 +26,7 @@ class AllReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
     private val userRepository: UserRepository,
+    private val myRepository: MyRepository,
 ) : ViewModel() {
 
     private val userData = savedStateHandle.toRoute<Review>()
@@ -96,7 +98,7 @@ class AllReviewViewModel @Inject constructor(
     }
 
     fun fetchUserRecentReviewStats() = viewModelScope.launch {
-        if (userId != null){
+        if (userId != null) {
             userRepository.getUserRecentReviewStats(
                 userId = userId,
                 sportCode = sportCode,
@@ -175,7 +177,7 @@ class AllReviewViewModel @Inject constructor(
     }
 
     fun fetchMyRecentReviewStats() = viewModelScope.launch {
-        reviewRepository.getUserRecentReviewStats(
+        myRepository.getMyRecentReviewStats(
         ).onSuccess { data ->
             _uiState.update { currentState ->
                 currentState.copy(
