@@ -45,7 +45,7 @@ class AllReviewViewModel @Inject constructor(
     init {
         fetchMyRecentReviewStats()
         if (userId == null && isUser) {
-            fetchReviews(true)
+            fetchMyReviews(true)
         } else {
             fetchUserRecentReviewStats()
             fetchUserProfileReview(true)
@@ -129,7 +129,7 @@ class AllReviewViewModel @Inject constructor(
         }
     }
 
-    fun fetchReviews(isInit: Boolean = false) {
+    fun fetchMyReviews(isInit: Boolean = false) {
         if (isLoading || (!isInit && !hasNextPage)) return
 
         viewModelScope.launch {
