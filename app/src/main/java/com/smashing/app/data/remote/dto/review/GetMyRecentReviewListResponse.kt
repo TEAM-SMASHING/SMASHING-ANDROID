@@ -10,9 +10,9 @@ data class GetMyRecentReviewListResponse(
     @SerialName("gameReviewId")
     val gameReviewId: String,
     @SerialName("opponentNickname")
-    val nickname: String,
+    val opponentNickname: String,
     @SerialName("createdAt")
     val createdAt: String,
     @SerialName("content")
-    val content: String?,
+    val content: String? = null,
 )

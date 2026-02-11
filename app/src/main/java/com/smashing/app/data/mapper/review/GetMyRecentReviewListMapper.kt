@@ -22,7 +22,7 @@ fun CursorDto<GetMyRecentReviewListResponse>.toGameReviewList(): CursorPage<Game
 private fun GetMyRecentReviewListResponse.toGameReview(): GameReview {
     return GameReview(
         gameReviewId = this.gameReviewId,
-        opponentNickname = this.nickname,
+        opponentNickname = this.opponentNickname,
         createdAt = convertLocalDateTimeToTime(this.createdAt),
         content = this.content
     )
