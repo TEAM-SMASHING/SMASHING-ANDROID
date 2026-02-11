@@ -14,5 +14,5 @@ data class GetReviewDetailResponse(
     @SerialName("tag")
     val tag: List<String>,
     @SerialName("content")
-    val content: String?,
+    val content: String? = null,
 )
