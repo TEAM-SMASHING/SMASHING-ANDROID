@@ -1,6 +1,5 @@
 package com.smashing.app.presentation.login
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.network.sse.SseManager
@@ -23,26 +22,21 @@ class LoginViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun postKakaoLogin(
-        context: Context,
+        token: String,
     ) = viewModelScope.launch {
-        authRepository.loginKakao(context = context)
-            .onSuccess { token ->
-                authRepository.postKakaoLogin(token)
-                    .onSuccess {
-                        if (it.isCompletedSignUp) {
-                            sseManager.onUserLoggedIn()
-                            _sideEffect.emit(LoginContract.SideEffect.NavigateToHome)
-                        } else {
-                            _sideEffect.emit(NavigateToSignUp(it.kakaoId))
-                        }
-                        Timber.tag("KakaoLogin").d("로그인 성공 $token")
-                    }
-                    .onFailure { error ->
-                        Timber.tag("KakaoLogin").e("로그인 실패 : $error")
-                    }
+        authRepository.postKakaoLogin(token)
+            .onSuccess {
+                if (it.isCompletedSignUp) {
+                    sseManager.onUserLoggedIn()
+                    _sideEffect.emit(LoginContract.SideEffect.NavigateToHome)
+                } else {
+                    _sideEffect.emit(NavigateToSignUp(it.kakaoId))
+                }
+                Timber.tag("KakaoLogin").d("로그인 성공 $token")
             }
             .onFailure { error ->
                 Timber.tag("KakaoLogin").e("로그인 실패 : $error")
             }
+
     }
 }
