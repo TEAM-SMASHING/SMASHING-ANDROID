@@ -20,11 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.smashing.app.R
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToSignUp
 import com.smashing.app.presentation.login.component.KakaoLoginButton
+import kotlinx.coroutines.launch
 
 
 private const val LOGO_RATIO = 261 / 112f
@@ -50,11 +52,12 @@ fun LoginRoute(
                 }
             }
     }
+
     LoginScreen(
         onKakaoLoginClick = {
-            viewModel.postKakaoLogin(
-                context = context,
-            )
+            lifecycleOwner.lifecycleScope.launch {
+                SocialLoginManager(context = context, viewModel = viewModel).loginKakao()
+            }
         },
         modifier = modifier,
     )
