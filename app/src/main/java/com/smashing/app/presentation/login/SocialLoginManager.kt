@@ -22,7 +22,7 @@ class SocialLoginManager(
         }.onSuccess { token ->
             viewModel.postKakaoLogin(token)
         }.onFailure { error ->
-            Timber.tag("KakaoLogin").e("로그인 실패 : $error")
+            Timber.tag("KakaoLogin").e("카카오 토큰 반환 실패 : $error")
         }
 
     suspend fun getKakaoAccessToken(): String =
@@ -30,10 +30,10 @@ class SocialLoginManager(
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                 if (error != null) {
                     continuation.resumeWithException(error)
-                    Timber.e("카카오계정으로 로그인 실패 ${error}")
+                    Timber.tag("KakaoLogin").e("카카오계정으로 로그인 실패 $error")
                 } else if (token != null) {
                     continuation.resume(token.accessToken)
-                    Timber.i("카카오톡으로 로그인 성공 ${token.accessToken}")
+                    Timber.tag("KakaoLogin").i("카카오톡으로 로그인 성공 ${token.accessToken}")
                 }
             }
 
@@ -41,7 +41,7 @@ class SocialLoginManager(
                 UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                     if (error != null) {
                         continuation.resumeWithException(error)
-                        Timber.e("카카오톡으로 로그인 실패 ${error}")
+                        Timber.tag("KakaoLogin").e("카카오톡으로 로그인 실패 $error")
 
                         if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                             continuation.resumeWithException(error)
@@ -51,7 +51,7 @@ class SocialLoginManager(
                         UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                     } else if (token != null) {
                         continuation.resume(token.accessToken)
-                        Timber.i("카카오톡으로 로그인 성공 ${token.accessToken}")
+                        Timber.tag("KakaoLogin").i("카카오톡으로 로그인 성공 ${token.accessToken}")
                     }
                 }
             } else {
