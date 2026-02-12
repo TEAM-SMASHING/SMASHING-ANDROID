@@ -5,11 +5,14 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.smashing.app.core.util.suspendRunCatching
 import timber.log.Timber
 
-class SocialLoginManager {
+class SocialLoginManager(
+    val context: Context
+) {
 
-    fun loginKakao(context: Context){
+    private fun getKakaoAccessToken() {
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Timber.e("카카오계정으로 로그인 실패 ${error}")
