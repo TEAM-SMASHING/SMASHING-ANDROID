@@ -71,7 +71,7 @@ class MyProfileViewModel @Inject constructor(
             myRepository.switchActiveMyProfile(profileId)
                 .onSuccess {
                     fetchProfileInfo()
-                    fetchReviews()
+                    fetchMyProfileReviewList()
                     fetchMyRecentReviewStats()
                 }
                 .onFailure { exception ->
@@ -86,7 +86,7 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
-    fun fetchReviews() = viewModelScope.launch {
+    fun fetchMyProfileReviewList() = viewModelScope.launch {
         _uiState.update {
             it.copy(reviewLoadState = MyProfileUiState.Loading)
         }
