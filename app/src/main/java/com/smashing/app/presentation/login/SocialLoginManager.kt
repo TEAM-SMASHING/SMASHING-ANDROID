@@ -19,10 +19,6 @@ class SocialLoginManager(
         suspendRunCatching {
             val accessToken = getKakaoAccessToken()
             accessToken
-        }.onSuccess { token ->
-            viewModel.postKakaoLogin(token)
-        }.onFailure { error ->
-            Timber.tag("KakaoLogin").e("카카오 토큰 반환 실패 : $error")
         }
 
     suspend fun getKakaoAccessToken(): String =

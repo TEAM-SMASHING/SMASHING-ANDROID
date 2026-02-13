@@ -27,6 +27,7 @@ import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToHo
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToSignUp
 import com.smashing.app.presentation.login.component.KakaoLoginButton
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 private const val LOGO_RATIO = 261 / 112f
@@ -57,6 +58,12 @@ fun LoginRoute(
         onKakaoLoginClick = {
             lifecycleOwner.lifecycleScope.launch {
                 SocialLoginManager(context = context, viewModel = viewModel).loginKakao()
+                    .onSuccess { token ->
+                        viewModel.postKakaoLogin(token)
+                    }
+                    .onFailure { error ->
+                        Timber.tag("KakaoLogin").e("카카오 토큰 반환 실패 : $error")
+                    }
             }
         },
         modifier = modifier,
