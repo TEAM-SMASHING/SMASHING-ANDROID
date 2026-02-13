@@ -21,7 +21,7 @@ class SocialLoginManager(
             accessToken
         }
 
-    suspend fun getKakaoAccessToken(): String =
+    private suspend fun getKakaoAccessToken(): String =
         suspendCancellableCoroutine { continuation ->
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                 if (error != null) {
