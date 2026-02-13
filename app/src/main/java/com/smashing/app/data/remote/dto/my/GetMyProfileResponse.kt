@@ -4,15 +4,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetMyTierProfileResponse(
-    @SerialName("region")
-    val region: String,
+data class GetMyProfileResponse(
     @SerialName("nickname")
     val nickname: String,
+    @SerialName("gender")
+    val gender: String,
     @SerialName("activeProfile")
     val activeProfile: MyProfileInfoResponse,
     @SerialName("allProfiles")
-    val allProfiles: List<MyProfileItemResponse>,
+    val allProfiles: List<MyProfileItemResponse>
 ) {
     @Serializable
     data class MyProfileInfoResponse(
@@ -32,6 +32,8 @@ data class GetMyTierProfileResponse(
         val wins: Int,
         @SerialName("losses")
         val losses: Int,
+        @SerialName("reviews")
+        val reviews: Long
     )
 
     @Serializable
@@ -41,6 +43,6 @@ data class GetMyTierProfileResponse(
         @SerialName("sportCode")
         val sportCode: String,
         @SerialName("isActive")
-        val isActive: Boolean,
+        val isActive: Boolean
     )
 }

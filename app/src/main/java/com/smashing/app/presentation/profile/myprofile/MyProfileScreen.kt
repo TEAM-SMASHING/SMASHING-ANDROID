@@ -33,6 +33,7 @@ import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
+import kotlinx.collections.immutable.toImmutableList
 
 
 @Composable
@@ -60,8 +61,8 @@ fun MyProfileRoute(
         onAddSportClick = navigateToSportAdd,
         navigateToTierInfo = {
             navigateToTierInfo(
-                uiState.profileInfo.tierType.toTierInfoStyle(),
-                uiState.profileInfo.sportType
+                uiState.activeProfile.tierType.toTierInfoStyle(),
+                uiState.activeProfile.sportType
             )
         },
         onReviewClick = navigateToReview,
@@ -84,7 +85,7 @@ private fun MyProfileScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas),
-        ) {
+    ) {
 
         SmashingDefaultTopBar(
             title = stringResource(profile),
@@ -100,30 +101,30 @@ private fun MyProfileScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
         ) {
             UserProfileCard(
-                nickname = uiState.profileInfo.nickname,
-                gender = uiState.profileInfo.genderType,
-                tierType = uiState.profileInfo.tierType,
-                winCount = uiState.profileInfo.winCount,
-                loseCount = uiState.profileInfo.loseCount,
-                reviewCount = uiState.profileInfo.reviewCount,
+                nickname = uiState.myProfileInfo.nickname,
+                gender = uiState.myProfileInfo.genderType,
+                tierType = uiState.activeProfile.tierType,
+                winCount = uiState.activeProfile.winCount,
+                loseCount = uiState.activeProfile.loseCount,
+                reviewCount = uiState.myProfileInfo.reviewCount,
             )
 
             ProfileTierBox(
-                tierType = uiState.profileInfo.tierType,
-                sportProfileList = uiState.sportProfileList,
+                tierType = uiState.activeProfile.tierType,
+                sportProfileList = uiState.sportProfileList.toImmutableList(),
                 selectedProfileId = uiState.selectedSportProfileId,
                 onSportClick = onSportClick,
-                tierIconResId = uiState.profileInfo.tierType.img(),
-                progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
-                lpStatus = (uiState.profileInfo.maxLp - uiState.profileInfo.lp) + 1,
-                totalLp = (uiState.profileInfo.maxLp) + 1,
+                tierIconResId = uiState.myProfileInfo.myProfileInfo.tierType.img(),
+                progress = ((uiState.activeProfile.lp - uiState.activeProfile.minLp).toFloat() /
+                        (uiState.activeProfile.maxLp - uiState.activeProfile.minLp).toFloat()),
+                lpStatus = (uiState.activeProfile.maxLp - uiState.activeProfile.lp) + 1,
+                totalLp = (uiState.activeProfile.maxLp) + 1,
                 onAddSportClick = if (isMaxProfileReached) null else onAddSportClick,
                 onTierInfoClick = navigateToTierInfo,
             )
-
             ProfileStatsBar(
-                winCount = uiState.profileInfo.winCount,
-                loseCount = uiState.profileInfo.loseCount,
+                winCount = uiState.activeProfile.winCount,
+                loseCount = uiState.activeProfile.loseCount,
             )
 
             ReviewCard(

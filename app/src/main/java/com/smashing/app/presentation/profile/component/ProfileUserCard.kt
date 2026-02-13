@@ -122,7 +122,7 @@ fun UserProfileCard(
                 onClick = onCompeteClick,
                 modifier = Modifier
                     .fillMaxWidth(),
-                isEnabled = isCompeteEnabled
+                isEnabled = isCompeteEnabled,
             )
         }
     }

@@ -5,8 +5,7 @@ import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.review.GameReview
 import com.smashing.app.data.remote.dto.cursor.CursorDto
-import com.smashing.app.data.remote.dto.review.GetMyGameReviewsResponse
-import com.smashing.app.data.remote.dto.review.MyReviewsDto
+import com.smashing.app.data.remote.dto.my.GetMyGameReviewsResponse
 import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 
 fun CursorDto<GetUserRecentReviewListResponse>.toGameReviewList(): CursorPage<GameReview> {
