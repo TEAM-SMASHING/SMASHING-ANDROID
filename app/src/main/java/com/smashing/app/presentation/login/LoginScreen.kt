@@ -57,7 +57,7 @@ fun LoginRoute(
     LoginScreen(
         onKakaoLoginClick = {
             lifecycleOwner.lifecycleScope.launch {
-                SocialLoginManager(context = context, viewModel = viewModel).loginKakao()
+                SocialLoginManager(context = context).loginKakao()
                     .onSuccess { token ->
                         viewModel.postKakaoLogin(token)
                     }

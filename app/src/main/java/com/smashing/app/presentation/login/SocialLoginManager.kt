@@ -13,7 +13,6 @@ import kotlin.coroutines.resumeWithException
 
 class SocialLoginManager(
     val context: Context,
-    val viewModel: LoginViewModel
 ) {
     suspend fun loginKakao(): Result<String> =
         suspendRunCatching {
