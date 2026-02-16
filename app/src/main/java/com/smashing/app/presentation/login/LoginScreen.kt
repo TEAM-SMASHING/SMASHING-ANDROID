@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.smashing.app.R
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToHome
@@ -41,6 +41,7 @@ fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
+    val scope = rememberCoroutineScope()
 
     val context = LocalContext.current
 
@@ -56,7 +57,7 @@ fun LoginRoute(
 
     LoginScreen(
         onKakaoLoginClick = {
-            lifecycleOwner.lifecycleScope.launch {
+            scope.launch {
                 SocialLoginManager(context = context).loginKakao()
                     .onSuccess { token ->
                         viewModel.postKakaoLogin(token)
