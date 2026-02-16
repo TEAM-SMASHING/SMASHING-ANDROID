@@ -1,7 +1,8 @@
-package com.smashing.app.data.remote.dto.review
+package com.smashing.app.data.remote.dto.my
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
 @Serializable
 data class GetMyRecentReviewStatsResponse(
     @SerialName("ratingCounts")

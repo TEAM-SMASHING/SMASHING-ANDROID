@@ -3,9 +3,8 @@ package com.smashing.app.data.remote.datasource.impl
 import com.smashing.app.data.remote.datasource.api.ReviewRemoteDataSource
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
-import com.smashing.app.data.remote.dto.review.GetReviewResponse
-import com.smashing.app.data.remote.dto.my.GetMyGameReviewsResponse
-import com.smashing.app.data.remote.dto.review.GetMyRecentReviewStatsResponse
+import com.smashing.app.data.remote.dto.review.GetReviewDetailResponse
+import com.smashing.app.data.remote.dto.review.GetMyRecentReviewListResponse
 import com.smashing.app.data.remote.dto.review.GetUserRecentReviewListResponse
 import com.smashing.app.data.remote.service.ReviewService
 import javax.inject.Inject
@@ -16,7 +15,7 @@ class ReviewRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getReview(
         reviewId: String,
-    ): BaseResponse<GetReviewResponse> =
+    ): BaseResponse<GetReviewDetailResponse> =
         reviewService.getReview(reviewId = reviewId)
 
     override suspend fun getUserRecentReviewList(
@@ -32,14 +31,13 @@ class ReviewRemoteDataSourceImpl @Inject constructor(
             size = size,
         )
 
-    override suspend fun getMyGameReviews(
+    override suspend fun getMyRecentReviewList(
         cursor: String?,
         size: Int?
-    ): BaseResponse<GetMyGameReviewsResponse> {
-        return reviewService.getMyGameReviews(cursor, size)
-    }
+    ): BaseResponse<CursorDto<GetMyRecentReviewListResponse>> =
+        reviewService.getMyRecentReviewList(
+            cursor = cursor,
+            size = size,
+        )
 
-    override suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse> {
-        return reviewService.getMyRecentReviewStats()
-    }
 }

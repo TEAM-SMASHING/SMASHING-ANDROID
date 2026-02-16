@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.review.GameReviewResult
+import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
@@ -25,6 +25,7 @@ class AllReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
     private val userRepository: UserRepository,
+    private val myRepository: MyRepository,
 ) : ViewModel() {
 
     private val userData = savedStateHandle.toRoute<Review>()
@@ -41,16 +42,16 @@ class AllReviewViewModel @Inject constructor(
     private var isLoading: Boolean = false
 
     init {
-        fetchMyRecentReviewStats()
         if (userId == null && isUser) {
-            fetchReviews(true)
+            fetchMyProfileReviewList(true)
+            fetchMyRecentReviewStats()
         } else {
             fetchUserRecentReviewStats()
-            fetchUserProfileReview(true)
+            fetchUserProfileReviewList(true)
         }
     }
 
-    fun fetchUserProfileReview(isRefresh: Boolean = false) = viewModelScope.launch {
+    fun fetchUserProfileReviewList(isRefresh: Boolean = false) = viewModelScope.launch {
 
         val currentState = _uiState.value
 
@@ -96,7 +97,7 @@ class AllReviewViewModel @Inject constructor(
     }
 
     fun fetchUserRecentReviewStats() = viewModelScope.launch {
-        if (userId != null){
+        if (userId != null) {
             userRepository.getUserRecentReviewStats(
                 userId = userId,
                 sportCode = sportCode,
@@ -104,15 +105,7 @@ class AllReviewViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = ReviewUiState.Success,
-                        gameReviewResult = GameReviewResult(
-                            bestCount = data.bestCount,
-                            goodCount = data.goodCount,
-                            badCount = data.badCount,
-                            goodMannerCount = data.goodMannerCount,
-                            onTimeCount = data.onTimeCount,
-                            fairPlayCount = data.fairPlayCount,
-                            fastResponseCount = data.fastResponseCount,
-                        ),
+                        gameReviewResult = data,
                     )
                 }
             }.onFailure { exception ->
@@ -127,7 +120,7 @@ class AllReviewViewModel @Inject constructor(
         }
     }
 
-    fun fetchReviews(isInit: Boolean = false) {
+    fun fetchMyProfileReviewList(isInit: Boolean = false) {
         if (isLoading || (!isInit && !hasNextPage)) return
 
         viewModelScope.launch {
@@ -140,7 +133,7 @@ class AllReviewViewModel @Inject constructor(
                 nextCursor = null
             }
 
-            reviewRepository.getMyGameReviews(
+            reviewRepository.getMyRecentReviewList(
                 cursor = if (isInit) null else nextCursor,
                 size = PAGE_SIZE
             )
@@ -175,20 +168,12 @@ class AllReviewViewModel @Inject constructor(
     }
 
     fun fetchMyRecentReviewStats() = viewModelScope.launch {
-        reviewRepository.getUserRecentReviewStats(
+        myRepository.getMyRecentReviewStats(
         ).onSuccess { data ->
             _uiState.update { currentState ->
                 currentState.copy(
                     loadState = ReviewUiState.Success,
-                    gameReviewResult = GameReviewResult(
-                        bestCount = data.bestCount,
-                        goodCount = data.goodCount,
-                        badCount = data.badCount,
-                        goodMannerCount = data.goodMannerCount,
-                        onTimeCount = data.onTimeCount,
-                        fairPlayCount = data.fairPlayCount,
-                        fastResponseCount = data.fastResponseCount,
-                    ),
+                    gameReviewResult = data,
                 )
             }
         }.onFailure { exception ->

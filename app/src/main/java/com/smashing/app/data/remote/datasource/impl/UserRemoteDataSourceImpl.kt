@@ -11,7 +11,10 @@ class UserRemoteDataSourceImpl @Inject constructor(
     private val userService: UserService,
 ) : UserRemoteDataSource {
 
-    override suspend fun getUserInfoDetail(userId: String, sportCode: String?): BaseResponse<GetUserInfoDetailResponse> =
+    override suspend fun getUserInfoDetail(
+        userId: String,
+        sportCode: String?
+    ): BaseResponse<GetUserInfoDetailResponse> =
         userService.getUserInfoDetail(userId, sportCode)
 
     override suspend fun getUserRecentReviewStats(

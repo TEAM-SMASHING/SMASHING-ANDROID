@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class  GetReviewResponse(
+data class GetReviewDetailResponse(
     @SerialName("rating")
     val rating: String,
     @SerialName("reviewerNickname")
@@ -14,5 +14,5 @@ data class  GetReviewResponse(
     @SerialName("tag")
     val tag: List<String>,
     @SerialName("content")
-    val content: String?,
+    val content: String? = null,
 )

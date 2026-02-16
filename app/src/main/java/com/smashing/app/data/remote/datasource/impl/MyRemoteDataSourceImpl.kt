@@ -6,6 +6,7 @@ import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.my.AddSportProfileRequest
 import com.smashing.app.data.remote.dto.my.GetMyTierProfileResponse
 import com.smashing.app.data.remote.dto.my.GetMyProfileResponse
+import com.smashing.app.data.remote.dto.my.GetMyRecentReviewStatsResponse
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.service.MyService
 import jakarta.inject.Inject
@@ -27,5 +28,9 @@ class MyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun putActiveMyProfile(request: MyProfileSwitchRequest): BaseResponse<Unit?> {
         return myService.putActiveMyProfile(request)
+    }
+
+    override suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse> {
+        return myService.getMyRecentReviewStats()
     }
 }
