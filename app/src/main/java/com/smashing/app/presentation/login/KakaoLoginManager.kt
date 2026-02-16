@@ -11,7 +11,7 @@ import timber.log.Timber
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class SocialLoginManager(
+class KakaoLoginManager(
     val context: Context,
 ) {
     suspend fun loginKakao(): Result<String> =
