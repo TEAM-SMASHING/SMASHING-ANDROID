@@ -43,15 +43,15 @@ class AllReviewViewModel @Inject constructor(
 
     init {
         if (userId == null && isUser) {
-            fetchMyProfileReview(true)
+            fetchMyProfileReviewList(true)
             fetchMyRecentReviewStats()
         } else {
             fetchUserRecentReviewStats()
-            fetchUserProfileReview(true)
+            fetchUserProfileReviewList(true)
         }
     }
 
-    fun fetchUserProfileReview(isRefresh: Boolean = false) = viewModelScope.launch {
+    fun fetchUserProfileReviewList(isRefresh: Boolean = false) = viewModelScope.launch {
 
         val currentState = _uiState.value
 
@@ -120,7 +120,7 @@ class AllReviewViewModel @Inject constructor(
         }
     }
 
-    fun fetchMyProfileReview(isInit: Boolean = false) {
+    fun fetchMyProfileReviewList(isInit: Boolean = false) {
         if (isLoading || (!isInit && !hasNextPage)) return
 
         viewModelScope.launch {

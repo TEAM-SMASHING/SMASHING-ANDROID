@@ -71,7 +71,7 @@ fun AllReviewRoute(
         modifier = modifier,
         uiState = uiState,
         reviews = uiState.gameReview,
-        onLoadMoreReviewList = { viewModel.fetchMyProfileReview(isInit = false) },
+        onLoadMoreReviewList = { viewModel.fetchMyProfileReviewList(isInit = false) },
         onBackClick = navigateUp,
     )
 }
