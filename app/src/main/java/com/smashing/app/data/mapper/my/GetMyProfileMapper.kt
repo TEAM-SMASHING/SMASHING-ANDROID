@@ -11,11 +11,11 @@ import com.smashing.app.data.type.TierType
 
 fun GetMyProfileResponse.toMyProfileInfo(): MyProfileInfo {
     return MyProfileInfo(
-        nickname = this.nickname,
+        nickname = nickname,
         genderType = GenderType.findByName(this.gender),
-        myProfileInfo = this.toProfileInfo(),
-        reviewCount = this.activeProfile.reviews,
-        myProfileItem = this.allProfiles.map { it.toProfileItem() },
+        myProfileInfo = toProfileInfo(),
+        reviewCount = activeProfile.reviews,
+        myProfileItem = allProfiles.map { it.toProfileItem() },
     )
 }
 

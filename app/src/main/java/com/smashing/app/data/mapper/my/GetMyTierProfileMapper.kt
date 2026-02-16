@@ -9,10 +9,10 @@ import com.smashing.app.data.type.TierType
 
 fun GetMyTierProfileResponse.toMyProfileTierInfo(): MyProfileTierInfo {
     return MyProfileTierInfo(
-        nickname = this.nickname,
-        region = this.region,
-        myProfileInfo = this.toProfileInfo(),
-        myProfileItem = this.allProfiles.map { it.toProfileItem() },
+        nickname = nickname,
+        region = region,
+        myProfileInfo = toProfileInfo(),
+        myProfileItem = allProfiles.map { it.toProfileItem() },
     )
 }
 

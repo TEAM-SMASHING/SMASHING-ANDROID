@@ -5,12 +5,12 @@ import com.smashing.app.data.remote.dto.user.GetUserRecentReviewStatsResponse
 
 fun GetUserRecentReviewStatsResponse.toGameReviewResult(): GameReviewResult =
     GameReviewResult(
-        bestCount = this.ratingCounts.best,
-        goodCount = this.ratingCounts.good,
-        badCount = this.ratingCounts.bad,
-        goodMannerCount = this.tagCounts.goodManner,
-        onTimeCount = this.tagCounts.onTime,
-        fairPlayCount = this.tagCounts.fairPlay,
-        fastResponseCount = this.tagCounts.fastResponse,
+        bestCount = ratingCounts.best,
+        goodCount = ratingCounts.good,
+        badCount = ratingCounts.bad,
+        goodMannerCount = tagCounts.goodManner,
+        onTimeCount = tagCounts.onTime,
+        fairPlayCount = tagCounts.fairPlay,
+        fastResponseCount = tagCounts.fastResponse,
     )
 

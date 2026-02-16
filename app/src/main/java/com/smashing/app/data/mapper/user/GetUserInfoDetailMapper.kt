@@ -10,14 +10,14 @@ import com.smashing.app.data.type.TierType
 
 fun GetUserInfoDetailResponse.toUserProfileInfo(): UserProfileInfo =
     UserProfileInfo(
-        nickname = this.nickname,
-        genderType = GenderType.findByName(this.gender),
-        userProfileInfo = this.selectedProfile.toSelectedProfile(),
-        reviewCount = this.selectedProfile.reviews,
-        userProfileItem = this.allProfiles.map { it.toUserProfileItem() },
-        isChallengeable = this.isChallengeable,
-        isAcceptable = this.isAcceptable,
-        receivedMatchingId = this.receivedMatchingId,
+        nickname = nickname,
+        genderType = GenderType.findByName(gender),
+        userProfileInfo = selectedProfile.toSelectedProfile(),
+        reviewCount = selectedProfile.reviews,
+        userProfileItem = allProfiles.map { it.toUserProfileItem() },
+        isChallengeable = isChallengeable,
+        isAcceptable = isAcceptable,
+        receivedMatchingId = receivedMatchingId,
     )
 
 
