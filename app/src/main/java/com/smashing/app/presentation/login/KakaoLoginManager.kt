@@ -16,8 +16,7 @@ class KakaoLoginManager(
 ) {
     suspend fun loginKakao(): Result<String> =
         suspendRunCatching {
-            val accessToken = getKakaoAccessToken()
-            accessToken
+            getKakaoAccessToken()
         }
 
     private suspend fun getKakaoAccessToken(): String =
