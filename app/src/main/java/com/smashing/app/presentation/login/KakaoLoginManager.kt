@@ -6,7 +6,6 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.smashing.app.core.util.suspendRunCatching
 import kotlinx.coroutines.suspendCancellableCoroutine
-import timber.log.Timber
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -35,16 +34,13 @@ class KakaoLoginManager() {
 
                 if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                     continuation.resumeWithException(error)
-                    Timber.tag("KakaoLogin").e("카카오톡으로 로그인 실패 $error")
                     return@loginWithKakaoTalk
                 }
 
                 continuation.resumeWithException(error)
-                Timber.tag("KakaoLogin").e("카카오톡으로 로그인 실패 $error")
 
             } else if (token != null) {
                 continuation.resume(token.accessToken)
-                Timber.tag("KakaoLogin").i("카카오톡으로 로그인 성공 ${token.accessToken}")
             }
         }
     }
@@ -61,11 +57,9 @@ class KakaoLoginManager() {
                 }
 
                 continuation.resumeWithException(error)
-                Timber.tag("KakaoLogin").e("카카오 계정으로 로그인 실패 $error")
 
             } else if (token != null) {
                 continuation.resume(token.accessToken)
-                Timber.tag("KakaoLogin").i("카카오 계정으로 로그인 성공 ${token.accessToken}")
             }
         }
     }

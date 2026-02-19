@@ -60,6 +60,7 @@ fun LoginRoute(
             scope.launch {
                 KakaoLoginManager().loginKakao(context = context)
                     .onSuccess { token ->
+                        Timber.tag("KakaoLogin").i("카카오톡 로그인 성공 $token")
                         viewModel.postKakaoLogin(token)
                     }
                     .onFailure { error ->
