@@ -58,7 +58,7 @@ fun LoginRoute(
     LoginScreen(
         onKakaoLoginClick = {
             scope.launch {
-                KakaoLoginManager(context = context).loginKakao()
+                KakaoLoginManager().loginKakao(context = context)
                     .onSuccess { token ->
                         viewModel.postKakaoLogin(token)
                     }

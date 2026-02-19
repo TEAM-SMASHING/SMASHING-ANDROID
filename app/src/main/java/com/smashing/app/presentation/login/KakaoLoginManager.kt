@@ -11,15 +11,17 @@ import timber.log.Timber
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class KakaoLoginManager(
-    val context: Context,
-) {
-    suspend fun loginKakao(): Result<String> =
+class KakaoLoginManager() {
+    suspend fun loginKakao(
+        context: Context,
+    ): Result<String> =
         suspendRunCatching {
-            getKakaoAccessToken()
+            getKakaoAccessToken(context)
         }
 
-    private suspend fun getKakaoAccessToken(): String =
+    private suspend fun getKakaoAccessToken(
+        context: Context,
+    ): String =
         suspendCancellableCoroutine { continuation ->
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                 if (error != null) {
