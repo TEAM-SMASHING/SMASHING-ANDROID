@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.network.sse.SseManager
 import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToSignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,7 +29,7 @@ class LoginViewModel @Inject constructor(
             .onSuccess {
                 if (it.isCompletedSignUp) {
                     sseManager.onUserLoggedIn()
-                    _sideEffect.emit(LoginContract.SideEffect.NavigateToHome)
+                    _sideEffect.emit(NavigateToHome)
                 } else {
                     _sideEffect.emit(NavigateToSignUp(it.kakaoId))
                 }
