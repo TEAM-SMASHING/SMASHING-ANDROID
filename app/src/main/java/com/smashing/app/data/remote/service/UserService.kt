@@ -11,9 +11,9 @@ interface UserService {
 
     @GET("/api/v1/users/{userId}/profiles")
     suspend fun getUserInfoDetail(
-        @Path ("userId")
+        @Path("userId")
         userId: String,
-        @Query ("sportCode")
+        @Query("sportCode")
         sportCode: String?,
     ): BaseResponse<GetUserInfoDetailResponse>
 

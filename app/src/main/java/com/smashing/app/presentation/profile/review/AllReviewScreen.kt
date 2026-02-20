@@ -71,7 +71,7 @@ fun AllReviewRoute(
         modifier = modifier,
         uiState = uiState,
         reviews = uiState.gameReview,
-        onLoadMoreReviewList = { viewModel.fetchReviews(isInit = false) },
+        onLoadMoreReviewList = { viewModel.fetchMyProfileReviewList(isInit = false) },
         onBackClick = navigateUp,
     )
 }
@@ -334,7 +334,7 @@ private fun PreviewNoFastAndTextReview() {
 
         AllReviewScreen(
             uiState = mockState,
-            reviews = persistentListOf(), 
+            reviews = persistentListOf(),
             onLoadMoreReviewList = {},
             onBackClick = {}
         )
