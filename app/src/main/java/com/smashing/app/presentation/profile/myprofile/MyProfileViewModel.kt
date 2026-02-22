@@ -2,7 +2,6 @@ package com.smashing.app.presentation.profile.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract.MyProfileUiState
@@ -72,7 +71,7 @@ class MyProfileViewModel @Inject constructor(
             myRepository.switchActiveMyProfile(profileId)
                 .onSuccess {
                     fetchProfileInfo()
-                    fetchReviews()
+                    fetchMyProfileReviewList()
                     fetchMyRecentReviewStats()
                 }
                 .onFailure { exception ->
@@ -87,12 +86,12 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
-    fun fetchReviews() = viewModelScope.launch {
+    fun fetchMyProfileReviewList() = viewModelScope.launch {
         _uiState.update {
             it.copy(reviewLoadState = MyProfileUiState.Loading)
         }
 
-        reviewRepository.getMyGameReviews(
+        reviewRepository.getMyRecentReviewList(
             cursor = null,
             size = PAGE_SIZE,
         )
@@ -116,20 +115,12 @@ class MyProfileViewModel @Inject constructor(
     }
 
     fun fetchMyRecentReviewStats() = viewModelScope.launch {
-        reviewRepository.getUserRecentReviewStats(
+        myRepository.getMyRecentReviewStats(
         ).onSuccess { data ->
             _uiState.update { currentState ->
                 currentState.copy(
                     reviewLoadState = MyProfileUiState.Success,
-                    gameReviewResult = GameReviewResult(
-                        bestCount = data.bestCount,
-                        goodCount = data.goodCount,
-                        badCount = data.badCount,
-                        goodMannerCount = data.goodMannerCount,
-                        onTimeCount = data.onTimeCount,
-                        fairPlayCount = data.fairPlayCount,
-                        fastResponseCount = data.fastResponseCount,
-                    ),
+                    gameReviewResult = data,
                 )
             }
         }.onFailure { exception ->
