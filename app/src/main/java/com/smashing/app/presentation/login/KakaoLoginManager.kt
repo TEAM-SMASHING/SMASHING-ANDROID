@@ -51,14 +51,8 @@ class KakaoLoginManager {
     ): String = suspendCancellableCoroutine { continuation ->
         UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
             if (error != null) {
-
-                if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                    continuation.resumeWithException(error)
-                    return@loginWithKakaoAccount
-                }
-
                 continuation.resumeWithException(error)
-
+                return@loginWithKakaoAccount
             } else if (token != null) {
                 continuation.resume(token.accessToken)
             }
