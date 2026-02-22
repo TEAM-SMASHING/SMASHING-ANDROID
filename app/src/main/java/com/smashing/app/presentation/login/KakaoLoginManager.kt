@@ -9,7 +9,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class KakaoLoginManager() {
+class KakaoLoginManager {
     suspend fun loginKakao(
         context: Context,
     ): Result<String> =
@@ -21,7 +21,14 @@ class KakaoLoginManager() {
         context: Context,
     ): String =
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-            loginWithKakaoTalk(context)
+            suspendRunCatching {
+                loginWithKakaoTalk(context)
+            }.recoverCatching { error ->
+                if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                    throw error
+                }
+                loginWithKakaoAccount(context)
+            }.getOrThrow()
         } else {
             loginWithKakaoAccount(context)
         }
