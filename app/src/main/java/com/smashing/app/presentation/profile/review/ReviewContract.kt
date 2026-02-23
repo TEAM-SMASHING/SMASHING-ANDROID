@@ -16,7 +16,6 @@ class ReviewContract {
         val userId: String = "",
         val isMatchingRequest: Boolean = true,
         val isCompeteButtonEnabled: Boolean = false,
-        val reviewUiState: ReviewUiState = ReviewUiState.Idle,
         val reviewCursor: Cursor = Cursor(),
     ) {
         val isReviewEmpty: Boolean
