@@ -8,7 +8,6 @@ import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
-import com.smashing.app.presentation.profile.userprofile.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
@@ -55,7 +54,7 @@ class AllReviewViewModel @Inject constructor(
         val currentState = _uiState.value
 
         if (!isRefresh) {
-            if (currentState.reviewUiState == UserProfileUiState.Loading) return@launch
+            if (currentState.reviewUiState == ReviewUiState.Loading) return@launch
             if (!currentState.reviewCursor.hasNext) return@launch
         }
 
