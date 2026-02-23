@@ -8,8 +8,7 @@ import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
-import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
+import com.smashing.app.presentation.profile.userprofile.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.toImmutableList

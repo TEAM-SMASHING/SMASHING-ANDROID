@@ -23,13 +23,13 @@ class ReviewContract {
             get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
     }
 
+}
 
-    sealed interface ReviewUiState {
-        data object Idle : ReviewUiState
-        data object Loading : ReviewUiState
-        data object Success : ReviewUiState
-        data class Failure(
-            val msg: String,
-        ) : ReviewUiState
-    }
+sealed interface ReviewUiState {
+    data object Idle : ReviewUiState
+    data object Loading : ReviewUiState
+    data object Success : ReviewUiState
+    data class Failure(
+        val msg: String,
+    ) : ReviewUiState
 }

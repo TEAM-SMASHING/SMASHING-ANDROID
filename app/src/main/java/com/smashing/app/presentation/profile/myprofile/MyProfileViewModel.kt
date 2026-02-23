@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
-import com.smashing.app.presentation.profile.myprofile.MyProfileContract.MyProfileUiState
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
