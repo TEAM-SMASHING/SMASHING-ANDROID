@@ -8,7 +8,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.core.extension.clearBackStackOptions
+import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.LoginRoute
+import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToLogin(
@@ -16,14 +19,17 @@ fun NavController.navigateToLogin(
 ) = navigate(Login, navOptions)
 
 fun NavGraphBuilder.loginGraph(
-    navigateToSignUp: (String) -> Unit,
-    navigateToHome: () -> Unit,
+    navController: NavController,
     innerPadding: PaddingValues,
 ) {
     composable<Login> {
         LoginRoute(
-            navigateToSignUp = navigateToSignUp,
-            navigateToHome = navigateToHome,
+            navigateToSignUp = { kakaoId ->
+                navController.navigateToSignUp(kakaoId = kakaoId)
+            },
+            navigateToHome = {
+                navController.navigateToHome(navOptions = clearBackStackOptions())
+            },
             modifier = Modifier.padding(innerPadding),
         )
     }
