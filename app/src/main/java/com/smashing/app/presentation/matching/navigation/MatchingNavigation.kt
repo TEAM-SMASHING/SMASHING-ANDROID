@@ -10,6 +10,9 @@ import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.presentation.matching.MatchingRoute
 import com.smashing.app.presentation.matching.type.MatchingType
+import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
+import com.smashing.app.presentation.write.navigation.navigateToConfirm
+import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMatching(
@@ -18,26 +21,14 @@ fun NavController.navigateToMatching(
 ) = navigate(Matching(initTab = initTab), navOptions)
 
 fun NavGraphBuilder.matchingGraph(
-    navigateToSubmit: (
-        gameId: String,
-        opponentUserId: String,
-        opponentNickname: String,
-        isFirstAttempt: Boolean,
-        submissionId: String?,
-    ) -> Unit,
-    navigateToConfirm: (
-        submissionId: String,
-        gameId: String,
-        isFirstAttempt: Boolean,
-    ) -> Unit,
-    navigateToProfile: (String) -> Unit,
+    navController: NavController,
     innerPadding: PaddingValues,
 ) {
     composable<Matching> {
         MatchingRoute(
-            navigateToSubmit = navigateToSubmit,
-            navigateToConfirm = navigateToConfirm,
-            navigateToProfile = navigateToProfile,
+            navigateToSubmit = navController::navigateToSubmit,
+            navigateToConfirm = navController::navigateToConfirm,
+            navigateToProfile = navController::navigateToUserProfile,
             modifier = Modifier.padding(innerPadding)
         )
     }
