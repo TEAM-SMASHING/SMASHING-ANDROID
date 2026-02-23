@@ -8,7 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.core.extension.clearBackStackOptions
+import com.smashing.app.core.extension.clearBackStackNavOptions
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.LoginRoute
 import com.smashing.app.presentation.signup.navigation.navigateToSignUp
@@ -28,7 +28,7 @@ fun NavGraphBuilder.loginGraph(
                 navController.navigateToSignUp(kakaoId = kakaoId)
             },
             navigateToHome = {
-                navController.navigateToHome(navOptions = clearBackStackOptions())
+                navController.navigateToHome(navOptions = clearBackStackNavOptions())
             },
             modifier = Modifier.padding(innerPadding),
         )

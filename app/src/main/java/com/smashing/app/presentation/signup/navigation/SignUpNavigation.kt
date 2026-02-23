@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.smashing.app.core.extension.clearBackStackOptions
+import com.smashing.app.core.extension.clearBackStackNavOptions
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.region.navigation.getRegionResult
 import com.smashing.app.presentation.region.navigation.navigateToRegion
@@ -30,7 +30,7 @@ fun NavGraphBuilder.signUpGraph(
             onRegionResultConsumed = savedStateHandle::removeRegionResult,
             navigateToRegion = navController::navigateToRegion,
             navigateToHome = {
-                navController.navigateToHome(navOptions = clearBackStackOptions())
+                navController.navigateToHome(navOptions = clearBackStackNavOptions())
             },
             modifier = Modifier,
         )
