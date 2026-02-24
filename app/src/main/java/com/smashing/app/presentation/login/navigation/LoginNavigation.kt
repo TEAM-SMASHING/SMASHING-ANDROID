@@ -24,9 +24,7 @@ fun NavGraphBuilder.loginGraph(
 ) {
     composable<Login> {
         LoginRoute(
-            navigateToSignUp = { kakaoId ->
-                navController.navigateToSignUp(kakaoId = kakaoId)
-            },
+            navigateToSignUp = navController::navigateToSignUp,
             navigateToHome = {
                 navController.navigateToHome(navOptions = clearBackStackNavOptions())
             },
