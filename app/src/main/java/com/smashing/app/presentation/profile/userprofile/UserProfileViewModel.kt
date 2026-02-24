@@ -35,8 +35,7 @@ class UserProfileViewModel @Inject constructor(
     private val userId = userInfo.userId
     private val sportCode = userInfo.sportCode
 
-    private val _uiState = MutableStateFlow(UserProfileContract.State()
-    )
+    private val _uiState = MutableStateFlow(UserProfileContract.State())
     val uiState: StateFlow<UserProfileContract.State> = _uiState.asStateFlow()
 
     private val _sideEffect = MutableSharedFlow<UserProfileContract.SideEffect>()
