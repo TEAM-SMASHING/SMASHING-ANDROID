@@ -24,11 +24,11 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.presentation.search.SearchContract
+import com.smashing.app.presentation.search.SearchUiState
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
-import com.smashing.app.data.model.search.SuggestionItemModel
-import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -53,7 +53,8 @@ fun SearchInputRoute(
         searchState = viewModel.searchInputState,
         onBackClick = navigateToSearchMain,
         onSuggestionItemClick = { userId ->
-            navigateToUserProfile(userId) },
+            navigateToUserProfile(userId)
+        },
         modifier = modifier,
     )
 }
@@ -67,18 +68,19 @@ private fun SearchInputScreen(
     onSuggestionItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column (
+    Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = colors.bgCanvas)
             .systemBarsPadding(),
-    ){
+    ) {
         SmashingSearchTopBar(
             searchState = searchState,
             placeholder = stringResource(search_placeholder),
             onBackClick = onBackClick,
         )
 
-        when(uiState.searchNickNameUsersUiState){
+        when (uiState.searchNickNameUsersUiState) {
             SearchUiState.Idle -> Unit
             SearchUiState.Loading -> Unit
             SearchUiState.Empty -> Unit
@@ -105,6 +107,7 @@ private fun SearchInputScreen(
                     )
                 }
             }
+
             else -> Unit
         }
     }
@@ -128,4 +131,3 @@ private fun SearchInputScreenPreview() {
         )
     }
 }
-

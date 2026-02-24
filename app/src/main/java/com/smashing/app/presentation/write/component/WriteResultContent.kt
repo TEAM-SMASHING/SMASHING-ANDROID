@@ -33,8 +33,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun WriteResultContent(
-    submitter: PlayerInfo,
-    receiver: PlayerInfo,
+    leftUserInfo: PlayerInfo,
+    rightUserInfo: PlayerInfo,
     winnerId: String?,
     leftTextFieldState: TextFieldState,
     rightTextFieldState: TextFieldState,
@@ -47,8 +47,8 @@ fun WriteResultContent(
     onRightDoneClick: (Int) -> Unit = {},
 ) {
     val dropDownList = persistentListOf(
-        submitter.name,
-        receiver.name,
+        leftUserInfo.name,
+        rightUserInfo.name,
     )
 
     Column(
@@ -70,8 +70,8 @@ fun WriteResultContent(
         }
 
         SubmitScoreCard(
-            submitter = submitter,
-            receiver = receiver,
+            leftUser = leftUserInfo,
+            rightUser = rightUserInfo,
             winnerId = winnerId,
             modifier = Modifier.padding(top = 28.dp),
         )
@@ -84,8 +84,8 @@ fun WriteResultContent(
             val (winnerLabel, scoreLabel, winnerDropdown, scoreRow) = createRefs()
 
             val winnerName = when (winnerId) {
-                submitter.userId -> submitter.name
-                receiver.userId -> receiver.name
+                rightUserInfo.userId -> rightUserInfo.name
+                leftUserInfo.userId -> leftUserInfo.name
                 else -> null
             }
 
@@ -192,8 +192,8 @@ private fun AccentAsteriskLabel(
 private fun WriteResultPreview() {
     SmashingAndroidTheme {
         WriteResultContent(
-            submitter = PlayerInfo(userId = "1", name = "Submitter", score = 4),
-            receiver = PlayerInfo(userId = "2", name = "Receiver", score = 5),
+            rightUserInfo = PlayerInfo(userId = "1", name = "Submitter", score = 4),
+            leftUserInfo = PlayerInfo(userId = "2", name = "Receiver", score = 5),
             winnerId = "1",
             leftTextFieldState = TextFieldState(),
             rightTextFieldState = TextFieldState(),

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
@@ -14,9 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,7 +50,7 @@ fun SubmitReviewRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is SubmitContract.SideEffect.NavigateToMatching -> navigateToMatching()
-                   
+
                 }
             }
     }
@@ -61,11 +59,13 @@ fun SubmitReviewRoute(
         uiState = uiState,
         reviewTextFieldState = viewModel.reviewTextFieldState,
         onBackClick = navigateUp,
-        onDoneClick = viewModel::submitGame,
+        onShowAlertDialog = viewModel::showAlertDialog,
+        onSubmitGame = viewModel::submitGame,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
         onConfirmDialogClick = viewModel::updateIsConfirmDialogOpen,
         onConfirmDialogDismiss = viewModel::hideConfirmDialog,
+        onAlertDialogDismiss = viewModel::hideAlertDialog,
         modifier = modifier,
     )
 }
@@ -77,16 +77,18 @@ private fun SubmitReviewScreen(
     onReviewRatingClick: (ReviewRatingType) -> Unit,
     onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
-    onDoneClick: () -> Unit,
+    onShowAlertDialog: () -> Unit,
+    onSubmitGame: () -> Unit,
     onConfirmDialogClick: () -> Unit,
     onConfirmDialogDismiss: () -> Unit,
+    onAlertDialogDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val focusManager = LocalFocusManager.current
     val isButtonEnabled = uiState.selectedRating != null
 
-    var isAlertDialogOpen by remember { mutableStateOf(false) }
+    val isAlertDialogOpen = uiState.isAlertDialogOpen
     val isConfirmDialogOpen = uiState.isConfirmDialogOpen
 
     Column(
@@ -105,6 +107,7 @@ private fun SubmitReviewScreen(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .imePadding()
                 .verticalScroll(scrollState)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
@@ -121,7 +124,7 @@ private fun SubmitReviewScreen(
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "완료",
-                onClick = onDoneClick,
+                onClick = onShowAlertDialog,
                 isEnabled = isButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -139,8 +142,9 @@ private fun SubmitReviewScreen(
                 type = DialogStyle.ALERT,
                 confirmText = "제출하기",
                 dismissText = "아니요",
-                onDismissRequest = { isAlertDialogOpen = false },
-                onConfirmClick = onDoneClick,
+                onDismissRequest = onAlertDialogDismiss,
+                onConfirmClick = onSubmitGame,
+                onDismissClick = onAlertDialogDismiss,
             )
         }
 
@@ -165,11 +169,13 @@ private fun SubmitReviewScreenPreview() {
             uiState = SubmitContract.State(),
             reviewTextFieldState = TextFieldState(),
             onBackClick = {},
-            onDoneClick = {},
+            onShowAlertDialog = {},
+            onSubmitGame = {},
             onReviewTagClick = {},
             onReviewRatingClick = {},
             onConfirmDialogClick = {},
             onConfirmDialogDismiss = {},
+            onAlertDialogDismiss = {},
             modifier = Modifier,
         )
     }

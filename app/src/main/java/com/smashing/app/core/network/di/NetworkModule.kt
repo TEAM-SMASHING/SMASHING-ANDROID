@@ -7,9 +7,6 @@ import com.smashing.app.BuildConfig.KAKAO_BASE_URL
 import com.smashing.app.core.network.AuthInterceptor
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
-import com.smashing.app.core.network.qualifier.Auth
-import com.smashing.app.core.network.qualifier.Kakao
-import com.smashing.app.core.network.qualifier.NoAuth
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import dagger.Module
 import dagger.Provides
@@ -20,11 +17,14 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.sse.EventSource
+import okhttp3.sse.EventSources
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Converter
 import retrofit2.Retrofit
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -130,4 +130,21 @@ object NetworkModule {
         .client(client)
         .addConverterFactory(factory)
         .build()
+
+    @Provides
+    @Singleton
+    @SSE
+    fun provideSSEOkhttpClient(
+        @Auth headerInterceptor: AuthInterceptor,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(headerInterceptor)
+        .readTimeout(0, TimeUnit.MILLISECONDS)
+        .retryOnConnectionFailure(true)
+        .build()
+
+    @Provides
+    @Singleton
+    fun provideEventSourceFactory(
+        @SSE client: OkHttpClient,
+    ): EventSource.Factory = EventSources.createFactory(client)
 }

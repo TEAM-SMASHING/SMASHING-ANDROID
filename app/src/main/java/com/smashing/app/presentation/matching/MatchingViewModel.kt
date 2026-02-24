@@ -4,9 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.data.model.event.SseEvent
 import com.smashing.app.data.model.matching.AcceptedMatching
+import com.smashing.app.data.model.matching.ReceivedMatching
+import com.smashing.app.data.repository.api.EventRepository
 import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.type.GameResultStatusType
+import com.smashing.app.data.type.MatchingStatusType
 import com.smashing.app.presentation.matching.MatchingContract.SideEffect
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.type.MatchingType
@@ -24,6 +28,7 @@ import javax.inject.Inject
 class MatchingViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val matchingRepository: MatchingRepository,
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
 
     private val initTab = savedStateHandle.toRoute<Matching>().initTab
@@ -33,16 +38,16 @@ class MatchingViewModel @Inject constructor(
     )
     val uiState = _uiState.asStateFlow()
 
-    private val _sideEffect = MutableSharedFlow<MatchingContract.SideEffect>()
+    private val _sideEffect = MutableSharedFlow<SideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         fetchReceivedMatchingList(isRefresh = true)
         fetchSentMatchingList(isRefresh = true)
         fetchAcceptedMatchingList(isRefresh = true)
+        observeSseEvents()
     }
 
-    // TODO SSE 연결 후 수정 예정
     fun selectMatchingTab(type: MatchingType) {
         updateMatchingType(type)
         when (type) {
@@ -205,7 +210,7 @@ class MatchingViewModel @Inject constructor(
                     receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
                 )
             }
-
+            _sideEffect.emit(SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요."))
         }.onFailure { throwable ->
             updateReceivedUiState(
                 MatchingUiState.Failure(throwable.message ?: "Unknown error")
@@ -335,8 +340,151 @@ class MatchingViewModel @Inject constructor(
         it.copy(acceptedUiState = uiState)
     }
 
+    private fun observeSseEvents() = viewModelScope.launch {
+        eventRepository.events.collect { event ->
+            when (event) {
+                is SseEvent.MatchingUpdated -> handleMatchingUpdated(event)
+                is SseEvent.MatchingReceived -> handleMatchingReceived(event)
+                is SseEvent.GameUpdated -> handleGameUpdated(event)
+                else -> Unit
+            }
+        }
+    }
+
+    private fun handleMatchingUpdated(event: SseEvent.MatchingUpdated) {
+        when (event.status) {
+            MatchingStatusType.CANCELLED -> {
+                _uiState.update { currentState ->
+                    val updatedList = currentState.receivedList
+                        .filter { it.matchingId != event.matchingId }
+                        .toImmutableList()
+                    currentState.copy(
+                        receivedList = updatedList,
+                        receivedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                    )
+                }
+            }
+
+            MatchingStatusType.ACCEPTED, MatchingStatusType.REJECTED -> {
+                _uiState.update { currentState ->
+                    val updatedList = currentState.sentList
+                        .filter { it.matchingId != event.matchingId }
+                        .toImmutableList()
+                    currentState.copy(
+                        sentList = updatedList,
+                        sentUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleMatchingReceived(event: SseEvent.MatchingReceived) {
+        val newMatching = ReceivedMatching(
+            matchingId = event.matchingId,
+            userId = event.requester.userId,
+            nickname = event.requester.nickname,
+            genderType = event.requester.genderType,
+            tierType = event.requester.tierType,
+            reviewCount = event.requester.reviewCount,
+            winCount = event.requester.winCount,
+            loseCount = event.requester.loseCount,
+            createdAt = "",
+        )
+
+        _uiState.update { currentState ->
+            val updatedList = (listOf(newMatching) + currentState.receivedList).toImmutableList()
+            currentState.copy(
+                receivedList = updatedList,
+                receivedUiState = MatchingUiState.Success,
+            )
+        }
+    }
+
+    private fun handleGameUpdated(event: SseEvent.GameUpdated) {
+        when (event.resultStatus) {
+            GameResultStatusType.RESULT_CONFIRMED -> {
+                _uiState.update { currentState ->
+                    val updatedList = currentState.acceptedList
+                        .filter { it.gameId != event.gameId }
+                        .toImmutableList()
+                    currentState.copy(
+                        acceptedList = updatedList,
+                        acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                    )
+                }
+            }
+
+            GameResultStatusType.CANCELED -> {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        acceptedList = currentState.acceptedList.map { matching ->
+                            if (matching.gameId == event.gameId) {
+                                matching.copy(resultStatus = GameResultStatusType.CANCELED)
+                            } else {
+                                matching
+                            }
+                        }.toImmutableList()
+                    )
+                }
+            }
+
+            GameResultStatusType.WAITING_CONFIRMATION -> {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        acceptedList = currentState.acceptedList.map { matching ->
+                            if (matching.gameId == event.gameId) {
+                                matching.copy(
+                                    resultStatus = GameResultStatusType.WAITING_CONFIRMATION,
+                                    latestSubmissionId = event.submissionId,
+                                    latestAttemptNo = event.attemptNo,
+                                )
+                            } else {
+                                matching
+                            }
+                        }.toImmutableList()
+                    )
+                }
+            }
+
+            GameResultStatusType.RESULT_REJECTED -> {
+                _uiState.update { currentState ->
+                    val targetMatching =
+                        currentState.acceptedList.find { it.gameId == event.gameId }
+                    val shouldDelete = (targetMatching?.latestAttemptNo ?: 0) >= 2
+
+                    if (shouldDelete) {
+                        val updatedList = currentState.acceptedList
+                            .filter { it.gameId != event.gameId }
+                            .toImmutableList()
+                        currentState.copy(
+                            acceptedList = updatedList,
+                            acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
+                        )
+                    } else {
+                        currentState.copy(
+                            acceptedList = currentState.acceptedList.map { matching ->
+                                if (matching.gameId == event.gameId) {
+                                    matching.copy(
+                                        resultStatus = GameResultStatusType.RESULT_REJECTED,
+                                        latestSubmissionId = event.submissionId,
+                                        latestAttemptNo = 1,
+                                    )
+                                } else {
+                                    matching
+                                }
+                            }.toImmutableList()
+                        )
+                    }
+                }
+            }
+
+            else -> Unit
+        }
+    }
+
     companion object {
-        private const val CURSOR_SIZE = 4L
+        private const val CURSOR_SIZE = 20L
         private const val TAG = "MatchingViewModel"
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -24,8 +25,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
+import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -64,6 +67,8 @@ fun ConfirmReviewRoute(
         uiState = uiState,
         reviewTextFieldState = viewModel.reviewTextFieldState,
         onBackClick = navigateUp,
+        onShowConfirmDialog = viewModel::showConfirmDialog,
+        onHideConfirmDialog = viewModel::hideConfirmDialog,
         onConfirmSubmission = viewModel::confirmSubmission,
         onReviewRatingClick = viewModel::updateSelectedRatingType,
         onReviewTagClick = viewModel::updateSelectedTagType,
@@ -78,6 +83,8 @@ private fun ConfirmReviewScreen(
     onReviewRatingClick: (ReviewRatingType) -> Unit,
     onReviewTagClick: (ReviewTagType) -> Unit,
     onBackClick: () -> Unit,
+    onShowConfirmDialog: () -> Unit,
+    onHideConfirmDialog: () -> Unit,
     onConfirmSubmission: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
@@ -101,12 +108,13 @@ private fun ConfirmReviewScreen(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .imePadding()
                 .verticalScroll(scrollState)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             WriteReviewContent(
-                nickname = uiState.reviewerNickname,
+                nickname = uiState.submitter.name,
                 textFieldState = reviewTextFieldState,
                 selectedReviewRating = uiState.selectedRating,
                 selectedReviewTagTypes = uiState.selectedTagList,
@@ -119,7 +127,7 @@ private fun ConfirmReviewScreen(
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = "완료",
-                onClick = onConfirmSubmission,
+                onClick = onShowConfirmDialog,
                 isEnabled = isButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,6 +135,19 @@ private fun ConfirmReviewScreen(
                         top = 13.dp,
                         bottom = 48.dp,
                     ),
+            )
+        }
+
+        if (uiState.showConfirmDialog) {
+            SmashingDialog(
+                title = "매칭 결과를 확정하시겠습니까?",
+                subtitle = "한 번 확정하면 수정할 수 없어요.",
+                type = DialogStyle.ALERT,
+                confirmText = "제출하기",
+                dismissText = "아니요",
+                onDismissRequest = onHideConfirmDialog,
+                onConfirmClick = onConfirmSubmission,
+                onDismissClick = onHideConfirmDialog,
             )
         }
     }
@@ -140,6 +161,8 @@ private fun ConfirmReviewScreenPreview() {
             uiState = ConfirmContract.State(),
             reviewTextFieldState = TextFieldState(),
             onBackClick = {},
+            onShowConfirmDialog = {},
+            onHideConfirmDialog = {},
             onConfirmSubmission = {},
             onReviewTagClick = {},
             onReviewRatingClick = {},

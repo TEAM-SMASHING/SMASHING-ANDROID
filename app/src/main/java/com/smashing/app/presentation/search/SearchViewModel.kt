@@ -6,9 +6,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.data.model.search.UserRegionItemModel
 import com.smashing.app.data.repository.api.SearchRepository
-import com.smashing.app.presentation.search.SearchContract.SearchUiState
 import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf

@@ -2,16 +2,10 @@ package com.smashing.app.core.designsystem.component.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,24 +16,24 @@ import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingColors
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.bringIntoViewOnFocus
 import com.smashing.app.core.extension.checkLength
 
-private const val AREA_RATIO = 296 / 128f
+private const val TEXT_FIELD_RATIO = 296f / 100f
 
 @Composable
 fun SmashingAreaTextField(
@@ -50,8 +44,7 @@ fun SmashingAreaTextField(
     maxLength: Int = 100,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isFocused by interactionSource.collectIsFocusedAsState()
+    var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val currentLength = state.text.toString().checkLength()
     val isFilled = state.text.isNotEmpty()
@@ -64,56 +57,47 @@ fun SmashingAreaTextField(
         isConfirm = false,
     )
 
-    val density = LocalDensity.current
-    val imeBottom = WindowInsets.ime.getBottom(density)
-    val isImeVisible = imeBottom > 0
-
-    LaunchedEffect(isImeVisible) {
-        if (!isImeVisible) {
-            focusManager.clearFocus()
-        }
-    }
-
-    Box(
+    Column(
         modifier = modifier
+            .fillMaxWidth()
             .border(
                 width = 1.dp,
                 color = inputState.getBorderColor(),
                 shape = RoundedCornerShape(12.dp),
             )
-            .aspectRatio(AREA_RATIO)
-            .padding(horizontal = 16.dp, vertical = 14.dp)
             .bringIntoViewOnFocus(
                 isFocused = isFocused,
-                extraBottom = 13.dp,
-            ),
+                extraBottom = 30.dp,
+            )
+            .padding(horizontal = 16.dp, vertical = 14.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            SmashingBasicTextField(
-                state = state,
-                placeholder = if (isFocused) "" else placeholder,
-                placeholderColor = SmashingTheme.colors.txtDisabled,
-                placeholderStyle = inputState.getTextStyle(),
-                textColor = inputState.getContentColor(),
-                textStyle = inputState.getTextStyle(),
-                interactionSource = interactionSource,
-                inputTransformation = lengthLimitTransformation,
-                keyboardOptions = keyboardOptions,
-                lineLimits = TextFieldLineLimits.MultiLine(),
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                onKeyboardAction = { focusManager.clearFocus() },
-            )
-            Text(
-                text = "$currentLength / $maxLength",
-                style = SmashingTheme.typography.xs.regular12,
-                color = inputState.getContentColor(),
-                modifier = Modifier.align(Alignment.End)
-            )
-        }
+        SmashingBasicTextField(
+            state = state,
+            placeholder = if (isFocused) "" else placeholder,
+            placeholderColor = SmashingTheme.colors.txtDisabled,
+            placeholderStyle = inputState.getTextStyle(),
+            textColor = inputState.getContentColor(),
+            textStyle = inputState.getTextStyle(),
+            inputTransformation = lengthLimitTransformation,
+            keyboardOptions = keyboardOptions,
+            lineLimits = TextFieldLineLimits.MultiLine(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(TEXT_FIELD_RATIO)
+                .onFocusEvent { focusState ->
+                    isFocused = focusState.isFocused
+                },
+            onKeyboardAction = { focusManager.clearFocus() },
+        )
+
+        Text(
+            text = "$currentLength / $maxLength",
+            style = SmashingTheme.typography.xs.regular12,
+            color = inputState.getContentColor(),
+            modifier = Modifier
+                .padding(top = 10.dp)
+                .align(Alignment.End),
+        )
     }
 }
 

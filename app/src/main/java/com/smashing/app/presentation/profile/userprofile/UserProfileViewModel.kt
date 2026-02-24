@@ -10,7 +10,6 @@ import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -59,13 +57,8 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = UserProfileUiState.Success,
-                        isChallengeable = data.isChallengeable,
-                        isAcceptable = data.isAcceptable,
-                        receivedMatchingId = data.receivedMatchingId,
-                        profileInfo = data.profileInfo,
-                        sportProfileList = data.sportProfile.toImmutableList(),
-                        selectedSportProfileId = data.sportProfile.find { it.isActive }?.profileId
-                            ?: data.profileInfo.profileId
+                        userProfileInfo = data,
+                        selectedSportProfileId = data.userProfileInfo.profileId,
                     )
                 }
             }.onFailure { exception ->
@@ -118,7 +111,7 @@ class UserProfileViewModel @Inject constructor(
 
     fun fetchUserProfileReview() = viewModelScope.launch {
 
-        _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
+        _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
 
         reviewRepository.getUserRecentReviewList(
             userId = userId,
@@ -126,13 +119,13 @@ class UserProfileViewModel @Inject constructor(
             cursor = null,
             size = CURSOR_SIZE,
             snapshotAt = null,
-            ).onSuccess { cursorPage ->
+        ).onSuccess { cursorPage ->
             _uiState.update { state ->
                 state.copy(
                     gameReview = cursorPage.items.toImmutableList(),
                     userProfileCursor = cursorPage.cursor,
-                    userProfileUiState = if (cursorPage.items.isEmpty()) {
-                        UserProfileUiState.Empty
+                    loadState = if (cursorPage.items.isEmpty()) {
+                        UserProfileUiState.Idle
                     } else {
                         UserProfileUiState.Success
                     },
@@ -141,7 +134,7 @@ class UserProfileViewModel @Inject constructor(
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    userProfileUiState = UserProfileUiState.Failure(
+                    loadState = UserProfileUiState.Failure(
                         throwable.message ?: "Unknown error"
                     )
                 )
@@ -165,29 +158,58 @@ class UserProfileViewModel @Inject constructor(
         private const val CURSOR_SIZE = 3
     }
 
-    fun onYesClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 수락 API 호출
-            _uiState.update {
-                it.copy(isMatchingRequest = false)
+    fun onYesClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if (receivedMatchingId != null) {
+            matchingRepository.postAcceptedMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success
+                    )
+                }
+                _sideEffect.emit(
+                    UserProfileContract.SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요."),
+                )
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error",
+                        )
+                    )
+                }
             }
         }
     }
 
-    fun onNoClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 거절/건너뛰기 API 호출
-
-            _uiState.update {
-                it.copy(
-                    isMatchingRequest = false,
-                )
+    fun onNoClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if (receivedMatchingId != null) {
+            matchingRepository.postRejectMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success,
+                    )
+                }
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error",
+                        )
+                    )
+                }
             }
         }
     }
 
     fun requestCompetition() {
-
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
             matchingRepository.postMatching(

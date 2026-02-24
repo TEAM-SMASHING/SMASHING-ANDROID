@@ -2,10 +2,13 @@ package com.smashing.app.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.model.event.SseEvent
+import com.smashing.app.data.repository.api.EventRepository
 import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
+import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -23,17 +26,29 @@ class HomeViewModel @Inject constructor(
     private val searchRepository: SearchRepository,
     private val myRepository: MyRepository,
     private val matchingRepository: MatchingRepository,
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
 
+    init {
+        observeSseEvents()
+        fetchMatchedUser()
+    }
+
+    fun refreshHomeData() {
+        fetchMyTierProfile()
+        fetchRegionRankerList()
+        fetchRecommendedUserList()
+        fetchMatchedUser()
+    }
+
     fun fetchMyTierProfile() = viewModelScope.launch {
         myRepository.getMyTierProfile()
-            .onSuccess { userProfile ->
+            .onSuccess { myTierProfile ->
                 _uiState.update { currentState ->
                     currentState.copy(
-                        activeUserProfile = userProfile.activeUserProfile,
-                        allUserProfiles = userProfile.allProfiles.toImmutableList(),
+                        activeMyProfile = myTierProfile
                     )
                 }
             }
@@ -63,17 +78,36 @@ class HomeViewModel @Inject constructor(
             }
     }
 
-    fun fetchMatchedUser() = viewModelScope.launch {
+    fun fetchMatchedUser(snapshotAt: String? = null, cursor: String? = null) {
+        viewModelScope.launch {
+            fetchMatchedUserInternal(snapshotAt, cursor)
+        }
+    }
+
+    private suspend fun fetchMatchedUserInternal(snapshotAt: String?, cursor: String?) {
         matchingRepository.getMeAcceptedMatchingList(
-            snapshotAt = null,
-            cursor = null,
-            size = 1,
+            snapshotAt = snapshotAt,
+            cursor = cursor,
+            size = FETCH_SIZE,
             order = OrderType.OLDEST,
         )
             .onSuccess { cursorPage ->
-                val oldestMatch = cursorPage.items.firstOrNull()
-                _uiState.update { currentState ->
-                    currentState.copy(matchedUser = oldestMatch)
+                val activeMatching =
+                    cursorPage.items.firstOrNull { it.resultStatus != GameResultStatusType.CANCELED }
+
+                if (activeMatching != null) {
+                    _uiState.update { currentState ->
+                        currentState.copy(matchedUser = activeMatching)
+                    }
+                } else if (cursorPage.cursor.hasNext) {
+                    fetchMatchedUserInternal(
+                        cursorPage.cursor.snapshotAt,
+                        cursorPage.cursor.nextCursor
+                    )
+                } else {
+                    _uiState.update { currentState ->
+                        currentState.copy(matchedUser = null)
+                    }
                 }
             }
             .onFailure { throwable ->
@@ -105,25 +139,27 @@ class HomeViewModel @Inject constructor(
 
     fun fetchSelectSportProfile(profileId: String) {
         val currentState = uiState.value
-        val currentActiveProfile = currentState.activeUserProfile ?: return
-        if (currentActiveProfile.profileId == profileId) return
+        val currentActiveProfile = currentState.activeMyProfile ?: return
+        if (currentActiveProfile.myProfileInfo.profileId == profileId) return
 
         val selectedProfile =
-            currentState.allUserProfiles.find { it.profileId == profileId } ?: return
+            currentActiveProfile.myProfileItem.find { it.profileId == profileId } ?: return
 
-        val optimisticList = currentState.allUserProfiles.map { profile ->
+        val optimisticList = currentState.activeMyProfile.myProfileItem.map { profile ->
             profile.copy(isActive = profile.profileId == profileId)
         }.toImmutableList()
 
         val optimisticActiveProfile = currentActiveProfile.copy(
-            profileId = selectedProfile.profileId,
-            sportType = selectedProfile.sportCode,
+            myProfileInfo =currentActiveProfile.myProfileInfo.copy(
+                profileId = selectedProfile.profileId,
+                sportType = selectedProfile.sportType,
+            ),
+            myProfileItem = optimisticList,
         )
 
         _uiState.update {
             it.copy(
-                allUserProfiles = optimisticList,
-                activeUserProfile = optimisticActiveProfile,
+                activeMyProfile = optimisticActiveProfile,
             )
         }
 
@@ -145,5 +181,62 @@ class HomeViewModel @Inject constructor(
 
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
         currentState.copy(loadState = state)
+    }
+
+    private fun observeSseEvents() = viewModelScope.launch {
+        eventRepository.events.collect { event ->
+            when (event) {
+                is SseEvent.GameUpdated -> handleGameUpdated(event)
+                else -> Unit
+            }
+        }
+    }
+
+    private fun handleGameUpdated(event: SseEvent.GameUpdated) {
+        val currentMatchedUser = _uiState.value.matchedUser ?: return
+        if (currentMatchedUser.gameId != event.gameId) return
+
+        when (event.resultStatus) {
+            GameResultStatusType.RESULT_CONFIRMED, GameResultStatusType.CANCELED -> {
+                _uiState.update { it.copy(matchedUser = null) }
+                fetchMatchedUser()
+            }
+
+            GameResultStatusType.WAITING_CONFIRMATION -> {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        matchedUser = currentMatchedUser.copy(
+                            resultStatus = GameResultStatusType.WAITING_CONFIRMATION,
+                            latestSubmissionId = event.submissionId,
+                            latestAttemptNo = event.attemptNo,
+                        )
+                    )
+                }
+            }
+
+            GameResultStatusType.RESULT_REJECTED -> {
+                val shouldDelete = (currentMatchedUser.latestAttemptNo ?: 0) >= 1
+
+                if (shouldDelete) {
+                    _uiState.update { it.copy(matchedUser = null) }
+                } else {
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            matchedUser = currentMatchedUser.copy(
+                                resultStatus = GameResultStatusType.RESULT_REJECTED,
+                                latestSubmissionId = event.submissionId,
+                                latestAttemptNo = event.attemptNo,
+                            )
+                        )
+                    }
+                }
+            }
+
+            else -> Unit
+        }
+    }
+
+    companion object {
+        private const val FETCH_SIZE = 10L
     }
 }

@@ -39,7 +39,7 @@ import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.model.profile.SportProfile
+import com.smashing.app.data.model.profile.ProfileItem
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import kotlinx.collections.immutable.ImmutableList
@@ -48,7 +48,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun ProfileTierBox(
     tierType: TierType,
-    sportProfileList: ImmutableList<SportProfile>,
+    sportProfileList: ImmutableList<ProfileItem>,
     tierIconResId: Int,
     progress: Float,
     lpStatus: Int,
@@ -148,12 +148,13 @@ fun ProfileTierBox(
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
             if (onTierInfoClick != null) {
+                Spacer(modifier = Modifier.height(20.dp))
+
                 SmashingBaseButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(tier_description),
-                    textStyle = SmashingTheme.typography.lg.semibold18,
+                    textStyle = SmashingTheme.typography.md.semibold16,
                     onClick = onTierInfoClick,
                     buttonColor = SmashingBtnColor(
                         backgroundColor = SmashingTheme.colors.tierDiamondBg,
@@ -177,17 +178,17 @@ private fun ProfileTierBoxPreview() {
         ProfileTierBox(
             tierType = TierType.GOLD_1,
             sportProfileList = persistentListOf(
-                SportProfile(
+                ProfileItem(
                     profileId = "1",
                     sportType = SportType.PING_PONG,
                     isActive = true,
                 ),
-                SportProfile(
+                ProfileItem(
                     profileId = "1",
                     sportType = SportType.PING_PONG,
                     isActive = false,
                 ),
-                SportProfile(
+                ProfileItem(
                     profileId = "1",
                     sportType = SportType.PING_PONG,
                     isActive = false,

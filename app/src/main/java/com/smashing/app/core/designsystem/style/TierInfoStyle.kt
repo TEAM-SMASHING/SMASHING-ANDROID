@@ -52,7 +52,7 @@ enum class TierInfoStyle(
     CHALLENGER(
         id = 7,
         tierName = "Challenger",
-        tierKName = "챌린저"
+        tierKName = "챌린저",
     );
 
     companion object {
@@ -105,5 +105,6 @@ fun TierType.toTierInfoStyle(): TierInfoStyle {
         TierType.DIAMOND_2,
         TierType.DIAMOND_1 -> TierInfoStyle.DIAMOND
         TierType.CHALLENGER -> TierInfoStyle.CHALLENGER
+        TierType.MAX -> TierInfoStyle.CHALLENGER
     }
 }

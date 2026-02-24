@@ -8,12 +8,12 @@ import androidx.navigation.toRoute
 import com.smashing.app.data.model.game.GameSubmissionDetail
 import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.repository.api.GameRepository
+import com.smashing.app.data.type.ConfirmDenyType
 import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import com.smashing.app.presentation.write.confirm.ConfirmContract.ConfirmUiState
 import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmResultSideEffect
 import com.smashing.app.presentation.write.confirm.ConfirmContract.SideEffect.ConfirmReviewSideEffect
-import com.smashing.app.data.type.ConfirmDenyType
 import com.smashing.app.presentation.write.model.PlayerInfo
 import com.smashing.app.presentation.write.navigation.Confirm
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -85,22 +85,14 @@ class ConfirmViewModel @Inject constructor(
             val submitter = PlayerInfo(
                 userId = submissionDetail.submitter.userId,
                 name = submissionDetail.submitter.nickname,
-                score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score
+                score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score,
             )
 
-            val receiver = if (isSubmitterWinner) {
-                PlayerInfo(
-                    userId = submissionDetail.loser.userId,
-                    name = submissionDetail.loser.nickname,
-                    score = submissionDetail.loser.score
-                )
-            } else {
-                PlayerInfo(
-                    userId = submissionDetail.winner.userId,
-                    name = submissionDetail.winner.nickname,
-                    score = submissionDetail.winner.score
-                )
-            }
+            val receiver = PlayerInfo(
+                userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
+                name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
+                score = if (isSubmitterWinner) submissionDetail.loser.score else submissionDetail.winner.score,
+            )
 
             currentState.copy(
                 submitter = submitter,
@@ -128,13 +120,19 @@ class ConfirmViewModel @Inject constructor(
 
     fun confirmSubmission() = viewModelScope.launch {
         val state = _uiState.value
-        _uiState.update { it.copy(confirmUiState = ConfirmUiState.Loading) }
 
         val submissionConfirm = SubmissionConfirm(
             rating = state.selectedRating ?: return@launch,
             content = reviewTextFieldState.text.toString().takeIf { it.isNotBlank() },
             tags = state.selectedTagList.map { it.name }.takeIf { it.isNotEmpty() },
         )
+
+        _uiState.update {
+            it.copy(
+                confirmUiState = ConfirmUiState.Loading,
+                showConfirmDialog = false,
+            )
+        }
 
         gameRepository.postConfirmSubmission(
             gameId = gameId,
@@ -170,6 +168,14 @@ class ConfirmViewModel @Inject constructor(
 
     fun hideRejectDialog() = _uiState.update {
         it.copy(showRejectDialog = false)
+    }
+
+    fun showConfirmDialog() = _uiState.update {
+        it.copy(showConfirmDialog = true)
+    }
+
+    fun hideConfirmDialog() = _uiState.update {
+        it.copy(showConfirmDialog = false)
     }
 
     fun updateSelectedDenyReason(reason: ConfirmDenyType) = _uiState.update {

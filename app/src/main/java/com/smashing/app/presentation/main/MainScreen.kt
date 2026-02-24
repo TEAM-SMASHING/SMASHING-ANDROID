@@ -2,22 +2,34 @@ package com.smashing.app.presentation.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
@@ -26,20 +38,20 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
 import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
 import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
-import com.smashing.app.presentation.home.navigation.Home
-import com.smashing.app.presentation.home.navigation.HomeUser
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
+import com.smashing.app.presentation.main.component.MainTab
+import com.smashing.app.presentation.main.state.MainAppState
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.navigation.Notice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
-import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
+import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
@@ -60,12 +72,18 @@ private const val EXIT_MILLIS = 3000L
 @Composable
 fun MainScreen(
     appState: MainAppState,
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
 
     val snackBarHostState = remember { SnackbarHostState() }
     val snackbarMutex = remember { Mutex() }
+
+    var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
 
     val coroutineScope = rememberCoroutineScope()
     val onShowToast: (String) -> Unit = remember(coroutineScope, snackBarHostState, snackbarMutex) {
@@ -89,41 +107,64 @@ fun MainScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect
+            .flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { effect ->
+                when (effect) {
+                    is MainContract.SideEffect.ShowToast -> onShowToast(effect.message)
+                }
+            }
+    }
+
     CompositionLocalProvider(
         LocalToastTrigger provides onShowToast,
     ) {
-        Scaffold(
-            snackbarHost = {
-                val bottomPadding by animateDpAsState(
-                    targetValue = if (isBottomBarVisible) 20.dp else 46.dp,
-                    label = "snackbar_bottom_padding"
-                )
-                SnackbarHost(hostState = snackBarHostState) { data ->
-                    SmashingToast(
-                        text = data.visuals.message,
-                        modifier = Modifier
-                            .padding(bottom = bottomPadding)
-                            .padding(horizontal = 16.dp),
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Scaffold(
+                bottomBar = {
+                    MainBottomBar(
+                        isVisible = isBottomBarVisible,
+                        tabs = MainTab.entries.toImmutableList(),
+                        currentTab = currentTab,
+                        onTabSelected = appState::navigate,
+                        modifier = Modifier.onGloballyPositioned { coordinates ->
+                            if (isBottomBarVisible) {
+                                bottomBarHeight = with(density) {
+                                    coordinates.size.height.toDp()
+                                }
+                            }
+                        },
                     )
-                }
-            },
-            bottomBar = {
-                MainBottomBar(
-                    isVisible = isBottomBarVisible,
-                    tabs = MainTab.entries.toImmutableList(),
-                    currentTab = currentTab,
-                    onTabSelected = appState::navigate,
+                },
+                containerColor = SmashingTheme.colors.bgCanvas,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = SmashingTheme.colors.bgCanvas),
+            ) { innerPadding ->
+                MainNavHost(
+                    appState = appState,
+                    innerPadding = innerPadding,
                 )
-            },
-            containerColor = SmashingTheme.colors.bgCanvas,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = SmashingTheme.colors.bgCanvas),
-        ) { innerPadding ->
-            MainNavHost(
-                appState = appState,
-                innerPadding = innerPadding,
-            )
+            }
+            SnackbarHost(
+                hostState = snackBarHostState,
+                modifier = Modifier
+                    .align(
+                        alignment = Alignment.BottomCenter,
+                    )
+                    .padding(
+                        bottom = bottomBarHeight + 12.dp
+                    )
+                    .windowInsetsPadding(WindowInsets.ime),
+            ) { data ->
+                SmashingToast(
+                    text = data.visuals.message,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
         }
     }
 }
@@ -143,26 +184,26 @@ private fun MainNavHost(
     ) {
         homeGraph(
             navController = appState.navController,
-            updateBottomBar = appState::updateBottomBarVisible,
+            innerPadding = innerPadding,
         )
 
         searchGraph(
             navController = appState.navController,
-            updateBottomBar = appState::updateBottomBarVisible,
+            innerPadding = innerPadding,
         )
 
         matchingGraph(
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
-            updateBottomBar = appState::updateBottomBarVisible,
             navigateToProfile = { userId ->
                 appState.navController.navigateToUserProfile(userId = userId)
             },
+            innerPadding = innerPadding,
         )
 
         profileGraph(
             navController = appState.navController,
-            updateBottomBar = appState::updateBottomBarVisible,
+            innerPadding = innerPadding,
         )
         loginGraph(
             navigateToSignUp = { kakaoId ->

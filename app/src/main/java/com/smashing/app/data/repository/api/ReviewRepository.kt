@@ -2,7 +2,6 @@ package com.smashing.app.data.repository.api
 
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.model.review.GameReview
-import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.model.review.ReviewDetail
 
 interface ReviewRepository {
@@ -14,17 +13,15 @@ interface ReviewRepository {
         snapshotAt: String?,
     ): Result<CursorPage<GameReview>>
 
-    suspend fun getReview(
-        reviewId: String,
-    ): Result<ReviewDetail>
 
-    suspend fun getMyGameReviews(
+    suspend fun getMyRecentReviewList(
         cursor: String?,
         size: Int?,
         snapshotAt: String?,
     ): Result<CursorPage<GameReview>>
 
-    suspend fun getUserRecentReviewStats(
-    ): Result<GameReviewResult>
+    suspend fun getReview(
+        reviewId: String,
+    ): Result<ReviewDetail>
 
 }

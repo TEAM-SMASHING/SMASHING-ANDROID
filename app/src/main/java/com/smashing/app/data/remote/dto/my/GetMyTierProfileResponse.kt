@@ -10,12 +10,12 @@ data class GetMyTierProfileResponse(
     @SerialName("nickname")
     val nickname: String,
     @SerialName("activeProfile")
-    val activeProfile: ActiveProfileResponse,
+    val activeProfile: MyProfileInfoResponse,
     @SerialName("allProfiles")
-    val allProfiles: List<ProfileItemResponse>,
+    val allProfiles: List<MyProfileItemResponse>,
 ) {
     @Serializable
-    data class ActiveProfileResponse(
+    data class MyProfileInfoResponse(
         @SerialName("profileId")
         val profileId: String,
         @SerialName("sportCode")
@@ -35,7 +35,7 @@ data class GetMyTierProfileResponse(
     )
 
     @Serializable
-    data class ProfileItemResponse(
+    data class MyProfileItemResponse(
         @SerialName("profileId")
         val profileId: String,
         @SerialName("sportCode")

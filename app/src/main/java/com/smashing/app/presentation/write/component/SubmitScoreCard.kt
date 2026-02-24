@@ -35,8 +35,8 @@ import com.smashing.app.presentation.write.model.PlayerInfo
 
 @Composable
 fun SubmitScoreCard(
-    submitter: PlayerInfo,
-    receiver: PlayerInfo,
+    leftUser: PlayerInfo,
+    rightUser: PlayerInfo,
     modifier: Modifier = Modifier,
     winnerId: String? = null,
 ) {
@@ -48,20 +48,20 @@ fun SubmitScoreCard(
                 shape = RoundedCornerShape(12.dp),
             )
             .padding(
-                horizontal = 16.dp,
+                horizontal = 8.dp,
             ),
     ) {
         ProfileInfo(
-            player = submitter,
-            isWinner = winnerId == submitter.userId,
+            player = leftUser,
+            isWinner = winnerId == leftUser.userId,
             modifier = Modifier.align(Alignment.CenterStart),
         )
 
         Text(
             text = stringResource(
                 score_format,
-                submitter.score,
-                receiver.score
+                leftUser.score,
+                rightUser.score
             ),
             color = SmashingTheme.colors.txtSecondary,
             style = SmashingTheme.typography.hero.semibold28,
@@ -74,8 +74,8 @@ fun SubmitScoreCard(
         )
 
         ProfileInfo(
-            player = receiver,
-            isWinner = winnerId == receiver.userId,
+            player = rightUser,
+            isWinner = winnerId == rightUser.userId,
             modifier = Modifier.align(Alignment.CenterEnd),
         )
     }
@@ -137,8 +137,8 @@ private fun ProfileInfo(
 private fun ProfileInfoPreview() {
     SmashingAndroidTheme {
         SubmitScoreCard(
-            submitter = PlayerInfo(userId = "1", name = "하나둘", score = 0),
-            receiver = PlayerInfo(userId = "2", name = "하나둘셋넷다여일여아열", score = 0),
+            leftUser = PlayerInfo(userId = "1", name = "하나둘", score = 0),
+            rightUser = PlayerInfo(userId = "2", name = "하나둘셋넷다여일여아열", score = 0),
             winnerId = "1",
         )
     }

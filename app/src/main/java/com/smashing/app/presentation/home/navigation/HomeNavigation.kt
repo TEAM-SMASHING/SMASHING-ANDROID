@@ -1,5 +1,7 @@
 package com.smashing.app.presentation.home.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -14,6 +16,7 @@ import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
+import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.ranking.navigation.navigateToRanking
 import com.smashing.app.presentation.region.navigation.getRegionResult
@@ -34,15 +37,15 @@ fun NavController.navigateToRegionChange(
 ) = navigate(RegionChange, navOptions)
 
 fun NavGraphBuilder.homeGraph(
+    innerPadding: PaddingValues,
     navController: NavController,
-    updateBottomBar: (Boolean) -> Unit,
 ) {
     navigation<Home>(
         startDestination = HomeUser,
     ) {
         composable<HomeUser> {
             HomeRoute(
-                modifier = Modifier,
+                modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
                 navigateToNotice = { profileId ->
                     navController.navigateToNotice(profileId = profileId)
                 },
@@ -62,22 +65,23 @@ fun NavGraphBuilder.homeGraph(
                 },
                 navigateToSportAdd = navController::navigateToAddSports,
                 navigateToSearch = navController::navigateToSearch,
-                navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt ->
+                navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId ->
                     navController.navigateToSubmit(
                         gameId = gameId,
                         opponentUserId = opponentUserId,
                         opponentNickname = opponentNickname,
                         isFirstAttempt = isFirstAttempt,
+                        submissionId = submissionId,
                     )
                 },
-                navigateToConfirm = { submissionId, gameId , isFirstAttempt ->
+                navigateToConfirm = { submissionId, gameId, isFirstAttempt ->
                     navController.navigateToConfirm(
                         submissionId = submissionId,
                         gameId = gameId,
                         isFirstAttempt = isFirstAttempt,
                     )
                 },
-                updateBottomBar = updateBottomBar,
+                navigateToMyProfile = navController::navigateToMyProfile,
             )
         }
 

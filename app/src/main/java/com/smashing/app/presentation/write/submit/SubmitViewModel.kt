@@ -41,9 +41,10 @@ class SubmitViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        initUserInfo()
         if (!isFirstAttempt) {
             fetchPreviousSubmission()
+        } else {
+            initUserInfo()
         }
     }
 
@@ -67,22 +68,22 @@ class SubmitViewModel @Inject constructor(
     }
 
     private fun updateFromSubmissionDetail(submissionDetail: GameSubmissionDetail) {
+        val isSubmitterWinner =
+            submissionDetail.winner.userId == submissionDetail.submitter.userId
+
+        val submitter = PlayerInfo(
+            userId = submissionDetail.submitter.userId,
+            name = submissionDetail.submitter.nickname,
+            score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score,
+        )
+
+        val receiver = PlayerInfo(
+            userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
+            name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
+            score = if (isSubmitterWinner) submissionDetail.loser.score else submissionDetail.winner.score,
+        )
+
         _uiState.update { state ->
-            val isSubmitterWinner =
-                submissionDetail.winner.userId == submissionDetail.submitter.userId
-
-            val submitter = state.submitter.copy(
-                userId = submissionDetail.submitter.userId,
-                name = submissionDetail.submitter.nickname,
-                score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score,
-            )
-
-            val receiver = state.receiver.copy(
-                userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
-                name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
-                score = if (isSubmitterWinner) submissionDetail.loser.score else submissionDetail.winner.score,
-            )
-
             state.copy(
                 submitter = submitter,
                 receiver = receiver,
@@ -203,6 +204,10 @@ class SubmitViewModel @Inject constructor(
 
     fun hideResubmitDialog() = _uiState.update { it.copy(isResubmitDialogVisible = false) }
 
+    fun showAlertDialog() = _uiState.update { it.copy(isAlertDialogOpen = true) }
+
+    fun hideAlertDialog() = _uiState.update { it.copy(isAlertDialogOpen = false) }
+
     fun hideConfirmDialog() = _uiState.update { it.copy(isConfirmDialogOpen = false) }
 
     fun updateIsConfirmDialogOpen() = viewModelScope.launch {
@@ -249,6 +254,7 @@ class SubmitViewModel @Inject constructor(
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Success,
                     isResubmitDialogVisible = false,
+                    isAlertDialogOpen = false,
                     isConfirmDialogOpen = false,
                 )
             }
@@ -258,6 +264,7 @@ class SubmitViewModel @Inject constructor(
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Failure("경기 결과 제출 실패"),
                     isResubmitDialogVisible = false,
+                    isAlertDialogOpen = false,
                     isConfirmDialogOpen = true,
                 )
             }

@@ -1,5 +1,8 @@
 package com.smashing.app.presentation.search.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -25,8 +28,8 @@ fun NavController.navigateToSearchInput(
 ) = navigate(SearchInput, navOptions)
 
 fun NavGraphBuilder.searchGraph(
-    updateBottomBar: (Boolean) -> Unit,
     navController: NavHostController,
+    innerPadding: PaddingValues,
 ) {
     navigation<Search>(
         startDestination = SearchMain,
@@ -38,8 +41,8 @@ fun NavGraphBuilder.searchGraph(
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToSearchInput = navController::navigateToSearchInput,
                 navigateToUserProfile = navController::navigateToUserProfile,
-                updateBottomBar = updateBottomBar,
                 viewModel = viewModel,
+                modifier = Modifier.padding(innerPadding)
             )
         }
 

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -16,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,13 +28,12 @@ import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.type.SportType
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
+import kotlinx.collections.immutable.toImmutableList
 
 
 @Composable
@@ -44,7 +41,6 @@ fun MyProfileRoute(
     navigateToSportAdd: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToReview: (String?) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
@@ -53,7 +49,7 @@ fun MyProfileRoute(
 
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
-        viewModel.fetchReviews()
+        viewModel.fetchMyProfileReviewList()
         viewModel.fetchMyRecentReviewStats()
 
     }
@@ -61,13 +57,12 @@ fun MyProfileRoute(
     MyProfileScreen(
         modifier = modifier,
         uiState = uiState,
-        updateBottomBar = updateBottomBar,
         onSportClick = viewModel::selectProfileId,
         onAddSportClick = navigateToSportAdd,
         navigateToTierInfo = {
             navigateToTierInfo(
-                uiState.profileInfo.tierType.toTierInfoStyle(),
-                uiState.profileInfo.sportType
+                uiState.activeProfile.tierType.toTierInfoStyle(),
+                uiState.activeProfile.sportType
             )
         },
         onReviewClick = navigateToReview,
@@ -81,22 +76,15 @@ private fun MyProfileScreen(
     navigateToTierInfo: () -> Unit,
     onReviewClick: (String?) -> Unit,
     onSportClick: (String) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val isMaxProfileReached = uiState.sportProfileList.size >= 3
 
-    val nestedScrollConnection = bottomBarNestedScrollConnection(
-        scrollStateHolder = ScrollStateHolder.Scroll(scrollState),
-        onBottomBarVisibilityChange = updateBottomBar,
-    )
-
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas)
-            .systemBarsPadding(),
+            .background(color = SmashingTheme.colors.bgCanvas),
     ) {
 
         SmashingDefaultTopBar(
@@ -108,36 +96,35 @@ private fun MyProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .nestedScroll(nestedScrollConnection)
                 .verticalScroll(scrollState)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
         ) {
             UserProfileCard(
-                nickname = uiState.profileInfo.nickname,
-                gender = uiState.profileInfo.genderType,
-                tierType = uiState.profileInfo.tierType,
-                winCount = uiState.profileInfo.winCount,
-                loseCount = uiState.profileInfo.loseCount,
-                reviewCount = uiState.profileInfo.reviewCount,
+                nickname = uiState.myProfileInfo.nickname,
+                gender = uiState.myProfileInfo.genderType,
+                tierType = uiState.activeProfile.tierType,
+                winCount = uiState.activeProfile.winCount,
+                loseCount = uiState.activeProfile.loseCount,
+                reviewCount = uiState.myProfileInfo.reviewCount,
             )
 
             ProfileTierBox(
-                tierType = uiState.profileInfo.tierType,
-                sportProfileList = uiState.sportProfileList,
+                tierType = uiState.activeProfile.tierType,
+                sportProfileList = uiState.sportProfileList.toImmutableList(),
                 selectedProfileId = uiState.selectedSportProfileId,
                 onSportClick = onSportClick,
-                tierIconResId = uiState.profileInfo.tierType.img(),
-                progress = ((uiState.profileInfo.lp - uiState.profileInfo.minLp).toFloat() / (uiState.profileInfo.maxLp - uiState.profileInfo.minLp).toFloat()),
-                lpStatus = (uiState.profileInfo.maxLp - uiState.profileInfo.lp) + 1,
-                totalLp = (uiState.profileInfo.maxLp) + 1,
+                tierIconResId = uiState.myProfileInfo.myProfileInfo.tierType.img(),
+                progress = ((uiState.activeProfile.lp - uiState.activeProfile.minLp).toFloat() /
+                        (uiState.activeProfile.maxLp - uiState.activeProfile.minLp).toFloat()),
+                lpStatus = (uiState.activeProfile.maxLp - uiState.activeProfile.lp) + 1,
+                totalLp = (uiState.activeProfile.maxLp) + 1,
                 onAddSportClick = if (isMaxProfileReached) null else onAddSportClick,
                 onTierInfoClick = navigateToTierInfo,
             )
-
             ProfileStatsBar(
-                winCount = uiState.profileInfo.winCount,
-                loseCount = uiState.profileInfo.loseCount,
+                winCount = uiState.activeProfile.winCount,
+                loseCount = uiState.activeProfile.loseCount,
             )
 
             ReviewCard(
@@ -147,8 +134,7 @@ private fun MyProfileScreen(
                 goodCount = uiState.gameReviewResult.goodCount,
                 badCount = uiState.gameReviewResult.badCount,
             )
-
-            Spacer(Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(0.dp))
         }
     }
 }
@@ -163,7 +149,6 @@ private fun ProfileScreenPreview() {
             navigateToTierInfo = {},
             onReviewClick = {},
             onSportClick = {},
-            updateBottomBar = {},
         )
     }
 }

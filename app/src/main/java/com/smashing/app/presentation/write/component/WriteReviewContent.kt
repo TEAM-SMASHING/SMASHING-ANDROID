@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
@@ -28,8 +26,6 @@ import com.smashing.app.data.type.ReviewRatingType
 import com.smashing.app.data.type.ReviewTagType
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
-
-private const val REVIEW_RATIO = 328 / 156f
 
 @Composable
 fun WriteReviewContent(
@@ -76,7 +72,7 @@ fun WriteReviewContent(
         Spacer(Modifier.height(28.dp))
 
         Text(
-            text = "빠른 후기를 선택해 주세요",
+            text = "빠른 후기를 선택해주세요",
             style = SmashingTheme.typography.md.medium16,
             color = SmashingTheme.colors.txtPrimary,
         )
@@ -111,9 +107,6 @@ fun WriteReviewContent(
         SmashingAreaTextField(
             state = textFieldState,
             placeholder = "매칭 후기를 작성해주세요",
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(REVIEW_RATIO),
         )
     }
 }

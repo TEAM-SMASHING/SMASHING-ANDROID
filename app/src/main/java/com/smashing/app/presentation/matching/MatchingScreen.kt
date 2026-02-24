@@ -2,24 +2,22 @@ package com.smashing.app.presentation.matching
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -28,8 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -55,6 +51,7 @@ import com.smashing.app.R.string.matching_send_empty
 import com.smashing.app.R.string.no
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.DialogStyle
@@ -63,8 +60,6 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.core.extension.openUrl
-import com.smashing.app.core.util.ScrollStateHolder
-import com.smashing.app.core.util.bottomBarNestedScrollConnection
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.component.MatchingTabBar
@@ -87,7 +82,6 @@ fun MatchingRoute(
         isFirstAttempt: Boolean,
     ) -> Unit,
     navigateToProfile: (String) -> Unit,
-    updateBottomBar: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -96,6 +90,7 @@ fun MatchingRoute(
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showToast = LocalToastTrigger.current
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -114,6 +109,10 @@ fun MatchingRoute(
                         sideEffect.gameId,
                         sideEffect.isFirstAttempt,
                     )
+
+                    is MatchingContract.SideEffect.ShowToast -> {
+                        showToast.invoke(sideEffect.message)
+                    }
                 }
             }
     }
@@ -144,7 +143,6 @@ fun MatchingRoute(
         onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
         onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
         onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
-        updateBottomBar = updateBottomBar,
         modifier = modifier,
     )
 }
@@ -165,18 +163,11 @@ private fun MatchingScreen(
     onAcceptedCloseClick: (String) -> Unit = {},
     onConfirmDeleteSentMatching: () -> Unit = {},
     onConfirmDeleteAcceptedMatching: () -> Unit = {},
-    updateBottomBar: (Boolean) -> Unit,
 ) {
     val gridState = rememberLazyGridState()
 
-    val nestedScrollConnection = bottomBarNestedScrollConnection(
-        scrollStateHolder = ScrollStateHolder.LazyGrid(gridState),
-        onBottomBarVisibilityChange = updateBottomBar,
-    )
-
     LaunchedEffect(uiState.selectedType) {
         gridState.scrollToItem(0)
-        updateBottomBar(true)
     }
 
     val emptyTitle = stringResource(
@@ -197,7 +188,6 @@ private fun MatchingScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = SmashingTheme.colors.bgCanvas)
-            .systemBarsPadding()
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -214,9 +204,9 @@ private fun MatchingScreen(
         )
 
         Crossfade(
-            targetState = currentUiState,
+            targetState = uiState.selectedType to currentUiState,
             label = MATCHING_CONTENT_CROSSFADE,
-        ) { state ->
+        ) { (_, state) ->
             when (state) {
                 is MatchingUiState.Empty -> {
                     Column(
@@ -227,13 +217,14 @@ private fun MatchingScreen(
                     ) {
                         Spacer(Modifier.weight(171 / 252f))
 
-                        Image(
+                        Icon(
                             painter = painterResource(img_app_icon),
                             contentDescription = null,
+                            tint = Color.Unspecified,
                             modifier = Modifier
-                                .size(100.dp)
-                                .aspectRatio(1f)
-                                .padding(bottom = 16.dp),
+                                .padding(
+                                    bottom = 16.dp,
+                                ),
                         )
 
                         Text(
@@ -264,11 +255,12 @@ private fun MatchingScreen(
                         onAcceptedMatchingClick = onAcceptedMatchingClick,
                         onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
                         onAcceptedCloseClick = onAcceptedCloseClick,
-                        nestedScrollConnection = nestedScrollConnection,
                     )
                 }
 
-                else -> {}
+                else -> {
+                    Box(modifier = Modifier.fillMaxSize())
+                }
             }
         }
 
@@ -318,7 +310,6 @@ private fun MatchingList(
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit,
     onAcceptedKakaoLinkClick: (String?) -> Unit,
     onAcceptedCloseClick: (String) -> Unit,
-    nestedScrollConnection: NestedScrollConnection,
     modifier: Modifier = Modifier,
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -336,16 +327,15 @@ private fun MatchingList(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         state = gridState,
-        contentPadding = PaddingValues(bottom = 12.dp),
+        contentPadding = PaddingValues(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
         verticalArrangement = Arrangement.spacedBy(space = 10.dp),
         modifier = modifier
-            .nestedScroll(nestedScrollConnection),
     ) {
         when (uiState.selectedType) {
             MatchingType.RECEIVE -> items(
                 items = uiState.receivedList,
-                key = { it.matchingId }
+                key = { "${MatchingType.RECEIVE}_${it.matchingId}" }
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
@@ -370,7 +360,7 @@ private fun MatchingList(
 
             MatchingType.SEND -> items(
                 items = uiState.sentList,
-                key = { it.matchingId }
+                key = { "${MatchingType.SEND}_${it.matchingId}" }
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
@@ -394,7 +384,7 @@ private fun MatchingList(
 
             MatchingType.ACCEPTED -> items(
                 items = uiState.acceptedList,
-                key = { it.gameId }
+                key = { "${MatchingType.ACCEPTED}_${it.gameId}" }
             ) { matching ->
                 val isCanceled = matching.resultStatus == GameResultStatusType.CANCELED
 
@@ -441,7 +431,9 @@ private fun MatchingList(
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
         MatchingScreen(
-            uiState = MatchingContract.State(),
+            uiState = MatchingContract.State(
+                receivedUiState = MatchingUiState.Empty,
+            ),
             onLoadMoreMatchingList = {},
             onTabClick = {},
             onDialogDismissClick = {},
@@ -454,7 +446,6 @@ private fun MatchingScreenPreview() {
             onAcceptedCloseClick = {},
             onConfirmDeleteSentMatching = {},
             onConfirmDeleteAcceptedMatching = {},
-            updateBottomBar = {},
             modifier = Modifier
                 .background(Color.Black),
         )

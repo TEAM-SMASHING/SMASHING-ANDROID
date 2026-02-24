@@ -1,5 +1,6 @@
 package com.smashing.app.core.extension
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,6 +23,7 @@ import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
 /**
@@ -50,20 +52,21 @@ fun Modifier.noRippleClickable(
  */
 fun Modifier.bringIntoViewOnFocus(
     isFocused: Boolean,
-    extraBottom: Dp,
-    delayMillis: Long = 400L,
+    extraBottom: Dp = 0.dp,
+    delayMillis: Long = 200L,
 ): Modifier = composed {
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     var layoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
     val density = LocalDensity.current
     val imeBottom = WindowInsets.ime.getBottom(density)
-    val isImeVisible = imeBottom > 0
     val extraBottomPx = with(density) { extraBottom.toPx() }
 
-    LaunchedEffect(isImeVisible, isFocused) {
-        if (!isFocused) return@LaunchedEffect
+    LaunchedEffect(isFocused, imeBottom) {
+        if (!isFocused || imeBottom <= 0) return@LaunchedEffect
         val coords = layoutCoordinates ?: return@LaunchedEffect
+
+        delay(delayMillis)
 
         val original = coords.boundsInParent()
         val targetRect = Rect(
@@ -73,7 +76,6 @@ fun Modifier.bringIntoViewOnFocus(
             bottom = original.bottom + extraBottomPx,
         )
 
-        delay(delayMillis)
         bringIntoViewRequester.bringIntoView(targetRect)
     }
 
@@ -96,3 +98,22 @@ fun Modifier.clearFocus(
         focusManager.clearFocus()
     })
 }
+
+/**
+ * 텍스트 입력 시 커서 위치로 인한 자동 스크롤을 방지
+ * BasicTextField의 기본 bringIntoView 동작을 차단
+ */
+@OptIn(ExperimentalFoundationApi::class)
+fun Modifier.preventCursorScroll(): Modifier = this.then(
+    object : androidx.compose.ui.layout.LayoutModifier {
+        override fun androidx.compose.ui.layout.MeasureScope.measure(
+            measurable: androidx.compose.ui.layout.Measurable,
+            constraints: androidx.compose.ui.unit.Constraints
+        ): androidx.compose.ui.layout.MeasureResult {
+            val placeable = measurable.measure(constraints)
+            return layout(placeable.width, placeable.height) {
+                placeable.place(0, 0)
+            }
+        }
+    }
+)
