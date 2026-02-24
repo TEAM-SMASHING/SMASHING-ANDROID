@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
@@ -31,36 +32,24 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.compose.NavHost
-import androidx.navigation.navOptions
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.toast.SmashingToast
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
 import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
-import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.home.navigation.homeGraph
-import com.smashing.app.presentation.home.navigation.navigateToHome
-import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.main.component.MainTab
 import com.smashing.app.presentation.main.state.MainAppState
-import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
-import com.smashing.app.presentation.matching.navigation.navigateToMatching
-import com.smashing.app.presentation.notice.navigation.Notice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
-import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
-import com.smashing.app.presentation.region.navigation.navigateToRegion
 import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
-import com.smashing.app.presentation.signup.navigation.navigateToSignUp
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
-import com.smashing.app.presentation.write.navigation.navigateToConfirm
-import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
@@ -115,6 +104,12 @@ fun MainScreen(
                     is MainContract.SideEffect.ShowToast -> onShowToast(effect.message)
                 }
             }
+    }
+
+    BackHandler(
+        enabled = currentTab != MainTab.HOME
+    ) {
+        appState.navigate(MainTab.HOME)
     }
 
     CompositionLocalProvider(
@@ -193,11 +188,7 @@ private fun MainNavHost(
         )
 
         matchingGraph(
-            navigateToSubmit = appState.navController::navigateToSubmit,
-            navigateToConfirm = appState.navController::navigateToConfirm,
-            navigateToProfile = { userId ->
-                appState.navController.navigateToUserProfile(userId = userId)
-            },
+            navController = appState.navController,
             innerPadding = innerPadding,
         )
 
@@ -205,76 +196,21 @@ private fun MainNavHost(
             navController = appState.navController,
             innerPadding = innerPadding,
         )
+
         loginGraph(
-            navigateToSignUp = { kakaoId ->
-                appState.navController.navigateToSignUp(
-                    kakaoId = kakaoId,
-                )
-            },
-            navigateToHome = {
-                appState.navController.navigateToHome(
-                    navOptions = navOptions {
-                        popUpTo<Login> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                )
-            },
+            navController = appState.navController,
             innerPadding = innerPadding,
         )
 
         signUpGraph(
-            navigateToRegion = {
-                appState.navController.navigateToRegion(
-                )
-            },
-            navigateToHome = {
-                appState.navController.navigateToHome(
-                    navOptions = navOptions {
-                        popUpTo<Login> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    },
-                )
-            },
-            navigateUp = appState.navController::navigateUp,
-            innerPadding = innerPadding,
+            navController = appState.navController,
         )
 
         noticeGraph(
-            navigateUp = appState.navController::navigateUp,
-            navigateToMatching = { initialTab ->
-                appState.navController.navigateToMatching(
-                    initTab = initialTab,
-                    navOptions = navOptions {
-                        popUpTo<Notice> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                )
-            },
-            navigateToConfirmReview = { reviewId ->
-                appState.navController.navigateToConfirmReview(
-                    reviewId = reviewId,
-                )
-            },
+            navController = appState.navController,
         )
 
         writeGraph(
-            navigateToMatching = { initialTab ->
-                appState.navController.navigateToMatching(
-                    initTab = initialTab,
-                    navOptions = navOptions {
-                        popUpTo<Matching> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    },
-                )
-            },
             navController = appState.navController,
         )
 
@@ -294,7 +230,7 @@ private fun MainNavHost(
         )
 
         addSportsGraph(
-            navigateUp = appState.navController::navigateUp,
+            navController = appState.navController,
         )
 
         confirmReviewGraph(
