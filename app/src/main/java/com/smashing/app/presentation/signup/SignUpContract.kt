@@ -27,13 +27,14 @@ interface SignUpContract {
         data object NavigateToHome: SideEffect
     }
 
-    sealed interface SignUpUiState {
-        object Idle : SignUpUiState
+}
 
-        object Success : SignUpUiState
+sealed interface SignUpUiState {
+    object Idle : SignUpUiState
 
-        data class Failure(
-            val msg: String,
-        ) : SignUpUiState
-    }
+    object Success : SignUpUiState
+
+    data class Failure(
+        val msg: String,
+    ) : SignUpUiState
 }

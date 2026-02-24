@@ -8,8 +8,6 @@ import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
-import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
@@ -56,11 +54,11 @@ class AllReviewViewModel @Inject constructor(
         val currentState = _uiState.value
 
         if (!isRefresh) {
-            if (currentState.reviewUiState == UserProfileUiState.Loading) return@launch
+            if (currentState.loadState == ReviewUiState.Loading) return@launch
             if (!currentState.reviewCursor.hasNext) return@launch
         }
 
-        _uiState.update { it.copy(reviewUiState = ReviewUiState.Loading) }
+        _uiState.update { it.copy(loadState = ReviewUiState.Loading) }
 
         if (userId != null) {
             reviewRepository.getUserRecentReviewList(
@@ -77,7 +75,7 @@ class AllReviewViewModel @Inject constructor(
                             (state.gameReview + cursorPage.items).toImmutableList()
                         },
                         reviewCursor = cursorPage.cursor,
-                        reviewUiState = if (cursorPage.items.isEmpty() && isRefresh) {
+                        loadState = if (cursorPage.items.isEmpty() && isRefresh) {
                             ReviewUiState.Idle
                         } else {
                             ReviewUiState.Success
@@ -87,7 +85,7 @@ class AllReviewViewModel @Inject constructor(
             }.onFailure { throwable ->
                 _uiState.update {
                     it.copy(
-                        reviewUiState = ReviewUiState.Failure(
+                        loadState = ReviewUiState.Failure(
                             throwable.message ?: "Unknown error",
                         )
                     )
@@ -128,7 +126,7 @@ class AllReviewViewModel @Inject constructor(
 
             if (isInit) {
                 _uiState.update {
-                    it.copy(reviewUiState = ReviewUiState.Loading)
+                    it.copy(loadState = ReviewUiState.Loading)
                 }
                 nextCursor = null
             }
@@ -149,7 +147,7 @@ class AllReviewViewModel @Inject constructor(
                         }
 
                         currentState.copy(
-                            reviewUiState = ReviewUiState.Success,
+                            loadState = ReviewUiState.Success,
                             gameReview = newReviews,
                         )
                     }
@@ -157,7 +155,7 @@ class AllReviewViewModel @Inject constructor(
                 .onFailure { exception ->
                     _uiState.update {
                         it.copy(
-                            reviewUiState = ReviewUiState.Failure(
+                            loadState = ReviewUiState.Failure(
                                 exception.message ?: "리뷰를 불러오는데 실패했습니다.",
                             )
                         )
