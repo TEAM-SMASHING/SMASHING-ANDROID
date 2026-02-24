@@ -8,7 +8,6 @@ import com.smashing.app.data.type.SportType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,11 +25,7 @@ class AddSportsViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(AddSportsContract.State())
     val uiState: StateFlow<AddSportsContract.State> = _uiState.asStateFlow()
-    private val _sideEffect = MutableSharedFlow<AddSportsUiState.AddSportsSideEffect>(
-        replay = 0,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
+    private val _sideEffect = MutableSharedFlow<AddSportsUiState.AddSportsSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
@@ -40,9 +35,9 @@ class AddSportsViewModel @Inject constructor(
     private fun fetchAvailableSports() {
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = AddSportsUiState.Loading) }
-            myRepository.getMyPageInfo()
+            myRepository.getMyProfileInfo()
                 .onSuccess { myPageData ->
-                    val myExistingSportCodes: List<String> = myPageData.sportProfiles.map {
+                    val myExistingSportCodes: List<String> = myPageData.myProfileItem.map {
                         it.sportType.code
                     }
 

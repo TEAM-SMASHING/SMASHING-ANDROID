@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.review.GameReviewResult
+import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,7 +26,8 @@ import javax.inject.Inject
 class UserProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
-    private val reviewRepository: ReviewRepository
+    private val reviewRepository: ReviewRepository,
+    private val matchingRepository: MatchingRepository,
 ) : ViewModel() {
 
     private val userInfo = savedStateHandle.toRoute<UserProfile>()
@@ -56,17 +57,15 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = UserProfileUiState.Success,
-                        profileInfo = data.profileInfo,
-                        sportProfileList = data.sportProfile.toImmutableList(),
-                        selectedSportProfileId = data.sportProfile.find { it.isActive }?.profileId
-                            ?: data.profileInfo.profileId
+                        userProfileInfo = data,
+                        selectedSportProfileId = data.userProfileInfo.profileId,
                     )
                 }
             }.onFailure { exception ->
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
-                            exception.message ?: "오류 발생"
+                            exception.message ?: "오류 발생",
                         )
                     )
                 }
@@ -112,7 +111,7 @@ class UserProfileViewModel @Inject constructor(
 
     fun fetchUserProfileReview() = viewModelScope.launch {
 
-        _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
+        _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
 
         reviewRepository.getUserRecentReviewList(
             userId = userId,
@@ -124,7 +123,7 @@ class UserProfileViewModel @Inject constructor(
                 state.copy(
                     gameReview = cursorPage.items.toImmutableList(),
                     userProfileCursor = cursorPage.cursor,
-                    userProfileUiState = if (cursorPage.items.isEmpty()) {
+                    loadState = if (cursorPage.items.isEmpty()) {
                         UserProfileUiState.Idle
                     } else {
                         UserProfileUiState.Success
@@ -134,50 +133,105 @@ class UserProfileViewModel @Inject constructor(
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    userProfileUiState = UserProfileUiState.Failure(
-                        throwable.message ?: "Unknown error"
+                    loadState = UserProfileUiState.Failure(
+                        throwable.message ?: "Unknown error",
                     )
                 )
             }
         }
     }
 
+    fun showDialog() {
+        _uiState.update {
+            it.copy(isDialogVisible = true)
+        }
+    }
+
+    fun dismissDialog() {
+        _uiState.update {
+            it.copy(isDialogVisible = false)
+        }
+        fetchProfileInfo()
+    }
+
     companion object {
         private const val CURSOR_SIZE = 3
     }
 
-    fun onYesClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 수락 API 호출
-            _uiState.update {
-                it.copy(isMatchingRequest = false)
-            }
-        }
-    }
-
-    fun onNoClick() {
-        viewModelScope.launch {
-            // TODO: 매칭 거절/건너뛰기 API 호출
-
-            _uiState.update {
-                it.copy(
-                    isMatchingRequest = false,
-                    isCompeteButtonEnabled = true
+    fun onYesClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if (receivedMatchingId != null) {
+            matchingRepository.postAcceptedMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success
+                    )
+                }
+                _sideEffect.emit(
+                    UserProfileContract.SideEffect.ShowToast("매칭을 수락했어요! 매칭 확정 탭에서 확인해주세요."),
                 )
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error",
+                        )
+                    )
+                }
             }
         }
     }
+
+
+    fun onNoClick() = viewModelScope.launch {
+        val receivedMatchingId = _uiState.value.receivedMatchingId
+        if (receivedMatchingId != null) {
+            matchingRepository.postRejectMatching(
+                matchingId = receivedMatchingId,
+            ).onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success,
+                    )
+                }
+                fetchProfileInfo()
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            throwable.message ?: "Unknown error",
+                        )
+                    )
+                }
+            }
+        }
+    }
+
 
     fun requestCompetition() {
-        if (!_uiState.value.isCompeteButtonEnabled) return
-
         viewModelScope.launch {
-            // TODO: 경쟁 신청 API 호출
-            _uiState.update {
-                it.copy(
-                    isCompeteButtonEnabled = false,
-                )
+            _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
+            matchingRepository.postMatching(
+                receiverProfileId = _uiState.value.selectedSportProfileId
+            ).onSuccess { data ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        loadState = UserProfileUiState.Success,
+                    )
+                }
+            }.onFailure { exception ->
+                _uiState.update {
+                    it.copy(
+                        loadState = UserProfileUiState.Failure(
+                            exception.message ?: "오류 발생",
+                        )
+                    )
+                }
             }
         }
+        showDialog()
     }
 }

@@ -1,29 +1,29 @@
 package com.smashing.app.presentation.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,74 +31,117 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
-import com.smashing.app.R.drawable.ic_bell
-import com.smashing.app.R.drawable.ic_bell_notification
-import com.smashing.app.R.drawable.img_dummy_versus
-import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.core.designsystem.component.card.MatchingCard
+import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
+import com.smashing.app.core.designsystem.state.MatchingCardState
+import com.smashing.app.core.designsystem.style.TierInfoStyle
+import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.data.model.profile.ProfileInfo
+import com.smashing.app.data.model.profile.home.MyProfileTierInfo
+import com.smashing.app.data.model.rank.UserRank
+import com.smashing.app.data.model.search.SearchMainItemModel
+import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
-import com.smashing.app.core.designsystem.component.button.SmashingButton
-import com.smashing.app.core.designsystem.component.card.MatchingCard
-import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
-import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
-import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.data.model.my.ActiveUserProfile
+import com.smashing.app.presentation.home.component.CloseMatching
 import com.smashing.app.presentation.home.component.HomeDropdown
-import com.smashing.app.data.model.rank.UserRank
-import com.smashing.app.presentation.home.component.SportsTierChip
-import com.smashing.app.presentation.home.type.DummyMatchedUser
-import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.presentation.home.component.HomeTopBar
+import com.smashing.app.presentation.home.component.RecommendedInfoPopup
 import kotlinx.collections.immutable.toImmutableList
+
 
 @Composable
 fun HomeRoute(
-    navigateToNotice: () -> Unit,
+    navigateToNotice: (String) -> Unit,
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToRanking: () -> Unit,
+    navigateToMatchingAccepted: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
+    navigateToSportAdd: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+        submissionId: String?,
+    ) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val recommendedUserListState = rememberLazyListState()
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchMyTierProfile()
-        viewModel.fetchRegionRankerList()
-        viewModel.fetchRecommendedUserList()
-        viewModel.fetchMatchedUser()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                viewModel.refreshHomeData()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    LaunchedEffect(uiState.recommendedUserList) {
+        recommendedUserListState.scrollToItem(0)
     }
 
     HomeScreen(
         uiState = uiState,
-        navigateToNotice = navigateToNotice,
+        navigateToNotice = {
+            uiState.activeMyProfile?.myProfileInfo?.profileId?.let(navigateToNotice)
+        },
         navigateToRegionChange = navigateToRegionChange,
         navigateToTierInfo = {
             navigateToTierInfo(
-                uiState.activeUserProfile?.tierType?.toTierInfoStyle() ?: TierInfoStyle.IRON,
-                uiState.activeUserProfile?.sportType ?: SportType.BADMINTON,
+                uiState.activeMyProfile?.myProfileInfo?.tierType?.toTierInfoStyle()
+                    ?: TierInfoStyle.IRON,
+                uiState.activeMyProfile?.myProfileInfo?.sportType ?: SportType.BADMINTON,
             )
         },
         navigateToRanking = navigateToRanking,
+        navigateToMatchingAccepted = navigateToMatchingAccepted,
+        navigateToUserProfile = navigateToUserProfile,
+        navigateToSportAdd = navigateToSportAdd,
+        navigateToSearch = navigateToSearch,
+        navigateToSubmit = navigateToSubmit,
+        navigateToConfirm = navigateToConfirm,
+        navigateToMyProfile = navigateToMyProfile,
+        onSportsChipClick = viewModel::fetchSelectSportProfile,
+        recommendedUserListState = recommendedUserListState,
         modifier = modifier,
     )
 }
@@ -110,16 +153,40 @@ private fun HomeScreen(
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: () -> Unit,
     navigateToRanking: () -> Unit,
+    navigateToMatchingAccepted: () -> Unit,
+    navigateToUserProfile: (String) -> Unit,
+    navigateToSportAdd: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToSubmit: (
+        gameId: String,
+        opponentUserId: String,
+        opponentNickname: String,
+        isFirstAttempt: Boolean,
+        submissionId: String?,
+    ) -> Unit,
+    navigateToConfirm: (
+        submissionId: String,
+        gameId: String,
+        isFirstAttempt: Boolean,
+    ) -> Unit,
+    navigateToMyProfile: () -> Unit,
+    onSportsChipClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    recommendedUserListState: LazyListState = rememberLazyListState(),
 ) {
-    val activeUserProfile = uiState.activeUserProfile ?: run {
-        // TODO: 로딩 또는 에러 UI 표시
-        return
-    }
+    if (uiState.activeMyProfile == null) return
 
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var topBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
+
+    var isInfoPopupVisible by remember { mutableStateOf(false) }
+
+    var popupOffset by remember { mutableStateOf(Offset.Zero) }
+    var popupWidth by remember { mutableStateOf(0.dp) }
+
+
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = modifier
@@ -140,9 +207,9 @@ private fun HomeScreen(
                 .statusBarsPadding()
         ) {
             HomeTopBar(
-                userRegion = uiState.activeUserProfile.region,
-                userSport = uiState.activeUserProfile.sportType,
-                userTier = uiState.activeUserProfile.tierType,
+                userRegion = uiState.activeMyProfile.region,
+                userSport = uiState.activeMyProfile.myProfileInfo.sportType,
+                userTier = uiState.activeMyProfile.myProfileInfo.tierType,
                 onClickRegion = {},
                 onChangeRegion = navigateToRegionChange,
                 onClickSportChip = { isDropdownExpanded = !isDropdownExpanded },
@@ -153,25 +220,27 @@ private fun HomeScreen(
 
         HomeDropdown(
             isExpanded = isDropdownExpanded,
-            activeSport = uiState.activeUserProfile.sportType,
-            sportList = uiState.allUserProfiles.toImmutableList(),
-            tierType = uiState.activeUserProfile.tierType,
-            lp = uiState.activeUserProfile.lp,
-            minLp = uiState.activeUserProfile.minLp,
-            maxLp = uiState.activeUserProfile.maxLp,
-            winCount = uiState.activeUserProfile.wins,
-            loseCount = uiState.activeUserProfile.losses,
-            onSportChipClick = {
-                // 스포츠 변경 로직 (필요시 추가)
+            activeSport = uiState.activeMyProfile.myProfileInfo.sportType,
+            sportList = uiState.activeMyProfile.myProfileItem.toImmutableList(),
+            tierType = uiState.activeMyProfile.myProfileInfo.tierType,
+            lp = uiState.activeMyProfile.myProfileInfo.lp,
+            minLp = uiState.activeMyProfile.myProfileInfo.minLp,
+            maxLp = uiState.activeMyProfile.myProfileInfo.maxLp,
+            winCount = uiState.activeMyProfile.myProfileInfo.winCount,
+            loseCount = uiState.activeMyProfile.myProfileInfo.loseCount,
+            onSportChipClick = { profileId ->
+                onSportsChipClick(profileId)
                 isDropdownExpanded = false
             },
-            onSportAddClick = {
-                // 스포츠 추가 로직 (필요시 추가)
-                isDropdownExpanded = false
+            onSportAddClick = if (uiState.activeMyProfile.myProfileItem.size >= 3) {
+                null
+            } else {
+                {
+                    navigateToSportAdd()
+                    isDropdownExpanded = false
+                }
             },
-            onTierClick = {
-                navigateToTierInfo()
-            },
+            onTierClick = navigateToTierInfo,
             onDismiss = {
                 isDropdownExpanded = false
             },
@@ -185,16 +254,18 @@ private fun HomeScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(
-                        horizontal = 16.dp,
-                    )
+                    .verticalScroll(scrollState)
                     .padding(
                         top = 12.dp,
-                        bottom = 22.dp
+                        bottom = 20.dp
                     ),
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 16.dp,
+                        ),
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -203,13 +274,13 @@ private fun HomeScreen(
                     ) {
                         Column {
                             Text(
-                                text = "${uiState.activeUserProfile.nickname}님,",
-                                style = SmashingTheme.typography.xxl.semibold24,
+                                text = "${uiState.activeMyProfile.nickname}님,",
+                                style = SmashingTheme.typography.lg.semibold18,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
                                 text = stringResource(R.string.home_clos_matching_txt),
-                                style = SmashingTheme.typography.xl.semibold20,
+                                style = SmashingTheme.typography.md.medium16,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                         }
@@ -220,35 +291,72 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = {}
+                                    onClick = navigateToMatchingAccepted
                                 ),
                         )
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    //TODO 아래 유저 ID에 profileId를 임시로 넣었어요. 받는 값에 유저ID가 없어...
                     CloseMatching(
-                        matchedMyData = DummyMatchedUser(
-                            userId = uiState.activeUserProfile.profileId,
-                            nickname = uiState.activeUserProfile.nickname,
-                        ),
-                        matchedUserData = uiState.matchedUser,
-                        onClick = {},
+                        myProfileId = uiState.activeMyProfile.myProfileInfo.profileId,
+                        myNickname = uiState.activeMyProfile.nickname,
+                        matchedUser = uiState.matchedUser,
+                        onClick = { matching ->
+                            when (matching.resultStatus) {
+                                GameResultStatusType.PENDING_RESULT -> {
+                                    navigateToSubmit(
+                                        matching.gameId,
+                                        matching.userId,
+                                        matching.nickname,
+                                        true,
+                                        matching.latestSubmissionId,
+                                    )
+                                }
+
+                                GameResultStatusType.RESULT_REJECTED -> {
+                                    navigateToSubmit(
+                                        matching.gameId,
+                                        matching.userId,
+                                        matching.nickname,
+                                        false,
+                                        matching.latestSubmissionId,
+                                    )
+                                }
+
+                                GameResultStatusType.WAITING_CONFIRMATION -> {
+                                    matching.latestSubmissionId?.let { submissionId ->
+                                        val isFirstAttempt = matching.latestAttemptNo == 1
+                                        navigateToConfirm(
+                                            submissionId,
+                                            matching.gameId,
+                                            isFirstAttempt,
+                                        )
+                                    }
+                                }
+
+                                else -> Unit
+                            }
+                        },
+                        navigateToSearch = navigateToSearch,
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
                 Column(
+
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 16.dp,
+                            ),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "${uiState.activeUserProfile.nickname}님을 위한 추천",
+                            text = "${uiState.activeMyProfile.nickname}님을 위한 추천",
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -260,22 +368,46 @@ private fun HomeScreen(
                             contentDescription = null,
                             tint = SmashingTheme.colors.iconTertiary,
                             modifier = Modifier
+                                .onGloballyPositioned { coordinates ->
+                                    val position = coordinates.positionInWindow()
+                                    val iconHeight = coordinates.size.height
+                                    val iconWidth = coordinates.size.width
+                                    popupOffset = Offset(
+                                        x = position.x + iconWidth / 2,
+                                        y = position.y + iconHeight
+                                    )
+                                }
                                 .noRippleClickable(
-                                    //TODO 알림 창 확인 후 구현
-                                    onClick = {}
+                                    onClick = { isInfoPopupVisible = !isInfoPopupVisible }
                                 ),
                         )
+
                     }
+
                     if (uiState.recommendedUserList.isNotEmpty()) {
                         LazyRow(
+                            state = recommendedUserListState,
                             modifier = Modifier
                                 .fillMaxWidth(),
+                            contentPadding = PaddingValues(
+                                horizontal = 16.dp,
+                            ),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
                             items(
                                 items = uiState.recommendedUserList,
                                 key = { it.userId }
-                            ) { cardState ->
+                            ) { user ->
+                                val cardState = MatchingCardState.Search(
+                                    userId = user.userId,
+                                    nickname = user.nickname,
+                                    genderType = user.gender,
+                                    tierType = user.tierType,
+                                    onProfileClick = { navigateToUserProfile(user.userId) },
+                                    winCount = user.wins,
+                                    loseCount = user.losses,
+                                    reviewCount = user.reviews,
+                                )
                                 MatchingCard(
                                     cardState = cardState,
                                 )
@@ -288,20 +420,26 @@ private fun HomeScreen(
                             color = SmashingTheme.colors.txtTertiary,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
+                                .padding(horizontal = 16.dp)
                                 .fillMaxWidth()
                                 .background(
                                     color = SmashingTheme.colors.bgSurface,
                                     shape = RoundedCornerShape(8.dp),
                                 )
                                 .padding(
-                                    vertical = 31.dp
-                                )
+                                    vertical = 31.dp,
+                                    horizontal = 16.dp,
+                                ),
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 16.dp,
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
@@ -336,7 +474,13 @@ private fun HomeScreen(
                             tier = ranker.tier,
                             lp = ranker.lp,
                             userId = ranker.userId,
-                            onClick = {},
+                            onClick = {
+                                if (ranker.nickname != uiState.activeMyProfile.nickname) {
+                                    navigateToUserProfile(ranker.userId)
+                                } else {
+                                    navigateToMyProfile()
+                                }
+                            },
                         )
                     }
                 }
@@ -350,185 +494,34 @@ private fun HomeScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun HomeTopBar(
-    userRegion: String,
-    userSport: SportType,
-    userTier: TierType,
-    onClickRegion: (String) -> Unit,
-    onChangeRegion: () -> Unit,
-    onClickSportChip: () -> Unit,
-    onClickNotice: () -> Unit,
-    modifier: Modifier = Modifier,
-    isNotice: Boolean = false,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        RegionDropdown(
-            selectedItem = userRegion,
-            //items 현재는 지역이 1개라 userRegion만 넣었습니다.
-            items = listOf(
-                userRegion
-            ).toImmutableList(),
-            onClick = onClickRegion,
-            onRegionChange = onChangeRegion,
-            isDivide = true
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        SportsTierChip(
-            sportType = userSport,
-            tierType = userTier,
-            onClick = onClickSportChip,
-        )
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        if (!isNotice) {
-            Icon(
-                imageVector = ImageVector.vectorResource(ic_bell),
-                contentDescription = null,
-                tint = SmashingTheme.colors.iconPrimary,
-                modifier = Modifier
-                    .noRippleClickable(
-                        onClick = onClickNotice,
-                    )
-            )
-        } else {
-            Icon(
-                imageVector = ImageVector.vectorResource(ic_bell_notification),
-                contentDescription = null,
-                tint = SmashingTheme.colors.iconPrimary,
-                modifier = Modifier
-                    .noRippleClickable(
-                        onClick = onClickNotice,
-                    )
-            )
-        }
-    }
-}
-
-@Composable
-private fun CloseMatching(
-    matchedMyData: DummyMatchedUser,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    matchedUserData: DummyMatchedUser? = null,
-    buttonState: String = "dummy",
-) {
-    //TODO 매칭 상대에서 받는 데이터 확인 후에 nickName + userId 묶는 데이터 타입 추가
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = SmashingTheme.colors.bgSurface,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .padding(
-                horizontal = 16.dp,
-            )
-            .padding(
-                top = 22.dp,
-                bottom = 24.dp,
-            ),
-    ) {
-        if (matchedUserData != null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
+        if (isInfoPopupVisible) {
+            Popup(
+                alignment = Alignment.TopStart,
+                offset = IntOffset(
+                    x = with(density) {
+                        (popupOffset.x - popupWidth.toPx() / 2).toInt()
+                    },
+                    y = with(density) {
+                        (popupOffset.y + 9.dp.toPx()).toInt()
+                    }
+                ),
+                onDismissRequest = { isInfoPopupVisible = false },
+                properties = PopupProperties(
+                    focusable = true,
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                ),
             ) {
-                Image(
-                    painter = painterResource(id = img_dummy_versus),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                )
-
-                MatchedUserItem(
-                    matchedUser = matchedMyData,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                )
-
-                MatchedUserItem(
-                    matchedUser = matchedUserData,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
+                RecommendedInfoPopup(
+                    onDismiss = { isInfoPopupVisible = false },
+                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                        popupWidth = with(density) {
+                            coordinates.size.width.toDp()
+                        }
+                    }
                 )
             }
-
-        } else {
-            Text(
-                text = stringResource(R.string.home_no_matching),
-                style = SmashingTheme.typography.md.medium16,
-                color = SmashingTheme.colors.txtTertiary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 37.dp,
-                        bottom = 23.dp,
-                    )
-            )
         }
-
-        Spacer(modifier = Modifier.height(22.dp))
-
-        //TODO buttonState 타입 수정 후 실제 사용시에 수정 예정
-        SmashingButton(
-            buttonStyle = ButtonStyle.PRIMARY,
-            text = "결과 작성하기",
-            onClick = onClick,
-            modifier = Modifier
-                .fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun MatchedUserItem(
-    matchedUser: DummyMatchedUser,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .width(IntrinsicSize.Max),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(
-                    horizontal = 28.dp,
-                )
-        ) {
-            UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(matchedUser.nickname),
-                modifier = Modifier
-                    .height(64.dp)
-                    .aspectRatio(1f)
-                    .clip(CircleShape),
-            )
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = matchedUser.nickname,
-            style = SmashingTheme.typography.sm.medium14,
-            color = SmashingTheme.colors.txtMuted,
-        )
     }
 }
 
@@ -537,18 +530,21 @@ private fun MatchedUserItem(
 private fun HomeScreenPreview() {
     HomeScreen(
         uiState = HomeContract.State(
-            activeUserProfile = ActiveUserProfile(
+            activeMyProfile = MyProfileTierInfo(
                 nickname = "Test",
                 region = "서울",
-                profileId = "0USP111222333",
-                sportType = SportType.TENNIS,
-                tierType = TierType.GOLD_1,
-                lp = 123,
-                minLp = 100,
-                maxLp = 500,
-                wins = 10,
-                losses = 7,
-            ),
+                myProfileInfo = ProfileInfo(
+                    profileId = "0USP111222333",
+                    sportType = SportType.TENNIS,
+                    tierType = TierType.GOLD_1,
+                    lp = 123,
+                    minLp = 100,
+                    maxLp = 500,
+                    winCount = 10,
+                    loseCount = 7,
+                ),
+                myProfileItem = listOf(),
+                ),
             topRankerList = listOf(
                 UserRank(
                     userId = "user1",
@@ -622,41 +618,35 @@ private fun HomeScreenPreview() {
                 ),
             ).toImmutableList(),
             recommendedUserList = listOf(
-                MatchingCardState.Search(
+                SearchMainItemModel(
                     userId = "match1",
                     nickname = "탁구의신",
-                    genderType = GenderType.MALE,
+                    gender = GenderType.MALE,
                     tierType = TierType.DIAMOND_1,
-                    onProfileClick = {},
-                    winCount = 254,
-                    loseCount = 38,
-                    reviewCount = 32,
+                    wins = 254,
+                    losses = 38,
+                    reviews = 32,
                 ),
-                MatchingCardState.Search(
+                SearchMainItemModel(
                     userId = "match2",
                     nickname = "테니스마스터",
-                    genderType = GenderType.FEMALE,
+                    gender = GenderType.FEMALE,
                     tierType = TierType.PLATINUM_2,
-                    onProfileClick = {},
-                    winCount = 180,
-                    loseCount = 45,
-                    reviewCount = 28,
+                    wins = 180,
+                    losses = 45,
+                    reviews = 28,
                 ),
-                MatchingCardState.Search(
+                SearchMainItemModel(
                     userId = "match3",
                     nickname = "배드민턴킹",
-                    genderType = GenderType.MALE,
+                    gender = GenderType.MALE,
                     tierType = TierType.GOLD_1,
-                    onProfileClick = {},
-                    winCount = 150,
-                    loseCount = 60,
-                    reviewCount = 25,
+                    wins = 150,
+                    losses = 60,
+                    reviews = 25,
                 ),
             ).toImmutableList(),
-            matchedUser = DummyMatchedUser(
-                userId = "matchedUser1",
-                nickname = "더미하는김에긴닉네임",
-            ),
+            matchedUser = null,
             loadState = HomeUiState.Success,
             isNotice = true,
         ),
@@ -664,6 +654,14 @@ private fun HomeScreenPreview() {
         navigateToRegionChange = {},
         navigateToTierInfo = {},
         navigateToRanking = {},
+        navigateToMatchingAccepted = {},
+        navigateToUserProfile = {},
+        navigateToSportAdd = {},
+        navigateToSearch = {},
+        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
+        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
+        navigateToMyProfile = {},
+        onSportsChipClick = {},
     )
 }
 
@@ -672,17 +670,21 @@ private fun HomeScreenPreview() {
 private fun HomeScreenEmptyValuePreview() {
     HomeScreen(
         uiState = HomeContract.State(
-            activeUserProfile = ActiveUserProfile(
+            activeMyProfile = MyProfileTierInfo(
                 nickname = "Test",
                 region = "서울",
-                profileId = "0USP111222333",
-                sportType = SportType.TENNIS,
-                tierType = TierType.GOLD_1,
-                lp = 123,
-                minLp = 100,
-                maxLp = 500,
-                wins = 10,
-                losses = 7,
+                myProfileInfo =
+                    ProfileInfo(
+                        profileId = "0USP111222333",
+                        sportType = SportType.TENNIS,
+                        tierType = TierType.GOLD_1,
+                        lp = 123,
+                        minLp = 100,
+                        maxLp = 500,
+                        winCount = 10,
+                        loseCount = 7,
+                    ),
+                myProfileItem = listOf(),
             ),
             topRankerList = listOf(
                 UserRank(
@@ -693,7 +695,7 @@ private fun HomeScreenEmptyValuePreview() {
                     lp = 2500,
                 ),
             ).toImmutableList(),
-            recommendedUserList = listOf<MatchingCardState.Search>().toImmutableList(),
+            recommendedUserList = listOf<SearchMainItemModel>().toImmutableList(),
             loadState = HomeUiState.Success,
             isNotice = false,
         ),
@@ -701,5 +703,13 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToRegionChange = {},
         navigateToTierInfo = {},
         navigateToRanking = {},
+        navigateToMatchingAccepted = {},
+        navigateToUserProfile = {},
+        navigateToSportAdd = {},
+        navigateToSearch = {},
+        navigateToMyProfile = {},
+        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
+        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
+        onSportsChipClick = {},
     )
 }

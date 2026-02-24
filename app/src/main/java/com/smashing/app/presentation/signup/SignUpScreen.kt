@@ -56,6 +56,7 @@ private const val MAX_STEP = 6
 @Composable
 fun SignUpRoute(
     regionResult: Region?,
+    navigateUp: () -> Unit,
     onRegionResultConsumed: () -> Unit,
     navigateToRegion: () -> Unit,
     navigateToHome: () -> Unit,
@@ -93,13 +94,17 @@ fun SignUpRoute(
         onSportSelected = viewModel::updateSelectedSport,
         onSkillSelected = viewModel::updateSelectedSkill,
         onAddressClick = navigateToRegion,
-        onBackClick = viewModel::deleteCurrentStep,
+        onBackClick = if (uiState.currentStep == 1 || uiState.currentStep == 7) {
+            navigateUp
+        } else {
+            viewModel::deleteCurrentStep
+        },
         modifier = modifier,
         onBtnClick = {
-            if (uiState.currentStep < MAX_STEP + 1)
-                viewModel.updateCurrentStep()
-            else {
-                viewModel.postSignUp()
+            when (uiState.currentStep) {
+                1, 2, 3, 4, 5 -> viewModel.updateCurrentStep()
+                6 -> viewModel.postSignUp()
+                7 -> navigateToHome()
             }
         },
     )
@@ -117,15 +122,17 @@ private fun SignUpScreen(
     onGenderSelected: (GenderType) -> Unit,
     onSportSelected: (SportType) -> Unit,
     onSkillSelected: (SkillType) -> Unit,
-    onAddressClick:() -> Unit,
+    onAddressClick: () -> Unit,
     onBackClick: () -> Unit,
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
 
-    BackHandler (enabled = uiState.currentStep > 0){
-        onBackClick()
+    if (uiState.currentStep > 1) {
+        BackHandler() {
+            onBackClick()
+        }
     }
 
     Column(
@@ -141,11 +148,13 @@ private fun SignUpScreen(
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SmashingDefaultTopBar(
-            title = "",
-            topBarType = TopBarType.BACK,
-            onClick = onBackClick,
-        )
+        if(uiState.currentStep <= MAX_STEP){
+            SmashingDefaultTopBar(
+                title = "",
+                topBarType = TopBarType.BACK,
+                onClick = onBackClick,
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -192,7 +201,7 @@ private fun SignUpScreen(
                     )
 
                     6 -> SignUpLocation(
-                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
+                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "도로명 주소를 검색해주세요",
                         isAddressExist = if (uiState.selectedRegion != null) true else false,
                         onAddressClick = onAddressClick,
                     )

@@ -38,7 +38,7 @@ fun SmashingButton(
 
     SmashingBaseButton(
         text = text,
-        textStyle = SmashingTheme.typography.lg.semibold18,
+        textStyle = SmashingTheme.typography.md.semibold16,
         onClick = onClick,
         buttonColor = buttonStyle.getButtonColor(),
         contentPadding = PaddingValues(

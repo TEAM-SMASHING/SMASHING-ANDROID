@@ -4,16 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.review.GameReviewResult
-import com.smashing.app.data.repository.api.ReviewRepository
-import com.smashing.app.presentation.profile.navigation.Review
-import com.smashing.app.presentation.profile.review.ReviewContract.ReviewUiState
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.*
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import com.smashing.app.data.repository.api.MyRepository
+import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
+import com.smashing.app.presentation.profile.navigation.Review
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +22,8 @@ import kotlinx.coroutines.launch
 class AllReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
-    private val myRepository: MyRepository,
     private val userRepository: UserRepository,
+    private val myRepository: MyRepository,
 ) : ViewModel() {
 
     private val userData = savedStateHandle.toRoute<Review>()
@@ -44,23 +41,24 @@ class AllReviewViewModel @Inject constructor(
 
     init {
         if (userId == null && isUser) {
-            fetchReviews(true)
+            fetchMyProfileReviewList(true)
+            fetchMyRecentReviewStats()
         } else {
             fetchUserRecentReviewStats()
-            fetchUserProfileReview(true)
+            fetchUserProfileReviewList(true)
         }
     }
 
-    fun fetchUserProfileReview(isRefresh: Boolean = false) = viewModelScope.launch {
+    fun fetchUserProfileReviewList(isRefresh: Boolean = false) = viewModelScope.launch {
 
         val currentState = _uiState.value
 
         if (!isRefresh) {
-            if (currentState.reviewUiState == UserProfileUiState.Loading) return@launch
+            if (currentState.loadState == ReviewUiState.Loading) return@launch
             if (!currentState.reviewCursor.hasNext) return@launch
         }
 
-        _uiState.update { it.copy(reviewUiState = ReviewUiState.Loading) }
+        _uiState.update { it.copy(loadState = ReviewUiState.Loading) }
 
         if (userId != null) {
             reviewRepository.getUserRecentReviewList(
@@ -77,7 +75,7 @@ class AllReviewViewModel @Inject constructor(
                             (state.gameReview + cursorPage.items).toImmutableList()
                         },
                         reviewCursor = cursorPage.cursor,
-                        reviewUiState = if (cursorPage.items.isEmpty() && isRefresh) {
+                        loadState = if (cursorPage.items.isEmpty() && isRefresh) {
                             ReviewUiState.Idle
                         } else {
                             ReviewUiState.Success
@@ -87,8 +85,8 @@ class AllReviewViewModel @Inject constructor(
             }.onFailure { throwable ->
                 _uiState.update {
                     it.copy(
-                        reviewUiState = ReviewUiState.Failure(
-                            throwable.message ?: "Unknown error"
+                        loadState = ReviewUiState.Failure(
+                            throwable.message ?: "Unknown error",
                         )
                     )
                 }
@@ -97,7 +95,7 @@ class AllReviewViewModel @Inject constructor(
     }
 
     fun fetchUserRecentReviewStats() = viewModelScope.launch {
-        if (userId != null){
+        if (userId != null) {
             userRepository.getUserRecentReviewStats(
                 userId = userId,
                 sportCode = sportCode,
@@ -105,22 +103,14 @@ class AllReviewViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = ReviewUiState.Success,
-                        gameReviewResult = GameReviewResult(
-                            bestCount = data.bestCount,
-                            goodCount = data.goodCount,
-                            badCount = data.badCount,
-                            goodMannerCount = data.goodMannerCount,
-                            onTimeCount = data.onTimeCount,
-                            fairPlayCount = data.fairPlayCount,
-                            fastResponseCount = data.fastResponseCount,
-                        ),
+                        gameReviewResult = data,
                     )
                 }
             }.onFailure { exception ->
                 _uiState.update {
                     it.copy(
                         loadState = ReviewUiState.Failure(
-                            exception.message ?: "오류 발생"
+                            exception.message ?: "오류 발생",
                         )
                     )
                 }
@@ -128,7 +118,7 @@ class AllReviewViewModel @Inject constructor(
         }
     }
 
-    fun fetchReviews(isInit: Boolean = false) {
+    fun fetchMyProfileReviewList(isInit: Boolean = false) {
         if (isLoading || (!isInit && !hasNextPage)) return
 
         viewModelScope.launch {
@@ -141,7 +131,7 @@ class AllReviewViewModel @Inject constructor(
                 nextCursor = null
             }
 
-            myRepository.getMyGameReviews(
+            reviewRepository.getMyRecentReviewList(
                 cursor = if (isInit) null else nextCursor,
                 size = PAGE_SIZE
             )
@@ -158,21 +148,40 @@ class AllReviewViewModel @Inject constructor(
 
                         currentState.copy(
                             loadState = ReviewUiState.Success,
-                            gameReview = newReviews
+                            gameReview = newReviews,
                         )
                     }
                 }
                 .onFailure { exception ->
-                    exception.printStackTrace()
                     _uiState.update {
                         it.copy(
                             loadState = ReviewUiState.Failure(
-                                exception.message ?: "리뷰를 불러오는데 실패했습니다."
+                                exception.message ?: "리뷰를 불러오는데 실패했습니다.",
                             )
                         )
                     }
                 }
             isLoading = false
+        }
+    }
+
+    fun fetchMyRecentReviewStats() = viewModelScope.launch {
+        myRepository.getMyRecentReviewStats(
+        ).onSuccess { data ->
+            _uiState.update { currentState ->
+                currentState.copy(
+                    loadState = ReviewUiState.Success,
+                    gameReviewResult = data,
+                )
+            }
+        }.onFailure { exception ->
+            _uiState.update {
+                it.copy(
+                    loadState = ReviewUiState.Failure(
+                        exception.message ?: "오류 발생"
+                    )
+                )
+            }
         }
     }
 

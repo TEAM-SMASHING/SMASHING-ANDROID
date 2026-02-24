@@ -47,7 +47,13 @@ fun MatchingCardContent(
                 .height(52.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape)
-                .noRippleClickable(onClick = cardState.onProfileClick),
+                .let { base ->
+                    if (cardState is MatchingCardState.Search) {
+                        base
+                    } else {
+                        base.noRippleClickable(onClick = cardState.onProfileClick)
+                    }
+                },
         )
 
         UserInfo(

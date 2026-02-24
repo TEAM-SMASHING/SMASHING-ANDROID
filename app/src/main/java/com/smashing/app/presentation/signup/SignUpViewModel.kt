@@ -6,8 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.core.network.sse.SseManager
 import com.smashing.app.core.util.TextInputValidator
-import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.repository.api.AuthRepository
@@ -15,8 +15,6 @@ import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
 import com.smashing.app.domain.model.Region
-import com.smashing.app.presentation.signup.SignUpContract.SideEffect.NavigateToHome
-import com.smashing.app.presentation.signup.SignUpContract.SignUpUiState
 import com.smashing.app.presentation.signup.navigation.SignUp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -35,6 +33,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val authRepository: AuthRepository,
+    private val sseManager: SseManager,
 ) : ViewModel() {
 
     private val kakaoId = savedStateHandle.toRoute<SignUp>().kakaoId
@@ -84,12 +83,15 @@ class SignUpViewModel @Inject constructor(
             .debounce(NETWORK_DEBOUNCE)
             .collectLatest { nickNameText ->
                 val text = nickNameText.toString()
-                val isNickNameValid = TextInputValidator.isTextInputValid(text)
+                val isNickNameValid = TextInputValidator.isTextInputSpecialValid(text)
+                val isNickNameFinished = TextInputValidator.isTextFinished(text)
 
                 if (text.isEmpty()) {
                     _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null, isNickNameAvailable = false) }
                 } else if (text.isBlank() || !isNickNameValid) {
                     _uiState.update { it.copy(nickNameErrorText = INVALID_NICKNAME_FORMAT, nickNameConfirmText = null, isNickNameAvailable = false) }
+                } else if (text.isBlank() || !isNickNameFinished){
+                    _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null, isNickNameAvailable = false) }
                 } else {
                     _uiState.update { it.copy(nickNameErrorText = null, nickNameConfirmText = null) }
                     getNickNameAvailable()
@@ -195,7 +197,8 @@ class SignUpViewModel @Inject constructor(
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {
-                    _sideEffect.emit(NavigateToHome)
+                    sseManager.onUserLoggedIn()
+                    updateCurrentStep()
                 }
                 .onFailure { error ->
                     Timber.tag("SignUp").e("회원가입 실패 $error")

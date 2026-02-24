@@ -2,29 +2,55 @@ package com.smashing.app.presentation.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
+import com.smashing.app.core.designsystem.component.toast.SmashingToast
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
-import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
+import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.login.navigation.loginGraph
 import com.smashing.app.presentation.main.component.MainBottomBar
+import com.smashing.app.presentation.main.component.MainTab
+import com.smashing.app.presentation.main.state.MainAppState
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.navigation.matchingGraph
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
-import com.smashing.app.presentation.matching.type.MatchingType
+import com.smashing.app.presentation.notice.navigation.Notice
 import com.smashing.app.presentation.notice.navigation.noticeGraph
-import com.smashing.app.presentation.profile.navigation.navigateToReview
+import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.navigateToRegion
@@ -37,31 +63,109 @@ import com.smashing.app.presentation.write.navigation.navigateToConfirm
 import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+
+private const val EXIT_MILLIS = 3000L
 
 @Composable
 fun MainScreen(
     appState: MainAppState,
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
 
-    Scaffold(
-        bottomBar = {
-            MainBottomBar(
-                isVisible = isBottomBarVisible,
-                tabs = MainTab.entries.toImmutableList(),
-                currentTab = currentTab,
-                onTabSelected = appState::navigate,
-            )
-        },
-        containerColor = SmashingTheme.colors.bgCanvas,
-        modifier = Modifier
-            .fillMaxSize(),
-    ) { innerPadding ->
-        MainNavHost(
-            appState = appState,
-            innerPadding = innerPadding,
-        )
+    val snackBarHostState = remember { SnackbarHostState() }
+    val snackbarMutex = remember { Mutex() }
+
+    var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
+
+    val coroutineScope = rememberCoroutineScope()
+    val onShowToast: (String) -> Unit = remember(coroutineScope, snackBarHostState, snackbarMutex) {
+        { message ->
+            coroutineScope.launch {
+                if (!snackbarMutex.tryLock()) return@launch
+
+                try {
+                    launch {
+                        delay(EXIT_MILLIS)
+                        snackBarHostState.currentSnackbarData?.dismiss()
+                    }
+                    snackBarHostState.showSnackbar(
+                        message = message,
+                        withDismissAction = false,
+                    )
+                } finally {
+                    snackbarMutex.unlock()
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect
+            .flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { effect ->
+                when (effect) {
+                    is MainContract.SideEffect.ShowToast -> onShowToast(effect.message)
+                }
+            }
+    }
+
+    CompositionLocalProvider(
+        LocalToastTrigger provides onShowToast,
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Scaffold(
+                bottomBar = {
+                    MainBottomBar(
+                        isVisible = isBottomBarVisible,
+                        tabs = MainTab.entries.toImmutableList(),
+                        currentTab = currentTab,
+                        onTabSelected = appState::navigate,
+                        modifier = Modifier.onGloballyPositioned { coordinates ->
+                            if (isBottomBarVisible) {
+                                bottomBarHeight = with(density) {
+                                    coordinates.size.height.toDp()
+                                }
+                            }
+                        },
+                    )
+                },
+                containerColor = SmashingTheme.colors.bgCanvas,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = SmashingTheme.colors.bgCanvas),
+            ) { innerPadding ->
+                MainNavHost(
+                    appState = appState,
+                    innerPadding = innerPadding,
+                )
+            }
+            SnackbarHost(
+                hostState = snackBarHostState,
+                modifier = Modifier
+                    .align(
+                        alignment = Alignment.BottomCenter,
+                    )
+                    .padding(
+                        bottom = bottomBarHeight + 12.dp
+                    )
+                    .windowInsetsPadding(WindowInsets.ime),
+            ) { data ->
+                SmashingToast(
+                    text = data.visuals.message,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+        }
     }
 }
 
@@ -79,38 +183,32 @@ private fun MainNavHost(
         startDestination = appState.startDestination,
     ) {
         homeGraph(
-            innerPadding = innerPadding,
             navController = appState.navController,
+            innerPadding = innerPadding,
         )
 
         searchGraph(
             navController = appState.navController,
+            innerPadding = innerPadding,
         )
 
         matchingGraph(
-            innerPadding = innerPadding,
             navigateToSubmit = appState.navController::navigateToSubmit,
             navigateToConfirm = appState.navController::navigateToConfirm,
+            navigateToProfile = { userId ->
+                appState.navController.navigateToUserProfile(userId = userId)
+            },
+            innerPadding = innerPadding,
         )
 
         profileGraph(
+            navController = appState.navController,
             innerPadding = innerPadding,
-            navigateUp = appState.navController::navigateUp,
-            navigateToReview = appState.navController::navigateToReview,
-            updateBottomBar = appState::updateBottomBarVisible,
-            navigateToAddSports = appState.navController::navigateToAddSports,
         )
-
         loginGraph(
             navigateToSignUp = { kakaoId ->
                 appState.navController.navigateToSignUp(
                     kakaoId = kakaoId,
-                    navOptions = navOptions {
-                        popUpTo<Login> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
                 )
             },
             navigateToHome = {
@@ -129,12 +227,6 @@ private fun MainNavHost(
         signUpGraph(
             navigateToRegion = {
                 appState.navController.navigateToRegion(
-                    navOptions = navOptions {
-                        popUpTo<Login> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    },
                 )
             },
             navigateToHome = {
@@ -147,12 +239,28 @@ private fun MainNavHost(
                     },
                 )
             },
+            navigateUp = appState.navController::navigateUp,
             innerPadding = innerPadding,
         )
 
         noticeGraph(
             navigateUp = appState.navController::navigateUp,
-            innerPadding = innerPadding,
+            navigateToMatching = { initialTab ->
+                appState.navController.navigateToMatching(
+                    initTab = initialTab,
+                    navOptions = navOptions {
+                        popUpTo<Notice> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            navigateToConfirmReview = { reviewId ->
+                appState.navController.navigateToConfirmReview(
+                    reviewId = reviewId,
+                )
+            },
         )
 
         writeGraph(
@@ -177,15 +285,20 @@ private fun MainNavHost(
 
         rankingGraph(
             innerPadding = innerPadding,
-            navigateUp = appState.navController::navigateUp,
+            navController = appState.navController,
         )
 
         tierInfoGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
         )
+
         addSportsGraph(
             navigateUp = appState.navController::navigateUp,
+        )
+
+        confirmReviewGraph(
+            navController = appState.navController,
         )
     }
 }

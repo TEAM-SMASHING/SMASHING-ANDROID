@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.sharedViewModel
@@ -16,12 +17,14 @@ import com.smashing.app.presentation.write.submit.SubmitResultRoute
 import com.smashing.app.presentation.write.submit.SubmitReviewRoute
 import com.smashing.app.presentation.write.submit.SubmitViewModel
 import kotlinx.serialization.Serializable
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview as navigateToConfirmReviewDetail
 
 fun NavController.navigateToSubmit(
     gameId: String,
     opponentUserId: String,
     opponentNickname: String,
     isFirstAttempt: Boolean,
+    submissionId: String? = null,
     navOptions: NavOptions? = null,
 ) = navigate(
     route = Submit(
@@ -29,6 +32,7 @@ fun NavController.navigateToSubmit(
         opponentUserId = opponentUserId,
         opponentNickname = opponentNickname,
         isFirstAttempt = isFirstAttempt,
+        submissionId = submissionId,
     ),
     navOptions = navOptions,
 )
@@ -36,16 +40,12 @@ fun NavController.navigateToSubmit(
 fun NavController.navigateToConfirm(
     submissionId: String,
     gameId: String,
-    opponentUserId: String,
-    opponentNickname: String,
     isFirstAttempt: Boolean,
     navOptions: NavOptions? = null,
 ) = navigate(
     route = Confirm(
         submissionId = submissionId,
         gameId = gameId,
-        opponentUserId = opponentUserId,
-        opponentNickname = opponentNickname,
         isFirstAttempt = isFirstAttempt,
     ),
     navOptions = navOptions,
@@ -107,7 +107,17 @@ fun NavGraphBuilder.writeGraph(
 
             ConfirmReviewRoute(
                 navigateUp = navController::navigateUp,
-                navigateToMatching = { navigateToMatching(MatchingType.ACCEPTED)},
+                navigateToConfirmReview = { reviewId ->
+                    navController.navigateToConfirmReviewDetail(
+                        reviewId = reviewId,
+                        navOptions = navOptions {
+                            popUpTo<Confirm> {
+                                inclusive = false
+                            }
+                            launchSingleTop = true
+                        }
+                    )
+                },
                 viewModel = viewModel,
             )
         }
@@ -121,6 +131,7 @@ data class Submit(
     val opponentUserId: String,
     val opponentNickname: String,
     val isFirstAttempt: Boolean,
+    val submissionId: String? = null,
 ) : Route
 
 @Serializable
@@ -133,8 +144,6 @@ data object SubmitReview : Route
 data class Confirm(
     val submissionId: String,
     val gameId: String,
-    val opponentUserId: String,
-    val opponentNickname: String,
     val isFirstAttempt: Boolean,
 ) : Route
 

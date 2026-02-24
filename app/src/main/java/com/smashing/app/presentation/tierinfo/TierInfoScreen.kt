@@ -22,7 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,12 +30,9 @@ import com.smashing.app.core.designsystem.component.appicon.AppIcon
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle
-import com.smashing.app.core.designsystem.style.TopBarType
-import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.data.type.TierType
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.toTierInfoStyle
+import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 @Composable
 fun TierInfoRoute(
@@ -89,6 +86,7 @@ private fun TierInfoScreen(
                 text = uiState.selectedTierInfoStyle.tierName,
                 style = SmashingTheme.typography.xl.semibold20,
                 color = uiState.selectedTierInfoStyle.getTxtColor(),
+                textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -141,12 +139,12 @@ private fun TierInfoScreen(
                 .padding(
                     horizontal = 16.dp,
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
         ) {
             if (uiState.selectedTierInfoStyle != TierInfoStyle.CHALLENGER && uiState.selectedTierInfoStyle != TierInfoStyle.IRON) {
                 Text(
                     text = "승급을 위해 아래의 기술들을 연마해보세요",
-                    style = SmashingTheme.typography.sm.semibold14,
+                    style = SmashingTheme.typography.md.semibold16,
                     color = SmashingTheme.colors.txtPrimary,
                 )
 
@@ -176,9 +174,11 @@ private fun TierInfoScreen(
             } else {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Spacer(modifier = Modifier.height(52.dp))
+                    Spacer(modifier = Modifier.height(80.dp))
                     AppIcon(
                         title = uiState.tierInfoDetail?.skills?.firstOrNull()?.name,
                         subtitle = uiState.tierInfoDetail?.skills?.firstOrNull()?.description,
@@ -207,6 +207,7 @@ private fun TierTag(
             .padding(
                 8.dp,
             ),
+        textAlign = TextAlign.Center,
     )
 }
 
@@ -240,23 +241,6 @@ private fun CommentTag(
             text = comment ?: "",
             style = SmashingTheme.typography.xs.medium12,
             color = SmashingTheme.colors.txtSecondary,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TierInfoScreenPreview() {
-    SmashingAndroidTheme {
-        val dummyState = TierInfoContract.State(
-            selectedTierInfoStyle = TierType.GOLD_1.toTierInfoStyle(),
-        )
-
-        TierInfoScreen(
-            uiState = dummyState,
-            modifier = Modifier,
-            onClick = {},
-            onBack = {},
         )
     }
 }

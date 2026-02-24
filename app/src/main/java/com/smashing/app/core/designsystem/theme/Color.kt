@@ -38,6 +38,7 @@ val primary300 = Color(0xFF1B2F51)
 // Sub Color
 val redMain = Color(0xFFFD344D)
 val redSub = Color(0xFF4E0B0B)
+val redMute = Color(0xFF790707)
 
 val orangeMain = Color(0xFFFF8412)
 val orangeSub = Color(0xFF4E2F0B)
@@ -141,6 +142,8 @@ data class SmashingColors(
     val tierDiamondBg: Color,
     val tierChallengerTxt: Color,
     val tierChallengerBg: Color,
+    val tierMaxTxt: Color,
+    val tierMaxBg: Color,
 
     // State
     val stateCheck: Color,
@@ -224,12 +227,14 @@ val defaultSmashingColors = SmashingColors(
     tierDiamondBg = primary300,
     tierChallengerTxt = purpleMain,
     tierChallengerBg = purpleSub,
+    tierMaxTxt = redMain,
+    tierMaxBg = redMute,
 
     // State
     stateCheck = primary100,
     stateWarning = redMain,
     stateSuccess = greenMain,
-    stateProgressTrack = gray300,
+    stateProgressTrack = gray700,
     stateProgressFill = primary200,
 )
 val LocalSmashingColors = staticCompositionLocalOf { defaultSmashingColors }
@@ -264,6 +269,7 @@ private fun SmashingColorsPreview() {
                 // Sub Color
                 redMain,
                 redSub,
+                redMute,
                 orangeMain,
                 orangeSub,
                 yellowMain,

@@ -15,6 +15,7 @@ interface SearchContract {
     data class State(
         val selectedRegion: String = "",
         val regionItems: ImmutableList<String> = persistentListOf(),
+        val regionUiState: SearchUiState = SearchUiState.Idle,
         val searchList: ImmutableList<SearchMainItemModel> = persistentListOf(),
         val isTierBottomSheetEnabled: Boolean = false,
         val isGenderBottomSheetEnabled: Boolean = false,
@@ -30,18 +31,18 @@ interface SearchContract {
         val searchNickNameUsersUiState: SearchUiState = SearchUiState.Idle,
         val searchRegionUsersCursor: Cursor = Cursor(),
     )
+}
 
-    sealed interface SearchUiState {
-        data object Idle : SearchUiState
+sealed interface SearchUiState {
+    data object Idle : SearchUiState
 
-        data object Loading : SearchUiState
+    data object Loading : SearchUiState
 
-        data object Empty : SearchUiState
+    data object Empty : SearchUiState
 
-        data object Success : SearchUiState
+    data object Success : SearchUiState
 
-        data class Failure(
-            val msg: String,
-        ) : SearchUiState
-    }
+    data class Failure(
+        val msg: String,
+    ) : SearchUiState
 }

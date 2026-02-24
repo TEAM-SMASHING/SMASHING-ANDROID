@@ -5,19 +5,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
+import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.SubcomposeAsyncImageContent
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import coil3.request.fallback
-import coil3.request.error
-import com.smashing.app.R.drawable.ic_fake_red
 
 /**
  * URL을 통해 이미지를 비동기로 로드하여 표시하는 Composable입니다.
@@ -40,29 +37,39 @@ fun UrlImage(
     contentDescription: String? = null,
 ) {
     if (LocalInspectionMode.current) {
-        Image(
-            imageVector = ImageVector.vectorResource(ic_fake_red),
-            contentDescription = contentDescription,
-            contentScale = contentScale,
-            modifier = modifier,
-        )
-    } else {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalPlatformContext.current)
-                .data(url)
-                .crossfade(true)
-                .apply {
-                    placeholderDrawable?.let { drawableRes ->
-                        error(drawableRes)
-                        fallback(drawableRes)
-                    }
-                }
-                .build(),
-            contentDescription = contentDescription,
-            contentScale = contentScale,
-            modifier = modifier,
-        )
+        placeholderDrawable?.let { drawableRes ->
+            Image(
+                painter = painterResource(drawableRes),
+                contentDescription = contentDescription,
+                contentScale = contentScale,
+                modifier = modifier,
+            )
+        }
+        return
     }
+
+    val fallbackContent: @Composable () -> Unit = {
+        placeholderDrawable?.let { drawableRes ->
+            Image(
+                painter = painterResource(drawableRes),
+                contentDescription = contentDescription,
+                contentScale = contentScale,
+                modifier = Modifier,
+            )
+        }
+    }
+
+    SubcomposeAsyncImage(
+        model = ImageRequest.Builder(LocalPlatformContext.current)
+            .data(url.ifBlank { null })
+            .crossfade(true)
+            .build(),
+        contentDescription = contentDescription,
+        contentScale = contentScale,
+        modifier = modifier,
+        success = { SubcomposeAsyncImageContent() },
+        error = { fallbackContent() },
+    )
 }
 
 @Preview

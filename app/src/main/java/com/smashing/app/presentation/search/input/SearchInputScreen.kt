@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,10 +24,11 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.presentation.search.SearchContract
+import com.smashing.app.presentation.search.SearchUiState
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
-import com.smashing.app.data.model.search.SuggestionItemModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -41,13 +43,18 @@ fun SearchInputRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.clearSearchInput()
+    }
+
     SearchInputScreen(
         uiState = uiState,
         items = uiState.suggestions,
         searchState = viewModel.searchInputState,
         onBackClick = navigateToSearchMain,
         onSuggestionItemClick = { userId ->
-            navigateToUserProfile(userId) },
+            navigateToUserProfile(userId)
+        },
         modifier = modifier,
     )
 }
@@ -61,37 +68,47 @@ private fun SearchInputScreen(
     onSuggestionItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column (
+    Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = colors.bgCanvas)
             .systemBarsPadding(),
-    ){
+    ) {
         SmashingSearchTopBar(
             searchState = searchState,
             placeholder = stringResource(search_placeholder),
             onBackClick = onBackClick,
         )
 
-        if(uiState.suggestions.isNotEmpty()) {
-            items.forEach { item ->
-                Text(
-                    text = item.nickname,
-                    color = colors.txtSecondary,
-                    style = typography.sm.medium14,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .noRippleClickable(
-                            onClick = { onSuggestionItemClick(item.userId) },
+        when (uiState.searchNickNameUsersUiState) {
+            SearchUiState.Idle -> Unit
+            SearchUiState.Loading -> Unit
+            SearchUiState.Empty -> Unit
+            SearchUiState.Success -> {
+                if (uiState.suggestions.isNotEmpty()) {
+                    items.forEach { item ->
+                        Text(
+                            text = item.nickname,
+                            color = colors.txtSecondary,
+                            style = typography.sm.medium14,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .noRippleClickable(
+                                    onClick = { onSuggestionItemClick(item.userId) },
+                                )
+                                .padding(vertical = 12.dp)
+                                .padding(start = 16.dp),
                         )
-                        .padding(vertical = 12.dp)
-                        .padding(start = 16.dp),
-                )
+                    }
+                } else {
+                    SearchEmpty(
+                        title = "검색 결과가 없습니다.",
+                        subTitle = "다른 검색어를 입력해보세요",
+                    )
+                }
             }
-        } else {
-            SearchEmpty(
-                title = "검색 결과가 없습니다.",
-                subTitle = "다른 검색어를 입력해보세요",
-            )
+
+            else -> Unit
         }
     }
 
@@ -114,4 +131,3 @@ private fun SearchInputScreenPreview() {
         )
     }
 }
-

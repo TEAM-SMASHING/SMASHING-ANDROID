@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Kakao SDK model reflection / json parsing safety
+-keep class com.kakao.sdk.**.model.** { <fields>; }
+-dontwarn com.kakao.sdk.**

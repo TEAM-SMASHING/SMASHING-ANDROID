@@ -161,8 +161,7 @@ private fun SmashingAlertButton(
                 color = containerColor,
                 shape = RoundedCornerShape(10.dp),
             )
-            .noRippleClickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 10.dp),
+            .noRippleClickable(onClick = onClick),
     ) {
         Text(
             text = text,
@@ -173,19 +172,6 @@ private fun SmashingAlertButton(
 }
 
 
-@Preview
-@Composable
-private fun SmashingDialogConfirmPreview() {
-    // 버튼이 1개인 ALERT 타입
-    SmashingDialog(
-        title = "매칭 상대가 작성 완료한 경기입니다",
-        subtitle = "매칭 결과 확인을 통해 확인해주세요",
-        type = DialogStyle.CONFIRM,
-        confirmText = "확인",
-        onConfirmClick = {},
-        onDismissRequest = {}
-    )
-}
 
 @Preview
 @Composable

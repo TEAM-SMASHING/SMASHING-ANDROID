@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R
 import com.smashing.app.R.string.submit_matching_result
 import com.smashing.app.core.designsystem.component.button.SmashingButton
@@ -57,7 +57,6 @@ fun SubmitResultRoute(
 
     SubmitResultScreen(
         uiState = uiState,
-        isFirstAttempt = viewModel.isFirstAttempt,
         modifier = modifier,
         onBackClick = navigateUp,
         onLeftDoneClick = viewModel::updateSubmitterScore,
@@ -74,7 +73,6 @@ fun SubmitResultRoute(
 @Composable
 private fun SubmitResultScreen(
     uiState: SubmitContract.State,
-    isFirstAttempt: Boolean,
     leftTextFieldState: TextFieldState,
     rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
@@ -110,16 +108,15 @@ private fun SubmitResultScreen(
                 .verticalScroll(scrollState),
         ) {
             WriteResultContent(
-                submitter = uiState.submitter,
-                receiver = uiState.receiver,
-                submitterScore = uiState.submitterScore,
-                receiverScore = uiState.receiverScore,
-                winner = uiState.winner,
+                leftUserInfo = uiState.submitter,
+                rightUserInfo = uiState.receiver,
+                winnerId = uiState.winnerId,
                 leftTextFieldState = leftTextFieldState,
                 rightTextFieldState = rightTextFieldState,
                 onWinnerSelected = onWinnerSelected,
                 onLeftDoneClick = onLeftDoneClick,
                 onRightDoneClick = onRightDoneClick,
+                subTitle = "악의적인 결과 작성 시 활동이 제한될 수 있어요",
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -156,7 +153,6 @@ private fun SubmitResultScreen(
 private fun SubmitScreenPreview() {
     SubmitResultScreen(
         uiState = SubmitContract.State(),
-        isFirstAttempt = true,
         leftTextFieldState = TextFieldState(),
         rightTextFieldState = TextFieldState(),
         onBackClick = {},

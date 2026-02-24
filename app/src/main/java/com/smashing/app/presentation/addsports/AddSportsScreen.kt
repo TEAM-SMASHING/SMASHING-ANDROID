@@ -138,6 +138,7 @@ private fun AddSportScreen(
                     onSportSelected = onSportSelected,
                     title = "추가할 종목을 선택해주세요",
                     subTitle = "",
+                    isSubTitle = false,
                 )
 
                 2 -> SportSkillSelector(
@@ -178,7 +179,7 @@ private fun SignUpScreenPreview() {
             uiState = AddSportsContract.State(currentStep = currentStep),
             isBtnEnabled = true,
             selectedSport = null,
-            onSportSelected = {},
+            onSportSelected ={},
             selectedSkill = null,
             onSkillSelected = {},
             onBtnClick = { currentStep++ },

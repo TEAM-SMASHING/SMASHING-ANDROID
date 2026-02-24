@@ -2,6 +2,7 @@ package com.smashing.app.presentation.ranking
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,10 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,9 +24,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +52,7 @@ import com.smashing.app.presentation.ranking.component.Ranker
 import kotlinx.collections.immutable.toImmutableList
 import com.smashing.app.core.designsystem.theme.primary300
 import com.smashing.app.core.extension.dropShadow
+import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.type.TierType
 
@@ -53,6 +60,7 @@ import com.smashing.app.data.type.TierType
 fun RankingRoute(
     navigateUp: () -> Unit,
     navigateToProfile: (String) -> Unit,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RankingViewModel = hiltViewModel(),
 ) {
@@ -62,6 +70,7 @@ fun RankingRoute(
         uiState = uiState,
         navigateUp = navigateUp,
         navigateToProfile = navigateToProfile,
+        navigateToMyProfile = navigateToMyProfile,
         modifier = modifier,
     )
 }
@@ -71,15 +80,20 @@ private fun RankingScreen(
     uiState: RankingContract.State,
     navigateUp: () -> Unit,
     navigateToProfile: (String) -> Unit,
+    navigateToMyProfile: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val density = LocalDensity.current
+    var myRankingHeight by remember { mutableStateOf(0.dp) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 color = colors.bgCanvas,
             )
-            .statusBarsPadding()
+            .systemBarsPadding()
     ) {
         Box(
             modifier = Modifier
@@ -106,7 +120,9 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
+                myUserId = uiState.userInfo?.userId,
                 navigateToProfile = navigateToProfile,
+                navigateToMyProfile = navigateToMyProfile,
             )
 
             if (uiState.restRankingList.isNotEmpty()) {
@@ -127,14 +143,13 @@ private fun RankingScreen(
                     contentPadding = PaddingValues(
                         start = 16.dp,
                         end = 16.dp,
-                        bottom = 12.dp,
+                        bottom = myRankingHeight + 12.dp,
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     items(
                         items = uiState.restRankingList,
-                        key = { it.userId },
                     ) { user ->
                         SmashingRankingItem(
                             userId = user.userId,
@@ -142,7 +157,13 @@ private fun RankingScreen(
                             rank = user.rank,
                             tier = user.tier,
                             lp = user.lp,
-                            onClick = { navigateToProfile(user.userId) },
+                            onClick = {
+                                if (user.userId != uiState.userInfo?.userId) {
+                                    navigateToProfile(user.userId)
+                                } else {
+                                    navigateToMyProfile()
+                                }
+                            },
                             modifier = Modifier
                                 .fillMaxWidth(),
                         )
@@ -169,13 +190,29 @@ private fun RankingScreen(
                 }
             }
 
+
+        }
+        if (uiState.userInfo != null) {
             MyRanking(
-                userId = "myUserId",
-                nickname = "내 닉네임",
-                tier = TierType.GOLD_1,
-                lp = 1850,
+                myRank = uiState.userInfo,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .onGloballyPositioned { coordinates ->
+                        myRankingHeight = with(density) {
+                            coordinates.size.height.toDp()
+                        }
+                    }
+                    .padding(
+                        horizontal = 16.dp,
+                    )
+                    .padding(
+                        bottom = 20.dp
+                    )
+                    .navigationBarsPadding()
+                    .noRippleClickable(
+                        onClick = {}
+                    )
             )
         }
     }
@@ -183,28 +220,31 @@ private fun RankingScreen(
 
 @Composable
 private fun MyRanking(
-    userId: String,
-    nickname: String,
-    tier: TierType,
-    lp: Int,
+    myRank: UserRank,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
             .background(
-                color = colors.bgOverlay,
+                color = colors.bgSurface,
+            )
+            .border(
+                width = 1.dp,
+                color = colors.borderTertiary,
+                shape = RoundedCornerShape(8.dp),
             )
             .padding(
                 top = 15.dp,
-                bottom = 33.dp,
                 start = 16.dp,
+                bottom = 15.dp,
                 end = 16.dp,
             )
+
     ) {
         UrlImage(
-            placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+            placeholderDrawable = ProfileImageProvider.getTempImg(myRank.nickname),
             modifier = Modifier
-                .height(40.dp)
+                .size(40.dp)
                 .aspectRatio(1f)
                 .clip(CircleShape),
         )
@@ -212,19 +252,18 @@ private fun MyRanking(
         Spacer(modifier = Modifier.width(10.dp))
 
         Column(
-            modifier = Modifier,
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = nickname,
+                text = myRank.nickname,
                 style = typography.sm.medium14,
                 color = colors.txtPrimary,
             )
             Text(
                 text = stringResource(
                     ranking_tier_with_lp,
-                    tier.tierName,
-                    lp,
+                    myRank.tier.tierName,
+                    myRank.lp,
                 ),
                 style = typography.xs.regular12,
                 color = colors.txtTertiary,
@@ -234,10 +273,10 @@ private fun MyRanking(
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = painterResource(id = tier.img()),
+            painter = painterResource(id = myRank.tier.img()),
             contentDescription = null,
             modifier = Modifier
-                .height(40.dp)
+                .size(40.dp)
                 .aspectRatio(1f)
         )
     }
@@ -269,6 +308,7 @@ fun RankingScreenPreview_OnlyFirst() {
         ),
         navigateUp = {},
         navigateToProfile = {},
+        navigateToMyProfile = {},
     )
 }
 
@@ -298,5 +338,6 @@ fun RankingScreenPreview() {
         ),
         navigateUp = {},
         navigateToProfile = {},
+        navigateToMyProfile = {},
     )
 }

@@ -86,4 +86,12 @@ class MatchingRepositoryImpl @Inject constructor(
             gameId = gameId,
         )
     }
+
+    override suspend fun postMatching(
+        receiverProfileId: String
+    ): Result<Unit> = suspendRunCatching {
+        matchingRemoteDataSource.postMatching(
+            receiverProfileId = receiverProfileId,
+        )
+    }
 }

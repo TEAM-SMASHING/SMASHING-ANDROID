@@ -12,19 +12,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.component.image.UrlImage
-import com.smashing.app.core.designsystem.mapper.icon
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -76,13 +72,6 @@ fun NoticeItem(
 
             Column {
                 Row {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(sportType.icon()),
-                        contentDescription = null,
-                        tint = SmashingTheme.colors.iconPrimary,
-                        modifier = Modifier.padding(end = 2.dp),
-                    )
-
                     Text(
                         text = title,
                         style = SmashingTheme.typography.md.semibold16,

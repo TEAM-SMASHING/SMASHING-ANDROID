@@ -21,7 +21,8 @@ enum class TierType(
     DIAMOND_3(14, "DM3", "Diamond III"),
     DIAMOND_2(15, "DM2", "Diamond II"),
     DIAMOND_1(16, "DM1", "Diamond I"),
-    CHALLENGER(17, "CH", "Challenger");
+    CHALLENGER(17, "CH", "Challenger"),
+    MAX(18, "MAX", "MAX");
 
     fun getNextTier(): TierType {
         val nextIndex = ordinal + 1

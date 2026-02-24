@@ -2,14 +2,12 @@ package com.smashing.app.presentation.matching
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,8 +17,10 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,6 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -49,6 +51,7 @@ import com.smashing.app.R.string.matching_send_empty
 import com.smashing.app.R.string.no
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.DialogStyle
@@ -71,14 +74,14 @@ fun MatchingRoute(
         opponentUserId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
+        submissionId: String?,
     ) -> Unit,
     navigateToConfirm: (
         submissionId: String,
         gameId: String,
-        opponentUserId: String,
-        opponentNickname: String,
         isFirstAttempt: Boolean,
     ) -> Unit,
+    navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
@@ -87,6 +90,7 @@ fun MatchingRoute(
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val showToast = LocalToastTrigger.current
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -97,17 +101,32 @@ fun MatchingRoute(
                         sideEffect.opponentUserId,
                         sideEffect.opponentNickname,
                         sideEffect.isFirstAttempt,
+                        sideEffect.submissionId,
                     )
 
                     is MatchingContract.SideEffect.NavigateToConfirm -> navigateToConfirm(
                         sideEffect.submissionId,
                         sideEffect.gameId,
-                        sideEffect.opponentUserId,
-                        sideEffect.opponentNickname,
                         sideEffect.isFirstAttempt,
                     )
+
+                    is MatchingContract.SideEffect.ShowToast -> {
+                        showToast.invoke(sideEffect.message)
+                    }
                 }
             }
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.refreshMatchingList()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     MatchingScreen(
@@ -116,7 +135,7 @@ fun MatchingRoute(
         onTabClick = viewModel::selectMatchingTab,
         onDialogDismissClick = viewModel::hideDialogVisible,
         onReceivedAcceptClick = viewModel::acceptReceivedMatching,
-        onProfileClick = { userId -> /* TODO: Navigate to profile */ },
+        onProfileClick = navigateToProfile,
         onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
         onReceivedSkipClick = viewModel::rejectReceivedMatching,
         onAcceptedMatchingClick = viewModel::handleAcceptedMatchingClick,
@@ -172,7 +191,6 @@ private fun MatchingScreen(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         SmashingDefaultTopBar(
             title = "매칭 관리",
             topBarType = TopBarType.DEFAULT,
@@ -186,9 +204,9 @@ private fun MatchingScreen(
         )
 
         Crossfade(
-            targetState = currentUiState,
+            targetState = uiState.selectedType to currentUiState,
             label = MATCHING_CONTENT_CROSSFADE,
-        ) { state ->
+        ) { (_, state) ->
             when (state) {
                 is MatchingUiState.Empty -> {
                     Column(
@@ -199,13 +217,14 @@ private fun MatchingScreen(
                     ) {
                         Spacer(Modifier.weight(171 / 252f))
 
-                        Image(
+                        Icon(
                             painter = painterResource(img_app_icon),
                             contentDescription = null,
+                            tint = Color.Unspecified,
                             modifier = Modifier
-                                .size(100.dp)
-                                .aspectRatio(1f)
-                                .padding(bottom = 16.dp),
+                                .padding(
+                                    bottom = 16.dp,
+                                ),
                         )
 
                         Text(
@@ -239,7 +258,9 @@ private fun MatchingScreen(
                     )
                 }
 
-                else -> {}
+                else -> {
+                    Box(modifier = Modifier.fillMaxSize())
+                }
             }
         }
 
@@ -306,15 +327,15 @@ private fun MatchingList(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         state = gridState,
-        contentPadding = PaddingValues(bottom = 12.dp),
+        contentPadding = PaddingValues(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
         verticalArrangement = Arrangement.spacedBy(space = 10.dp),
-        modifier = modifier,
+        modifier = modifier
     ) {
         when (uiState.selectedType) {
             MatchingType.RECEIVE -> items(
                 items = uiState.receivedList,
-                key = { it.matchingId }
+                key = { "${MatchingType.RECEIVE}_${it.matchingId}" }
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
@@ -339,7 +360,7 @@ private fun MatchingList(
 
             MatchingType.SEND -> items(
                 items = uiState.sentList,
-                key = { it.matchingId }
+                key = { "${MatchingType.SEND}_${it.matchingId}" }
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
@@ -363,7 +384,7 @@ private fun MatchingList(
 
             MatchingType.ACCEPTED -> items(
                 items = uiState.acceptedList,
-                key = { it.gameId }
+                key = { "${MatchingType.ACCEPTED}_${it.gameId}" }
             ) { matching ->
                 val isCanceled = matching.resultStatus == GameResultStatusType.CANCELED
 
@@ -410,7 +431,9 @@ private fun MatchingList(
 private fun MatchingScreenPreview() {
     SmashingAndroidTheme {
         MatchingScreen(
-            uiState = MatchingContract.State(),
+            uiState = MatchingContract.State(
+                receivedUiState = MatchingUiState.Empty,
+            ),
             onLoadMoreMatchingList = {},
             onTabClick = {},
             onDialogDismissClick = {},

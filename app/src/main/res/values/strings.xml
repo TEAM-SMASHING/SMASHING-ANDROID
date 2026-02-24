@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Smashing-Android</string>
     <!--Common  -->
     <string name="home">홈</string>
     <string name="matching_search">매칭 탐색</string>
@@ -24,7 +23,7 @@
     <string name="login_description_ing">계속된다</string>
 
     <!--Ranking -->
-    <string name="ranking_tier_with_lp">%1$s · %2$dLP</string>
+    <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
 
     <!--Card  -->
     <string name="record">기록</string>
@@ -64,8 +63,8 @@
     <string name="home_no_matching">아직 확정된 매칭이 없어요.\n지금 바로 매칭을 신청해보세요!</string>
     <string name="home_all_text">모두 보기</string>
     <string name="home_region_ranker">우리 동네 랭커</string>
-    <string name="home_no_user">아직 동네 유저가 없습니다.</string>
-    <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요.</string>
+    <string name="home_no_user">아직 동네 유저가 없어요</string>
+    <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요</string>
 
 
     <!-- ========== Badminton Tier Info ========== -->
@@ -73,8 +72,8 @@
     <string name="tier_badminton_iron_percent">상위 100%</string>
 
     <!-- Skills: Badminton - Iron -->
-    <string name="skill_badminton_iron_name">클리어</string>
-    <string name="skill_badminton_iron_description">코트 뒤쪽으로 높고 길게 보내 상대를 뒤로 밀어내는 기본 스트로크</string>
+    <string name="skill_badminton_iron_name">누구나 처음은 그렇습니다...</string>
+    <string name="skill_badminton_iron_description">가능성을 찾으러 가볼까요?</string>
 
 
     <!-- Tier Info: Badminton - Bronze -->
@@ -147,8 +146,8 @@
     <string name="tier_pingpong_iron_percent">상위 100%</string>
 
     <!-- Skills: Ping Pong - Iron -->
-    <string name="skill_pingpong_iron_name">당신은 가공되지 않은 원석입니다.</string>
-    <string name="skill_pingpong_iron_description">지금 바로 상대를 찾아 승급에 도전해 보세요!</string>
+    <string name="skill_pingpong_iron_name">누구나 처음은 그렇습니다...</string>
+    <string name="skill_pingpong_iron_description">가능성을 찾으러 가볼까요?</string>
 
     <!-- Tier Info: Ping Pong - Bronze -->
     <string name="tier_pingpong_bronze_percent">상위 80%</string>
@@ -220,8 +219,8 @@
     <string name="tier_tennis_iron_percent">상위 100%</string>
 
     <!-- Skills: Tennis - Iron -->
-    <string name="skill_tennis_iron_name">포핸드 스트로크</string>
-    <string name="skill_tennis_iron_description">기본 자세로 공을 넘기며 랠리를 이어갈 수 있는 수준</string>
+    <string name="skill_tennis_iron_name">누구나 처음은 그렇습니다...</string>
+    <string name="skill_tennis_iron_description">가능성을 찾으러 가볼까요?</string>
 
     <!-- Tier Info: Tennis - Bronze -->
     <string name="tier_tennis_bronze_percent">상위 60%</string>
@@ -290,8 +289,8 @@
     <!-- ========== Common ========== -->
 
     <!-- Challenger Special Message -->
-    <string name="tier_challenger_name">당신은 시련 끝에 완성된 보석입니다.</string>
-    <string name="tier_challenger_description">끊임없이 덤비는 원석들로부터 당신의 왕좌를 지켜내세요!</string>
+    <string name="tier_challenger_name">결국 해내셨군요!</string>
+    <string name="tier_challenger_description">끊임없이 덤비는 도전자들로부터 자격을 증명하세요!</string>
 
 
     <!--Matching -->
@@ -301,17 +300,17 @@
     <string name="matching_btn_waiting_confirm">결과 확인 대기 중</string>
     <string name="matching_btn_canceled">매칭 취소 대기 중</string>
     <string name="matching_btn_unknown">unknown</string>
-    <string name="matching_receive">받은 요청</string>
+    <string name="matching_receive">받은 매칭</string>
     <string name="matching_receive_empty">받은 요청이 없어요</string>
-    <string name="matching_send">보낸 요청</string>
+    <string name="matching_send">보낸 매칭</string>
     <string name="matching_send_empty">보낸 요청이 없어요</string>
     <string name="matching_confirm">매칭 확정</string>
     <string name="matching_confirm_empty">확정된 매칭이 없어요</string>
     <string name="matching_empty_description">직접 경쟁을 신청해보세요!</string>
     <string name="matching_send_dialog_title">요청을 취소하시겠습니까?</string>
     <string name="matching_send_dialog_description">요청 취소 시 24시간 후 재요청할 수 있습니다.</string>
-    <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠어요?</string>
-    <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료돼요.</string>
+    <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠습니까?</string>
+    <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료됩니다.</string>
     <!--Search  -->
     <string name="search_placeholder">닉네임을 검색해주세요</string>
     <!--Profile -->
@@ -336,7 +335,7 @@
     <string name="satisfaction_review">만족도</string>
     <string name="profile_rate_percent">%d%%</string>
     <!--Submit  -->
-    <string name="submit_matching_result">매칭 결과 작성</string>
+    <string name="submit_matching_result">결과 작성</string>
     <string name="submit_title">경기 결과를 작성해주세요</string>
     <string name="submit_description">악의적인 결과 작성 시 활동이 제한될 수 있어요</string>
     <string name="submit_winner">승자</string>

@@ -3,6 +3,7 @@ package com.smashing.app.presentation.search.searchmain
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,12 +30,14 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.search.SearchContract
+import com.smashing.app.presentation.search.SearchUiState
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
 import com.smashing.app.presentation.search.searchmain.component.MatchingSearchFilterChip
 import com.smashing.app.presentation.search.searchmain.component.SearchTopBar
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.DEFAULT
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
+
 
 @Composable
 fun SearchMainRoute(
@@ -47,18 +50,19 @@ fun SearchMainRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.searchList) {
-        viewModel.fetchRegionUsersList(isRefresh = true)
+    LaunchedEffect(Unit) {
+        viewModel.updateSelectedRegion()
     }
 
     SearchMainScreen(
         uiState = uiState,
         onLoadMoreSearchList = viewModel::fetchRegionUsersList,
         onRegionSelectClick = navigateToRegionChange,
-        onRegionDropdownClick = viewModel::updateSelectedRegion,
+        onRegionDropdownClick = { },
         onSearchClick = navigateToSearchInput,
         onProfileClick = { userId ->
-            navigateToUserProfile(userId) },
+            navigateToUserProfile(userId)
+        },
         onTierItemClick = viewModel::updateSelectedTierItem,
         onGenderItemClick = viewModel::updateSelectedGenderItem,
         onTierBottomSheetOpen = viewModel::openTierBottomSheet,
@@ -97,16 +101,22 @@ private fun SearchMainScreen(
 
     val listState = rememberLazyGridState()
 
-    LaunchedEffect(uiState.searchList) {
-        listState.scrollToItem(0)
-    }
+    //Todo: 스크롤 수정
+//    var isFirstLoad by remember { mutableStateOf(true) }
+//
+//    LaunchedEffect(uiState.searchList) {
+//        if (isFirstLoad && uiState.searchList.isNotEmpty()) {
+//            listState.scrollToItem(0)
+//            isFirstLoad = false
+//        }
+//    }
 
-    val currentIsLoading = uiState.searchRegionUsersUiState is SearchContract.SearchUiState.Loading
+    val currentIsLoading = uiState.searchRegionUsersUiState is SearchUiState.Loading
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .systemBarsPadding(),
+            .background(color = colors.bgCanvas)
     ) {
 
         SearchTopBar(
@@ -163,43 +173,58 @@ private fun SearchMainScreen(
             )
         }
 
-        if(uiState.searchList.isNotEmpty()) {
-            listState.onBottomReached(
-                threshold = 3,
-                onLoadMore = onLoadMoreSearchList,
-                isLoading = currentIsLoading,
-            )
+        when (uiState.searchRegionUsersUiState) {
+            SearchUiState.Idle -> Unit
+            SearchUiState.Empty -> {
+                SearchEmpty(
+                    title = "해당 조건에 맞는 유저가 없어요",
+                    subTitle = "적용된 필터를 변경해보세요",
+                )
+            }
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = modifier
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
-                state = listState,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                items(
-                    items = uiState.searchList,
+            SearchUiState.Loading -> Unit
+            SearchUiState.Success -> {
+                listState.onBottomReached(
+                    threshold = 3,
+                    onLoadMore = onLoadMoreSearchList,
+                    isLoading = currentIsLoading,
+                )
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .padding(horizontal = 16.dp),
+                    state = listState,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(bottom = 20.dp)
                 ) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Search(
-                            userId = it.userId,
-                            nickname = it.nickname,
-                            genderType = it.gender,
-                            tierType = it.tierType,
-                            onProfileClick = { onProfileClick(it.userId) },
-                            winCount = it.wins,
-                            loseCount = it.losses,
-                            reviewCount = it.reviews,
+                    items(
+                        items = uiState.searchList,
+                    ) {
+                        MatchingCard(
+                            cardState = MatchingCardState.Search(
+                                userId = it.userId,
+                                nickname = it.nickname,
+                                genderType = it.gender,
+                                tierType = it.tierType,
+                                onProfileClick = { onProfileClick(it.userId) },
+                                winCount = it.wins,
+                                loseCount = it.losses,
+                                reviewCount = it.reviews,
+                            )
                         )
-                    )
+                    }
                 }
             }
-        } else {
-            SearchEmpty(
-                title = "해당 조건에 맞는 유저가 없어요",
-                subTitle = "적용된 필터를 변경해보세요",
-            )
+
+            else -> {
+                SearchEmpty(
+                    title = "해당 조건에 맞는 유저가 없어요",
+                    subTitle = "적용된 필터를 변경해보세요",
+                )
+            }
         }
     }
 }
