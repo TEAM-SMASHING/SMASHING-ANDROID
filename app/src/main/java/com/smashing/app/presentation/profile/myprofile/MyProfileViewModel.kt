@@ -2,10 +2,16 @@ package com.smashing.app.presentation.profile.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.model.profile.ProfileInfo
+import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.ReviewRepository
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +26,26 @@ class MyProfileViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository
 
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(State())
+    private val _uiState = MutableStateFlow(
+        State(
+            myProfileInfo = MyProfileInfo(
+                nickname = "",
+                genderType = GenderType.MALE,
+                reviewCount = 0L,
+                myProfileInfo = ProfileInfo(
+                    profileId = "",
+                    sportType = SportType.PING_PONG,
+                    tierType = TierType.IRON,
+                    lp = 0,
+                    minLp = 0,
+                    maxLp = 1,
+                    winCount = 0,
+                    loseCount = 0,
+                ),
+                myProfileItem = persistentListOf()
+            ),
+        )
+    )
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
     fun fetchProfileInfo() {

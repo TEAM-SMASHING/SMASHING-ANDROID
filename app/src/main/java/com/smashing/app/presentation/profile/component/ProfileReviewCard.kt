@@ -32,7 +32,12 @@ import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.data.model.profile.ProfileInfo
+import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.review.GameReview
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -137,7 +142,24 @@ fun ReviewCard(
 @Composable
 private fun ProfileReviewCardPreview() {
     SmashingAndroidTheme {
-        val state = MyProfileContract.State()
+        val state = MyProfileContract.State(
+            myProfileInfo = MyProfileInfo(
+                nickname = "",
+                genderType = GenderType.MALE,
+                reviewCount = 0L,
+                myProfileInfo = ProfileInfo(
+                    profileId = "",
+                    sportType = SportType.PING_PONG,
+                    tierType = TierType.IRON,
+                    lp = 0,
+                    minLp = 0,
+                    maxLp = 1,
+                    winCount = 0,
+                    loseCount = 0,
+                ),
+                myProfileItem = persistentListOf()
+            ),
+        )
         Box(modifier = Modifier.padding(16.dp)) {
             ReviewCard(
                 reviews = persistentListOf(),
