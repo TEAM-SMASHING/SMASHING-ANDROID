@@ -49,6 +49,14 @@ class AllReviewViewModel @Inject constructor(
         }
     }
 
+    fun loadMoreReviewList() {
+        if (userId == null && isUser) {
+            fetchMyProfileReviewList(isInit = false)
+        } else {
+            fetchUserProfileReviewList(isRefresh = false)
+        }
+    }
+
     fun fetchUserProfileReviewList(isRefresh: Boolean = false) = viewModelScope.launch {
 
         val currentState = _uiState.value
