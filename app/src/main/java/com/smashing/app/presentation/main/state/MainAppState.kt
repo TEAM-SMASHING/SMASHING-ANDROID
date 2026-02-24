@@ -7,8 +7,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.smashing.app.core.extension.stateInWhileSubscribed
-import com.smashing.app.core.extension.tabNavigationOptions
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.main.component.MainTab
@@ -69,7 +69,16 @@ class MainAppState(
     )
 
     fun navigate(tab: MainTab) {
-        val navOptions = tabNavigationOptions()
+        val navOptions = navOptions {
+            navController.currentDestination?.route?.let { route ->
+                popUpTo(route) {
+                    saveState = true
+                    inclusive = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
 
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
