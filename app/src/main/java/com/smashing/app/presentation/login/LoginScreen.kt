@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +26,8 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.login.LoginContract.SideEffect.NavigateToSignUp
 import com.smashing.app.presentation.login.component.KakaoLoginButton
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 private const val LOGO_RATIO = 261 / 112f
@@ -38,6 +41,7 @@ fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
+    val scope = rememberCoroutineScope()
 
     val context = LocalContext.current
 
@@ -50,11 +54,19 @@ fun LoginRoute(
                 }
             }
     }
+
     LoginScreen(
         onKakaoLoginClick = {
-            viewModel.postKakaoLogin(
-                context = context,
-            )
+            scope.launch {
+                KakaoLoginManager().loginKakao(context = context)
+                    .onSuccess { token ->
+                        Timber.tag("KakaoLogin").i("카카오톡 로그인 성공 $token")
+                        viewModel.postKakaoLogin(token)
+                    }
+                    .onFailure { error ->
+                        Timber.tag("KakaoLogin").e("카카오 토큰 반환 실패 : $error")
+                    }
+            }
         },
         modifier = modifier,
     )

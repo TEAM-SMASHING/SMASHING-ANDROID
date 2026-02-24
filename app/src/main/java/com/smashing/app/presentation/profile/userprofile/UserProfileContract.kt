@@ -20,7 +20,6 @@ class UserProfileContract {
         val gameReviewResult: GameReviewResult = GameReviewResult(),
         val userId: String = "",
         val isMatchingRequest: Boolean = true,
-        val userProfileUiState: UserProfileUiState = UserProfileUiState.Idle,
         val userProfileCursor: Cursor = Cursor(),
         val isDialogVisible: Boolean = false,
     ) {
@@ -43,18 +42,17 @@ class UserProfileContract {
             get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
     }
 
-
-    sealed interface UserProfileUiState {
-        data object Idle : UserProfileUiState
-        data object Loading : UserProfileUiState
-        data object Success : UserProfileUiState
-        data class Failure(
-            val msg: String,
-        ) : UserProfileUiState
-    }
-
     sealed interface SideEffect {
         data class NavigateToAllReview(val userId: String?) : SideEffect
         data class ShowToast(val content: String) : SideEffect
     }
+}
+
+sealed interface UserProfileUiState {
+    data object Idle : UserProfileUiState
+    data object Loading : UserProfileUiState
+    data object Success : UserProfileUiState
+    data class Failure(
+        val msg: String,
+    ) : UserProfileUiState
 }

@@ -15,7 +15,6 @@ import com.smashing.app.data.type.SportType
 import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
-import com.smashing.app.presentation.profile.userprofile.UserProfileContract.UserProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -139,7 +138,7 @@ class UserProfileViewModel @Inject constructor(
 
     fun fetchUserProfileReview() = viewModelScope.launch {
 
-        _uiState.update { it.copy(userProfileUiState = UserProfileUiState.Loading) }
+        _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
 
         reviewRepository.getUserRecentReviewList(
             userId = userId,
@@ -151,7 +150,7 @@ class UserProfileViewModel @Inject constructor(
                 state.copy(
                     gameReview = cursorPage.items.toImmutableList(),
                     userProfileCursor = cursorPage.cursor,
-                    userProfileUiState = if (cursorPage.items.isEmpty()) {
+                    loadState = if (cursorPage.items.isEmpty()) {
                         UserProfileUiState.Idle
                     } else {
                         UserProfileUiState.Success
@@ -161,7 +160,7 @@ class UserProfileViewModel @Inject constructor(
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    userProfileUiState = UserProfileUiState.Failure(
+                    loadState = UserProfileUiState.Failure(
                         throwable.message ?: "Unknown error",
                     )
                 )
