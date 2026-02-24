@@ -14,7 +14,7 @@ class UserProfileContract {
     @Immutable
     data class State(
         val loadState: UserProfileUiState = UserProfileUiState.Idle,
-        val userProfileInfo: UserProfileInfo,
+        val userProfileInfo: UserProfileInfo = UserProfileInfo(),
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),

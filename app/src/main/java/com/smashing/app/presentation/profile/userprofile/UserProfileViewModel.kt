@@ -4,19 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.user.UserProfileInfo
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.navigation.UserProfile
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,27 +35,7 @@ class UserProfileViewModel @Inject constructor(
     private val userId = userInfo.userId
     private val sportCode = userInfo.sportCode
 
-    private val _uiState = MutableStateFlow(UserProfileContract.State(
-        userProfileInfo = UserProfileInfo(
-                nickname = "",
-                genderType = GenderType.MALE,
-                userProfileInfo = ProfileInfo(
-                    profileId = "",
-                    sportType = SportType.PING_PONG,
-                    tierType = TierType.GOLD_1,
-                    lp = 0,
-                    minLp = 0,
-                    maxLp = 1,
-                    winCount = 0,
-                    loseCount = 0,
-                ),
-                reviewCount = 0L,
-                isChallengeable = false,
-                isAcceptable = false,
-                receivedMatchingId = null,
-                userProfileItem = persistentListOf(),
-            ),
-        )
+    private val _uiState = MutableStateFlow(UserProfileContract.State()
     )
     val uiState: StateFlow<UserProfileContract.State> = _uiState.asStateFlow()
 
