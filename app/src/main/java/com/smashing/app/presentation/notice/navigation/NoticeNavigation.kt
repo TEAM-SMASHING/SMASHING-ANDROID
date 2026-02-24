@@ -5,7 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.presentation.matching.type.MatchingType
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
+import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.NoticeRoute
 import kotlinx.serialization.Serializable
 
@@ -15,15 +17,18 @@ fun NavController.navigateToNotice(
 ) = navigate(Notice(profileId = profileId), navOptions)
 
 fun NavGraphBuilder.noticeGraph(
-    navigateUp: () -> Unit,
-    navigateToMatching: (MatchingType) -> Unit,
-    navigateToConfirmReview: (String) -> Unit,
+    navController: NavController,
 ) {
-    composable<Notice> { backStackEntry ->
+    composable<Notice> {
         NoticeRoute(
-            navigateUp = navigateUp,
-            navigateToMatching = navigateToMatching,
-            navigateToConfirmReview = navigateToConfirmReview,
+            navigateUp = navController::navigateUp,
+            navigateToMatching = { initialTab ->
+                navController.navigateToMatching(
+                    initTab = initialTab,
+                    navOptions = clearBackStackWithRestoreNavOptions(),
+                )
+            },
+            navigateToConfirmReview = navController::navigateToConfirmReview,
         )
     }
 }
