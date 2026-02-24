@@ -8,9 +8,9 @@ data class UserProfileInfo(
     val nickname: String,
     val genderType: GenderType,
     val userProfileInfo: ProfileInfo,
-    val reviewCount:Long,
+    val reviewCount: Long,
     val isChallengeable: Boolean,
     val isAcceptable: Boolean,
-    val receivedMatchingId:	String?,
-    val userProfileItem: List<ProfileItem>,
+    val receivedMatchingId: String?,
+    val userProfileItem: List<ProfileItem>
 )

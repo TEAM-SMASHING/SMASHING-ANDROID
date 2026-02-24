@@ -42,7 +42,12 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.data.model.profile.ProfileInfo
+import com.smashing.app.data.model.profile.user.UserProfileInfo
 import com.smashing.app.data.model.review.GameReview
+import com.smashing.app.data.type.GenderType
+import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.component.ProfileStatsBar
 import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
@@ -73,7 +78,7 @@ fun UserProfileRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToAllReview -> navigateToReview(sideEffect.userId)
-                    is ShowToast ->  show.invoke(sideEffect.content)
+                    is ShowToast -> show.invoke(sideEffect.content)
                 }
             }
     }
@@ -232,7 +237,27 @@ private fun UserProfileScreen(
 private fun ProfileScreenPreview() {
     SmashingAndroidTheme {
         UserProfileScreen(
-            uiState = UserProfileContract.State(),
+            uiState = UserProfileContract.State(
+                userProfileInfo = UserProfileInfo(
+                    nickname = "",
+                    genderType = GenderType.MALE,
+                    userProfileInfo = ProfileInfo(
+                        profileId = "",
+                        sportType = SportType.PING_PONG,
+                        tierType = TierType.GOLD_1,
+                        lp = 0,
+                        minLp = 0,
+                        maxLp = 1,
+                        winCount = 0,
+                        loseCount = 0,
+                    ),
+                    reviewCount = 0L,
+                    isChallengeable = false,
+                    isAcceptable = false,
+                    receivedMatchingId = null,
+                    userProfileItem = persistentListOf(),
+                ),
+            ),
             reviews = persistentListOf(),
             onReviewClick = {},
             onNoClick = {},
