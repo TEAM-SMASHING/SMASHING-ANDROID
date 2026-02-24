@@ -16,25 +16,31 @@ import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMatching(
-    initTab: MatchingType = MatchingType.RECEIVE,
+    initTab: MatchingType? = null,
     navOptions: NavOptions? = null,
-) = navigate(Matching(initTab = initTab), navOptions)
+) {
+    navigate(Matching, navOptions)
+    setMatchingArgs(initTab)
+}
 
 fun NavGraphBuilder.matchingGraph(
     navController: NavController,
     innerPadding: PaddingValues,
 ) {
-    composable<Matching> {
+    composable<Matching> { backStackEntry ->
+        val savedStateHandle = backStackEntry.savedStateHandle
+
         MatchingRoute(
             navigateToSubmit = navController::navigateToSubmit,
             navigateToConfirm = navController::navigateToConfirm,
             navigateToProfile = navController::navigateToUserProfile,
-            modifier = Modifier.padding(innerPadding)
+            savedInitTab = savedStateHandle.getMatchingArgs(),
+            setSavedInitTab = navController::setMatchingArgs,
+            removeSavedInitTab = savedStateHandle::removeMatchingArgs,
+            modifier = Modifier.padding(innerPadding),
         )
     }
 }
 
 @Serializable
-data class Matching(
-    val initTab: MatchingType = MatchingType.RECEIVE,
-) : MainTabRoute
+data object Matching : MainTabRoute
