@@ -14,7 +14,7 @@ interface MyProfileContract {
     data class State(
         val profileLoadState: MyProfileUiState = MyProfileUiState.Idle,
         val reviewLoadState: MyProfileUiState = MyProfileUiState.Idle,
-        val myProfileInfo: MyProfileInfo = ProfileInfo(),
+        val myProfileInfo: MyProfileInfo = MyProfileInfo(),
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
