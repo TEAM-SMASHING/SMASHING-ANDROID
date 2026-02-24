@@ -32,12 +32,7 @@ import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.data.model.profile.ProfileInfo
-import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.review.GameReview
-import com.smashing.app.data.type.GenderType
-import com.smashing.app.data.type.SportType
-import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.profile.myprofile.MyProfileContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
