@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class LocalTokenDataSourceImpl @Inject constructor(
-    @TokenDataStore private val dataStore: DataStore<Preferences>,
+    @param:TokenDataStore private val dataStore: DataStore<Preferences>,
     private val crypto: CryptoInterface,
 ) : LocalTokenDataSource {
 
