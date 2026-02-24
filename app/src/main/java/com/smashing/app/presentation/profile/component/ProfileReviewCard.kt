@@ -142,24 +142,7 @@ fun ReviewCard(
 @Composable
 private fun ProfileReviewCardPreview() {
     SmashingAndroidTheme {
-        val state = MyProfileContract.State(
-            myProfileInfo = MyProfileInfo(
-                nickname = "",
-                genderType = GenderType.MALE,
-                reviewCount = 0L,
-                myProfileInfo = ProfileInfo(
-                    profileId = "",
-                    sportType = SportType.PING_PONG,
-                    tierType = TierType.IRON,
-                    lp = 0,
-                    minLp = 0,
-                    maxLp = 1,
-                    winCount = 0,
-                    loseCount = 0,
-                ),
-                myProfileItem = persistentListOf()
-            ),
-        )
+        val state = MyProfileContract.State()
         Box(modifier = Modifier.padding(16.dp)) {
             ReviewCard(
                 reviews = persistentListOf(),
