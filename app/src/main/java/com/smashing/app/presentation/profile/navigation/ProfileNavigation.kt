@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.core.extension.tabNavigationOptions
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
@@ -48,7 +48,7 @@ fun NavGraphBuilder.profileGraph(
         composable<MyProfile> {
             MyProfileRoute(
                 navigateToSportAdd = navController::navigateToAddSports,
-                navigateToReview = { userId -> navController.navigateToReview(userId = userId) },
+                navigateToReview = navController::navigateToReview,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(
                         tierName = tierInfoStyle.name,
@@ -61,14 +61,12 @@ fun NavGraphBuilder.profileGraph(
 
         composable<UserProfile> {
             UserProfileRoute(
-                navigateToReview = { userId ->
-                    navController.navigateToReview(userId = userId)
-                },
+                navigateToReview = navController::navigateToReview,
                 navigateUp = navController::navigateUp,
                 navigateToSentMatching = {
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,
-                        navOptions = navController.tabNavigationOptions(),
+                        navOptions = clearBackStackWithRestoreNavOptions(),
                     )
                 }
             )
