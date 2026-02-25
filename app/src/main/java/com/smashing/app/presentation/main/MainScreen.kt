@@ -220,7 +220,6 @@ private fun MainNavHost(
         )
 
         rankingGraph(
-            innerPadding = innerPadding,
             navController = appState.navController,
         )
 
