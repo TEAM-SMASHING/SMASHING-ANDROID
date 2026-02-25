@@ -9,7 +9,7 @@ import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
