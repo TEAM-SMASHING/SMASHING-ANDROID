@@ -1,13 +1,11 @@
 package com.smashing.app.presentation.ranking.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.navOptions
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
 import com.smashing.app.presentation.ranking.RankingRoute
@@ -19,22 +17,14 @@ fun NavController.navigateToRanking(
 
 fun NavGraphBuilder.rankingGraph(
     navController: NavController,
-    innerPadding: PaddingValues,
 ) {
     composable<RankingPage> {
         RankingRoute(
-            modifier = Modifier,
             navigateUp = navController::navigateUp,
-            navigateToProfile = { userId ->
-                navController.navigateToUserProfile(userId = userId)
-            },
+            navigateToProfile = navController::navigateToUserProfile,
             navigateToMyProfile = {
                 navController.navigateToMyProfile(
-                    navOptions = navOptions {
-                        popUpTo(RankingPage) {
-                            inclusive = true
-                        }
-                    }
+                    navOptions = clearBackStackWithRestoreNavOptions(),
                 )
             },
         )
