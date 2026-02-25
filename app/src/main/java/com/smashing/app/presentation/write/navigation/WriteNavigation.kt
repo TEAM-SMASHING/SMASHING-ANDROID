@@ -8,7 +8,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.core.extension.clearBackStackNavOptions
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.core.extension.sharedViewModel
+import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.write.confirm.ConfirmResultRoute
 import com.smashing.app.presentation.write.confirm.ConfirmReviewRoute
@@ -59,9 +62,7 @@ fun NavController.navigateToConfirmReview(
     navOptions: NavOptions? = null,
 ) = navigate(ConfirmReview, navOptions)
 
-
 fun NavGraphBuilder.writeGraph(
-    navigateToMatching: (initTab: MatchingType) -> Unit,
     navController: NavHostController,
 ) {
     navigation<Submit>(
@@ -73,7 +74,12 @@ fun NavGraphBuilder.writeGraph(
             SubmitResultRoute(
                 navigateUp = navController::navigateUp,
                 navigateToSubmitReview = navController::navigateToSubmitReview,
-                navigateToMatching = { navigateToMatching(MatchingType.ACCEPTED) },
+                navigateToMatching = {
+                    navController.navigateToMatching(
+                        initTab = MatchingType.ACCEPTED,
+                        navOptions = clearBackStackWithRestoreNavOptions()
+                    )
+                },
                 viewModel = viewModel,
             )
         }
@@ -83,7 +89,12 @@ fun NavGraphBuilder.writeGraph(
 
             SubmitReviewRoute(
                 navigateUp = navController::navigateUp,
-                navigateToMatching = { navigateToMatching(MatchingType.ACCEPTED) },
+                navigateToMatching = {
+                    navController.navigateToMatching(
+                        initTab = MatchingType.ACCEPTED,
+                        navOptions = clearBackStackWithRestoreNavOptions()
+                    )
+                },
                 viewModel = viewModel,
             )
         }
