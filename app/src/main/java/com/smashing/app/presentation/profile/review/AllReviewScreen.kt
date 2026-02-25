@@ -71,7 +71,7 @@ fun AllReviewRoute(
         modifier = modifier,
         uiState = uiState,
         reviews = uiState.gameReview,
-        onLoadMoreReviewList = { viewModel.fetchReviews(isInit = false) },
+        onLoadMoreReviewList = { viewModel.fetchMyProfileReviewList(isInit = false) },
         onBackClick = navigateUp,
     )
 }
@@ -86,7 +86,7 @@ private fun AllReviewScreen(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    val currentIsLoading = uiState.reviewUiState is ReviewContract.ReviewUiState.Loading
+    val currentIsLoading = uiState.loadState is ReviewUiState.Loading
 
     val hasShortReview = uiState.gameReviewResult.run {
         onTimeCount > 0 || goodMannerCount > 0 || fairPlayCount > 0 || fastResponseCount > 0
@@ -301,7 +301,7 @@ private fun PreviewNoTextReview() {
 
         val mockState = ReviewContract.State(
             gameReviewResult = mockResult,
-            reviewUiState = ReviewContract.ReviewUiState.Success,
+            loadState = ReviewUiState.Success,
         )
 
         AllReviewScreen(
@@ -329,12 +329,12 @@ private fun PreviewNoFastAndTextReview() {
 
         val mockState = ReviewContract.State(
             gameReviewResult = mockResult,
-            reviewUiState = ReviewContract.ReviewUiState.Success,
+            loadState = ReviewUiState.Success,
         )
 
         AllReviewScreen(
             uiState = mockState,
-            reviews = persistentListOf(), 
+            reviews = persistentListOf(),
             onLoadMoreReviewList = {},
             onBackClick = {}
         )
@@ -346,7 +346,7 @@ private fun PreviewNoFastAndTextReview() {
 private fun PreviewAllEmpty() {
     SmashingAndroidTheme {
         val mockState = ReviewContract.State(
-            reviewUiState = ReviewContract.ReviewUiState.Success,
+            loadState = ReviewUiState.Success,
         )
 
         AllReviewScreen(

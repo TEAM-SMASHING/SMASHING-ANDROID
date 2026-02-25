@@ -1,6 +1,5 @@
 package com.smashing.app.data.repository.impl
 
-import android.content.Context
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import com.smashing.app.data.local.datasource.api.LocalUserDataSource
@@ -13,7 +12,6 @@ import com.smashing.app.data.model.auth.SignUpModel
 import com.smashing.app.data.model.auth.SignUpNickNameAvailableModel
 import com.smashing.app.data.model.auth.SignUpOpenchatValidModel
 import com.smashing.app.data.remote.datasource.api.AuthRemoteDataSource
-import com.smashing.app.data.remote.datasource.api.KakaoAuthDataSource
 import com.smashing.app.data.remote.dto.auth.PostKakaoLoginRequest
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
@@ -23,13 +21,9 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource,
-    private val kakaoAuthDataSource: KakaoAuthDataSource,
     private val tokenDataStore: LocalTokenDataSource,
     private val userDataStore: LocalUserDataSource,
 ) : AuthRepository {
-
-    override suspend fun loginKakao(context: Context): Result<String> =
-        kakaoAuthDataSource.loginKakao(context)
 
     override suspend fun postKakaoLogin(authorization: String): Result<KakaoLoginModel> =
         suspendRunCatching {

@@ -49,7 +49,7 @@ fun MyProfileRoute(
 
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
-        viewModel.fetchReviews()
+        viewModel.fetchMyProfileReviewList()
         viewModel.fetchMyRecentReviewStats()
 
     }

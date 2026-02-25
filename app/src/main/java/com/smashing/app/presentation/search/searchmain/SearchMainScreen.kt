@@ -29,6 +29,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.presentation.search.SearchContract
+import com.smashing.app.presentation.search.SearchUiState
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
 import com.smashing.app.presentation.search.searchmain.component.MatchingSearchFilterChip
@@ -109,7 +110,7 @@ private fun SearchMainScreen(
 //        }
 //    }
 
-    val currentIsLoading = uiState.searchRegionUsersUiState is SearchContract.SearchUiState.Loading
+    val currentIsLoading = uiState.searchRegionUsersUiState is SearchUiState.Loading
 
     Column(
         modifier = modifier
@@ -172,16 +173,16 @@ private fun SearchMainScreen(
         }
 
         when (uiState.searchRegionUsersUiState) {
-            SearchContract.SearchUiState.Idle -> Unit
-            SearchContract.SearchUiState.Empty -> {
+            SearchUiState.Idle -> Unit
+            SearchUiState.Empty -> {
                 SearchEmpty(
                     title = "해당 조건에 맞는 유저가 없어요",
                     subTitle = "적용된 필터를 변경해보세요",
                 )
             }
 
-            SearchContract.SearchUiState.Loading -> Unit
-            SearchContract.SearchUiState.Success -> {
+            SearchUiState.Loading -> Unit
+            SearchUiState.Success -> {
                 listState.onBottomReached(
                     threshold = 3,
                     onLoadMore = onLoadMoreSearchList,

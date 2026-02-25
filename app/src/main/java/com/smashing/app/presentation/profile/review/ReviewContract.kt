@@ -16,20 +16,19 @@ class ReviewContract {
         val userId: String = "",
         val isMatchingRequest: Boolean = true,
         val isCompeteButtonEnabled: Boolean = false,
-        val reviewUiState: ReviewUiState = ReviewUiState.Idle,
         val reviewCursor: Cursor = Cursor(),
     ) {
         val isReviewEmpty: Boolean
             get() = gameReview.isEmpty() && gameReviewResult.isStatsEmpty
     }
 
+}
 
-    sealed interface ReviewUiState {
-        data object Idle : ReviewUiState
-        data object Loading : ReviewUiState
-        data object Success : ReviewUiState
-        data class Failure(
-            val msg: String,
-        ) : ReviewUiState
-    }
+sealed interface ReviewUiState {
+    data object Idle : ReviewUiState
+    data object Loading : ReviewUiState
+    data object Success : ReviewUiState
+    data class Failure(
+        val msg: String,
+    ) : ReviewUiState
 }
