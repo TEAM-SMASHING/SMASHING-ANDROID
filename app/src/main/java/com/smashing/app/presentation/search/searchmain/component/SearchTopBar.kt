@@ -20,7 +20,6 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.noRippleClickable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SearchTopBar(
@@ -41,12 +40,10 @@ fun SearchTopBar(
 
         RegionDropdown(
             selectedItem = selectedRegion,
-            items = listOf(
-                selectedRegion
-            ).toImmutableList(),
+            items = regionItems,
             onClick = onRegionDropdownClick,
             onRegionChange = onRegionSelectClick,
-            isDivide = true,
+            isDivide = false,
             modifier = Modifier
                 .padding(vertical = 12.dp),
         )
