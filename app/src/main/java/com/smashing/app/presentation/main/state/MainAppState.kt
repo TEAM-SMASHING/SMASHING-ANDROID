@@ -69,15 +69,14 @@ class MainAppState(
     )
 
     fun navigate(tab: MainTab) {
+        if (currentTab.value == tab) return
+
         val navOptions = navOptions {
-            navController.currentDestination?.route?.let { route ->
-                popUpTo(route) {
-                    saveState = true
-                    inclusive = true
-                }
-                launchSingleTop = true
-                restoreState = true
+            popUpTo(navController.graph.id) {
+                saveState = true
             }
+            launchSingleTop = true
+            restoreState = true
         }
 
         when (tab) {
