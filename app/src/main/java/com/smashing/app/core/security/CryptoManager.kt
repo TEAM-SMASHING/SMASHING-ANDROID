@@ -31,9 +31,8 @@ class CryptoManager @Inject constructor(): CryptoInterface {
     }
 
     override suspend fun decrypt(encryptedData: ByteArray, iv: ByteArray): String {
-        if (encryptedData.isEmpty() && iv.isEmpty()){
-            return ""
-        }
+        if (encryptedData.isEmpty() || iv.isEmpty()) return ""
+
         val secretKey = getOrCreateSecretKey()
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val spec = GCMParameterSpec(128, iv)
