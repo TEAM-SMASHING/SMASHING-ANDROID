@@ -2,9 +2,6 @@ package com.smashing.app.presentation.home
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.matching.AcceptedMatching
-import com.smashing.app.data.model.profile.user.UserProfileInfo
-import com.smashing.app.data.model.profile.ProfileItem
-import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.profile.home.MyProfileTierInfo
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.model.search.SearchMainItemModel
