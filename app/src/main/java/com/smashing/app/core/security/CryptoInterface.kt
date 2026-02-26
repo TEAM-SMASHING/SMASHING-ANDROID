@@ -20,9 +20,14 @@ data class EncryptedResult(
 
         return true
     }
+    
     override fun hashCode(): Int {
         var result = ciphertext.contentHashCode()
-        result = 31 * result + iv.contentHashCode()
+        result = HASH_SIZE * result + iv.contentHashCode()
         return result
+    }
+
+    companion object {
+        private const val HASH_SIZE = 31
     }
 }
