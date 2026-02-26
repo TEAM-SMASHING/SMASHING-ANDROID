@@ -62,6 +62,6 @@ class CryptoManager @Inject constructor(): CryptoInterface {
         private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
         private const val TRANSFORMATION = "AES/GCM/NoPadding"
         private const val GCM_TAG_LENGTH = 128
-        private const val DELIMITER = " "
+        private const val DELIMITER = "\u0000"
     }
 }
