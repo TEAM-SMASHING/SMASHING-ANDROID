@@ -11,6 +11,7 @@ interface SearchRepository {
         size: Int?,
         gender: String?,
         tier: String?,
+        snapshotAt: String?,
     ): Result<CursorPage<SearchMainItemModel>>
 
     suspend fun getNickNameUsersSearch(

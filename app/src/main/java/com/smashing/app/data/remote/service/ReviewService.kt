@@ -27,12 +27,15 @@ interface ReviewService {
         cursor: String?,
         @Query("size")
         size: Int?,
+        @Query("snapshotAt")
+        snapshotAt: String?,
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>>
 
     @GET("/api/v1/users/me/reviews/recent")
     suspend fun getMyRecentReviewList(
         @Query("cursor") cursor: String?,
         @Query("size") size: Int?,
+        @Query("snapshotAt") snapshotAt: String?,
     ): BaseResponse<CursorDto<GetMyRecentReviewListResponse>>
 
 }

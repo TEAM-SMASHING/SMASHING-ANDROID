@@ -43,7 +43,7 @@ fun SearchTopBar(
             items = regionItems,
             onClick = onRegionDropdownClick,
             onRegionChange = onRegionSelectClick,
-            isDivide = false,
+            isDivide = true,
             modifier = Modifier
                 .padding(vertical = 12.dp),
         )

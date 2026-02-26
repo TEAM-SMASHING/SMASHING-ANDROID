@@ -9,9 +9,8 @@ import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.Review
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -35,10 +34,6 @@ class AllReviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ReviewContract.State())
     val uiState = _uiState.asStateFlow()
 
-    private var nextCursor: String? = null
-    private var hasNextPage: Boolean = true
-    private var isLoading: Boolean = false
-
     init {
         if (userId == null && isUser) {
             fetchMyProfileReviewList(true)
@@ -46,6 +41,14 @@ class AllReviewViewModel @Inject constructor(
         } else {
             fetchUserRecentReviewStats()
             fetchUserProfileReviewList(true)
+        }
+    }
+
+    fun loadMoreReviewList() {
+        if (userId == null && isUser) {
+            fetchMyProfileReviewList()
+        } else {
+            fetchUserProfileReviewList()
         }
     }
 
@@ -66,6 +69,7 @@ class AllReviewViewModel @Inject constructor(
                 sportCode = sportCode,
                 cursor = if (isRefresh) null else currentState.reviewCursor.nextCursor,
                 size = CURSOR_SIZE,
+                snapshotAt = if (isRefresh) null else currentState.reviewCursor.snapshotAt,
             ).onSuccess { cursorPage ->
                 _uiState.update { state ->
                     state.copy(
@@ -118,52 +122,49 @@ class AllReviewViewModel @Inject constructor(
         }
     }
 
-    fun fetchMyProfileReviewList(isInit: Boolean = false) {
-        if (isLoading || (!isInit && !hasNextPage)) return
+    fun fetchMyProfileReviewList(isInit: Boolean = false) = viewModelScope.launch {
+        val currentState = _uiState.value
 
-        viewModelScope.launch {
-            isLoading = true
-
-            if (isInit) {
-                _uiState.update {
-                    it.copy(loadState = ReviewUiState.Loading)
-                }
-                nextCursor = null
-            }
-
-            reviewRepository.getMyRecentReviewList(
-                cursor = if (isInit) null else nextCursor,
-                size = PAGE_SIZE
-            )
-                .onSuccess { page ->
-                    nextCursor = page.cursor.nextCursor
-                    hasNextPage = page.cursor.hasNext
-
-                    _uiState.update { currentState ->
-                        val newReviews = if (isInit) {
-                            page.items.toPersistentList()
-                        } else {
-                            (currentState.gameReview + page.items).toPersistentList()
-                        }
-
-                        currentState.copy(
-                            loadState = ReviewUiState.Success,
-                            gameReview = newReviews,
-                        )
-                    }
-                }
-                .onFailure { exception ->
-                    _uiState.update {
-                        it.copy(
-                            loadState = ReviewUiState.Failure(
-                                exception.message ?: "리뷰를 불러오는데 실패했습니다.",
-                            )
-                        )
-                    }
-                }
-            isLoading = false
+        if (!isInit) {
+            if (currentState.loadState == ReviewUiState.Loading) return@launch
+            if (!currentState.reviewCursor.hasNext) return@launch
         }
+
+        _uiState.update { it.copy(loadState = ReviewUiState.Loading) }
+
+        reviewRepository.getMyRecentReviewList(
+            cursor = if (isInit) null else currentState.reviewCursor.nextCursor,
+            size = CURSOR_SIZE,
+            snapshotAt = if (isInit) null else currentState.reviewCursor.snapshotAt,
+        )
+            .onSuccess { cursorPage ->
+                _uiState.update { state ->
+                    state.copy(
+                        gameReview = if (isInit) {
+                            cursorPage.items.toImmutableList()
+                        } else {
+                            (state.gameReview + cursorPage.items).toImmutableList()
+                        },
+                        reviewCursor = cursorPage.cursor,
+                        loadState = if (cursorPage.items.isEmpty() && isInit) {
+                            ReviewUiState.Idle
+                        } else {
+                            ReviewUiState.Success
+                        }
+                    )
+                }
+            }
+            .onFailure { exception ->
+                _uiState.update {
+                    it.copy(
+                        loadState = ReviewUiState.Failure(
+                            exception.message ?: "리뷰를 불러오는데 실패했습니다.",
+                        )
+                    )
+                }
+            }
     }
+
 
     fun fetchMyRecentReviewStats() = viewModelScope.launch {
         myRepository.getMyRecentReviewStats(
@@ -187,6 +188,5 @@ class AllReviewViewModel @Inject constructor(
 
     companion object {
         private const val CURSOR_SIZE = 50
-        private const val PAGE_SIZE = 50
     }
 }
