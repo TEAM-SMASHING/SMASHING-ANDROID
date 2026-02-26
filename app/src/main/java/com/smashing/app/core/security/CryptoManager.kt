@@ -56,7 +56,11 @@ class CryptoManager @Inject constructor(): CryptoInterface {
             build()
         }
 
-        keyGenerator.init(keySpec)
-        return keyGenerator.generateKey()
+    companion object {
+        private const val KEY_ALIAS = "UserAccessToken"
+        private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
+        private const val TRANSFORMATION = "AES/GCM/NoPadding"
+        private const val GCM_TAG_LENGTH = 128
+        private const val DELIMITER = " "
     }
 }
