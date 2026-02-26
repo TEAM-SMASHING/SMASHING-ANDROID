@@ -21,13 +21,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.string.search_placeholder
 import com.smashing.app.core.designsystem.component.topbar.SmashingSearchTopBar
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.presentation.search.SearchContract
-import com.smashing.app.presentation.search.SearchContract.SearchUiState
+import com.smashing.app.presentation.search.SearchUiState
 import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
 import kotlinx.collections.immutable.ImmutableList

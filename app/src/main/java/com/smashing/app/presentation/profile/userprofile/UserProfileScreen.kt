@@ -73,7 +73,7 @@ fun UserProfileRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToAllReview -> navigateToReview(sideEffect.userId)
-                    is ShowToast ->  show.invoke(sideEffect.content)
+                    is ShowToast -> show.invoke(sideEffect.content)
                 }
             }
     }
