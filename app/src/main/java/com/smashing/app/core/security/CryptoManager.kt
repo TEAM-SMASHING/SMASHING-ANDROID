@@ -13,20 +13,19 @@ import javax.inject.Singleton
 @Singleton
 class CryptoManager @Inject constructor(): CryptoInterface {
 
-    private val keyAlias = "UserAccessToken"
-    private val keystoreProvider = "AndroidKeyStore"
+    private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply { load(null) }
 
     override suspend fun encrypt(data: List<String>): EncryptedResult {
         val secretKey = getOrCreateSecretKey()
-        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
         val iv = cipher.iv
-        val encrypted = cipher.doFinal(data.joinToString(" ").toByteArray())
+        val encrypted = cipher.doFinal(data.joinToString(DELIMITER).toByteArray(Charsets.UTF_8))
 
         return EncryptedResult(
             ciphertext = encrypted,
-            iv = iv
+            iv = iv,
         )
     }
 
@@ -34,27 +33,29 @@ class CryptoManager @Inject constructor(): CryptoInterface {
         if (encryptedData.isEmpty() || iv.isEmpty()) return ""
 
         val secretKey = getOrCreateSecretKey()
-        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-        val spec = GCMParameterSpec(128, iv)
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
+        val cipher = Cipher.getInstance(TRANSFORMATION)
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(GCM_TAG_LENGTH, iv))
 
-        val decrypted = cipher.doFinal(encryptedData)
-        return String(decrypted)
+        return String(cipher.doFinal(encryptedData), Charsets.UTF_8)
     }
 
     private fun getOrCreateSecretKey(): SecretKey {
-        val keyStore = KeyStore.getInstance(keystoreProvider).apply { load(null) }
-        keyStore.getKey(keyAlias, null)?.let { return it as SecretKey }
+        keyStore.getKey(KEY_ALIAS, null)?.let { return it as SecretKey }
 
-        val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, keystoreProvider)
         val keySpec = KeyGenParameterSpec.Builder(
-            keyAlias,
-            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-        ).run {
+            KEY_ALIAS,
+            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
+        ).apply {
             setBlockModes(KeyProperties.BLOCK_MODE_GCM)
             setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-            build()
-        }
+            setRandomizedEncryptionRequired(true)
+            setUserAuthenticationRequired(false)
+        }.build()
+
+        return KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE_PROVIDER)
+            .apply { init(keySpec) }
+            .generateKey()
+    }
 
     companion object {
         private const val KEY_ALIAS = "UserAccessToken"
