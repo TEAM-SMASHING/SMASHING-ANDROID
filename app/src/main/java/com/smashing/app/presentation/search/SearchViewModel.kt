@@ -31,7 +31,6 @@ class SearchViewModel @Inject constructor(
     val searchInputState = TextFieldState()
 
     init {
-        fetchRegionUsersList(isRefresh = true)
         updateSearchInputText()
     }
 

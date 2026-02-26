@@ -5,7 +5,6 @@ import com.smashing.app.core.designsystem.style.TierInfoStyle
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.search.SuggestionItemModel
 import com.smashing.app.data.model.search.SearchMainItemModel
-import com.smashing.app.data.model.search.UserRegionItemModel
 import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

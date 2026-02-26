@@ -51,6 +51,7 @@ fun SearchMainRoute(
 
     LaunchedEffect(Unit) {
         viewModel.updateSelectedRegion()
+        viewModel.fetchRegionUsersList(isRefresh = true)
     }
 
     SearchMainScreen(
