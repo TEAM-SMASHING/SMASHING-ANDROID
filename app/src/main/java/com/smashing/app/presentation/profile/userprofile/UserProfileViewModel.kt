@@ -65,7 +65,7 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
-                            exception.message ?: "오류 발생"
+                            exception.message ?: "오류 발생",
                         )
                     )
                 }
@@ -135,7 +135,7 @@ class UserProfileViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     loadState = UserProfileUiState.Failure(
-                        throwable.message ?: "Unknown error"
+                        throwable.message ?: "Unknown error",
                     )
                 )
             }
@@ -224,7 +224,7 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         loadState = UserProfileUiState.Failure(
-                            exception.message ?: "오류 발생"
+                            exception.message ?: "오류 발생",
                         )
                     )
                 }
