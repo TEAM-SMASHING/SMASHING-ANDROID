@@ -46,9 +46,9 @@ class AllReviewViewModel @Inject constructor(
 
     fun loadMoreReviewList() {
         if (userId == null && isUser) {
-            fetchMyProfileReviewList(isInit = false)
+            fetchMyProfileReviewList()
         } else {
-            fetchUserProfileReviewList(isRefresh = false)
+            fetchUserProfileReviewList()
         }
     }
 
