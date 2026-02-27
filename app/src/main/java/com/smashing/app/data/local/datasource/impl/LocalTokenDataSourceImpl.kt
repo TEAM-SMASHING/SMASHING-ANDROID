@@ -10,7 +10,6 @@ import com.smashing.app.core.security.CryptoInterface
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import java.security.GeneralSecurityException
 import javax.inject.Inject
 
 class LocalTokenDataSourceImpl @Inject constructor(
