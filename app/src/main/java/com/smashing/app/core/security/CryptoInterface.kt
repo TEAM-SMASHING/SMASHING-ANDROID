@@ -2,7 +2,7 @@ package com.smashing.app.core.security
 
 interface CryptoInterface {
     suspend fun encrypt(data: List<String>): EncryptedResult
-    suspend fun decrypt(encryptedData: ByteArray, iv: ByteArray): String
+    suspend fun decrypt(encryptedData: ByteArray, iv: ByteArray): String?
 }
 
 data class EncryptedResult(

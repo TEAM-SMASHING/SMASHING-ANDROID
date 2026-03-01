@@ -29,8 +29,8 @@ class CryptoManager @Inject constructor(): CryptoInterface {
         )
     }
 
-    override suspend fun decrypt(encryptedData: ByteArray, iv: ByteArray): String {
-        if (encryptedData.isEmpty() || iv.isEmpty()) return ""
+    override suspend fun decrypt(encryptedData: ByteArray, iv: ByteArray): String? {
+        if (encryptedData.isEmpty() || iv.isEmpty()) return null
 
         val secretKey = getOrCreateSecretKey()
         val cipher = Cipher.getInstance(TRANSFORMATION)
