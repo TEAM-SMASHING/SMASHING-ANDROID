@@ -89,15 +89,15 @@ fun MatchingRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        savedInitTab?.let { tab ->
-            if (tab != uiState.selectedType) {
-                viewModel.selectMatchingTab(tab)
-            }
+    val isInitTabApplyRequired = savedInitTab != null && savedInitTab != uiState.selectedType
+
+    if (isInitTabApplyRequired) {
+        LaunchedEffect(savedInitTab) {
+            viewModel.selectMatchingTab(savedInitTab)
             removeSavedInitTab()
         }
+        return
     }
-
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
