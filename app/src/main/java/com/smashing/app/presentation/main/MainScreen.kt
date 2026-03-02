@@ -1,6 +1,7 @@
 package com.smashing.app.presentation.main
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
@@ -106,10 +107,16 @@ fun MainScreen(
             }
     }
 
+    val activity = LocalActivity.current
+
     BackHandler(
-        enabled = currentTab != MainTab.HOME
+        enabled = currentTab != null,
     ) {
-        appState.navigate(MainTab.HOME)
+        if (currentTab == MainTab.HOME) {
+            activity?.finish()
+        } else {
+            appState.navigate(MainTab.HOME)
+        }
     }
 
     CompositionLocalProvider(
