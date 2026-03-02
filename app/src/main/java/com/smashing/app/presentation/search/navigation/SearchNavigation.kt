@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.core.extension.sharedViewModel
 import com.smashing.app.presentation.home.navigation.navigateToRegionChange
 import com.smashing.app.presentation.search.SearchViewModel
@@ -20,7 +21,7 @@ import com.smashing.app.presentation.search.searchmain.SearchMainRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToSearch(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions()
 ) = navigate(Search, navOptions)
 
 fun NavController.navigateToSearchInput(

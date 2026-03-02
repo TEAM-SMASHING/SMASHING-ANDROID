@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.MainTabRoute
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.matching.MatchingRoute
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
@@ -17,7 +18,7 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMatching(
     initTab: MatchingType? = null,
-    navOptions: NavOptions? = null,
+    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions(),
 ) {
     navigate(Matching, navOptions)
     setMatchingArgs(initTab)

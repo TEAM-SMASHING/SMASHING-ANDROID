@@ -26,7 +26,9 @@ fun NavGraphBuilder.loginGraph(
         LoginRoute(
             navigateToSignUp = navController::navigateToSignUp,
             navigateToHome = {
-                navController.navigateToHome(navOptions = clearBackStackNavOptions())
+                navController.apply {
+                    navigateToHome(navOptions = clearBackStackNavOptions())
+                }
             },
             modifier = Modifier.padding(innerPadding),
         )

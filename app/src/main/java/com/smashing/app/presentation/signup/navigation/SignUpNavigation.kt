@@ -30,7 +30,9 @@ fun NavGraphBuilder.signUpGraph(
             onRegionResultConsumed = savedStateHandle::removeRegionResult,
             navigateToRegion = navController::navigateToRegion,
             navigateToHome = {
-                navController.navigateToHome(navOptions = clearBackStackNavOptions())
+                navController.apply {
+                    navigateToHome(navOptions = clearBackStackNavOptions())
+                }
             },
             modifier = Modifier,
         )

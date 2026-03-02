@@ -1,5 +1,7 @@
 package com.smashing.app.core.extension
 
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.navOptions
 
 /**
@@ -13,7 +15,7 @@ import androidx.navigation.navOptions
  *
  * @return 백스택 초기화 설정만 포함된 NavOptions
  */
-fun clearBackStackNavOptions() = navOptions {
+fun NavController.clearBackStackNavOptions() = navOptions {
     popUpTo(0) {
         inclusive = true
     }
@@ -29,11 +31,10 @@ fun clearBackStackNavOptions() = navOptions {
  *
  * @return 백스택 초기화 및 상태 저장/복원 설정이 포함된 NavOptions
  */
-fun clearBackStackWithRestoreNavOptions() = navOptions {
+fun NavController.clearBackStackWithRestoreNavOptions() = navOptions {
     popUpTo(0) {
         saveState = true
         inclusive = true
     }
-    launchSingleTop = true
     restoreState = true
 }

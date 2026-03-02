@@ -21,7 +21,7 @@ import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMyProfile(
-    navOptions: NavOptions? = null,
+    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions(),
 ) = navigate(Profile, navOptions)
 
 
@@ -66,7 +66,6 @@ fun NavGraphBuilder.profileGraph(
                 navigateToSentMatching = {
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,
-                        navOptions = clearBackStackWithRestoreNavOptions(),
                     )
                 }
             )

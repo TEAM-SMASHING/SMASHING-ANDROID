@@ -5,7 +5,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmReview
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.notice.NoticeRoute
@@ -25,7 +24,6 @@ fun NavGraphBuilder.noticeGraph(
             navigateToMatching = { initialTab ->
                 navController.navigateToMatching(
                     initTab = initialTab,
-                    navOptions = clearBackStackWithRestoreNavOptions(),
                 )
             },
             navigateToConfirmReview = navController::navigateToConfirmReview,

@@ -72,11 +72,13 @@ class MainAppState(
         if (currentTab.value == tab) return
 
         val navOptions = navOptions {
-            popUpTo(navController.graph.id) {
-                saveState = true
+            navController.currentDestination?.route?.let { route ->
+                popUpTo(route) {
+                    saveState = true
+                    inclusive = true
+                }
+                restoreState = true
             }
-            launchSingleTop = true
-            restoreState = true
         }
 
         when (tab) {

@@ -30,7 +30,7 @@ import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions()
 ) = navigate(Home, navOptions)
 
 fun NavController.navigateToRegionChange(
@@ -59,23 +59,14 @@ fun NavGraphBuilder.homeGraph(
                 navigateToMatchingAccepted = {
                     navController.navigateToMatching(
                         initTab = MatchingType.ACCEPTED,
-                        navOptions = clearBackStackWithRestoreNavOptions(),
                     )
                 },
                 navigateToUserProfile = navController::navigateToUserProfile,
                 navigateToSportAdd = navController::navigateToAddSports,
-                navigateToSearch = {
-                    navController.navigateToSearch(
-                        navOptions = clearBackStackWithRestoreNavOptions(),
-                    )
-                },
+                navigateToSearch = navController::navigateToSearch,
                 navigateToSubmit = navController::navigateToSubmit,
                 navigateToConfirm = navController::navigateToConfirm,
-                navigateToMyProfile = {
-                    navController.navigateToMyProfile(
-                        navOptions = clearBackStackWithRestoreNavOptions(),
-                    )
-                },
+                navigateToMyProfile = navController::navigateToMyProfile,
             )
         }
 

@@ -8,8 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.core.extension.clearBackStackNavOptions
-import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.core.extension.sharedViewModel
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
@@ -77,7 +75,6 @@ fun NavGraphBuilder.writeGraph(
                 navigateToMatching = {
                     navController.navigateToMatching(
                         initTab = MatchingType.ACCEPTED,
-                        navOptions = clearBackStackWithRestoreNavOptions()
                     )
                 },
                 viewModel = viewModel,
@@ -92,7 +89,6 @@ fun NavGraphBuilder.writeGraph(
                 navigateToMatching = {
                     navController.navigateToMatching(
                         initTab = MatchingType.ACCEPTED,
-                        navOptions = clearBackStackWithRestoreNavOptions()
                     )
                 },
                 viewModel = viewModel,
