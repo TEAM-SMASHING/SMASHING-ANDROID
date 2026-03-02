@@ -13,6 +13,7 @@ interface SearchRemoteDataSource {
         size: Int?,
         gender: String?,
         tier: String?,
+        snapshotAt: String?,
     ): BaseResponse<CursorDto<GetRegionUsersSearchResponse>>
 
     suspend fun getNickNameUsersSearch(

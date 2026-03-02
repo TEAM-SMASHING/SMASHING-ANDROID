@@ -21,6 +21,8 @@ interface SearchService {
         gender: String?,
         @Query("tier")
         tier: String?,
+        @Query("snapshotAt")
+        snapshotAt: String?,
     ): BaseResponse<CursorDto<GetRegionUsersSearchResponse>>
 
     @GET("/api/v1/users/search")

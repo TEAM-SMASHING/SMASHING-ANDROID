@@ -10,10 +10,7 @@ class AddSportsContract {
     data class State(
         val currentStep: Int = 1,
         val loadState: AddSportsUiState = AddSportsUiState.Idle,
-        val addSportsInfo: AddSportsInfo = AddSportsInfo(
-            selectedSports = null,
-            selectedSkill = null,
-        ),
+        val addSportsInfo: AddSportsInfo = AddSportsInfo(),
         val availableSports: ImmutableList<SportType> = persistentListOf(),
     ) {
         val isBtnEnabled: Boolean

@@ -93,6 +93,7 @@ class MyProfileViewModel @Inject constructor(
         reviewRepository.getMyRecentReviewList(
             cursor = null,
             size = PAGE_SIZE,
+            snapshotAt = null,
         )
             .onSuccess { page ->
                 _uiState.update { currentState ->

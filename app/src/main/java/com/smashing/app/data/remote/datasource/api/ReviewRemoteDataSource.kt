@@ -17,10 +17,12 @@ interface ReviewRemoteDataSource {
         sportCode: String?,
         cursor: String?,
         size: Int?,
+        snapshotAt: String?,
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>>
 
     suspend fun getMyRecentReviewList(
         cursor: String?,
-        size: Int?
+        size: Int?,
+        snapshotAt: String?
     ): BaseResponse<CursorDto<GetMyRecentReviewListResponse>>
 }
