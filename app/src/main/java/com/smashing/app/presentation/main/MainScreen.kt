@@ -110,7 +110,7 @@ fun MainScreen(
     val activity = LocalActivity.current
 
     BackHandler(
-        enabled = currentTab != null,
+        enabled = isBottomBarVisible && currentTab != null,
     ) {
         if (currentTab == MainTab.HOME) {
             activity?.finish()
