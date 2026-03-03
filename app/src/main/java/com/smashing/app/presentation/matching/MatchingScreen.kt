@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -83,10 +82,22 @@ fun MatchingRoute(
     ) -> Unit,
     navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
+    savedInitTab: MatchingType?,
+    setSavedInitTab: (MatchingType) -> Unit,
+    removeSavedInitTab: () -> Unit,
     viewModel: MatchingViewModel = hiltViewModel(),
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val isInitTabApplyRequired = savedInitTab != null && savedInitTab != uiState.selectedType
+
+    if (isInitTabApplyRequired) {
+        LaunchedEffect(savedInitTab) {
+            viewModel.selectMatchingTab(savedInitTab)
+            removeSavedInitTab()
+        }
+        return
+    }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -132,7 +143,10 @@ fun MatchingRoute(
     MatchingScreen(
         uiState = uiState,
         onLoadMoreMatchingList = viewModel::fetchMatchingList,
-        onTabClick = viewModel::selectMatchingTab,
+        onTabClick = { tab ->
+            setSavedInitTab(tab)
+            viewModel.selectMatchingTab(tab)
+        },
         onDialogDismissClick = viewModel::hideDialogVisible,
         onReceivedAcceptClick = viewModel::acceptReceivedMatching,
         onProfileClick = navigateToProfile,
@@ -307,10 +321,10 @@ private fun MatchingList(
     onSentCloseClick: (String) -> Unit,
     onReceivedSkipClick: (String) -> Unit,
     onReceivedAcceptClick: (String) -> Unit,
-    onAcceptedMatchingClick: (AcceptedMatching) -> Unit,
-    onAcceptedKakaoLinkClick: (String?) -> Unit,
-    onAcceptedCloseClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onAcceptedMatchingClick: (AcceptedMatching) -> Unit = {},
+    onAcceptedKakaoLinkClick: (String?) -> Unit = {},
+    onAcceptedCloseClick: (String) -> Unit = {},
 ) {
     val currentIsLoading = when (uiState.selectedType) {
         MatchingType.SEND -> uiState.sentUiState is MatchingUiState.Loading

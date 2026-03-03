@@ -1,9 +1,7 @@
 package com.smashing.app.presentation.matching
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.smashing.app.data.model.event.SseEvent
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.model.matching.ReceivedMatching
@@ -12,7 +10,6 @@ import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.MatchingStatusType
 import com.smashing.app.presentation.matching.MatchingContract.SideEffect
-import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.matching.type.MatchingType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -26,16 +23,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MatchingViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val matchingRepository: MatchingRepository,
     private val eventRepository: EventRepository,
 ) : ViewModel() {
 
-    private val initTab = savedStateHandle.toRoute<Matching>().initTab
-
-    private val _uiState = MutableStateFlow(
-        MatchingContract.State(selectedType = initTab)
-    )
+    private val _uiState = MutableStateFlow(MatchingContract.State())
     val uiState = _uiState.asStateFlow()
 
     private val _sideEffect = MutableSharedFlow<SideEffect>()
@@ -485,6 +477,5 @@ class MatchingViewModel @Inject constructor(
 
     companion object {
         private const val CURSOR_SIZE = 20L
-        private const val TAG = "MatchingViewModel"
     }
 }
