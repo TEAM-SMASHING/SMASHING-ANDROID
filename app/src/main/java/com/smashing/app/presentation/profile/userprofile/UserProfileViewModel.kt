@@ -118,6 +118,7 @@ class UserProfileViewModel @Inject constructor(
             sportCode = sportCode,
             cursor = null,
             size = CURSOR_SIZE,
+            snapshotAt = null,
         ).onSuccess { cursorPage ->
             _uiState.update { state ->
                 state.copy(
@@ -151,7 +152,6 @@ class UserProfileViewModel @Inject constructor(
         _uiState.update {
             it.copy(isDialogVisible = false)
         }
-        fetchProfileInfo()
     }
 
     companion object {
@@ -185,7 +185,6 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
-
     fun onNoClick() = viewModelScope.launch {
         val receivedMatchingId = _uiState.value.receivedMatchingId
         if (receivedMatchingId != null) {
@@ -209,7 +208,6 @@ class UserProfileViewModel @Inject constructor(
             }
         }
     }
-
 
     fun requestCompetition() {
         viewModelScope.launch {

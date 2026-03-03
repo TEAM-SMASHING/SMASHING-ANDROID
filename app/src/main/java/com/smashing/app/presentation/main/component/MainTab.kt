@@ -32,7 +32,7 @@ enum class MainTab(
         selectedIconRes = R.drawable.ic_trophy_selected,
         unselectedIconRes = R.drawable.ic_trophy_unselected,
         titleRes = R.string.matching_manage,
-        route = Matching(),
+        route = Matching,
     ),
     PROFILE(
         selectedIconRes = R.drawable.ic_profile_selected,

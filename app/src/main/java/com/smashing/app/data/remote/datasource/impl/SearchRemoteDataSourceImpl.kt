@@ -17,13 +17,15 @@ class SearchRemoteDataSourceImpl @Inject constructor(
         cursor: String?,
         size: Int?,
         gender: String?,
-        tier: String?
+        tier: String?,
+        snapshotAt: String?,
     ): BaseResponse<CursorDto<GetRegionUsersSearchResponse>> =
         searchService.getRegionUsersSearch(
             cursor = cursor,
             size = size,
             gender = gender,
             tier = tier,
+            snapshotAt = snapshotAt,
         )
 
     override suspend fun getNickNameUsersSearch(nickname: String): BaseResponse<GetNicknameUsersSearchResponse> =

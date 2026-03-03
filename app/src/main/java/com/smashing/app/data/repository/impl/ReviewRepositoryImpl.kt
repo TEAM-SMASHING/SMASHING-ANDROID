@@ -27,7 +27,8 @@ class ReviewRepositoryImpl @Inject constructor(
         userId: String,
         sportCode: String?,
         cursor: String?,
-        size: Int?
+        size: Int?,
+        snapshotAt: String?,
     ): Result<CursorPage<GameReview>> =
         suspendRunCatching {
             reviewRemoteDataSource.getUserRecentReviewList(
@@ -35,17 +36,20 @@ class ReviewRepositoryImpl @Inject constructor(
                 sportCode = sportCode,
                 cursor = cursor,
                 size = size,
+                snapshotAt = snapshotAt,
             ).requireData().toGameReviewList()
         }
 
     override suspend fun getMyRecentReviewList(
         cursor: String?,
-        size: Int?
+        size: Int?,
+        snapshotAt: String?,
     ): Result<CursorPage<GameReview>> =
         suspendRunCatching {
             reviewRemoteDataSource.getMyRecentReviewList(
                 cursor = cursor,
-                size = size
+                size = size,
+                snapshotAt = snapshotAt,
             ).requireData().toGameReviewList()
         }
 }
