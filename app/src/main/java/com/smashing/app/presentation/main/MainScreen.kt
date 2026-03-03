@@ -70,16 +70,16 @@ fun MainScreen(
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
 
     val snackBarHostState = remember { SnackbarHostState() }
-    val snackbarMutex = remember { Mutex() }
+    val snackBarMutex = remember { Mutex() }
 
     var bottomBarHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
     val coroutineScope = rememberCoroutineScope()
-    val onShowToast: (String) -> Unit = remember(coroutineScope, snackBarHostState, snackbarMutex) {
+    val onShowToast: (String) -> Unit = remember(coroutineScope, snackBarHostState, snackBarMutex) {
         { message ->
             coroutineScope.launch {
-                if (!snackbarMutex.tryLock()) return@launch
+                if (!snackBarMutex.tryLock()) return@launch
 
                 try {
                     launch {
@@ -91,7 +91,7 @@ fun MainScreen(
                         withDismissAction = false,
                     )
                 } finally {
-                    snackbarMutex.unlock()
+                    snackBarMutex.unlock()
                 }
             }
         }
