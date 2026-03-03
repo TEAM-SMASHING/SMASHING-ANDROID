@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
@@ -29,7 +30,7 @@ import com.smashing.app.presentation.write.navigation.navigateToSubmit
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions()
 ) = navigate(Home, navOptions)
 
 fun NavController.navigateToRegionChange(
@@ -46,41 +47,25 @@ fun NavGraphBuilder.homeGraph(
         composable<HomeUser> {
             HomeRoute(
                 modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
-                navigateToNotice = { profileId ->
-                    navController.navigateToNotice(profileId = profileId)
-                },
+                navigateToNotice = navController::navigateToNotice,
                 navigateToRegionChange = navController::navigateToRegionChange,
                 navigateToRanking = navController::navigateToRanking,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(
                         tierName = tierInfoStyle.name,
-                        sportName = sportType.sportName
+                        sportName = sportType.sportName,
                     )
                 },
                 navigateToMatchingAccepted = {
-                    navController.navigateToMatching(initTab = MatchingType.ACCEPTED)
+                    navController.navigateToMatching(
+                        initTab = MatchingType.ACCEPTED,
+                    )
                 },
-                navigateToUserProfile = { userId ->
-                    navController.navigateToUserProfile(userId = userId)
-                },
+                navigateToUserProfile = navController::navigateToUserProfile,
                 navigateToSportAdd = navController::navigateToAddSports,
                 navigateToSearch = navController::navigateToSearch,
-                navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId ->
-                    navController.navigateToSubmit(
-                        gameId = gameId,
-                        opponentUserId = opponentUserId,
-                        opponentNickname = opponentNickname,
-                        isFirstAttempt = isFirstAttempt,
-                        submissionId = submissionId,
-                    )
-                },
-                navigateToConfirm = { submissionId, gameId, isFirstAttempt ->
-                    navController.navigateToConfirm(
-                        submissionId = submissionId,
-                        gameId = gameId,
-                        isFirstAttempt = isFirstAttempt,
-                    )
-                },
+                navigateToSubmit = navController::navigateToSubmit,
+                navigateToConfirm = navController::navigateToConfirm,
                 navigateToMyProfile = navController::navigateToMyProfile,
             )
         }

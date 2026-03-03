@@ -7,22 +7,21 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
-import com.smashing.app.presentation.search.navigation.Search
 import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMyProfile(
-    navOptions: NavOptions? = null,
+    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions(),
 ) = navigate(Profile, navOptions)
 
 
@@ -49,32 +48,24 @@ fun NavGraphBuilder.profileGraph(
         composable<MyProfile> {
             MyProfileRoute(
                 navigateToSportAdd = navController::navigateToAddSports,
-                navigateToReview = { userId -> navController.navigateToReview(userId = userId) },
+                navigateToReview = navController::navigateToReview,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
                     navController.navigateToTierInfo(
                         tierName = tierInfoStyle.name,
                         sportName = sportType.name,
                     )
                 },
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             )
         }
 
         composable<UserProfile> {
             UserProfileRoute(
-                navigateToReview = { userId ->
-                    navController.navigateToReview(userId = userId)
-                },
+                navigateToReview = navController::navigateToReview,
                 navigateUp = navController::navigateUp,
                 navigateToSentMatching = {
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,
-                        navOptions = navOptions {
-                            popUpTo<Search> {
-                                inclusive = true
-                            }
-                            launchSingleTop = true
-                        }
                     )
                 }
             )
