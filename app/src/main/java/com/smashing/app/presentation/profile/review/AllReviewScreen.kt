@@ -47,7 +47,7 @@ import com.smashing.app.R.string.review
 import com.smashing.app.R.string.review_satisfaction_review
 import com.smashing.app.R.string.review_no_fast_reviews_yet
 import com.smashing.app.R.string.review_short_review
-import com.smashing.app.R.string.review_no_reviews_yet
+import com.smashing.app.R.string.review_no_review_yet
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle
@@ -123,7 +123,7 @@ private fun AllReviewScreen(
                 Spacer(Modifier.padding(top = 12.dp))
 
                 Text(
-                    text = stringResource(review_no_reviews_yet),
+                    text = stringResource(review_no_review_yet),
                     style = SmashingTheme.typography.md.medium16,
                     color = SmashingTheme.colors.txtSecondary,
                 )
@@ -260,7 +260,7 @@ private fun AllReviewScreen(
                 } else {
                     item {
                         ReviewEmptyPlaceholder(
-                            text = stringResource(review_no_reviews_yet),
+                            text = stringResource(review_no_review_yet),
                             modifier = Modifier.padding(vertical = 40.dp)
                         )
                     }
