@@ -32,6 +32,12 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.profile
+import com.smashing.app.R.string.profile_competition_applied
+import com.smashing.app.R.string.profile_check_matching_tab
+import com.smashing.app.R.string.profile_go_to_link
+import com.smashing.app.R.string.accept
+import com.smashing.app.R.string.skip
+import com.smashing.app.R.string.confirm
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
@@ -148,17 +154,16 @@ private fun UserProfileScreen(
                 if (uiState.isDialogVisible) {
 
                     SmashingDialog(
-                        title = "경쟁 신청이 완료되었습니다!",
-                        subtitle = "매칭 관리 탭에서 매칭 정보를 확인해주세요.",
+                        title = stringResource(profile_competition_applied),
+                        subtitle = stringResource(profile_check_matching_tab),
                         type = DialogStyle.ALERT,
-                        confirmText = "바로가기",
-                        dismissText = "확인",
+                        confirmText = stringResource(profile_go_to_link),
+                        dismissText = stringResource(confirm),
                         onConfirmClick = onConfirmClick,
                         onDismissClick = onDialogDismissClick,
                         onDismissRequest = onDialogDismissClick,
                     )
                 }
-
 
                 ProfileTierBox(
                     tierType = uiState.activeProfile.tierType,
@@ -209,13 +214,13 @@ private fun UserProfileScreen(
                     ) {
                         SmashingButton(
                             buttonStyle = ButtonStyle.DISABLED_ACTIVE,
-                            text = "건너뛰기",
+                            text = stringResource(skip),
                             modifier = Modifier.weight(BTN_WEIGHT),
                             onClick = onNoClick,
                         )
                         SmashingButton(
                             buttonStyle = ButtonStyle.PRIMARY,
-                            text = "수락",
+                            text = stringResource(accept),
                             modifier = Modifier.weight(1f),
                             onClick = onYesClick,
                         )
