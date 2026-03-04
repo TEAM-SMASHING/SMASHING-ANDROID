@@ -41,23 +41,29 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 /**
- * 바텀 시트 공통 컴포넌트입니다.
+ * 하단 버튼이 있을 때 사용하는 설정.
  *
- * @param title 바텀 시트 내부 타이틀
- * @param items 바텀 시트 내부 리스트
- * @param selectedItem 내부 리스트 중 선택된 아이템
- * @param contentToBtnPadding 바텀 시트 내부 리스트와 버튼 사이 간격
- * @param btnText 하단 버튼 텍스트
- * @param onItemClick 내부 리스트 아이템 클릭 이벤트
- * @param onDismissRequest 바텀 시트 사라짐
- * @param onBtnClick 하단 버튼 클릭 이벤트
+ * @param btnText 버튼에 표시할 텍스트
+ * @param contentToBtnPadding 리스트와 버튼 사이 간격
+ * @param onBtnClick 버튼 클릭 시 호출 (시트가 닫힌 뒤 호출됨)
  */
-
 data class BottomSheetButtonConfig(
     val btnText: String,
     val contentToBtnPadding: Dp,
     val onBtnClick: () -> Unit,
 )
+
+/**
+ * 바텀 시트 공통 컴포넌트입니다.
+ *
+ * @param items 바텀 시트 내부 리스트
+ * @param selectedItem 내부 리스트 중 선택된 아이템
+ * @param onItemClick 내부 리스트 아이템 클릭 이벤트
+ * @param onDismissRequest 바텀 시트 사라짐
+ * @param title 바텀 시트 내부 타이틀
+ * @param optionalButton 바텀 시트 하단 버튼
+ *
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
