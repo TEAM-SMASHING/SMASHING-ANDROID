@@ -17,12 +17,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
 import com.smashing.app.R.string.review
 import com.smashing.app.R.string.confirm
+import com.smashing.app.R.string.confirm_review_arrived_with_nickname
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
@@ -77,7 +77,7 @@ private fun ConfirmReviewScreen(
 
             Text(
                 text = stringResource(
-                    id = R.string.confirm_review_arrived_with_nickname,
+                    id = confirm_review_arrived_with_nickname,
                     uiState.nickname
                 ),
                 style = SmashingTheme.typography.xl.semibold20,
