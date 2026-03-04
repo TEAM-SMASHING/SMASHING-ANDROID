@@ -39,7 +39,7 @@ fun String.checkLength(): Int {
 fun InputTransformation.checkMaxLength(maxLength: Int): InputTransformation =
     this.then(CheckMaxLength(maxLength))
 
-class CheckMaxLength(
+private class CheckMaxLength(
     private val maxLength: Int
 ) : InputTransformation {
 
