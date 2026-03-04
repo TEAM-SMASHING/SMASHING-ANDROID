@@ -53,19 +53,22 @@ import kotlinx.coroutines.launch
  * @param onBtnClick 하단 버튼 클릭 이벤트
  */
 
+data class BottomSheetButtonConfig(
+    val btnText: String,
+    val contentToBtnPadding: Dp,
+    val onBtnClick: () -> Unit,
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmashingBottomSheet(
-    title: String,
     items: ImmutableList<String>,
     selectedItem: String,
-    contentToBtnPadding: Dp,
-    btnText: String,
     onItemClick: (String) -> Unit,
     onDismissRequest: () -> Unit,
-    onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
+    title: String? = null,
+    optionalButton: BottomSheetButtonConfig? = null,
     bottomSheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     )
@@ -100,18 +103,19 @@ fun SmashingBottomSheet(
                 ),
         ) {
 
-            Text(
-                text = title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(horizontal = 16.dp),
-                color = colors.txtPrimary,
-                textAlign = TextAlign.Center,
-                style = typography.lg.semibold18,
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
+            if (title != null) {
+                Text(
+                    text = title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = 16.dp),
+                    color = colors.txtPrimary,
+                    textAlign = TextAlign.Center,
+                    style = typography.lg.semibold18,
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+            }
 
             items.forEach { item ->
 
@@ -138,18 +142,19 @@ fun SmashingBottomSheet(
 
             }
 
-            Spacer(modifier = Modifier.height(contentToBtnPadding))
-
-            SmashingButton(
-                buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
-                text = btnText,
-                onClick = { onCloseBottomSheet(onClosed = onBtnClick) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(horizontal = 16.dp),
-                isEnabled = selectedItem.isNotEmpty(),
-            )
+            if (optionalButton != null) {
+                Spacer(modifier = Modifier.height(optionalButton.contentToBtnPadding))
+                SmashingButton(
+                    buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
+                    text = optionalButton.btnText,
+                    onClick = { onCloseBottomSheet(onClosed = optionalButton.onBtnClick) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = 16.dp),
+                    isEnabled = selectedItem.isNotEmpty(),
+                )
+            }
         }
     }
 }
@@ -221,10 +226,12 @@ private fun SmashingBottomSheetPreview() {
                         "아직 진행하지 않은 경기에요",
                     ),
                     selectedItem = selectedItem1,
-                    contentToBtnPadding = 20.dp,
-                    btnText = "완료",
                     onItemClick = { selectedItem1 = it },
-                    onBtnClick = { },
+                    optionalButton = BottomSheetButtonConfig(
+                        btnText = "완료",
+                        contentToBtnPadding = 20.dp,
+                        onBtnClick = {}
+                    )
                 )
             }
 
@@ -244,10 +251,12 @@ private fun SmashingBottomSheetPreview() {
                         "챌린저",
                     ),
                     selectedItem = selectedItem2,
-                    contentToBtnPadding = 4.dp,
-                    btnText = "적용하기",
                     onItemClick = { selectedItem2 = it },
-                    onBtnClick = { },
+                    optionalButton = BottomSheetButtonConfig(
+                        btnText = "완료",
+                        contentToBtnPadding = 20.dp,
+                        onBtnClick = {}
+                    )
                 )
             }
         }
