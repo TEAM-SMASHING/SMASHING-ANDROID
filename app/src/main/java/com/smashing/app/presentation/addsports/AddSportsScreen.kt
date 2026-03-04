@@ -1,5 +1,12 @@
 package com.smashing.app.presentation.addsports
 
+import com.smashing.app.R.string.cancel
+import com.smashing.app.R.string.no
+import com.smashing.app.R.string.addsports_select_sport
+import com.smashing.app.R.string.addsports_select_experience
+import com.smashing.app.R.string.addsports_temporary_tier_determination
+import com.smashing.app.R.string.dialog_cancel_add_item_title
+import com.smashing.app.R.string.dialog_cancel_add_item_message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -96,11 +103,11 @@ private fun AddSportScreen(
     var showExitDialog by remember { mutableStateOf(false) }
     if (showExitDialog)
         SmashingDialog(
-            title = "종목 추가를 취소하시겠습니까?",
-            subtitle = "취소 시 진행중인 내용은 저장되지 않아요",
+            title = stringResource(dialog_cancel_add_item_title),
+            subtitle = stringResource(dialog_cancel_add_item_message),
             type = DialogStyle.ALERT,
-            confirmText = "취소하기",
-            dismissText = "아니요",
+            confirmText = stringResource(cancel),
+            dismissText = stringResource(no),
             onConfirmClick = {
                 showExitDialog = false
                 onBackClick()
@@ -136,7 +143,7 @@ private fun AddSportScreen(
                     items = uiState.availableSports.toPersistentList(),
                     selectedSport = selectedSport,
                     onSportSelected = onSportSelected,
-                    title = "추가할 종목을 선택해주세요",
+                    title = stringResource(addsports_select_sport),
                     subTitle = "",
                     isSubTitle = false,
                 )
@@ -144,8 +151,8 @@ private fun AddSportScreen(
                 2 -> SportSkillSelector(
                     selectedSkill = selectedSkill,
                     onSkillSelected = onSkillSelected,
-                    title = "구력을 선택해주세요",
-                    subTitle = "구력을 통해 임시 티어가 결정돼요",
+                    title = stringResource(addsports_select_experience),
+                    subTitle = stringResource(addsports_temporary_tier_determination),
                 )
 
                 else -> Spacer(modifier = Modifier.fillMaxSize())
