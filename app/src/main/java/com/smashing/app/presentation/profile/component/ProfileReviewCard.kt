@@ -27,6 +27,7 @@ import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
 import com.smashing.app.R.string.all_review
 import com.smashing.app.R.string.review_receive_review
+import com.smashing.app.R.string.review_no_review_yet
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -106,7 +107,7 @@ fun ReviewCard(
 
         if (reviews.isEmpty()) {
             Text(
-                text = "아직 받은 후기가 없어요",
+                text = stringResource(review_no_review_yet),
                 style = SmashingTheme.typography.sm.regular14,
                 color = SmashingTheme.colors.txtPrimary,
                 modifier = Modifier.fillMaxWidth(),

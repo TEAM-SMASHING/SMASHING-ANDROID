@@ -7,6 +7,7 @@ import com.smashing.app.R.string.addsports_select_experience
 import com.smashing.app.R.string.addsports_temporary_tier_determination
 import com.smashing.app.R.string.dialog_cancel_add_item_title
 import com.smashing.app.R.string.dialog_cancel_add_item_message
+import com.smashing.app.R.string.addsports_title
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -123,7 +124,7 @@ private fun AddSportScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SmashingDefaultTopBar(
-            title = "종목 추가",
+            title = stringResource(addsports_title),
             topBarType = TopBarType.CLOSE,
             onClick = { showExitDialog = true },
         )

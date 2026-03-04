@@ -28,6 +28,7 @@
     <string name="skip">건너뛰기</string>
     <string name="kakao_link">카카오톡 링크</string>
     <string name="win_lose_count">%1$d승 %2$d패</string>
+    <string name="apply_competition">경쟁 신청하기</string>
 
     <!--Dialog -->
     <string name="dialog_cancel_add_item_title">종목 추가를 취소하시겠습니까?</string>
@@ -349,7 +350,7 @@
 
     <!--AllReveiw-->
     <string name="review_receive_review">받은 후기</string>
-    <string name="review_no_reviews_yet">아직 받은 후기가 없어요</string>
+    <string name="review_no_review_yet">아직 받은 후기가 없어요</string>
     <string name="review_no_fast_reviews_yet">아직 받은 빠른 후기가 없어요</string>
     <string name="review_short_review">빠른 후기</string>
     <string name="review_satisfaction_review">만족도</string>
@@ -362,7 +363,7 @@
     <string name="addsports_select_sport">추가할 종목을 선택해주세요</string>
     <string name="addsports_select_experience">구력을 선택해주세요</string>
     <string name="addsports_temporary_tier_determination">구력을 통해 임시 티어가 결정돼요</string>
-
+    <string name="addsports_title">종목 추가</string>
 
     <!--Submit  -->
     <string name="submit_matching_result">결과 작성</string>
