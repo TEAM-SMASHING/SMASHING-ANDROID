@@ -47,6 +47,7 @@ import com.smashing.app.R.string.review
 import com.smashing.app.R.string.review_satisfaction_review
 import com.smashing.app.R.string.review_no_fast_reviews_yet
 import com.smashing.app.R.string.review_short_review
+import com.smashing.app.R.string.review_with_count
 import com.smashing.app.R.string.review_no_review_yet
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -199,7 +200,11 @@ private fun AllReviewScreen(
                             ) {
                                 if (uiState.gameReviewResult.onTimeCount > 0) {
                                     SmashingChip(
-                                        text = "${stringResource(id = chip_on_time_review)} ${uiState.gameReviewResult.onTimeCount}",
+                                        text = stringResource(
+                                            id = review_with_count,
+                                            stringResource(id = chip_on_time_review),
+                                            uiState.gameReviewResult.onTimeCount
+                                        ),
                                         style = ChipStyle.DISABLED,
                                     )
                                 }
