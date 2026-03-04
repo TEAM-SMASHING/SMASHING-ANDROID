@@ -35,6 +35,7 @@ import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.checkLength
 
 @Composable
 fun NicknameInputTextField(
@@ -49,7 +50,7 @@ fun NicknameInputTextField(
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
-    val currentLength = state.text.length
+    val currentLength = state.text.toString().checkLength()
     val isFilled = state.text.isNotEmpty()
     val isError = !errorText.isNullOrEmpty()
     val isConfirm = !confirmText.isNullOrEmpty()
