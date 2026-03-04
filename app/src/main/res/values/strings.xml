@@ -4,6 +4,7 @@
     <string name="matching_search">매칭 탐색</string>
     <string name="matching_manage">매칭 관리</string>
     <string name="profile">프로필</string>
+    <string name="mypage">마이페이지</string>
     <string name="count">%d</string>
     <string name="no">아니요</string>
     <string name="cancel">취소하기</string>
@@ -343,6 +344,15 @@
     <!--Confirm  -->
     <string name="confirm_result">결과 확인</string>
     <string name="confirm_result_title">경기 결과를 확인해주세요</string>
+
+    <!--MyPage  -->
+    <string name="mypage_account_manage">계정 관리</string>>
+    <string name="mypage_account_logout">로그아웃</string>
+    <string name="mypage_account_withdraw">계정 탈퇴</string>
+    <string name="mypage_policy_title">정책 및 정보</string>
+    <string name="mypage_policy_privacy">개인정보 처리방침</string>
+    <string name="mypage_policy_terms">이용약관</string>
+    <string name="mypage_info_version">버전 정보</string>
 
 
 
