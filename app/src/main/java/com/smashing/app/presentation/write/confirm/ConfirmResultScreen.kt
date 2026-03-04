@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.confirm_result
+import com.smashing.app.core.designsystem.component.bottomsheet.BottomSheetButtonConfig
 import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
@@ -165,12 +166,14 @@ private fun ConfirmResultScreen(
                 title = "어떤 내용이 잘못됐나요?",
                 items = bottomSheetItems,
                 selectedItem = uiState.selectedDenyReason?.description ?: "",
-                contentToBtnPadding = 20.dp,
-                btnText = "제출하기",
                 onItemClick = { description ->
                     ConfirmDenyType.findByDescription(description)?.let(onDenyReasonSelect)
                 },
-                onBtnClick = onRejectClick,
+                optionalButton = BottomSheetButtonConfig(
+                    btnText = "제출하기",
+                    contentToBtnPadding = 20.dp,
+                    onBtnClick = onRejectClick,
+                ),
             )
         }
 

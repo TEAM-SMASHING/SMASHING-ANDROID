@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.core.designsystem.component.bottomsheet.BottomSheetButtonConfig
 import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -153,10 +154,12 @@ private fun SearchMainScreen(
                 title = "티어",
                 items = uiState.tierBottomSheetList,
                 selectedItem = uiState.selectedTierItem?.tierKName ?: "",
-                contentToBtnPadding = 4.dp,
-                btnText = "적용하기",
                 onItemClick = onTierItemClick,
-                onBtnClick = onTierApplyClick,
+                optionalButton = BottomSheetButtonConfig(
+                    btnText = "적용하기",
+                    contentToBtnPadding = 4.dp,
+                    onBtnClick = onTierApplyClick,
+                ),
             )
         }
 
@@ -166,10 +169,12 @@ private fun SearchMainScreen(
                 title = "성별",
                 items = uiState.genderBottomSheetList,
                 selectedItem = uiState.selectedGenderItem?.genderKName ?: "",
-                contentToBtnPadding = 4.dp,
-                btnText = "적용하기",
                 onItemClick = onGenderItemClick,
-                onBtnClick = onGenderApplyClick,
+                optionalButton = BottomSheetButtonConfig(
+                    btnText = "적용하기",
+                    contentToBtnPadding = 4.dp,
+                    onBtnClick = onGenderApplyClick,
+                ),
             )
         }
 
