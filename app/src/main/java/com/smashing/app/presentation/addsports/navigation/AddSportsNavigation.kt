@@ -1,7 +1,5 @@
 package com.smashing.app.presentation.addsports.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -16,12 +14,11 @@ fun NavController.navigateToAddSports(
 ) = navigate(AddSports, navOptions)
 
 fun NavGraphBuilder.addSportsGraph(
-    navigateUp: () -> Unit,
+    navController: NavController,
 ) {
     composable<AddSports> {
         AddSportsRoute(
-            modifier = Modifier.fillMaxSize(),
-            navigateUp = navigateUp,
+            navigateUp = navController::navigateUp,
         )
     }
 }
