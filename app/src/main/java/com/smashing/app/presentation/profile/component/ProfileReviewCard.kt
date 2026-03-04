@@ -26,7 +26,7 @@ import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
 import com.smashing.app.R.string.all_review
-import com.smashing.app.R.string.receive_review
+import com.smashing.app.R.string.review_receive_review
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.style.ChipStyle.DISABLED
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -60,7 +60,7 @@ fun ReviewCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(id = receive_review),
+                text = stringResource(id = review_receive_review),
                 style = SmashingTheme.typography.md.semibold16,
                 color = SmashingTheme.colors.txtPrimary,
             )

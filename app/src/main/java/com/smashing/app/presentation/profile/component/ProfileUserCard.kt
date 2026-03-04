@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.string.record_label
+import com.smashing.app.R.string.profile_record_label
 import com.smashing.app.R.string.review
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.badge.TierBadge
@@ -103,7 +103,7 @@ fun UserProfileCard(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ProfileStatRow(
-                label = stringResource(id = record_label),
+                label = stringResource(id = profile_record_label),
                 value = "${winCount}승 ${loseCount}패",
             )
 
