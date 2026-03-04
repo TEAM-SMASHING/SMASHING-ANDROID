@@ -29,6 +29,8 @@
     <string name="kakao_link">카카오톡 링크</string>
     <string name="win_lose_count">%1$d승 %2$d패</string>
     <string name="apply_competition">경쟁 신청하기</string>
+    <string name="label_win_lose_record">%1$d승 %2$d패</string>
+
 
     <!--Dialog -->
     <string name="dialog_cancel_add_item_title">종목 추가를 취소하시겠습니까?</string>

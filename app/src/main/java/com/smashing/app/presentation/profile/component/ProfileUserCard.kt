@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.string.profile_record_label
 import com.smashing.app.R.string.review
 import com.smashing.app.R.string.apply_competition
+import com.smashing.app.R.string.label_win_lose_record
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingButton
@@ -105,7 +106,7 @@ fun UserProfileCard(
         ) {
             ProfileStatRow(
                 label = stringResource(id = profile_record_label),
-                value = "${winCount}승 ${loseCount}패",
+                value = stringResource(id = label_win_lose_record, winCount, loseCount)
             )
 
             ProfileStatRow(
