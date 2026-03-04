@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -36,6 +35,7 @@ import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextF
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.checkLength
+import com.smashing.app.core.extension.checkMaxLength
 
 @Composable
 fun NicknameInputTextField(
@@ -85,7 +85,7 @@ fun NicknameInputTextField(
                     focusManager.clearFocus()
                 },
 
-                inputTransformation = InputTransformation.maxLength(maxLength),
+                inputTransformation = InputTransformation.checkMaxLength(maxLength),
 
                 suffix = {
                     Text(
