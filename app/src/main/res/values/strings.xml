@@ -39,6 +39,7 @@
     <!--Dropdown -->
     <string name="dropdown_region_select">내 지역 변경</string>
     <string name="dropdown_winner_select">승자 선택</string>
+
     <!--SignUp  -->
     <string name="sign_up_next_btn">다음</string>
     <string name="sign_up_end_btn">완료</string>
@@ -55,7 +56,7 @@
     <string name="sign_up_skill_subtitle">구력을 통해 임시 티어가 결정돼요</string>
     <string name="sign_up_location_title">활동 지역을 설정해주세요</string>
     <string name="sign_up_location_subtitle">서울 소재 주소만 입력 가능해요</string>
-    <string name="sign_up_location_placeholder">주소를 검색해주세요</string>
+    <string name="sign_up_location_placeholder">도로명 주소를 검색해주세요</string>
     <string name="sign_up_finish_title">환영합니다!</string>
     <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
 
