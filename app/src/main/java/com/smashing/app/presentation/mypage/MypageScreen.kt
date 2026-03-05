@@ -1,7 +1,6 @@
 package com.smashing.app.presentation.mypage
 
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,7 +38,9 @@ import com.smashing.app.R.string.mypage_info_version
 import com.smashing.app.R.string.mypage_policy_privacy
 import com.smashing.app.R.string.mypage_policy_terms
 import com.smashing.app.R.string.mypage_policy_title
+import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
@@ -56,25 +60,37 @@ fun MyPageRoute(
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) {
-    }
+
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
+    }
+    var isShowLogoutDialog by remember { mutableStateOf(false) }
+    if (isShowLogoutDialog) {
+        SmashingDialog(
+            title = "로그아웃",
+            subtitle = "정말 로그아웃하시겠습니까?",
+            type = DialogStyle.ALERT,
+            confirmText = "로그아웃",
+            dismissText = "취소",
+            onConfirmClick = {
+                isShowLogoutDialog = false
+                navigateToLogout()
+            },
+            onDismissClick = { isShowLogoutDialog = false },
+            onDismissRequest = {}
+        )
     }
 
     MyPageScreen(
         modifier = modifier,
         uiState = uiState,
         onMyProfileClick = navigateToMyProfile,
-        onLogoutClick = navigateToLogout,
+        onLogoutClick = { isShowLogoutDialog = true },
         onWithDrawClick = navigateToWithDraw,
         onPolicyPrivacyClick = navigateToPolicyPrivacy,
         onPolicyTermsClick = navigateToPolicyTerms,
         onBackClick = navigateUp,
-        scrollState = rememberScrollState(),
-
     )
 }
 
@@ -88,8 +104,9 @@ private fun MyPageScreen(
     onPolicyPrivacyClick: () -> Unit,
     onPolicyTermsClick: () -> Unit,
     modifier: Modifier = Modifier,
-    scrollState: ScrollState = rememberScrollState(),
 ) {
+    val scrollState = rememberScrollState()
+
 
     Column(
         modifier = modifier
