@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakao.sdk.v2.auth.BuildConfig
+import com.smashing.app.BuildConfig
 import com.smashing.app.R.drawable.ic_arrow_next
 import com.smashing.app.R.string.mypage
 import com.smashing.app.R.string.mypage_account_logout
