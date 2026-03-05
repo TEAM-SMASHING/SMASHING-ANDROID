@@ -14,14 +14,6 @@
     <string name="blank_label"></string>
     <string name="score_separator">:</string>
 
-    <!-- Login -->
-    <string name="kakao_login">카카오로 시작하기</string>
-    <string name="login_description_s">스</string>
-    <string name="login_description_for_ports">포츠인들을 위한&#160;</string>
-    <string name="login_description_m">매</string>
-    <string name="login_description_athching">칭서비스는&#160;</string>
-    <string name="login_description_ing">계속된다</string>
-
     <!--Ranking -->
     <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
 
@@ -39,6 +31,9 @@
     <!--Dropdown -->
     <string name="dropdown_region_select">내 지역 변경</string>
     <string name="dropdown_winner_select">승자 선택</string>
+
+    <!-- Login -->
+    <string name="kakao_login">카카오로 시작하기</string>
 
     <!--SignUp  -->
     <string name="sign_up_next_btn">다음</string>
