@@ -66,7 +66,7 @@ fun MyPageCard(
             )
         }
 
-        Spacer(modifier = Modifier.width((20.dp)))
+        Spacer(modifier = Modifier.weight(1f))
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(size = 20.dp))
