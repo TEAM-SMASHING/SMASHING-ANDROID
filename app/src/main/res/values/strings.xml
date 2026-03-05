@@ -306,8 +306,17 @@
     <string name="matching_send_dialog_description">요청 취소 시 24시간 후 재요청할 수 있습니다.</string>
     <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠습니까?</string>
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료됩니다.</string>
+
     <!--Search  -->
+    <string name="search_tier">티어</string>
+    <string name="search_gender">성별</string>
     <string name="search_placeholder">닉네임을 검색해주세요</string>
+    <string name="search_apply_btn">적용하기</string>
+    <string name="search_filter_empty_title">해당 조건에 맞는 유저가 없어요</string>
+    <string name="search_filter_empty_subtitle">적용된 필터를 변경해보세요</string>
+    <string name="search_input_empty_title">검색 결과가 없습니다.</string>
+    <string name="search_input_empty_subtitle">다른 검색어를 입력해보세요</string>
+
     <!--Profile -->
     <!--Notice  -->
     <string name="notice">알림</string>
