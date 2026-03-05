@@ -27,10 +27,6 @@
     <string name="accept">수락</string>
     <string name="skip">건너뛰기</string>
     <string name="kakao_link">카카오톡 링크</string>
-    <string name="win_lose_count">%1$d승 %2$d패</string>
-    <string name="apply_competition">경쟁 신청하기</string>
-    <string name="label_win_lose_record">%1$d승 %2$d패</string>
-
 
     <!--Dialog -->
     <string name="dialog_cancel_add_item_title">종목 추가를 취소하시겠습니까?</string>
@@ -349,6 +345,9 @@
     <string name="profile_competition_applied">경쟁 신청이 완료되었습니다!</string>
     <string name="profile_check_matching_tab">매칭 관리 탭에서 매칭 정보를 확인해주세요.</string>
     <string name="profile_go_to_link">바로가기</string>
+    <string name="profile_win_lose_count">%1$d승 %2$d패</string>
+    <string name="profile_apply_competition">경쟁 신청하기</string>
+
 
     <!--AllReveiw-->
     <string name="review_receive_review">받은 후기</string>

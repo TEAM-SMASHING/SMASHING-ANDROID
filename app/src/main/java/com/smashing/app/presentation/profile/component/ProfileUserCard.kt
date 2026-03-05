@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.string.profile_record_label
 import com.smashing.app.R.string.review
-import com.smashing.app.R.string.apply_competition
-import com.smashing.app.R.string.label_win_lose_record
+import com.smashing.app.R.string.profile_apply_competition
+import com.smashing.app.R.string.profile_win_lose_count
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingButton
@@ -106,7 +106,7 @@ fun UserProfileCard(
         ) {
             ProfileStatRow(
                 label = stringResource(id = profile_record_label),
-                value = stringResource(id = label_win_lose_record, winCount, loseCount)
+                value = stringResource(id = profile_win_lose_count, winCount, loseCount)
             )
 
             ProfileStatRow(
@@ -120,7 +120,7 @@ fun UserProfileCard(
 
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
-                text = stringResource(apply_competition),
+                text = stringResource(profile_apply_competition),
                 onClick = onCompeteClick,
                 modifier = Modifier
                     .fillMaxWidth(),
