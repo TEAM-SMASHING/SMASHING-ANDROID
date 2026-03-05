@@ -28,9 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_fake_red
 import com.smashing.app.R.drawable.ic_plus
-import com.smashing.app.R.string.lp_remaining_text
-import com.smashing.app.R.string.lp_status
-import com.smashing.app.R.string.tier_description
+import com.smashing.app.R.string.profile_lp_remaining_text
+import com.smashing.app.R.string.profile_lp_status
+import com.smashing.app.R.string.profile_tier_description
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
@@ -130,13 +130,13 @@ fun ProfileTierBox(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(lp_remaining_text),
+                    text = stringResource(profile_lp_remaining_text),
                     color = SmashingTheme.colors.txtTertiary,
                     style = SmashingTheme.typography.md.medium16,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = stringResource(lp_status),
+                    text = stringResource(profile_lp_status),
                     color = SmashingTheme.colors.txtTertiary,
                     style = SmashingTheme.typography.md.medium16,
                 )
@@ -153,7 +153,7 @@ fun ProfileTierBox(
 
                 SmashingBaseButton(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(tier_description),
+                    text = stringResource(profile_tier_description),
                     textStyle = SmashingTheme.typography.md.semibold16,
                     onClick = onTierInfoClick,
                     buttonColor = SmashingBtnColor(
