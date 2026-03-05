@@ -346,7 +346,7 @@
     <string name="confirm_result_title">경기 결과를 확인해주세요</string>
 
     <!--MyPage  -->
-    <string name="mypage_account_manage">계정 관리</string>>
+    <string name="mypage_account_manage">계정 관리</string>
     <string name="mypage_account_logout">로그아웃</string>
     <string name="mypage_account_withdraw">계정 탈퇴</string>
     <string name="mypage_policy_title">정책 및 정보</string>
