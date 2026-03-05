@@ -1,5 +1,8 @@
 package com.smashing.app.presentation.mypage.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -21,6 +24,7 @@ fun NavController.navigateToWithdraw(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.myPageGraph(
     navController: NavController,
+    innerPadding: PaddingValues,
 ) {
     composable<MyPage> {
         val uriHandler = LocalUriHandler.current
@@ -42,6 +46,7 @@ fun NavGraphBuilder.myPageGraph(
                 //TODO 실제 URL로 변경
                 uriHandler.openUri("https://github.com/TEAM-SMASHING/SMASHING-ANDROID")
             },
+            modifier = Modifier.padding(innerPadding),
         )
     }
     fun NavGraphBuilder.withdrawGraph(
