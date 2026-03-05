@@ -75,7 +75,7 @@ fun MyPageCard(
                     color = SmashingTheme.colors.borderTertiary,
                     shape = RoundedCornerShape(size = 20.dp)
                 )
-                .padding(vertical = 4.dp, horizontal = 8.5.dp)
+                .padding(vertical = 4.dp, horizontal = 9.dp)
                 .noRippleClickable(
                     onClick = onClick,
                 )
