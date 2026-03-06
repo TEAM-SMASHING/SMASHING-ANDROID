@@ -49,14 +49,8 @@ fun NavGraphBuilder.myPageGraph(
             modifier = Modifier.padding(innerPadding),
         )
     }
-    fun NavGraphBuilder.withdrawGraph(
-        navController: NavController,
-    ) {
-        composable<Withdraw> {
-            //TODO 회원탈퇴
-        }
-    }
 }
+
 
 @Serializable
 data object MyPage : Route
