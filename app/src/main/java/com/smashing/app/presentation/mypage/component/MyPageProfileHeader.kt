@@ -57,7 +57,7 @@ fun MyPageProfileHeader(
         Column {
             Text(
                 text = nickname,
-                style = SmashingTheme.typography.lg.semibold18,
+                style = SmashingTheme.typography.md.medium16,
                 color = SmashingTheme.colors.txtPrimary,
             )
 
