@@ -38,7 +38,9 @@ import com.smashing.app.R.string.mypage_account_withdraw
 import com.smashing.app.R.string.mypage_info_version
 import com.smashing.app.R.string.mypage_policy_privacy
 import com.smashing.app.R.string.mypage_policy_terms
+import com.smashing.app.R.string.cancel_short
 import com.smashing.app.R.string.mypage_policy_title
+import com.smashing.app.R.string.mypage_logout_message
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.DialogStyle
@@ -69,11 +71,11 @@ fun MyPageRoute(
     var isShowLogoutDialog by remember { mutableStateOf(false) }
     if (isShowLogoutDialog) {
         SmashingDialog(
-            title = "로그아웃",
-            subtitle = "정말 로그아웃하시겠습니까?",
+            title = stringResource(mypage_account_logout),
+            subtitle = stringResource(mypage_logout_message),
             type = DialogStyle.ALERT,
-            confirmText = "로그아웃",
-            dismissText = "취소",
+            confirmText = stringResource(mypage_account_logout),
+            dismissText = stringResource(cancel_short),
             onConfirmClick = {
                 isShowLogoutDialog = false
                 navigateToLogout()

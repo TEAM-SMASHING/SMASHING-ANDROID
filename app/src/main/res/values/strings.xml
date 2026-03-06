@@ -8,6 +8,7 @@
     <string name="count">%d</string>
     <string name="no">아니요</string>
     <string name="cancel">취소하기</string>
+    <string name="cancel_short">취소</string>
     <string name="score_format">%1$d : %2$d</string>
     <string name="next">다음</string>
     <string name="asterisk_label">*</string>
@@ -388,6 +389,7 @@
     <string name="mypage_policy_terms">이용약관</string>
     <string name="mypage_info_version">버전 정보</string>
     <string name="mypage_my_profile">내 프로필</string>
+    <string name="mypage_logout_message">정말 로그아웃하시겠습니까?</string>
 
 
 
