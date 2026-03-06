@@ -30,7 +30,7 @@ class MyPageViewModel @Inject constructor(
                         currentState.copy(
                             profileLoadState = MyPageUiState.Success,
                             myProfileInfo = data,
-                            selectedSportProfileId = data.myProfileInfo.profileId,
+                            selectedSportProfileId = data.profileInfo.profileId,
                         )
                     }
                 }

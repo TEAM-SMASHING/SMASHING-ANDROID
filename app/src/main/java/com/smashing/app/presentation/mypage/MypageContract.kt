@@ -12,7 +12,7 @@ interface MyPageContract {
         val selectedSportProfileId: String = "",
     ) {
         val activeProfile: ProfileInfo
-            get() = myProfileInfo.myProfileInfo
+            get() = myProfileInfo.profileInfo
     }
 }
 
