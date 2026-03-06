@@ -3,7 +3,6 @@ package com.smashing.app.presentation.mypage.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -27,7 +26,6 @@ fun NavGraphBuilder.myPageGraph(
     innerPadding: PaddingValues,
 ) {
     composable<MyPage> {
-        val uriHandler = LocalUriHandler.current
         MyPageRoute(
             navigateUp = navController::navigateUp,
             navigateToMyProfile = navController::navigateToMyProfile,
@@ -37,14 +35,6 @@ fun NavGraphBuilder.myPageGraph(
                     popUpTo<MyPage> { inclusive = true }
                     launchSingleTop = true
                 }
-            },
-            navigateToPolicyPrivacy = {
-                //TODO 실제 URL로 변경
-                uriHandler.openUri("https://github.com/TEAM-SMASHING/SMASHING-ANDROID")
-            },
-            navigateToPolicyTerms = {
-                //TODO 실제 URL로 변경
-                uriHandler.openUri("https://github.com/TEAM-SMASHING/SMASHING-ANDROID")
             },
             modifier = Modifier.padding(innerPadding),
         )

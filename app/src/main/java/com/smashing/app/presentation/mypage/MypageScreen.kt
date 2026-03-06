@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,16 +32,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.BuildConfig
 import com.smashing.app.R.drawable.ic_arrow_next
+import com.smashing.app.R.string.cancel_short
 import com.smashing.app.R.string.mypage
 import com.smashing.app.R.string.mypage_account_logout
 import com.smashing.app.R.string.mypage_account_manage
 import com.smashing.app.R.string.mypage_account_withdraw
 import com.smashing.app.R.string.mypage_info_version
+import com.smashing.app.R.string.mypage_logout_message
 import com.smashing.app.R.string.mypage_policy_privacy
 import com.smashing.app.R.string.mypage_policy_terms
-import com.smashing.app.R.string.cancel_short
 import com.smashing.app.R.string.mypage_policy_title
-import com.smashing.app.R.string.mypage_logout_message
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.DialogStyle
@@ -49,6 +50,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
+import com.smashing.app.core.extension.openUrl
 import com.smashing.app.presentation.mypage.component.MyPageProfileHeader
 
 
@@ -58,12 +60,11 @@ fun MyPageRoute(
     navigateToMyProfile: () -> Unit,
     navigateToLogout: () -> Unit,
     navigateToWithDraw: () -> Unit,
-    navigateToPolicyPrivacy: () -> Unit,
-    navigateToPolicyTerms: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
@@ -91,11 +92,12 @@ fun MyPageRoute(
         onMyProfileClick = navigateToMyProfile,
         onLogoutClick = { isShowLogoutDialog = true },
         onWithDrawClick = navigateToWithDraw,
-        onPolicyPrivacyClick = navigateToPolicyPrivacy,
-        onPolicyTermsClick = navigateToPolicyTerms,
+        onPolicyPrivacyClick = { policyPrivacyLink -> context.openUrl(policyPrivacyLink) },
+        onPolicyTermsClick = { kakaoLink -> context.openUrl(kakaoLink) },
         onBackClick = navigateUp,
     )
 }
+
 
 @Composable
 private fun MyPageScreen(
@@ -104,13 +106,11 @@ private fun MyPageScreen(
     onMyProfileClick: () -> Unit,
     onLogoutClick: () -> Unit,
     onWithDrawClick: () -> Unit,
-    onPolicyPrivacyClick: () -> Unit,
-    onPolicyTermsClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onPolicyPrivacyClick: (String?) -> Unit = {},
+    onPolicyTermsClick: (String?) -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
-
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -184,7 +184,7 @@ private fun MyPageScreen(
                 style = typography.sm.medium14,
                 color = colors.txtPrimary,
                 modifier = Modifier
-                    .noRippleClickable(onClick = onPolicyPrivacyClick)
+                    .noRippleClickable(onClick = { onPolicyPrivacyClick(policyPrivacyLink) })
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -192,7 +192,7 @@ private fun MyPageScreen(
                 style = typography.sm.medium14,
                 color = colors.txtPrimary,
                 modifier = Modifier
-                    .noRippleClickable(onClick = onPolicyTermsClick)
+                    .noRippleClickable(onClick = { onPolicyTermsClick(policyTermsLink) })
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -214,6 +214,10 @@ private fun MyPageScreen(
         }
     }
 }
+
+private const val policyPrivacyLink = "https://github.com/TEAM-SMASHING/SMASHING-ANDROID"
+private const val policyTermsLink = "https://github.com/TEAM-SMASHING/SMASHING-ANDROID"
+
 
 @Preview(showBackground = true)
 @Composable
