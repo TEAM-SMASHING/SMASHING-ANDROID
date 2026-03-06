@@ -49,6 +49,9 @@ fun NavGraphBuilder.myPageGraph(
             modifier = Modifier.padding(innerPadding),
         )
     }
+    composable<Withdraw> {
+    //TODO 회원탈퇴
+    }
 }
 
 
