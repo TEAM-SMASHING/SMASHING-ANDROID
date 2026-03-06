@@ -387,6 +387,8 @@
     <string name="mypage_policy_privacy">개인정보 처리방침</string>
     <string name="mypage_policy_terms">이용약관</string>
     <string name="mypage_info_version">버전 정보</string>
+    <string name="mypage_my_profile">내 프로필</string>
+
 
 
 </resources>

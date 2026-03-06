@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.core.designsystem.component.badge.TierBadge
@@ -27,6 +28,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.type.TierType
+import com.smashing.app.R.string.mypage_my_profile
 
 @Composable
 fun MyPageCard(
@@ -81,7 +83,7 @@ fun MyPageCard(
                 )
         ) {
             Text(
-                text = "내 프로필",
+                text = stringResource(mypage_my_profile),
                 style = SmashingTheme.typography.xs.medium12,
                 color = SmashingTheme.colors.txtPrimary,
             )
