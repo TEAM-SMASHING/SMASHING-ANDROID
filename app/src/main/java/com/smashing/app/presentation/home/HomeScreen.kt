@@ -96,7 +96,7 @@ fun HomeRoute(
         isFirstAttempt: Boolean,
     ) -> Unit,
     navigateToMyProfile: () -> Unit,
-    navigateToMyPage:()->Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -173,7 +173,7 @@ private fun HomeScreen(
     ) -> Unit,
     navigateToMyProfile: () -> Unit,
     onSportsChipClick: (String) -> Unit,
-    navigateToMyPage:()->Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
 ) {
@@ -548,7 +548,7 @@ private fun HomeScreenPreview() {
                     loseCount = 7,
                 ),
                 myProfileItem = listOf(),
-                ),
+            ),
             topRankerList = listOf(
                 UserRank(
                     userId = "user1",
