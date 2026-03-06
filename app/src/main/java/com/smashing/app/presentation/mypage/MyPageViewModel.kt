@@ -16,11 +16,12 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val myRepository: MyRepository,
-    ) : ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
     fun fetchProfileInfo() {
+        if (_uiState.value.profileLoadState == MyPageUiState.Loading) return
         viewModelScope.launch {
             _uiState.update { it.copy(profileLoadState = MyPageUiState.Loading) }
             myRepository.getMyProfileInfo()
@@ -36,7 +37,7 @@ class MyPageViewModel @Inject constructor(
                 .onFailure { exception ->
                     _uiState.update {
                         it.copy(
-                            profileLoadState =  MyPageUiState.Failure(
+                            profileLoadState = MyPageUiState.Failure(
                                 exception.message ?: "오류 발생",
                             )
                         )
