@@ -216,7 +216,7 @@ private fun MyPageScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun ProfileScreenPreview() {
+private fun MyPageScreenPreview() {
     SmashingAndroidTheme {
         MyPageScreen(
             uiState = MyPageContract.State(),
