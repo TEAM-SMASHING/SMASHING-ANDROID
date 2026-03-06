@@ -31,7 +31,7 @@ import com.smashing.app.data.type.TierType
 import com.smashing.app.R.string.mypage_my_profile
 
 @Composable
-fun MyPageCard(
+fun MyPageProfileHeader(
     tierType: TierType,
     nickname: String,
     onClick: () -> Unit,
@@ -95,9 +95,9 @@ fun MyPageCard(
 
 @Preview
 @Composable
-private fun MyPageCardPreview() {
+private fun MyPageProfileHeaderPreview() {
     SmashingAndroidTheme {
-        MyPageCard(
+        MyPageProfileHeader(
             nickname = "하나둘셋넷다여칠팔구",
             tierType = TierType.GOLD_1,
             onClick = {},

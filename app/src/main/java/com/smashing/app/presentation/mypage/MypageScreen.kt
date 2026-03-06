@@ -49,7 +49,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.presentation.mypage.component.MyPageCard
+import com.smashing.app.presentation.mypage.component.MyPageProfileHeader
 
 
 @Composable
@@ -130,7 +130,7 @@ private fun MyPageScreen(
                 .padding(horizontal = 16.dp)
                 .verticalScroll(scrollState),
         ) {
-            MyPageCard(
+            MyPageProfileHeader(
                 nickname = uiState.myProfileInfo.nickname,
                 tierType = uiState.activeProfile.tierType,
                 onClick = onMyProfileClick,
@@ -205,7 +205,6 @@ private fun MyPageScreen(
                     color = colors.txtPrimary,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                //버전 정보
                 Text(
                     text = BuildConfig.VERSION_NAME,
                     style = typography.sm.medium14,
