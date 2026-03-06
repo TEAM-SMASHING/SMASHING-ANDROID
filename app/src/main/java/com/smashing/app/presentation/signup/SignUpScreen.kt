@@ -27,8 +27,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.smashing.app.R
 import com.smashing.app.R.string.sign_up_next_btn
 import com.smashing.app.R.string.sign_up_end_btn
+import com.smashing.app.R.string.sign_up_location_placeholder
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.SkillType
 import com.smashing.app.data.type.SportType
@@ -201,7 +203,7 @@ private fun SignUpScreen(
                     )
 
                     6 -> SignUpLocation(
-                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "도로명 주소를 검색해주세요",
+                        addressText = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else stringResource(sign_up_location_placeholder),
                         isAddressExist = if (uiState.selectedRegion != null) true else false,
                         onAddressClick = onAddressClick,
                     )
