@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R.string.sign_up_location_placeholder
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -69,7 +70,7 @@ fun SignUpLocation(
 private fun SignUpLocationPreview() {
     SmashingAndroidTheme {
         SignUpLocation(
-            addressText = "도로명 주소를 검색해주세요",
+            addressText = stringResource(sign_up_location_placeholder),
             isAddressExist = false,
             onAddressClick = {},
             modifier = Modifier.background(color = colors.bgCanvas)

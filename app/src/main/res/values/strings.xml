@@ -13,14 +13,10 @@
     <string name="zero_label">0</string>
     <string name="blank_label"></string>
     <string name="score_separator">:</string>
-
-    <!-- Login -->
-    <string name="kakao_login">카카오로 시작하기</string>
-    <string name="login_description_s">스</string>
-    <string name="login_description_for_ports">포츠인들을 위한&#160;</string>
-    <string name="login_description_m">매</string>
-    <string name="login_description_athching">칭서비스는&#160;</string>
-    <string name="login_description_ing">계속된다</string>
+    <string name="confirm">확인</string>
+    <string name="win_label">승리</string>
+    <string name="lose_label">패배</string>
+    <string name="rate_label">승률</string>
 
     <!--Ranking -->
     <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
@@ -31,7 +27,16 @@
     <string name="accept">수락</string>
     <string name="skip">건너뛰기</string>
     <string name="kakao_link">카카오톡 링크</string>
-    <string name="win_lose_count">%1$d승 %2$d패</string>
+
+    <!--Dialog -->
+    <string name="dialog_cancel_add_item_title">종목 추가를 취소하시겠습니까?</string>
+    <string name="dialog_cancel_add_item_message">취소 시 진행중인 내용은 저장되지 않아요</string>
+
+    <!--Chip-->
+    <string name="chip_on_time_review">시간 약속을 잘 지켜요</string>
+    <string name="chip_good_manner_review">경기 매너가 좋아요</string>
+    <string name="chip_fair_play_review">승패를 깔끔하게 인정해요</string>
+    <string name="chip_fast_response_review">응답이 빨라요</string>
 
     <!--Progress -->
     <string name="progress_label">progress</string>
@@ -39,32 +44,6 @@
     <!--Dropdown -->
     <string name="dropdown_region_select">내 지역 변경</string>
     <string name="dropdown_winner_select">승자 선택</string>
-    <!--SignUp  -->
-    <string name="sign_up_next_btn">다음</string>
-    <string name="sign_up_end_btn">완료</string>
-    <string name="sign_up_nickname_title">닉네임을 입력해주세요</string>
-    <string name="sign_up_nickname_subtitle">한글, 영어, 숫자만 가능해요</string>
-    <string name="sign_up_nickname_duplicate">중복확인</string>
-    <string name="sign_up_gender_title">성별을 선택해주세요</string>
-    <string name="sign_up_chat_link_title">카카오톡 오픈채팅 링크를 입력해주세요</string>
-    <string name="sign_up_chat_link_subtitle">매칭이 확정되면 상대방이 확인할 수 있어요</string>
-    <string name="sign_up_chat_link_placeholder">오픈채팅 링크를 입력해주세요</string>
-    <string name="sign_up_sport_title">종목을 선택해주세요</string>
-    <string name="sign_up_sport_subtitle">회원가입 이후 종목을 추가할 수 있어요</string>
-    <string name="sign_up_skill_title">구력을 선택해주세요</string>
-    <string name="sign_up_skill_subtitle">구력을 통해 임시 티어가 결정돼요</string>
-    <string name="sign_up_location_title">활동 지역을 설정해주세요</string>
-    <string name="sign_up_location_subtitle">서울 소재 주소만 입력 가능해요</string>
-    <string name="sign_up_location_placeholder">주소를 검색해주세요</string>
-    <string name="sign_up_finish_title">환영합니다!</string>
-    <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
-
-    <!--Home  -->
-    <string name="home_no_matching">아직 확정된 매칭이 없어요.\n지금 바로 매칭을 신청해보세요!</string>
-    <string name="home_all_text">모두 보기</string>
-    <string name="home_region_ranker">우리 동네 랭커</string>
-    <string name="home_no_user">아직 동네 유저가 없어요</string>
-    <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요</string>
 
 
     <!-- ========== Badminton Tier Info ========== -->
@@ -292,6 +271,37 @@
     <string name="tier_challenger_name">결국 해내셨군요!</string>
     <string name="tier_challenger_description">끊임없이 덤비는 도전자들로부터 자격을 증명하세요!</string>
 
+    <!-- ==========Presentation ========== -->
+
+    <!-- Login -->
+    <string name="kakao_login">카카오로 시작하기</string>
+
+    <!--SignUp  -->
+    <string name="sign_up_next_btn">다음</string>
+    <string name="sign_up_end_btn">완료</string>
+    <string name="sign_up_nickname_title">닉네임을 입력해주세요</string>
+    <string name="sign_up_nickname_subtitle">한글, 영어, 숫자만 가능해요</string>
+    <string name="sign_up_nickname_duplicate">중복확인</string>
+    <string name="sign_up_gender_title">성별을 선택해주세요</string>
+    <string name="sign_up_chat_link_title">카카오톡 오픈채팅 링크를 입력해주세요</string>
+    <string name="sign_up_chat_link_subtitle">매칭이 확정되면 상대방이 확인할 수 있어요</string>
+    <string name="sign_up_chat_link_placeholder">오픈채팅 링크를 입력해주세요</string>
+    <string name="sign_up_sport_title">종목을 선택해주세요</string>
+    <string name="sign_up_sport_subtitle">회원가입 이후 종목을 추가할 수 있어요</string>
+    <string name="sign_up_skill_title">구력을 선택해주세요</string>
+    <string name="sign_up_skill_subtitle">구력을 통해 임시 티어가 결정돼요</string>
+    <string name="sign_up_location_title">활동 지역을 설정해주세요</string>
+    <string name="sign_up_location_subtitle">서울 소재 주소만 입력 가능해요</string>
+    <string name="sign_up_location_placeholder">도로명 주소를 검색해주세요</string>
+    <string name="sign_up_finish_title">환영합니다!</string>
+    <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
+
+    <!--Home  -->
+    <string name="home_no_matching">아직 확정된 매칭이 없어요.\n지금 바로 매칭을 신청해보세요!</string>
+    <string name="home_all_text">모두 보기</string>
+    <string name="home_region_ranker">우리 동네 랭커</string>
+    <string name="home_no_user">아직 동네 유저가 없어요</string>
+    <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요</string>
 
     <!--Matching -->
     <string name="matching_btn_write">결과 작성하기</string>
@@ -311,39 +321,63 @@
     <string name="matching_send_dialog_description">요청 취소 시 24시간 후 재요청할 수 있습니다.</string>
     <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠습니까?</string>
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료됩니다.</string>
+
     <!--Search  -->
+    <string name="search_tier">티어</string>
+    <string name="search_gender">성별</string>
     <string name="search_placeholder">닉네임을 검색해주세요</string>
-    <!--Profile -->
+    <string name="search_apply_btn">적용하기</string>
+    <string name="search_filter_empty_title">해당 조건에 맞는 유저가 없어요</string>
+    <string name="search_filter_empty_subtitle">적용된 필터를 변경해보세요</string>
+    <string name="search_input_empty_title">검색 결과가 없습니다.</string>
+    <string name="search_input_empty_subtitle">다른 검색어를 입력해보세요</string>
+
     <!--Notice  -->
     <string name="notice">알림</string>
+
     <!--Profile-->
-    <string name="win_label">승리</string>
-    <string name="lose_label">패배</string>
-    <string name="rate_label">승률</string>
-    <string name="add_sports_label">+</string>
-    <string name="tier_description">티어 설명</string>
-    <string name="lp_remaining_text">LP 남았어요!</string>
-    <string name="lp_status">LP</string>
-    <string name="record_label">전적</string>
-    <string name="receive_review">받은 후기</string>
-    <string name="short_review">빠른 후기</string>
+    <string name="profile_add_sports_label">+</string>
+    <string name="profile_tier_description">티어 설명</string>
+    <string name="profile_lp_remaining_text">LP 남았어요!</string>
+    <string name="profile_lp_status">LP</string>
+    <string name="profile_record_label">전적</string>
     <string name="all_review">모두 보기</string>
-    <string name="on_time_review">시간 약속을 잘 지켜요</string>
-    <string name="good_manner_review">경기 매너가 좋아요</string>
-    <string name="fair_play_review">승패를 깔끔하게 인정해요</string>
-    <string name="fast_response_review">응답이 빨라요</string>
-    <string name="satisfaction_review">만족도</string>
     <string name="profile_rate_percent">%d%%</string>
+    <string name="profile_competition_applied">경쟁 신청이 완료되었습니다!</string>
+    <string name="profile_check_matching_tab">매칭 관리 탭에서 매칭 정보를 확인해주세요.</string>
+    <string name="profile_go_to_link">바로가기</string>
+    <string name="profile_win_lose_count">%1$d승 %2$d패</string>
+    <string name="profile_apply_competition">경쟁 신청하기</string>
+
+
+    <!--AllReveiw-->
+    <string name="review_receive_review">받은 후기</string>
+    <string name="review_no_review_yet">아직 받은 후기가 없어요</string>
+    <string name="review_no_fast_reviews_yet">아직 받은 빠른 후기가 없어요</string>
+    <string name="review_short_review">빠른 후기</string>
+    <string name="review_satisfaction_review">만족도</string>
+    <string name="review_with_count">%1$s %2$d</string>
+
+    <!--ConfrimReveiw-->
+    <string name="confirm_review_arrived_with_nickname">%1$s님이\n보낸 후기가 도착했어요</string>
+
+
+    <!--AddSports-->
+    <string name="addsports_select_sport">추가할 종목을 선택해주세요</string>
+    <string name="addsports_select_experience">구력을 선택해주세요</string>
+    <string name="addsports_temporary_tier_determination">구력을 통해 임시 티어가 결정돼요</string>
+    <string name="addsports_title">종목 추가</string>
+
     <!--Submit  -->
     <string name="submit_matching_result">결과 작성</string>
     <string name="submit_title">경기 결과를 작성해주세요</string>
     <string name="submit_description">악의적인 결과 작성 시 활동이 제한될 수 있어요</string>
     <string name="submit_winner">승자</string>
     <string name="submit_score">스코어</string>
+
     <!--Confirm  -->
     <string name="confirm_result">결과 확인</string>
     <string name="confirm_result_title">경기 결과를 확인해주세요</string>
-
 
 
 </resources>
