@@ -31,7 +31,7 @@ fun HomeTopBar(
     onChangeRegion: () -> Unit,
     onClickSportChip: () -> Unit,
     onClickNotice: () -> Unit,
-    onClickMyPage: () -> Unit,
+    onMyPageClick: () -> Unit,
     modifier: Modifier = Modifier,
     isNotice: Boolean = false,
 ) {
@@ -93,7 +93,7 @@ fun HomeTopBar(
             tint = SmashingTheme.colors.iconPrimary,
             modifier = Modifier
                 .noRippleClickable(
-                    onClick = onClickMyPage,
+                    onClick = onMyPageClick,
                 )
         )
 

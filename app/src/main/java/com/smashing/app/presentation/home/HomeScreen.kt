@@ -218,7 +218,7 @@ private fun HomeScreen(
                 onClickSportChip = { isDropdownExpanded = !isDropdownExpanded },
                 onClickNotice = navigateToNotice,
                 isNotice = uiState.isNotice,
-                onClickMyPage = navigateToMyPage,
+                onMyPageClick = navigateToMyPage,
             )
         }
 
