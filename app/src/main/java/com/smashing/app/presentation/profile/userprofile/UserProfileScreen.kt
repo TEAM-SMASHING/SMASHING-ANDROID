@@ -57,6 +57,7 @@ import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.ShowToast
+import com.smashing.app.presentation.profile.userprofile.type.UserProfileMenu
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -125,8 +126,10 @@ private fun UserProfileScreen(
     var bottomBarHeight by remember { mutableStateOf(0.dp) }
     var showMenuBottomSheet by remember { mutableStateOf(false) }
     var showBlockDialog by remember { mutableStateOf(false) }
+
     val density = LocalDensity.current
 
+    val userProfileMenuItems = UserProfileMenu.entries.map { it.text }.toImmutableList()
 
     Column(
         modifier = modifier
@@ -243,17 +246,18 @@ private fun UserProfileScreen(
 
         if (showMenuBottomSheet) {
             SmashingBottomSheet(
-                items = persistentListOf("신고하기", "차단하기"),
+                items = userProfileMenuItems,
                 selectedItem = "",
                 onItemClick = { item ->
                     showMenuBottomSheet = false
-                    when (item) {
-                        "신고하기" -> navigateToReport()
-                        "차단하기" -> showBlockDialog = true
+                    when (UserProfileMenu.entries.find { it.text == item }) {
+                        UserProfileMenu.REPORT -> navigateToReport()
+                        UserProfileMenu.BLOCK -> showBlockDialog = true
+                        null -> {}
                     }
                 },
                 onDismissRequest = { showMenuBottomSheet = false },
-                itemTextColor = {if(it == "차단하기") colors.txtRed else null},
+                itemTextColor = { if (it == UserProfileMenu.BLOCK.text) colors.txtRed else null },
             )
         }
 
