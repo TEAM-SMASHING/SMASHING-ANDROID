@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.string.count
 import com.smashing.app.R.string.record
 import com.smashing.app.R.string.review
-import com.smashing.app.R.string.win_lose_count
+import com.smashing.app.R.string.profile_win_lose_count
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.mapper.icon20
@@ -88,7 +88,7 @@ private fun RecordSection(
 ) {
     CardDescription(
         prefixText = stringResource(record),
-        suffixText = stringResource(win_lose_count, winCount, loseCount),
+        suffixText = stringResource(profile_win_lose_count, winCount, loseCount),
         modifier = Modifier.padding(top = 8.dp),
     )
 
