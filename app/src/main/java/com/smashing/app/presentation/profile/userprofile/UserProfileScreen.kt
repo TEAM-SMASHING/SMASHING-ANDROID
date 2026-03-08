@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,6 +37,7 @@ import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
@@ -52,6 +54,7 @@ import com.smashing.app.presentation.profile.userprofile.UserProfileContract.Sid
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 private const val BTN_WEIGHT = 131f / 185f
 
@@ -59,6 +62,8 @@ private const val BTN_WEIGHT = 131f / 185f
 fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
     navigateToSentMatching: () -> Unit,
+    navigateToReport: () -> Unit,
+    onBlockClick: () -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
@@ -88,10 +93,13 @@ fun UserProfileRoute(
         onCompeteClick = viewModel::requestCompetition,
         onConfirmClick = navigateToSentMatching,
         onDialogDismissClick = viewModel::dismissDialog,
+        navigateToReport = navigateToReport,
+        onBlockClick = onBlockClick,
         modifier = modifier,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserProfileScreen(
     uiState: UserProfileContract.State,
@@ -103,11 +111,14 @@ private fun UserProfileScreen(
     onCompeteClick: () -> Unit,
     onConfirmClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
+    navigateToReport: () -> Unit,
+    onBlockClick: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
 
     var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    var showMenuBottomSheet by remember { mutableStateOf(false) }
     val density = LocalDensity.current
 
 
@@ -120,8 +131,9 @@ private fun UserProfileScreen(
 
         SmashingDefaultTopBar(
             title = stringResource(profile),
-            topBarType = TopBarType.BACK,
+            topBarType = TopBarType.BACK_WITH_MENU,
             onClick = onBackClick,
+            onMenuClick = { showMenuBottomSheet = true },
         )
 
         Box(
@@ -223,6 +235,21 @@ private fun UserProfileScreen(
                 }
             }
         }
+
+        if (showMenuBottomSheet) {
+            SmashingBottomSheet(
+                items = persistentListOf("신고하기", "차단하기"),
+                selectedItem = "",
+                onItemClick = { item ->
+                    showMenuBottomSheet = false
+                    when (item) {
+                        "신고하기" -> navigateToReport()
+                        "차단하기" -> onBlockClick()
+                    }
+                },
+                onDismissRequest = { showMenuBottomSheet = false },
+            )
+        }
     }
 }
 
@@ -241,6 +268,8 @@ private fun ProfileScreenPreview() {
             onConfirmClick = {},
             onDialogDismissClick = {},
             onBackClick = {},
+            navigateToReport = {},
+            onBlockClick = {},
         )
     }
 }
