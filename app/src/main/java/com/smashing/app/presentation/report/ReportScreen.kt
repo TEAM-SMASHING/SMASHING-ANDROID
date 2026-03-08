@@ -128,7 +128,7 @@ fun ReportScreen(
 
             SmashingAreaTextField(
                 state = detailTextFieldState,
-                placeholder = "신고 사유를 구체적으로 작성해주세요",
+                placeholder = "신고 사유를 입력해 주세요",
                 enabled = uiState.selectedReportType == ReportType.ETC,
             )
         }
