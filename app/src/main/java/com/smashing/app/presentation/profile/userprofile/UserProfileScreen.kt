@@ -256,7 +256,7 @@ private fun UserProfileScreen(
             SmashingDialog(
                 title = "정말 차단하시겠습니까?",
                 subtitle = "차단 시 서로 프로필과 매칭에서\n보이지 않게 됩니다.",
-                type = DialogStyle.ALERT,
+                type = DialogStyle.DESTRUCTIVE,
                 confirmText = "차단하기",
                 dismissText = "아니오",
                 onConfirmClick = {
