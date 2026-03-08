@@ -206,7 +206,7 @@ private fun MyPageScreen(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = BuildConfig.VERSION_NAME,
+                    text = "ver ${BuildConfig.VERSION_NAME}",
                     style = typography.sm.medium14,
                     color = colors.txtTertiary,
                 )
