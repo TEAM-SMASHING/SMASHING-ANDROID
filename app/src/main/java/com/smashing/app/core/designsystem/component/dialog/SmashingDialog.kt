@@ -20,22 +20,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.smashing.app.core.designsystem.style.DialogStyle
+import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
 /**
  * 다이얼로그 공통 컴포넌트입니다.
- * [DialogStyle]에 따라 알림(Alert) 또는 확인(Confirm) 모드로 동작하며,
- * 이에 따라 버튼의 개수와 배치가 자동으로 변경됩니다.
+ * [DialogStyle]에 따라 알림(Alert), 확인(Confirm), 차단/삭제 등 위험 액션(Destructive) 모드로 동작하며,
+ * 버튼 개수·배치·확인 버튼 스타일이 자동으로 변경됩니다.
+ *
+ * - [DialogStyle.CONFIRM]: 확인 버튼 1개
+ * - [DialogStyle.ALERT]: 취소/확인 버튼 2개 (일반 스타일)
+ * - [DialogStyle.DESTRUCTIVE]: 취소/확인 버튼 2개, 확인 버튼만 경고(빨간) 스타일 (차단·삭제 등)
  *
  * @param title 다이얼로그 상단에 표시될 메인 제목 텍스트
  * @param onDismissRequest 다이얼로그 외부(Scrim) 클릭 또는 뒤로가기 버튼 클릭 시 호출되는 콜백
- * @param type 다이얼로그 타입 (CONFIRM: 확인 버튼 1개, ALERT: 취소/확인 버튼 2개)
- * @param confirmText 확인(Primary) 버튼에 표시될 텍스트 (CONFIRM 모드에서는 유일한 버튼, ALERT 모드에서는 우측 버튼)
+ * @param type 다이얼로그 타입 (CONFIRM / ALERT / DESTRUCTIVE)
+ * @param confirmText 확인(Primary) 버튼에 표시될 텍스트
  * @param onConfirmClick 확인(Primary) 버튼 클릭 시 실행될 콜백
  * @param subtitle (Optional) 제목 아래에 표시될 부가 설명 텍스트. null일 경우 표시되지 않음.
- * @param dismissText (Optional) 취소(Secondary) 버튼에 표시될 텍스트. [DialogStyle.ALERT]일 때만 좌측에 표시됨.
- * @param onDismissClick (Optional) 취소(Secondary) 버튼 클릭 시 실행될 콜백. [DialogStyle.ALERT]일 때만 동작함.
+ * @param dismissText (Optional) 취소(Secondary) 버튼에 표시될 텍스트. [DialogStyle.ALERT], [DialogStyle.DESTRUCTIVE]일 때 좌측에 표시됨.
+ * @param onDismissClick (Optional) 취소(Secondary) 버튼 클릭 시 실행될 콜백. [DialogStyle.ALERT], [DialogStyle.DESTRUCTIVE]일 때만 동작함.
  */
 
 @Composable
@@ -133,6 +138,21 @@ private fun SmashingDialogContent(
                         modifier = Modifier.weight(1f),
                     )
                 }
+
+                DialogStyle.DESTRUCTIVE -> {
+                    SmashingAlertButton(
+                        text = dismissText ?: "",
+                        onClick = { onDismissClick?.invoke() },
+                        containerColor = SmashingTheme.colors.btnBgTertiaryActive,
+                        modifier = Modifier.weight(1f),
+                    )
+                    SmashingAlertButton(
+                        text = confirmText,
+                        onClick = onConfirmClick,
+                        containerColor = SmashingTheme.colors.btnBgWarning,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
             }
         }
     }
@@ -176,30 +196,49 @@ private fun SmashingAlertButton(
 @Preview
 @Composable
 private fun SmashingDialogAlertPreview() {
-    // 버튼이 2개인 CONFIRM 타입
-    SmashingDialog(
-        title = "매칭 결과를 제출하시겠습니까?",
-        subtitle = "정확한 경기결과가 아닐 경우 반려됩니다",
-        type = DialogStyle.ALERT,
-        confirmText = "예",
-        dismissText = "아니요",
-        onConfirmClick = {},
-        onDismissClick = {},
-        onDismissRequest = {}
-    )
+    SmashingAndroidTheme {
+        SmashingDialog(
+            title = "매칭 결과를 제출하시겠습니까?",
+            subtitle = "정확한 경기결과가 아닐 경우 반려됩니다",
+            type = DialogStyle.ALERT,
+            confirmText = "예",
+            dismissText = "아니요",
+            onConfirmClick = {},
+            onDismissClick = {},
+            onDismissRequest = {}
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun SmashingDialogNoSubtitlePreview() {
-    // 버튼이 2개인 CONFIRM+SubTitle 없는 타입
-    SmashingDialog(
-        title = "동네를 변경하시겠습니까?",
-        type = DialogStyle.ALERT,
-        confirmText = "예",
-        dismissText = "아니요",
-        onConfirmClick = {},
-        onDismissClick = {},
-        onDismissRequest = {}
-    )
+    SmashingAndroidTheme {
+        SmashingDialog(
+            title = "동네를 변경하시겠습니까?",
+            type = DialogStyle.ALERT,
+            confirmText = "예",
+            dismissText = "아니요",
+            onConfirmClick = {},
+            onDismissClick = {},
+            onDismissRequest = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SmashingDialogDestructivePreview() {
+    SmashingAndroidTheme {
+        SmashingDialog(
+            title = "이 사용자를 차단하시겠습니까?",
+            subtitle = "차단하면 해당 사용자와의 매칭이 제한됩니다.",
+            type = DialogStyle.DESTRUCTIVE,
+            confirmText = "차단하기",
+            dismissText = "취소",
+            onConfirmClick = {},
+            onDismissClick = {},
+            onDismissRequest = {}
+        )
+    }
 }
