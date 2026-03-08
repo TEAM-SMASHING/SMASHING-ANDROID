@@ -36,6 +36,7 @@ import com.smashing.app.R.drawable.ic_radio_empty
 import com.smashing.app.R.drawable.ic_radio_fill
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.textfield.SmashingAreaTextField
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.TopBarType
@@ -51,6 +52,7 @@ fun ReportRoute(
     viewModel: ReportViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val showToast = LocalToastTrigger.current
 
     ReportScreen(
         uiState = uiState,
@@ -58,7 +60,7 @@ fun ReportRoute(
         onReportTypeSelected = viewModel::updateSelectedReportType,
         onDetailTextChange = viewModel::updateEtcText,
         onReportClick = {
-            /* TODO: submit report */
+            showToast("신고가 접수되었습니다.")
             navigateUp()
         },
         navigateUp = navigateUp,
