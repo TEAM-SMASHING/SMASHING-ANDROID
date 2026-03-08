@@ -118,6 +118,7 @@ private fun UserProfileScreen(
 
     var bottomBarHeight by remember { mutableStateOf(0.dp) }
     var showMenuBottomSheet by remember { mutableStateOf(false) }
+    var showBlockDialog by remember { mutableStateOf(false) }
     val density = LocalDensity.current
 
 
@@ -243,11 +244,27 @@ private fun UserProfileScreen(
                     showMenuBottomSheet = false
                     when (item) {
                         "신고하기" -> navigateToReport()
-                        "차단하기" -> onBlockClick()
+                        "차단하기" -> showBlockDialog = true
                     }
                 },
                 onDismissRequest = { showMenuBottomSheet = false },
-                itemTextColor = { if (it == "차단하기") colors.txtRed else null },
+                itemTextColor = {if(it == "차단하기") colors.txtRed else null},
+            )
+        }
+
+        if (showBlockDialog) {
+            SmashingDialog(
+                title = "정말 차단하시겠습니까?",
+                subtitle = "차단 시 서로 프로필과 매칭에서\n보이지 않게 됩니다.",
+                type = DialogStyle.ALERT,
+                confirmText = "차단하기",
+                dismissText = "아니오",
+                onConfirmClick = {
+                    showBlockDialog = false
+                    onBlockClick()
+                },
+                onDismissClick = { showBlockDialog = false },
+                onDismissRequest = { showBlockDialog = false },
             )
         }
     }
