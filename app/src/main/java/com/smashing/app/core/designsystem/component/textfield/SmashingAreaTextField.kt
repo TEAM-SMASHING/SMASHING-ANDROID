@@ -40,6 +40,7 @@ fun SmashingAreaTextField(
     state: TextFieldState,
     placeholder: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     isError: Boolean = false,
     maxLength: Int = 100,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -81,6 +82,7 @@ fun SmashingAreaTextField(
             inputTransformation = lengthLimitTransformation,
             keyboardOptions = keyboardOptions,
             lineLimits = TextFieldLineLimits.MultiLine(),
+            isEnabled = enabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(TEXT_FIELD_RATIO)

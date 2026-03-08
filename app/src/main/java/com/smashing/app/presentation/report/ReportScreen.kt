@@ -106,17 +106,23 @@ fun ReportScreen(
 
             Spacer(modifier = Modifier.height(28.dp))
 
-            ReportType.entries.forEach { reportType ->
+            ReportType.entries.forEachIndexed { index, reportType ->
                 ReportTypeItem(
                     reportType = reportType,
                     isSelected = uiState.selectedReportType == reportType,
                     onClick = { onReportTypeSelected(reportType) },
                 )
-                Spacer(modifier = Modifier.height(28.dp))
+                if (index < ReportType.entries.lastIndex) {
+                    Spacer(modifier = Modifier.height(28.dp))
+                }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             SmashingAreaTextField(
                 state = detailTextFieldState,
                 placeholder = "신고 사유를 구체적으로 작성해주세요",
+                enabled = uiState.selectedReportType == ReportType.ETC,
             )
         }
 
