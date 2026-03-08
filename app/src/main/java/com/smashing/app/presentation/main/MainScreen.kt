@@ -232,6 +232,7 @@ private fun MainNavHost(
         )
 
         reportGraph(
+            innerPadding = innerPadding,
             navController = appState.navController,
         )
 

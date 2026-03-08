@@ -1,5 +1,8 @@
 package com.smashing.app.presentation.report.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -13,11 +16,13 @@ fun NavController.navigateToReport(
 ) = navigate(ReportPage, navOptions)
 
 fun NavGraphBuilder.reportGraph(
+    innerPadding: PaddingValues,
     navController: NavController,
 ) {
     composable<ReportPage> {
         ReportRoute(
             navigateUp = navController::navigateUp,
+            modifier = Modifier.padding(innerPadding),
         )
     }
 }

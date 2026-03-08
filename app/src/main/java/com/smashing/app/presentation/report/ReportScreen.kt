@@ -47,6 +47,7 @@ import com.smashing.app.presentation.report.type.ReportType
 @Composable
 fun ReportRoute(
     navigateUp: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: ReportViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -58,6 +59,7 @@ fun ReportRoute(
         onDetailTextChange = viewModel::updateEtcText,
         onReportClick = { /* TODO: submit report */ },
         navigateUp = navigateUp,
+        modifier = modifier,
     )
 }
 
