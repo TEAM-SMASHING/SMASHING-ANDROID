@@ -54,7 +54,6 @@ import com.smashing.app.presentation.profile.userprofile.UserProfileContract.Sid
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 private const val BTN_WEIGHT = 131f / 185f
 
