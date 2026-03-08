@@ -123,6 +123,7 @@ private fun MyPageScreen(
             topBarType = TopBarType.BACK,
             onClick = onBackClick,
         )
+        Spacer(modifier = Modifier.height(24.dp))
 
         Column(
             modifier = Modifier

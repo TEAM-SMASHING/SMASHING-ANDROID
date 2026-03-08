@@ -39,7 +39,7 @@ fun MyPageProfileHeader(
 ) {
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth(),
