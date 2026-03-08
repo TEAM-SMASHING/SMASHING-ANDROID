@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
@@ -94,17 +95,16 @@ fun ReportScreen(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp),
         ) {
             Text(
                 text = "사용자를 신고하는 이유를 선택해 주세요",
-                style = SmashingTheme.typography.md.medium16,
+                style = SmashingTheme.typography.lg.semibold18,
                 color = SmashingTheme.colors.txtPrimary,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.padding(top = 12.dp, bottom = 8.dp),
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             ReportType.entries.forEach { reportType ->
                 ReportTypeItem(
@@ -114,7 +114,6 @@ fun ReportScreen(
                 )
                 Spacer(modifier = Modifier.height(28.dp))
             }
-
             SmashingAreaTextField(
                 state = detailTextFieldState,
                 placeholder = "신고 사유를 구체적으로 작성해주세요",
@@ -128,7 +127,7 @@ fun ReportScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 24.dp),
+                .padding(bottom = 48.dp),
             isEnabled = uiState.selectedReportType != null,
         )
     }
@@ -153,6 +152,7 @@ private fun ReportTypeItem(
             ),
             contentDescription = null,
             tint = SmashingTheme.colors.iconPrimary,
+            modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(15.dp))
         Text(
