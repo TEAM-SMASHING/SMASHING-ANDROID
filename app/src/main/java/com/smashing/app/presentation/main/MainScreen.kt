@@ -51,6 +51,7 @@ import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
+import com.smashing.app.presentation.withdraw.navigation.withdrawGraph
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
@@ -240,6 +241,11 @@ private fun MainNavHost(
         )
 
         confirmReviewGraph(
+            navController = appState.navController,
+        )
+
+        withdrawGraph(
+            innerPadding = innerPadding,
             navController = appState.navController,
         )
     }
