@@ -4,4 +4,5 @@ enum class TopBarType {
     DEFAULT,
     BACK,
     CLOSE,
+    BACK_WITH_MENU
 }
