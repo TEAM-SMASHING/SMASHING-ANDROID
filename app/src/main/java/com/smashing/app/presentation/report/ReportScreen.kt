@@ -69,7 +69,7 @@ fun ReportRoute(
 }
 
 @Composable
-fun ReportScreen(
+private fun ReportScreen(
     uiState: ReportContract.State,
     detailTextFieldState: TextFieldState,
     onReportTypeSelected: (ReportType) -> Unit,
