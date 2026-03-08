@@ -6,7 +6,7 @@ import com.smashing.app.presentation.report.type.ReportType
 interface ReportContract {
     @Immutable
     data class State(
-        val rankingUiState: ReportUiState = ReportUiState.Idle,
+        val reportUiState: ReportUiState = ReportUiState.Idle,
         val selectedReportType: ReportType? = null,
         val etcText: String? = null,
     )
