@@ -131,8 +131,8 @@ private fun MyPageScreen(
                 .verticalScroll(scrollState),
         ) {
             MyPageProfileHeader(
-                nickname = uiState.myProfileInfo.nickname,
-                tierType = uiState.activeProfile.tierType,
+                nickname = uiState.myPageProfileInfo.nickname,
+                tierType = uiState.myPageProfileInfo.tierType,
                 onClick = onMyProfileClick,
             )
             Spacer(modifier = Modifier.height(40.dp))

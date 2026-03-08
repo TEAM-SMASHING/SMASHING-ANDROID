@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.presentation.mypage.MyPageContract.State
+import com.smashing.app.presentation.mypage.MyPageContract.MyPageUiState
+import com.smashing.app.presentation.mypage.model.MyPageProfileUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
@@ -29,8 +30,11 @@ class MyPageViewModel @Inject constructor(
                     _uiState.update { currentState ->
                         currentState.copy(
                             profileLoadState = MyPageUiState.Success,
-                            myProfileInfo = data,
-                            selectedSportProfileId = data.profileInfo.profileId,
+                            myPageProfileInfo = MyPageProfileUiModel(
+                                profileId = data.profileInfo.profileId,
+                                nickname = data.nickname,
+                                tierType = data.profileInfo.tierType
+                            )
                         )
                     }
                 }
