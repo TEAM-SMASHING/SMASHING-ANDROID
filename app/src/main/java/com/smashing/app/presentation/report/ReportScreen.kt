@@ -57,7 +57,10 @@ fun ReportRoute(
         detailTextFieldState = viewModel.detailTextFieldState,
         onReportTypeSelected = viewModel::updateSelectedReportType,
         onDetailTextChange = viewModel::updateEtcText,
-        onReportClick = { /* TODO: submit report */ },
+        onReportClick = {
+            /* TODO: submit report */
+            navigateUp()
+        },
         navigateUp = navigateUp,
         modifier = modifier,
     )
