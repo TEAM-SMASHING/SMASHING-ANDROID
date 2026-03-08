@@ -248,6 +248,7 @@ private fun UserProfileScreen(
                     }
                 },
                 onDismissRequest = { showMenuBottomSheet = false },
+                itemTextColor = { if (it == "차단하기") colors.txtRed else null },
             )
         }
     }

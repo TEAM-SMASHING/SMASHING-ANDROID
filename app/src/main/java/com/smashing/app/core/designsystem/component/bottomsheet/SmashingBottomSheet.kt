@@ -62,9 +62,9 @@ data class BottomSheetButtonConfig(
  * @param onDismissRequest 바텀 시트 사라짐
  * @param title 바텀 시트 내부 타이틀
  * @param optionalButton 바텀 시트 하단 버튼
+ * @param itemTextColor 항목별 텍스트 색상 (null이면 기본 txtSecondary 사용)
  *
  */
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmashingBottomSheet(
@@ -74,6 +74,7 @@ fun SmashingBottomSheet(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
+    itemTextColor: @Composable (String) -> Color? = { null },
     optionalButton: BottomSheetButtonConfig? = null,
     bottomSheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
@@ -142,7 +143,7 @@ fun SmashingBottomSheet(
                             top = 17.dp,
                             bottom = 17.dp,
                         ),
-                    color = colors.txtSecondary,
+                    color = itemTextColor(item) ?: colors.txtSecondary,
                     style = typography.sm.regular14,
                 )
 
