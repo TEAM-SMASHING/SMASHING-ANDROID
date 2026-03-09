@@ -8,7 +8,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class MyProfileInfo(
     val nickname: String = "",
     val genderType: GenderType = GenderType.MALE,
-    val myProfileInfo: ProfileInfo = ProfileInfo(),
+    val profileInfo: ProfileInfo = ProfileInfo(),
     val reviewCount: Long = 0L,
     val myProfileItem: List<ProfileItem> = persistentListOf(),
 )
