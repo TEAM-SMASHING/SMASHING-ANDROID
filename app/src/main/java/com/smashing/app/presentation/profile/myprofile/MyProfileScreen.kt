@@ -114,7 +114,7 @@ private fun MyProfileScreen(
                 sportProfileList = uiState.sportProfileList.toImmutableList(),
                 selectedProfileId = uiState.selectedSportProfileId,
                 onSportClick = onSportClick,
-                tierIconResId = uiState.myProfileInfo.myProfileInfo.tierType.img(),
+                tierIconResId = uiState.myProfileInfo.profileInfo.tierType.img(),
                 progress = ((uiState.activeProfile.lp - uiState.activeProfile.minLp).toFloat() /
                         (uiState.activeProfile.maxLp - uiState.activeProfile.minLp).toFloat()),
                 lpStatus = (uiState.activeProfile.maxLp - uiState.activeProfile.lp) + 1,
