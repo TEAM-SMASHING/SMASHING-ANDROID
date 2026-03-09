@@ -90,7 +90,8 @@ platform :android do
       discord_notifier(
         webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
         title: "✅ 새로운 QA #{config[:build].upcase} 빌드 배포 완료! Firebase에서 확인해주세요. 🚀",
-        description: "✅ 스매싱(#{config[:build].upcase}) v#{version_info[:version_name]}(#{version_info[:version_code]})가 배포되었습니다!\n\n노트: #{qa_notes}"
+        description: "✅ 스매싱(#{config[:build].upcase}) v#{version_info[:version_name]}(#{version_info[:version_code]})가 배포되었습니다!\n\n노트: #{qa_notes}",
+        success: true,
       )
     rescue => exception
       UI.error("❌ QA 빌드 배포에 실패했습니다.")
@@ -99,7 +100,8 @@ platform :android do
       discord_notifier(
         webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
         title: "❌ QA 스매싱(#{config[:build].upcase}) 빌드 배포에 실패했습니다. 로그를 확인해주세요.",
-        description: "에러: #{exception}"
+        description: "에러: #{exception}",
+        success: false,
       )
 
       raise exception
@@ -146,7 +148,8 @@ platform :android do
       discord_notifier(
         webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
         title: "✅ 새로운 릴리즈 빌드 배포 완료! Play Store에서 확인해주세요. 🚀",
-        description: "트랙: #{track} 상태: #{status} 버전: v#{version_info[:version_name]} (#{version_info[:version_code]})"
+        description: "트랙: #{track} 상태: #{status} 버전: v#{version_info[:version_name]} (#{version_info[:version_code]})",
+        success: true,
       )
     rescue => exception
       UI.error("❌ Play 배포에 실패했습니다.")
@@ -155,7 +158,8 @@ platform :android do
       discord_notifier(
         webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
         title: "❌ Play 배포에 실패했습니다. 로그를 확인해주세요.",
-        description: "트랙: #{track} 상태: #{status} 버전: v#{version_info[:version_name]} (#{version_info[:version_code]})\n에러: #{exception}"
+        description: "트랙: #{track} 상태: #{status} 버전: v#{version_info[:version_name]} (#{version_info[:version_code]})\n에러: #{exception}",
+        success: false,
       )
 
       raise exception
