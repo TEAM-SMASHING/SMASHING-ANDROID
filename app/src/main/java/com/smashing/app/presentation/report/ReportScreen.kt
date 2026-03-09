@@ -98,7 +98,6 @@ private fun ReportScreen(
 
         Column(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp),
@@ -131,6 +130,8 @@ private fun ReportScreen(
                 enabled = uiState.selectedReportType == ReportType.ETC,
             )
         }
+
+        Spacer(modifier = Modifier.weight(1f))
 
         SmashingButton(
             buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
