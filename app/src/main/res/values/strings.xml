@@ -277,12 +277,6 @@
 
     <!-- Login -->
     <string name="kakao_login">카카오로 시작하기</string>
-    <string name="login_description_s">스</string>
-    <string name="login_description_for_ports">포츠인들을 위한&#160;</string>
-    <string name="login_description_m">매</string>
-    <string name="login_description_athching">칭서비스는&#160;</string>
-    <string name="login_description_ing">계속된다</string>
-
 
     <!--SignUp  -->
     <string name="sign_up_next_btn">다음</string>
@@ -300,7 +294,7 @@
     <string name="sign_up_skill_subtitle">구력을 통해 임시 티어가 결정돼요</string>
     <string name="sign_up_location_title">활동 지역을 설정해주세요</string>
     <string name="sign_up_location_subtitle">서울 소재 주소만 입력 가능해요</string>
-    <string name="sign_up_location_placeholder">주소를 검색해주세요</string>
+    <string name="sign_up_location_placeholder">도로명 주소를 검색해주세요</string>
     <string name="sign_up_finish_title">환영합니다!</string>
     <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
 
@@ -331,7 +325,14 @@
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료됩니다.</string>
 
     <!--Search  -->
+    <string name="search_tier">티어</string>
+    <string name="search_gender">성별</string>
     <string name="search_placeholder">닉네임을 검색해주세요</string>
+    <string name="search_apply_btn">적용하기</string>
+    <string name="search_filter_empty_title">해당 조건에 맞는 유저가 없어요</string>
+    <string name="search_filter_empty_subtitle">적용된 필터를 변경해보세요</string>
+    <string name="search_input_empty_title">검색 결과가 없습니다.</string>
+    <string name="search_input_empty_subtitle">다른 검색어를 입력해보세요</string>
 
     <!--Notice  -->
     <string name="notice">알림</string>
