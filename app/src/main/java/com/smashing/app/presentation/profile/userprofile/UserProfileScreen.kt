@@ -47,7 +47,7 @@ import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSh
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.TopBarStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.data.model.review.GameReview
@@ -140,7 +140,7 @@ private fun UserProfileScreen(
 
         SmashingDefaultTopBar(
             title = stringResource(profile),
-            topBarType = TopBarType.BACK_WITH_MENU,
+            topBarStyle = TopBarStyle.BACK_WITH_MENU,
             onClick = onBackClick,
             onMenuClick = { showMenuBottomSheet = true },
         )

@@ -29,7 +29,7 @@ import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.TopBarStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
@@ -101,7 +101,7 @@ private fun ConfirmReviewScreen(
     ) {
         SmashingDefaultTopBar(
             title = "후기 작성",
-            topBarType = TopBarType.BACK,
+            topBarStyle = TopBarStyle.BACK,
             onClick = onBackClick,
         )
 

@@ -39,7 +39,7 @@ import com.smashing.app.core.designsystem.component.textfield.SmashingAreaTextFi
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.TopBarStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -91,7 +91,7 @@ private fun ReportScreen(
     ) {
         SmashingDefaultTopBar(
             title = "신고하기",
-            topBarType = TopBarType.CLOSE,
+            topBarStyle = TopBarStyle.CLOSE,
             onClick = navigateUp,
             modifier = Modifier.fillMaxWidth(),
         )

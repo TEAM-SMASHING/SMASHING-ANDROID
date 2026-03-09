@@ -1,6 +1,6 @@
 package com.smashing.app.core.designsystem.style
 
-enum class TopBarType {
+enum class TopBarStyle {
     DEFAULT,
     BACK,
     CLOSE,

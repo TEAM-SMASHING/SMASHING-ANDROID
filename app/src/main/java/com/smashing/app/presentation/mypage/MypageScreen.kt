@@ -45,7 +45,7 @@ import com.smashing.app.R.string.mypage_policy_title
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.TopBarStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -120,7 +120,7 @@ private fun MyPageScreen(
 
         SmashingDefaultTopBar(
             title = stringResource(mypage),
-            topBarType = TopBarType.BACK,
+            topBarStyle = TopBarStyle.BACK,
             onClick = onBackClick,
         )
         Spacer(modifier = Modifier.height(24.dp))

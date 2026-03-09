@@ -30,7 +30,7 @@ import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.TopBarStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.presentation.write.component.WriteResultContent
@@ -98,7 +98,7 @@ private fun SubmitResultScreen(
     ) {
         SmashingDefaultTopBar(
             title = stringResource(submit_matching_result),
-            topBarType = TopBarType.BACK,
+            topBarStyle = TopBarStyle.BACK,
             onClick = onBackClick,
         )
 

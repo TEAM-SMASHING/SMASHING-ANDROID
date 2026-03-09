@@ -52,7 +52,7 @@ import com.smashing.app.R.string.review_no_review_yet
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.TopBarStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
@@ -104,7 +104,7 @@ private fun AllReviewScreen(
         SmashingDefaultTopBar(
             modifier = Modifier.statusBarsPadding(),
             title = stringResource(review_receive_review),
-            topBarType = TopBarType.BACK,
+            topBarStyle = TopBarStyle.BACK,
             onClick = onBackClick,
         )
 

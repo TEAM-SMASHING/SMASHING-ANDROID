@@ -31,7 +31,7 @@ import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.style.TopBarStyle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 @Composable
@@ -67,7 +67,7 @@ private fun TierInfoScreen(
     ) {
         SmashingDefaultTopBar(
             title = "티어 설명",
-            topBarType = TopBarType.CLOSE,
+            topBarStyle = TopBarStyle.CLOSE,
             onClick = onBack,
         )
 
