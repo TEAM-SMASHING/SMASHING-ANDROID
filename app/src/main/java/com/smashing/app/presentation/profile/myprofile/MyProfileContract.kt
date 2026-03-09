@@ -20,7 +20,7 @@ interface MyProfileContract {
         val gameReviewResult: GameReviewResult = GameReviewResult(),
     ) {
         val activeProfile: ProfileInfo
-            get() = myProfileInfo.myProfileInfo
+            get() = myProfileInfo.profileInfo
         val sportProfileList: List<ProfileItem>
             get() = myProfileInfo.myProfileItem
 
