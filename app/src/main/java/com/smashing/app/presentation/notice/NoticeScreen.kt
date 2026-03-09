@@ -91,7 +91,7 @@ private fun NoticeScreen(
         SmashingDefaultTopBar(
             title = stringResource(R.string.notice),
             topBarStyle = TopBarStyle.BACK,
-            onClick = onBackBtnClick,
+            onBackClick = onBackBtnClick,
         )
 
         if (uiState.loadState is NoticeUiState.Empty) {

@@ -90,7 +90,7 @@ private fun MyProfileScreen(
         SmashingDefaultTopBar(
             title = stringResource(profile),
             topBarStyle = TopBarStyle.DEFAULT,
-            onClick = null,
+            onBackClick = null,
         )
 
         Column(

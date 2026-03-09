@@ -115,7 +115,7 @@ private fun RankingScreen(
             SmashingDefaultTopBar(
                 title = "전체 랭킹",
                 topBarStyle = TopBarStyle.BACK,
-                onClick = navigateUp,
+                onBackClick = navigateUp,
             )
 
             Ranker(

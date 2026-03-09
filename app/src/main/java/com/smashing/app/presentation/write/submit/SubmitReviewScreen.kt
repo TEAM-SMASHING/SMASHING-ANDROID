@@ -101,7 +101,7 @@ private fun SubmitReviewScreen(
         SmashingDefaultTopBar(
             title = "후기 작성",
             topBarStyle = TopBarStyle.BACK,
-            onClick = onBackClick,
+            onBackClick = onBackClick,
         )
 
         Column(

@@ -126,7 +126,7 @@ private fun AddSportScreen(
         SmashingDefaultTopBar(
             title = stringResource(addsports_title),
             topBarStyle = TopBarStyle.CLOSE,
-            onClick = { showExitDialog = true },
+            onBackClick = { showExitDialog = true },
         )
 
         Column(

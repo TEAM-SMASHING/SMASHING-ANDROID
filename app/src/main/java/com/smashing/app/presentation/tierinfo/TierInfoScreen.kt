@@ -68,7 +68,7 @@ private fun TierInfoScreen(
         SmashingDefaultTopBar(
             title = "티어 설명",
             topBarStyle = TopBarStyle.CLOSE,
-            onClick = onBack,
+            onBackClick = onBack,
         )
 
         Column(

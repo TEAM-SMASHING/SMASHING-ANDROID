@@ -141,7 +141,7 @@ private fun UserProfileScreen(
         SmashingDefaultTopBar(
             title = stringResource(profile),
             topBarStyle = TopBarStyle.BACK_WITH_MENU,
-            onClick = onBackClick,
+            onBackClick = onBackClick,
             onMenuClick = { showMenuBottomSheet = true },
         )
 

@@ -99,7 +99,7 @@ private fun SubmitResultScreen(
         SmashingDefaultTopBar(
             title = stringResource(submit_matching_result),
             topBarStyle = TopBarStyle.BACK,
-            onClick = onBackClick,
+            onBackClick = onBackClick,
         )
 
         Column(

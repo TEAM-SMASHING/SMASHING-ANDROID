@@ -92,7 +92,7 @@ private fun ReportScreen(
         SmashingDefaultTopBar(
             title = "신고하기",
             topBarStyle = TopBarStyle.CLOSE,
-            onClick = navigateUp,
+            onBackClick = navigateUp,
             modifier = Modifier.fillMaxWidth(),
         )
 

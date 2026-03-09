@@ -108,7 +108,7 @@ private fun ConfirmResultScreen(
         SmashingDefaultTopBar(
             title = stringResource(confirm_result),
             topBarStyle = TopBarStyle.BACK,
-            onClick = onBackClick,
+            onBackClick = onBackClick,
         )
 
         Column(

@@ -121,7 +121,7 @@ private fun MyPageScreen(
         SmashingDefaultTopBar(
             title = stringResource(mypage),
             topBarStyle = TopBarStyle.BACK,
-            onClick = onBackClick,
+            onBackClick = onBackClick,
         )
         Spacer(modifier = Modifier.height(24.dp))
 

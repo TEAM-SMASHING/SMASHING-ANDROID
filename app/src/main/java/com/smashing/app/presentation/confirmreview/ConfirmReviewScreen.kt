@@ -65,7 +65,7 @@ private fun ConfirmReviewScreen(
         SmashingDefaultTopBar(
             title = stringResource(review),
             topBarStyle = TopBarStyle.DEFAULT,
-            onClick = onBackClick,
+            onBackClick = onBackClick,
         )
 
         Column(

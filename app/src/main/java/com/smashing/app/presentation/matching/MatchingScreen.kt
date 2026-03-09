@@ -208,7 +208,7 @@ private fun MatchingScreen(
         SmashingDefaultTopBar(
             title = "매칭 관리",
             topBarStyle = TopBarStyle.DEFAULT,
-            onClick = null,
+            onBackClick = null,
         )
 
         MatchingTabBar(

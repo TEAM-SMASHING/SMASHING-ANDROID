@@ -105,7 +105,7 @@ private fun AllReviewScreen(
             modifier = Modifier.statusBarsPadding(),
             title = stringResource(review_receive_review),
             topBarStyle = TopBarStyle.BACK,
-            onClick = onBackClick,
+            onBackClick = onBackClick,
         )
 
         if (uiState.isReviewEmpty) {

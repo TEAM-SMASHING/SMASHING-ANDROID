@@ -29,7 +29,7 @@ import com.smashing.app.core.extension.noRippleClickable
  *   - [TopBarStyle.BACK]: 왼쪽에 뒤로가기 아이콘 표시 (화면 뒤로 이동)
  *   - [TopBarStyle.CLOSE]: 오른쪽에 닫기 아이콘 표시 (현재 화면 닫기)
  *   - [TopBarStyle.BACK_WITH_MENU]: 왼쪽에 뒤로가기, 오른쪽에 메뉴 아이콘 표시
- * @param onClick 아이콘 클릭 시 실행될 콜백 함수입니다.
+ * @param onBackClick 아이콘 클릭 시 실행될 콜백 함수입니다.
  *   [TopBarStyle.BACK] 또는 [TopBarStyle.CLOSE]일 때 사용하며,
  *   [TopBarStyle.BACK_WITH_MENU]일 때는 왼쪽 뒤로가기 클릭 시 사용됩니다.
  * @param onMenuClick [TopBarStyle.BACK_WITH_MENU]일 때 오른쪽 메뉴 아이콘 클릭 시 실행될 콜백입니다.
@@ -40,14 +40,14 @@ fun SmashingDefaultTopBar(
     title: String,
     topBarStyle: TopBarStyle,
     modifier: Modifier = Modifier,
-    onClick: (() -> Unit)? = null,
+    onBackClick: (() -> Unit)? = null,
     onMenuClick: (() -> Unit)? = null,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth(),
     ) {
-        if((topBarStyle == TopBarStyle.BACK || topBarStyle == TopBarStyle.BACK_WITH_MENU) && onClick != null){
+        if((topBarStyle == TopBarStyle.BACK || topBarStyle == TopBarStyle.BACK_WITH_MENU) && onBackClick != null){
             Icon(
                 imageVector = ImageVector.vectorResource(ic_arrow_left),
                 contentDescription = null,
@@ -56,7 +56,7 @@ fun SmashingDefaultTopBar(
                     .align(Alignment.CenterStart)
                     .padding(start = 16.dp)
                     .noRippleClickable(
-                        onClick = onClick,
+                        onClick = onBackClick,
                     ),
             )
         }
@@ -70,7 +70,7 @@ fun SmashingDefaultTopBar(
                 .padding(vertical = 21.dp),
         )
 
-        if(topBarStyle == TopBarStyle.CLOSE && onClick != null){
+        if(topBarStyle == TopBarStyle.CLOSE && onBackClick != null){
             Icon(
                 imageVector = ImageVector.vectorResource(ic_close_lg),
                 contentDescription = null,
@@ -79,7 +79,7 @@ fun SmashingDefaultTopBar(
                     .align(Alignment.CenterEnd)
                     .padding(end = 16.dp)
                     .noRippleClickable(
-                        onClick = onClick,
+                        onClick = onBackClick,
                     ),
             )
         }
@@ -106,7 +106,7 @@ private fun SmashingDefaultTopBarPreview_Default() {
     SmashingDefaultTopBar(
         title = "제목",
         topBarStyle = TopBarStyle.DEFAULT,
-        onClick = null,
+        onBackClick = null,
     )
 }
 
@@ -116,7 +116,7 @@ private fun SmashingDefaultTopBarPreview_Back() {
     SmashingDefaultTopBar(
         title = "뒤로가기",
         topBarStyle = TopBarStyle.BACK,
-        onClick = {},
+        onBackClick = {},
     )
 }
 
@@ -126,7 +126,7 @@ private fun SmashingDefaultTopBarPreview_Close() {
     SmashingDefaultTopBar(
         title = "닫기",
         topBarStyle = TopBarStyle.CLOSE,
-        onClick = {},
+        onBackClick = {},
     )
 }
 
@@ -136,7 +136,7 @@ private fun SmashingDefaultTopBarPreview_BackWithMenu() {
     SmashingDefaultTopBar(
         title = "제목",
         topBarStyle = TopBarStyle.BACK_WITH_MENU,
-        onClick = {},
+        onBackClick = {},
         onMenuClick = {},
     )
 }

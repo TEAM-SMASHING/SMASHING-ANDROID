@@ -153,7 +153,7 @@ private fun SignUpScreen(
             SmashingDefaultTopBar(
                 title = "",
                 topBarStyle = TopBarStyle.BACK,
-                onClick = onBackClick,
+                onBackClick = onBackClick,
             )
         }
 

@@ -100,7 +100,7 @@ fun RegionChangeScreen(
         SmashingDefaultTopBar(
             title = "지역 변경",
             topBarStyle = TopBarStyle.CLOSE,
-            onClick = navigateUp,
+            onBackClick = navigateUp,
             modifier = Modifier
                 .fillMaxWidth()
         )
