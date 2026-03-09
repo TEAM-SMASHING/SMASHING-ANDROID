@@ -108,7 +108,6 @@ private fun ReportScreen(
                 style = SmashingTheme.typography.lg.semibold18,
                 color = SmashingTheme.colors.txtPrimary,
                 textAlign = TextAlign.Start,
-                modifier = Modifier.padding(top = 12.dp, bottom = 8.dp),
             )
 
             Spacer(modifier = Modifier.height(28.dp))
