@@ -35,7 +35,7 @@ import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarStyle
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.ConfirmDenyType
@@ -106,9 +106,10 @@ private fun ConfirmResultScreen(
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
-            title = stringResource(confirm_result),
-            topBarStyle = TopBarStyle.BACK,
-            onBackClick = onBackClick,
+            state = TopBarState.Back(
+                title = stringResource(confirm_result),
+                onBackClick = onBackClick,
+            ),
         )
 
         Column(

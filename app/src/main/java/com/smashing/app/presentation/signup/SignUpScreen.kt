@@ -37,7 +37,7 @@ import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.progressbar.SmashingProgressBar
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.style.TopBarStyle
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.presentation.signup.component.SignUpFinish
@@ -151,9 +151,7 @@ private fun SignUpScreen(
     ) {
         if(uiState.currentStep <= MAX_STEP){
             SmashingDefaultTopBar(
-                title = "",
-                topBarStyle = TopBarStyle.BACK,
-                onBackClick = onBackClick,
+                state = TopBarState.Back(title = "", onBackClick = onBackClick),
             )
         }
 

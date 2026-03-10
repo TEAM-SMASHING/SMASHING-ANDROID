@@ -54,7 +54,7 @@ import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarStyle
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
@@ -206,9 +206,7 @@ private fun MatchingScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SmashingDefaultTopBar(
-            title = "매칭 관리",
-            topBarStyle = TopBarStyle.DEFAULT,
-            onBackClick = null,
+            state = TopBarState.Default(title = "매칭 관리"),
         )
 
         MatchingTabBar(

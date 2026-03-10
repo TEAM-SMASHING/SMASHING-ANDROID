@@ -44,7 +44,7 @@ import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
-import com.smashing.app.core.designsystem.style.TopBarStyle
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.util.ProfileImageProvider
@@ -113,9 +113,10 @@ private fun RankingScreen(
                 .fillMaxSize()
         ) {
             SmashingDefaultTopBar(
-                title = "전체 랭킹",
-                topBarStyle = TopBarStyle.BACK,
-                onBackClick = navigateUp,
+                state = TopBarState.Back(
+                    title = "전체 랭킹",
+                    onBackClick = navigateUp,
+                ),
             )
 
             Ranker(

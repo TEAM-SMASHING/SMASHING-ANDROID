@@ -26,7 +26,7 @@ import com.smashing.app.R.string.confirm_review_arrived_with_nickname
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.style.TopBarStyle
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.ReviewRatingType
@@ -63,9 +63,7 @@ private fun ConfirmReviewScreen(
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
-            title = stringResource(review),
-            topBarStyle = TopBarStyle.DEFAULT,
-            onBackClick = onBackClick,
+            state = TopBarState.Default(title = stringResource(review)),
         )
 
         Column(

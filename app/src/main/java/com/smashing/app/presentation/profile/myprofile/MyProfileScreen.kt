@@ -24,7 +24,7 @@ import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.TopBarStyle
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -88,9 +88,7 @@ private fun MyProfileScreen(
     ) {
 
         SmashingDefaultTopBar(
-            title = stringResource(profile),
-            topBarStyle = TopBarStyle.DEFAULT,
-            onBackClick = null,
+            state = TopBarState.Default(title = stringResource(profile)),
         )
 
         Column(
