@@ -142,7 +142,11 @@ private fun ReportScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 48.dp),
-            isEnabled = uiState.selectedReportType != null,
+            isEnabled = when {
+                uiState.selectedReportType == null -> false
+                uiState.selectedReportType == ReportType.ETC -> !uiState.etcText.isNullOrBlank()
+                else -> true
+            },
         )
     }
 }
