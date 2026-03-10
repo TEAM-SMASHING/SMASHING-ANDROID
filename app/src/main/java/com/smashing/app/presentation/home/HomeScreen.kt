@@ -96,6 +96,7 @@ fun HomeRoute(
         isFirstAttempt: Boolean,
     ) -> Unit,
     navigateToMyProfile: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -143,6 +144,7 @@ fun HomeRoute(
         onSportsChipClick = viewModel::fetchSelectSportProfile,
         recommendedUserListState = recommendedUserListState,
         modifier = modifier,
+        navigateToMyPage = navigateToMyPage,
     )
 }
 
@@ -171,6 +173,7 @@ private fun HomeScreen(
     ) -> Unit,
     navigateToMyProfile: () -> Unit,
     onSportsChipClick: (String) -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
 ) {
@@ -215,6 +218,7 @@ private fun HomeScreen(
                 onClickSportChip = { isDropdownExpanded = !isDropdownExpanded },
                 onClickNotice = navigateToNotice,
                 isNotice = uiState.isNotice,
+                onMyPageClick = navigateToMyPage,
             )
         }
 
@@ -544,7 +548,7 @@ private fun HomeScreenPreview() {
                     loseCount = 7,
                 ),
                 myProfileItem = listOf(),
-                ),
+            ),
             topRankerList = listOf(
                 UserRank(
                     userId = "user1",
@@ -662,6 +666,7 @@ private fun HomeScreenPreview() {
         navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
         navigateToMyProfile = {},
         onSportsChipClick = {},
+        navigateToMyPage = {},
     )
 }
 
@@ -711,5 +716,6 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
         navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
         onSportsChipClick = {},
+        navigateToMyPage = {},
     )
 }

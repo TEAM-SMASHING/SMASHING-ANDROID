@@ -32,7 +32,7 @@ class MyProfileViewModel @Inject constructor(
                         currentState.copy(
                             profileLoadState = MyProfileUiState.Success,
                             myProfileInfo = data,
-                            selectedSportProfileId = data.myProfileInfo.profileId,
+                            selectedSportProfileId = data.profileInfo.profileId,
                         )
                     }
                 }

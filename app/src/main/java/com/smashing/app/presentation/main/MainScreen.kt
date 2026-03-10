@@ -44,6 +44,7 @@ import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.main.component.MainTab
 import com.smashing.app.presentation.main.state.MainAppState
 import com.smashing.app.presentation.matching.navigation.matchingGraph
+import com.smashing.app.presentation.mypage.navigation.myPageGraph
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
@@ -200,6 +201,10 @@ private fun MainNavHost(
         )
 
         profileGraph(
+            navController = appState.navController,
+            innerPadding = innerPadding,
+        )
+        myPageGraph(
             navController = appState.navController,
             innerPadding = innerPadding,
         )
