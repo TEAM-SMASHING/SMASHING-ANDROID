@@ -51,6 +51,7 @@ fun NicknameInputTextField(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
     val currentLength = state.text.toString().checkLength()
+    val lengthLimitTransformation = InputTransformation.checkMaxLength(maxLength)
     val isFilled = state.text.isNotEmpty()
     val isError = !errorText.isNullOrEmpty()
     val isConfirm = !confirmText.isNullOrEmpty()
@@ -85,7 +86,7 @@ fun NicknameInputTextField(
                     focusManager.clearFocus()
                 },
 
-                inputTransformation = InputTransformation.checkMaxLength(maxLength),
+                inputTransformation = lengthLimitTransformation,
 
                 suffix = {
                     Text(

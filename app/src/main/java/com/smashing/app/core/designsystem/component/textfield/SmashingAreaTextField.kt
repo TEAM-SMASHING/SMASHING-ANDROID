@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +31,7 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.bringIntoViewOnFocus
 import com.smashing.app.core.extension.checkLength
+import com.smashing.app.core.extension.checkMaxLength
 
 private const val TEXT_FIELD_RATIO = 296f / 100f
 
@@ -48,7 +48,7 @@ fun SmashingAreaTextField(
     val focusManager = LocalFocusManager.current
     val currentLength = state.text.toString().checkLength()
     val isFilled = state.text.isNotEmpty()
-    val lengthLimitTransformation = InputTransformation.maxLength(maxLength)
+    val lengthLimitTransformation = InputTransformation.checkMaxLength(maxLength)
 
     val inputState = BorderInputStyle.from(
         isFocused = isFocused,
