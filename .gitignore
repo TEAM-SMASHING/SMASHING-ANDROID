@@ -364,3 +364,5 @@ hs_err_pid*
 .firebase/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,android,windows,intellij,androidstudio
+fastlane/key/app-distribution-key.json
+fastlane/key/play-console-key.json
