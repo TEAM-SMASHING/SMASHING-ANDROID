@@ -170,13 +170,12 @@ private fun UserProfileScreen(
 
                     SmashingDialog(
                         title = stringResource(profile_competition_applied),
+                        onDismissClick = onDialogDismissClick,
                         subtitle = stringResource(profile_check_matching_tab),
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(profile_go_to_link),
                         dismissText = stringResource(confirm),
                         onConfirmClick = onConfirmClick,
-                        onDismissClick = onDialogDismissClick,
-                        onDismissRequest = onDialogDismissClick,
                     )
                 }
 
@@ -264,6 +263,7 @@ private fun UserProfileScreen(
         if (showBlockDialog) {
             SmashingDialog(
                 title = "정말 차단하시겠습니까?",
+                onDismissClick = { showBlockDialog = false },
                 subtitle = "차단 시 서로 프로필과 매칭에서\n보이지 않게 됩니다.",
                 type = DialogStyle.DESTRUCTIVE,
                 confirmText = "차단하기",
@@ -272,8 +272,6 @@ private fun UserProfileScreen(
                     showBlockDialog = false
                     onBlockClick()
                 },
-                onDismissClick = { showBlockDialog = false },
-                onDismissRequest = { showBlockDialog = false },
             )
         }
     }

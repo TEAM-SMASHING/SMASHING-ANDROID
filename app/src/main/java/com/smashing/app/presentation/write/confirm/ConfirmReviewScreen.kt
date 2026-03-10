@@ -141,13 +141,12 @@ private fun ConfirmReviewScreen(
         if (uiState.showConfirmDialog) {
             SmashingDialog(
                 title = "매칭 결과를 확정하시겠습니까?",
+                onDismissClick = onHideConfirmDialog,
                 subtitle = "한 번 확정하면 수정할 수 없어요.",
                 type = DialogStyle.ALERT,
                 confirmText = "제출하기",
                 dismissText = "아니요",
-                onDismissRequest = onHideConfirmDialog,
                 onConfirmClick = onConfirmSubmission,
-                onDismissClick = onHideConfirmDialog,
             )
         }
     }

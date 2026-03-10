@@ -34,28 +34,26 @@ import com.smashing.app.core.extension.noRippleClickable
  * - [DialogStyle.DESTRUCTIVE]: 취소/확인 버튼 2개, 확인 버튼만 경고(빨간) 스타일 (차단·삭제 등)
  *
  * @param title 다이얼로그 상단에 표시될 메인 제목 텍스트
- * @param onDismissRequest 다이얼로그 외부(Scrim) 클릭 또는 뒤로가기 버튼 클릭 시 호출되는 콜백
+ * @param onDismissClick 다이얼로그가 닫힐 때 호출되는 콜백 (취소 버튼 클릭, 스크림 클릭, 뒤로가기 포함)
  * @param type 다이얼로그 타입 (CONFIRM / ALERT / DESTRUCTIVE)
  * @param confirmText 확인(Primary) 버튼에 표시될 텍스트
  * @param onConfirmClick 확인(Primary) 버튼 클릭 시 실행될 콜백
  * @param subtitle (Optional) 제목 아래에 표시될 부가 설명 텍스트. null일 경우 표시되지 않음.
  * @param dismissText (Optional) 취소(Secondary) 버튼에 표시될 텍스트. [DialogStyle.ALERT], [DialogStyle.DESTRUCTIVE]일 때 좌측에 표시됨.
- * @param onDismissClick (Optional) 취소(Secondary) 버튼 클릭 시 실행될 콜백. [DialogStyle.ALERT], [DialogStyle.DESTRUCTIVE]일 때만 동작함.
  */
 
 @Composable
 fun SmashingDialog(
     title: String,
-    onDismissRequest: () -> Unit,
+    onDismissClick: () -> Unit,
     type: DialogStyle,
     confirmText: String,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
     dismissText: String? = null,
-    onDismissClick: (() -> Unit)? = null,
 ) {
-    Dialog(onDismissRequest = onDismissRequest) {
+    Dialog(onDismissRequest = onDismissClick) {
         SmashingDialogContent(
             title = title,
             type = type,
@@ -78,7 +76,7 @@ private fun SmashingDialogContent(
     modifier: Modifier = Modifier,
     subtitle: String? = null,
     dismissText: String? = null,
-    onDismissClick: (() -> Unit)? = null,
+    onDismissClick: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -127,7 +125,7 @@ private fun SmashingDialogContent(
                 DialogStyle.ALERT -> {
                     SmashingAlertButton(
                         text = dismissText ?: "",
-                        onClick = { onDismissClick?.invoke() },
+                        onClick = onDismissClick,
                         containerColor = SmashingTheme.colors.btnBgTertiaryActive,
                         modifier = Modifier.weight(1f),
                     )
@@ -142,7 +140,7 @@ private fun SmashingDialogContent(
                 DialogStyle.DESTRUCTIVE -> {
                     SmashingAlertButton(
                         text = dismissText ?: "",
-                        onClick = { onDismissClick?.invoke() },
+                        onClick = onDismissClick,
                         containerColor = SmashingTheme.colors.btnBgTertiaryActive,
                         modifier = Modifier.weight(1f),
                     )
@@ -205,7 +203,6 @@ private fun SmashingDialogAlertPreview() {
             dismissText = "아니요",
             onConfirmClick = {},
             onDismissClick = {},
-            onDismissRequest = {}
         )
     }
 }
@@ -221,7 +218,6 @@ private fun SmashingDialogNoSubtitlePreview() {
             dismissText = "아니요",
             onConfirmClick = {},
             onDismissClick = {},
-            onDismissRequest = {}
         )
     }
 }
@@ -238,7 +234,6 @@ private fun SmashingDialogDestructivePreview() {
             dismissText = "취소",
             onConfirmClick = {},
             onDismissClick = {},
-            onDismissRequest = {}
         )
     }
 }

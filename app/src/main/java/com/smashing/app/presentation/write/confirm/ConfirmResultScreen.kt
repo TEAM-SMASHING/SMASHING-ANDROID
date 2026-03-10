@@ -180,13 +180,12 @@ private fun ConfirmResultScreen(
         if (uiState.showRejectDialog) {
             SmashingDialog(
                 title = "마지막 반려 기회에요",
+                onDismissClick = onRejectDialogDismiss,
                 subtitle = "이번에 반려 시 해당 매칭은 취소됩니다.",
                 type = DialogStyle.ALERT,
                 confirmText = "반려하기",
                 dismissText = "아니요",
-                onDismissRequest = onRejectDialogDismiss,
                 onConfirmClick = onRejectClick,
-                onDismissClick = onRejectDialogDismiss,
             )
         }
     }

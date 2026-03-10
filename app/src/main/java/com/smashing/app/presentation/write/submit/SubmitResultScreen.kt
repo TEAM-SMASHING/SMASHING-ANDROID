@@ -136,13 +136,12 @@ private fun SubmitResultScreen(
         if (uiState.isResubmitDialogVisible) {
             SmashingDialog(
                 title = "매칭 결과를 다시 제출하시겠습니까?",
+                onDismissClick = onDismissResubmit,
                 subtitle = "상대가 다시 반려할 경우 매칭 기록은 삭제됩니다.",
                 type = DialogStyle.ALERT,
                 confirmText = "제출하기",
                 dismissText = "아니요",
                 onConfirmClick = onConfirmResubmit,
-                onDismissClick = onDismissResubmit,
-                onDismissRequest = onDismissResubmit,
             )
         }
     }

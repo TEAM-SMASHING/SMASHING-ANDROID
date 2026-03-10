@@ -140,13 +140,12 @@ private fun NoticeScreen(
             if (uiState.isChangeDialogVisible) {
                 SmashingDialog(
                     title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
+                    onDismissClick = onDismissChangeProfile,
                     subtitle = "종목은 재변경 가능합니다.",
                     type = DialogStyle.ALERT,
                     confirmText = "변경하기",
                     dismissText = "아니요",
                     onConfirmClick = { onConfirmChangeProfile(uiState.selectedNoticeItem.userId) },
-                    onDismissClick = onDismissChangeProfile,
-                    onDismissRequest = onDismissChangeProfile,
                 )
             }
         }

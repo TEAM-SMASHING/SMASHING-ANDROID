@@ -73,6 +73,7 @@ fun MyPageRoute(
     if (isShowLogoutDialog) {
         SmashingDialog(
             title = stringResource(mypage_account_logout),
+            onDismissClick = { isShowLogoutDialog = false },
             subtitle = stringResource(mypage_logout_message),
             type = DialogStyle.ALERT,
             confirmText = stringResource(mypage_account_logout),
@@ -81,8 +82,6 @@ fun MyPageRoute(
                 isShowLogoutDialog = false
                 navigateToLogout()
             },
-            onDismissClick = { isShowLogoutDialog = false },
-            onDismissRequest = {}
         )
     }
 

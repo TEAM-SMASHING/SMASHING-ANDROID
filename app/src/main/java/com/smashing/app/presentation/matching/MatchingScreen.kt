@@ -283,26 +283,24 @@ private fun MatchingScreen(
                 MatchingType.SEND -> {
                     SmashingDialog(
                         title = stringResource(matching_send_dialog_title),
+                        onDismissClick = onDialogDismissClick,
                         subtitle = stringResource(matching_send_dialog_description),
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
                         onConfirmClick = onConfirmDeleteSentMatching,
-                        onDismissClick = onDialogDismissClick,
-                        onDismissRequest = onDialogDismissClick,
                     )
                 }
 
                 MatchingType.ACCEPTED -> {
                     SmashingDialog(
                         title = stringResource(matching_accepted_dialog_title),
+                        onDismissClick = onDialogDismissClick,
                         subtitle = stringResource(matching_accepted_dialog_description),
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
                         onConfirmClick = onConfirmDeleteAcceptedMatching,
-                        onDismissClick = onDialogDismissClick,
-                        onDismissRequest = onDialogDismissClick,
                     )
                 }
 

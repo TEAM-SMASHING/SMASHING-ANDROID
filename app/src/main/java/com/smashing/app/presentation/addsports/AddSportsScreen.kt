@@ -105,6 +105,7 @@ private fun AddSportScreen(
     if (showExitDialog)
         SmashingDialog(
             title = stringResource(dialog_cancel_add_item_title),
+            onDismissClick = { showExitDialog = false },
             subtitle = stringResource(dialog_cancel_add_item_message),
             type = DialogStyle.ALERT,
             confirmText = stringResource(cancel),
@@ -113,8 +114,6 @@ private fun AddSportScreen(
                 showExitDialog = false
                 onBackClick()
             },
-            onDismissClick = { showExitDialog = false },
-            onDismissRequest = { showExitDialog = false },
         )
 
     Column(

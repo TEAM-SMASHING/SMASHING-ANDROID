@@ -171,18 +171,13 @@ fun RegionChangeScreen(
     if (showDialog) {
         SmashingDialog(
             title = "지역을 변경하시겠습니까?",
+            onDismissClick = { showDialog = false },
             type = DialogStyle.ALERT,
             confirmText = "예",
             dismissText = "아니요",
             onConfirmClick = {
                 showDialog = false
                 onConfirmRegionChange()
-            },
-            onDismissClick = {
-                showDialog = false
-            },
-            onDismissRequest = {
-                showDialog = false
             },
         )
     }
