@@ -30,8 +30,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -73,9 +73,10 @@ fun WithdrawScreen(
         verticalArrangement = Arrangement.Top,
     ) {
         SmashingDefaultTopBar(
-            title = "계정 탈퇴",
-            topBarType = TopBarType.BACK,
-            onClick = navigateUp,
+            state = TopBarState.Back(
+                title = "계정 탈퇴",
+                onBackClick = navigateUp,
+            ),
             modifier = Modifier.fillMaxWidth(),
         )
 
