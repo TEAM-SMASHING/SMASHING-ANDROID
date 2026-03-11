@@ -121,9 +121,7 @@ private fun WithdrawScreen(
                         .padding(horizontal = 16.dp, vertical = 15.dp),
                 )
 
-                if (index < WithdrawalDeletedType.entries.lastIndex) {
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
             Spacer(modifier = Modifier.weight(1f))
