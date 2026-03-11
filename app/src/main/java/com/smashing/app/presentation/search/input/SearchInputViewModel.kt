@@ -29,11 +29,11 @@ class SearchInputViewModel @Inject constructor(
     val searchInputState = TextFieldState()
 
     init {
-        updateSearchInputText()
+        observeSearchInput()
     }
 
     @OptIn(FlowPreview::class)
-    fun updateSearchInputText() = viewModelScope.launch {
+    private fun observeSearchInput() = viewModelScope.launch {
         snapshotFlow { searchInputState.text }
             .debounce(SEARCH_NETWORK_DEBOUNCE)
             .collectLatest { searchInputText ->
@@ -45,7 +45,7 @@ class SearchInputViewModel @Inject constructor(
                         )
                     }
                 } else {
-                    fetchNickNameUsersList(searchInputText)
+                    fetchNickNameUsersList(searchInputText.toString())
                 }
             }
     }
@@ -60,11 +60,11 @@ class SearchInputViewModel @Inject constructor(
         }
     }
 
-    private fun fetchNickNameUsersList(nickname: CharSequence) = viewModelScope.launch {
+    private suspend fun fetchNickNameUsersList(nickname: String) {
 
         _uiState.update { it.copy(searchNickNameUsersUiState = SearchInputUiState.Loading) }
 
-        searchRepository.getNickNameUsersSearch(nickname = nickname.toString())
+        searchRepository.getNickNameUsersSearch(nickname = nickname)
             .onSuccess { result ->
                 _uiState.update {
                     it.copy(
