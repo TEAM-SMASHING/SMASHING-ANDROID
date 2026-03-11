@@ -104,6 +104,7 @@ data class SmashingColors(
     val btnBgTertiaryPressed: Color,
     val btnBgRejected: Color,
     val btnBgPrimary300: Color,
+    val btnBgWarning: Color,
 
     // Border
     val borderPrimary: Color,
@@ -189,6 +190,7 @@ val defaultSmashingColors = SmashingColors(
     btnBgTertiaryPressed = gray800,
     btnBgRejected = redSub,
     btnBgPrimary300 = primary300,
+    btnBgWarning = redMain,
 
     // Border
     borderPrimary = gray700,

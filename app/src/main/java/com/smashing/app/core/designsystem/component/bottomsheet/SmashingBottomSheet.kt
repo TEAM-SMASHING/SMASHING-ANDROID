@@ -41,31 +41,41 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 /**
+ * 하단 버튼이 있을 때 사용하는 설정.
+ *
+ * @param btnText 버튼에 표시할 텍스트
+ * @param contentToBtnPadding 리스트와 버튼 사이 간격
+ * @param onBtnClick 버튼 클릭 시 호출 (시트가 닫힌 뒤 호출됨)
+ */
+data class BottomSheetButtonConfig(
+    val btnText: String,
+    val contentToBtnPadding: Dp,
+    val onBtnClick: () -> Unit,
+)
+
+/**
  * 바텀 시트 공통 컴포넌트입니다.
  *
- * @param title 바텀 시트 내부 타이틀
  * @param items 바텀 시트 내부 리스트
  * @param selectedItem 내부 리스트 중 선택된 아이템
- * @param contentToBtnPadding 바텀 시트 내부 리스트와 버튼 사이 간격
- * @param btnText 하단 버튼 텍스트
  * @param onItemClick 내부 리스트 아이템 클릭 이벤트
  * @param onDismissRequest 바텀 시트 사라짐
- * @param onBtnClick 하단 버튼 클릭 이벤트
+ * @param title 바텀 시트 내부 타이틀
+ * @param optionalButton 바텀 시트 하단 버튼
+ * @param itemTextColor 항목별 텍스트 색상 (null이면 기본 txtSecondary 사용)
+ *
  */
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmashingBottomSheet(
-    title: String,
     items: ImmutableList<String>,
     selectedItem: String,
-    contentToBtnPadding: Dp,
-    btnText: String,
     onItemClick: (String) -> Unit,
     onDismissRequest: () -> Unit,
-    onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
+    title: String? = null,
+    itemTextColor: @Composable (String) -> Color? = { null },
+    optionalButton: BottomSheetButtonConfig? = null,
     bottomSheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     )
@@ -100,18 +110,19 @@ fun SmashingBottomSheet(
                 ),
         ) {
 
-            Text(
-                text = title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(horizontal = 16.dp),
-                color = colors.txtPrimary,
-                textAlign = TextAlign.Center,
-                style = typography.lg.semibold18,
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
+            if (title != null) {
+                Text(
+                    text = title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = 16.dp),
+                    color = colors.txtPrimary,
+                    textAlign = TextAlign.Center,
+                    style = typography.lg.semibold18,
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+            }
 
             items.forEach { item ->
 
@@ -132,24 +143,25 @@ fun SmashingBottomSheet(
                             top = 17.dp,
                             bottom = 17.dp,
                         ),
-                    color = colors.txtSecondary,
+                    color = itemTextColor(item) ?: colors.txtSecondary,
                     style = typography.sm.regular14,
                 )
 
             }
 
-            Spacer(modifier = Modifier.height(contentToBtnPadding))
-
-            SmashingButton(
-                buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
-                text = btnText,
-                onClick = { onCloseBottomSheet(onClosed = onBtnClick) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(horizontal = 16.dp),
-                isEnabled = selectedItem.isNotEmpty(),
-            )
+            if (optionalButton != null) {
+                Spacer(modifier = Modifier.height(optionalButton.contentToBtnPadding))
+                SmashingButton(
+                    buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
+                    text = optionalButton.btnText,
+                    onClick = { onCloseBottomSheet(onClosed = optionalButton.onBtnClick) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = 16.dp),
+                    isEnabled = selectedItem.isNotEmpty(),
+                )
+            }
         }
     }
 }
@@ -221,10 +233,12 @@ private fun SmashingBottomSheetPreview() {
                         "아직 진행하지 않은 경기에요",
                     ),
                     selectedItem = selectedItem1,
-                    contentToBtnPadding = 20.dp,
-                    btnText = "완료",
                     onItemClick = { selectedItem1 = it },
-                    onBtnClick = { },
+                    optionalButton = BottomSheetButtonConfig(
+                        btnText = "완료",
+                        contentToBtnPadding = 20.dp,
+                        onBtnClick = {}
+                    )
                 )
             }
 
@@ -244,10 +258,12 @@ private fun SmashingBottomSheetPreview() {
                         "챌린저",
                     ),
                     selectedItem = selectedItem2,
-                    contentToBtnPadding = 4.dp,
-                    btnText = "적용하기",
                     onItemClick = { selectedItem2 = it },
-                    onBtnClick = { },
+                    optionalButton = BottomSheetButtonConfig(
+                        btnText = "완료",
+                        contentToBtnPadding = 20.dp,
+                        onBtnClick = {}
+                    )
                 )
             }
         }

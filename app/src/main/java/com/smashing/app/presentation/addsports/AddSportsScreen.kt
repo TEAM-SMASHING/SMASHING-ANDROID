@@ -43,7 +43,7 @@ import com.smashing.app.core.designsystem.component.sport.SportSkillSelector
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.data.type.SkillType
@@ -105,6 +105,7 @@ private fun AddSportScreen(
     if (showExitDialog)
         SmashingDialog(
             title = stringResource(dialog_cancel_add_item_title),
+            onDismissClick = { showExitDialog = false },
             subtitle = stringResource(dialog_cancel_add_item_message),
             type = DialogStyle.ALERT,
             confirmText = stringResource(cancel),
@@ -113,8 +114,6 @@ private fun AddSportScreen(
                 showExitDialog = false
                 onBackClick()
             },
-            onDismissClick = { showExitDialog = false },
-            onDismissRequest = { showExitDialog = false },
         )
 
     Column(
@@ -124,9 +123,10 @@ private fun AddSportScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SmashingDefaultTopBar(
-            title = stringResource(addsports_title),
-            topBarType = TopBarType.CLOSE,
-            onClick = { showExitDialog = true },
+            state = TopBarState.Close(
+                title = stringResource(addsports_title),
+                onCloseClick = { showExitDialog = true },
+            ),
         )
 
         Column(

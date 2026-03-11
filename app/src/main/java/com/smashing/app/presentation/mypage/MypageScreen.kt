@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.BuildConfig
 import com.smashing.app.R.drawable.ic_arrow_next
@@ -45,7 +45,7 @@ import com.smashing.app.R.string.mypage_policy_title
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
@@ -73,6 +73,7 @@ fun MyPageRoute(
     if (isShowLogoutDialog) {
         SmashingDialog(
             title = stringResource(mypage_account_logout),
+            onDismissClick = { isShowLogoutDialog = false },
             subtitle = stringResource(mypage_logout_message),
             type = DialogStyle.ALERT,
             confirmText = stringResource(mypage_account_logout),
@@ -81,8 +82,6 @@ fun MyPageRoute(
                 isShowLogoutDialog = false
                 navigateToLogout()
             },
-            onDismissClick = { isShowLogoutDialog = false },
-            onDismissRequest = {}
         )
     }
 
@@ -121,9 +120,10 @@ private fun MyPageScreen(
     ) {
 
         SmashingDefaultTopBar(
-            title = stringResource(mypage),
-            topBarType = TopBarType.BACK,
-            onClick = onBackClick,
+            state = TopBarState.Back(
+                title = stringResource(mypage),
+                onBackClick = onBackClick,
+            ),
         )
         Spacer(modifier = Modifier.height(24.dp))
 
