@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,7 +54,7 @@ fun SearchMainRoute(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val gridState = rememberLazyGridState()
+    val gridState = remember { LazyGridState() }
 
     LaunchedEffect(Unit) {
         viewModel.updateSelectedRegion()
@@ -61,7 +62,6 @@ fun SearchMainRoute(
     }
 
     LaunchedEffect(
-        uiState.selectedRegion,
         uiState.currentTierText,
         uiState.currentGenderText,
     ) {
