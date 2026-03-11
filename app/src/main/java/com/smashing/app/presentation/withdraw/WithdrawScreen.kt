@@ -107,7 +107,7 @@ private fun WithdrawScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            WithdrawalDeletedType.entries.forEachIndexed { index, item ->
+            WithdrawalDeletedType.entries.forEach { item ->
                 Text(
                     text = item.text,
                     style = SmashingTheme.typography.sm.medium14,
