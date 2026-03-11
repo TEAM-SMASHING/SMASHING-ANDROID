@@ -1,8 +1,5 @@
 package com.smashing.app.presentation.search.searchmain
 
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.clearText
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smashing.app.core.designsystem.style.TierInfoStyle
@@ -11,11 +8,8 @@ import com.smashing.app.presentation.search.searchmain.style.GenderInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -64,7 +58,7 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedTierItem(tierItem: String?) =
         _uiState.update {
-            it.copy(selectedTierItem = TierInfoStyle.Companion.findTierInfo(tierItem))
+            it.copy(selectedTierItem = TierInfoStyle.findTierInfo(tierItem))
         }
 
     fun applyTierItem() {
@@ -98,7 +92,7 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedGenderItem(genderItem: String?) =
         _uiState.update {
-            it.copy(selectedGenderItem = GenderInfo.Companion.findGenderInfo(genderItem))
+            it.copy(selectedGenderItem = GenderInfo.findGenderInfo(genderItem))
         }
 
     private fun updateCurrentGenderText(genderText: String?) =
