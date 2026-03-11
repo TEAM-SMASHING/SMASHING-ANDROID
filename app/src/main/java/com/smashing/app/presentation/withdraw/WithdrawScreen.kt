@@ -58,7 +58,7 @@ fun WithdrawRoute(
 }
 
 @Composable
-fun WithdrawScreen(
+private fun WithdrawScreen(
     uiState: WithdrawContract.State,
     onWithdrawalAgreedChange: (Boolean) -> Unit,
     navigateUp: () -> Unit,
