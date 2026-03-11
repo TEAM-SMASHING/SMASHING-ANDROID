@@ -160,7 +160,7 @@ private fun WithdrawScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             SmashingButton(
-                buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
+                buttonStyle = ButtonStyle.WARNING,
                 text = "탈퇴하기",
                 onClick = {
                     //TODO: 탈퇴하기 로직 추가
