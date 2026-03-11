@@ -154,7 +154,6 @@ private fun WithdrawScreen(
                     text = "주의사항을 인지하였으며, 이에 동의합니다",
                     style = SmashingTheme.typography.sm.regular14,
                     color = SmashingTheme.colors.txtPrimary,
-                    modifier = Modifier.padding(start = 4.dp),
                 )
             }
 
