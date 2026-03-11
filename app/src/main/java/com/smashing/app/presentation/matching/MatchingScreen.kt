@@ -19,9 +19,10 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,8 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -89,14 +88,18 @@ fun MatchingRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val isInitTabApplyRequired = savedInitTab != null && savedInitTab != uiState.selectedType
+    val hasInitialized = remember { mutableStateOf(false) }
 
-    if (isInitTabApplyRequired) {
-        LaunchedEffect(savedInitTab) {
-            viewModel.selectMatchingTab(savedInitTab)
-            removeSavedInitTab()
+    if (!hasInitialized.value) {
+        LaunchedEffect(Unit) {
+            if (savedInitTab != null && savedInitTab != uiState.selectedType) {
+                viewModel.selectMatchingTab(savedInitTab)
+                removeSavedInitTab()
+            } else {
+                viewModel.refreshMatchingList()
+            }
+            hasInitialized.value = true
         }
-        return
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -126,18 +129,6 @@ fun MatchingRoute(
                     }
                 }
             }
-    }
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                viewModel.refreshMatchingList()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
     }
 
     MatchingScreen(

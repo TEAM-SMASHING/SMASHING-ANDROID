@@ -34,9 +34,6 @@ class MatchingViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
-        fetchReceivedMatchingList(isRefresh = true)
-        fetchSentMatchingList(isRefresh = true)
-        fetchAcceptedMatchingList(isRefresh = true)
         observeSseEvents()
     }
 
