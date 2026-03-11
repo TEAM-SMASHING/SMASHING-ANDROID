@@ -93,6 +93,7 @@ fun MyPageRoute(
         onWithDrawClick = navigateToWithDraw,
         onPolicyPrivacyClick = { policyPrivacyLink -> context.openUrl(policyPrivacyLink) },
         onPolicyTermsClick = { kakaoLink -> context.openUrl(kakaoLink) },
+        onVersionClick = { versionLink -> context.openUrl(versionLink) },
         onBackClick = navigateUp,
     )
 }
@@ -108,6 +109,7 @@ private fun MyPageScreen(
     modifier: Modifier = Modifier,
     onPolicyPrivacyClick: (String?) -> Unit = {},
     onPolicyTermsClick: (String?) -> Unit = {},
+    onVersionClick: (String?) -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -204,6 +206,8 @@ private fun MyPageScreen(
                     text = stringResource(mypage_info_version),
                     style = typography.sm.medium14,
                     color = colors.txtPrimary,
+                    modifier = Modifier
+                        .noRippleClickable(onClick = { onVersionClick(versionLink) })
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
@@ -216,8 +220,12 @@ private fun MyPageScreen(
     }
 }
 
-private const val policyPrivacyLink = "https://github.com/TEAM-SMASHING/SMASHING-ANDROID"
-private const val policyTermsLink = "https://github.com/TEAM-SMASHING/SMASHING-ANDROID"
+private const val policyPrivacyLink =
+    "https://elated-piccolo-63b.notion.site/30b4556d60d18092b22ad0e23a84eee2?pvs=143"
+private const val policyTermsLink =
+    "https://elated-piccolo-63b.notion.site/30b4556d60d18015a556ed889292a6e4?pvs=143"
+private const val versionLink =
+    "https://elated-piccolo-63b.notion.site/30b4556d60d18010bb2aff85c555cd9e?pvs=143"
 
 
 @Preview(showBackground = true)
