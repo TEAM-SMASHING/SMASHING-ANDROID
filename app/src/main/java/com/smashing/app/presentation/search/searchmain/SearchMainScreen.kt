@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -34,15 +35,11 @@ import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.extension.onBottomReached
-import com.smashing.app.presentation.search.SearchContract
-import com.smashing.app.presentation.search.SearchUiState
-import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
 import com.smashing.app.presentation.search.searchmain.component.MatchingSearchFilterChip
 import com.smashing.app.presentation.search.searchmain.component.SearchTopBar
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.DEFAULT
 import com.smashing.app.presentation.search.searchmain.style.FilterStyle.VARIANT
-
 
 @Composable
 fun SearchMainRoute(
@@ -54,11 +51,21 @@ fun SearchMainRoute(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val gridState = rememberLazyGridState()
 
     LaunchedEffect(Unit) {
         viewModel.updateSelectedRegion()
         viewModel.fetchRegionUsersList(isRefresh = true)
     }
+
+    LaunchedEffect(
+        uiState.selectedRegion,
+        uiState.currentTierText,
+        uiState.currentGenderText,
+    ) {
+        gridState.scrollToItem(0)
+    }
+
 
     SearchMainScreen(
         uiState = uiState,
@@ -76,6 +83,7 @@ fun SearchMainRoute(
         onGenderApplyClick = viewModel::applyGenderItem,
         onDeleteTierFilter = viewModel::clearFilterTier,
         onDeleteGenderFilter = viewModel::clearFilterGender,
+        listState = gridState,
         modifier = modifier,
     )
 }
@@ -98,18 +106,9 @@ private fun SearchMainScreen(
     onGenderApplyClick: () -> Unit,
     onDeleteTierFilter: () -> Unit,
     onDeleteGenderFilter: () -> Unit,
+    listState: LazyGridState,
     modifier: Modifier = Modifier,
 ) {
-    val listState = rememberLazyGridState()
-
-    LaunchedEffect(
-        uiState.selectedRegion,
-        uiState.currentTierText,
-        uiState.currentGenderText,
-    ) {
-        listState.scrollToItem(0)
-    }
-
     val currentIsLoading = uiState.searchRegionUsersUiState is SearchUiState.Loading
 
     Column(
@@ -248,6 +247,7 @@ private fun SearchScreenPreview() {
             onGenderApplyClick = {},
             onDeleteTierFilter = {},
             onDeleteGenderFilter = {},
+            listState = rememberLazyGridState(),
             modifier = Modifier.background(color = colors.bgCanvas),
         )
     }
