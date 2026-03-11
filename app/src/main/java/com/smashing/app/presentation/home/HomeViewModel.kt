@@ -160,6 +160,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 activeMyProfile = optimisticActiveProfile,
+                matchedUser = null,
             )
         }
 
