@@ -14,36 +14,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_arrow_left
 import com.smashing.app.R.drawable.ic_close_lg
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.R.drawable.ic_menu
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 
 /**
  * 기본 탑바 컴포넌트입니다.
- * 화면 상단에 제목과 네비게이션 아이콘을 표시하며, [TopBarType]에 따라 아이콘의 종류와 위치가 결정됩니다.
+ * 화면 상단에 제목과 네비게이션 아이콘을 표시하며, [TopBarState]에 따라 아이콘의 종류와 위치가 결정됩니다.
  *
- * @param title 탑바 중앙에 표시될 제목 텍스트
- * @param topBarType 탑바의 타입으로, 아이콘 표시 방식을 결정합니다.
- *   - [TopBarType.DEFAULT]: 아이콘 없이 제목만 표시
- *   - [TopBarType.BACK]: 왼쪽에 뒤로가기 아이콘 표시 (화면 뒤로 이동)
- *   - [TopBarType.CLOSE]: 오른쪽에 닫기 아이콘 표시 (현재 화면 닫기)
- * @param onClick 아이콘 클릭 시 실행될 콜백 함수입니다.
- *   [TopBarType.BACK] 또는 [TopBarType.CLOSE]일 때만 사용되며,
- *   [TopBarType.DEFAULT]이거나 아이콘이 필요 없는 경우 `null`을 전달할 수 있습니다.
+ * @param state 탑바 상태 ([TopBarState.Default], [TopBarState.Back], [TopBarState.Close], [TopBarState.BackWithMenu])
  * @param modifier 적용할 Modifier
  */
 @Composable
 fun SmashingDefaultTopBar(
-    title: String,
-    topBarType: TopBarType,
+    state: TopBarState,
     modifier: Modifier = Modifier,
-    onClick: (() -> Unit)? = null,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        if(topBarType == TopBarType.BACK && onClick != null){
+        if (state is TopBarState.Back) {
             Icon(
                 imageVector = ImageVector.vectorResource(ic_arrow_left),
                 contentDescription = null,
@@ -51,14 +42,22 @@ fun SmashingDefaultTopBar(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .padding(start = 16.dp)
-                    .noRippleClickable(
-                        onClick = onClick,
-                    ),
+                    .noRippleClickable(onClick = state.onBackClick),
+            )
+        } else if (state is TopBarState.BackWithMenu) {
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_arrow_left),
+                contentDescription = null,
+                tint = SmashingTheme.colors.iconPrimary,
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp)
+                    .noRippleClickable(onClick = state.onBackClick),
             )
         }
 
         Text(
-            text = title,
+            text = state.title,
             style = SmashingTheme.typography.md.semibold16,
             color = SmashingTheme.colors.txtPrimary,
             modifier = Modifier
@@ -66,7 +65,7 @@ fun SmashingDefaultTopBar(
                 .padding(vertical = 21.dp),
         )
 
-        if(topBarType == TopBarType.CLOSE && onClick != null){
+        if (state is TopBarState.Close) {
             Icon(
                 imageVector = ImageVector.vectorResource(ic_close_lg),
                 contentDescription = null,
@@ -74,9 +73,17 @@ fun SmashingDefaultTopBar(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .padding(end = 16.dp)
-                    .noRippleClickable(
-                        onClick = onClick,
-                    ),
+                    .noRippleClickable(onClick = state.onCloseClick),
+            )
+        } else if (state is TopBarState.BackWithMenu) {
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_menu),
+                contentDescription = null,
+                tint = SmashingTheme.colors.iconPrimary,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 16.dp)
+                    .noRippleClickable(onClick = state.onMenuClick),
             )
         }
     }
@@ -85,29 +92,29 @@ fun SmashingDefaultTopBar(
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 private fun SmashingDefaultTopBarPreview_Default() {
-    SmashingDefaultTopBar(
-        title = "제목",
-        topBarType = TopBarType.DEFAULT,
-        onClick = null,
-    )
+    SmashingDefaultTopBar(state = TopBarState.Default(title = "제목"))
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 private fun SmashingDefaultTopBarPreview_Back() {
-    SmashingDefaultTopBar(
-        title = "뒤로가기",
-        topBarType = TopBarType.BACK,
-        onClick = {},
-    )
+    SmashingDefaultTopBar(state = TopBarState.Back(title = "뒤로가기", onBackClick = {}))
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 private fun SmashingDefaultTopBarPreview_Close() {
+    SmashingDefaultTopBar(state = TopBarState.Close(title = "닫기", onCloseClick = {}))
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun SmashingDefaultTopBarPreview_BackWithMenu() {
     SmashingDefaultTopBar(
-        title = "닫기",
-        topBarType = TopBarType.CLOSE,
-        onClick = {},
+        state = TopBarState.BackWithMenu(
+            title = "제목",
+            onBackClick = {},
+            onMenuClick = {},
+        ),
     )
 }

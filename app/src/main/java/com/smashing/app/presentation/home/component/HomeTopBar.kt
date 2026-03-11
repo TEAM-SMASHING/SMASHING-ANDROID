@@ -14,6 +14,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_bell
 import com.smashing.app.R.drawable.ic_bell_notification
+import com.smashing.app.R.drawable.ic_profile
 import com.smashing.app.core.designsystem.component.dropdown.RegionDropdown
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -30,6 +31,7 @@ fun HomeTopBar(
     onChangeRegion: () -> Unit,
     onClickSportChip: () -> Unit,
     onClickNotice: () -> Unit,
+    onMyPageClick: () -> Unit,
     modifier: Modifier = Modifier,
     isNotice: Boolean = false,
 ) {
@@ -84,5 +86,16 @@ fun HomeTopBar(
                     )
             )
         }
+        Spacer(modifier = Modifier.width(12.dp))
+        Icon(
+            imageVector = ImageVector.vectorResource(ic_profile),
+            contentDescription = null,
+            tint = SmashingTheme.colors.iconPrimary,
+            modifier = Modifier
+                .noRippleClickable(
+                    onClick = onMyPageClick,
+                )
+        )
+
     }
 }

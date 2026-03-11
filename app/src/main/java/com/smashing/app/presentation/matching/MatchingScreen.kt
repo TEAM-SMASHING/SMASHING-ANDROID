@@ -54,7 +54,7 @@ import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
@@ -206,9 +206,7 @@ private fun MatchingScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SmashingDefaultTopBar(
-            title = "매칭 관리",
-            topBarType = TopBarType.DEFAULT,
-            onClick = null,
+            state = TopBarState.Default(title = "매칭 관리"),
         )
 
         MatchingTabBar(
@@ -283,26 +281,24 @@ private fun MatchingScreen(
                 MatchingType.SEND -> {
                     SmashingDialog(
                         title = stringResource(matching_send_dialog_title),
+                        onDismissClick = onDialogDismissClick,
                         subtitle = stringResource(matching_send_dialog_description),
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
                         onConfirmClick = onConfirmDeleteSentMatching,
-                        onDismissClick = onDialogDismissClick,
-                        onDismissRequest = onDialogDismissClick,
                     )
                 }
 
                 MatchingType.ACCEPTED -> {
                     SmashingDialog(
                         title = stringResource(matching_accepted_dialog_title),
+                        onDismissClick = onDialogDismissClick,
                         subtitle = stringResource(matching_accepted_dialog_description),
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(cancel),
                         dismissText = stringResource(no),
                         onConfirmClick = onConfirmDeleteAcceptedMatching,
-                        onDismissClick = onDialogDismissClick,
-                        onDismissRequest = onDialogDismissClick,
                     )
                 }
 

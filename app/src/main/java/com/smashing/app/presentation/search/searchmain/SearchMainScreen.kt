@@ -28,6 +28,7 @@ import com.smashing.app.R.string.search_filter_empty_subtitle
 import com.smashing.app.R.string.search_filter_empty_title
 import com.smashing.app.R.string.search_gender
 import com.smashing.app.R.string.search_tier
+import com.smashing.app.core.designsystem.component.bottomsheet.BottomSheetButtonConfig
 import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -159,10 +160,12 @@ private fun SearchMainScreen(
                 title = stringResource(search_tier),
                 items = uiState.tierBottomSheetList,
                 selectedItem = uiState.selectedTierItem?.tierKName ?: "",
-                contentToBtnPadding = 4.dp,
-                btnText = stringResource(search_apply_btn),
                 onItemClick = onTierItemClick,
-                onBtnClick = onTierApplyClick,
+                optionalButton = BottomSheetButtonConfig(
+                    btnText = stringResource(search_apply_btn),
+                    contentToBtnPadding = 4.dp,
+                    onBtnClick = onTierApplyClick,
+                ),
             )
         }
 
@@ -172,10 +175,12 @@ private fun SearchMainScreen(
                 title = stringResource(search_gender),
                 items = uiState.genderBottomSheetList,
                 selectedItem = uiState.selectedGenderItem?.genderKName ?: "",
-                contentToBtnPadding = 4.dp,
-                btnText = stringResource(search_apply_btn),
                 onItemClick = onGenderItemClick,
-                onBtnClick = onGenderApplyClick,
+                optionalButton = BottomSheetButtonConfig(
+                    btnText = stringResource(search_apply_btn),
+                    contentToBtnPadding = 4.dp,
+                    onBtnClick = onGenderApplyClick,
+                ),
             )
         }
 

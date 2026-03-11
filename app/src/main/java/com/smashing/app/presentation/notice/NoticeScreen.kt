@@ -25,7 +25,7 @@ import com.smashing.app.core.designsystem.component.appicon.AppIcon
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
@@ -89,9 +89,10 @@ private fun NoticeScreen(
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
-            title = stringResource(R.string.notice),
-            topBarType = TopBarType.BACK,
-            onClick = onBackBtnClick,
+            state = TopBarState.Back(
+                title = stringResource(R.string.notice),
+                onBackClick = onBackBtnClick,
+            ),
         )
 
         if (uiState.loadState is NoticeUiState.Empty) {
@@ -140,13 +141,12 @@ private fun NoticeScreen(
             if (uiState.isChangeDialogVisible) {
                 SmashingDialog(
                     title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
+                    onDismissClick = onDismissChangeProfile,
                     subtitle = "종목은 재변경 가능합니다.",
                     type = DialogStyle.ALERT,
                     confirmText = "변경하기",
                     dismissText = "아니요",
                     onConfirmClick = { onConfirmChangeProfile(uiState.selectedNoticeItem.userId) },
-                    onDismissClick = onDismissChangeProfile,
-                    onDismissRequest = onDismissChangeProfile,
                 )
             }
         }
