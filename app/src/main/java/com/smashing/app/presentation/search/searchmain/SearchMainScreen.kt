@@ -183,15 +183,14 @@ private fun SearchMainScreen(
             label = SEARCH_CONTENT_CROSSFADE,
         ) { searchUiState ->
             when (searchUiState) {
-                SearchUiState.Idle -> Unit
-                SearchUiState.Empty -> {
+                SearchUiState.Idle, SearchUiState.Loading -> Unit
+                SearchUiState.Empty, is SearchUiState.Failure -> {
                     SearchEmpty(
                         title = stringResource(search_filter_empty_title),
                         subTitle = stringResource(search_filter_empty_subtitle),
                     )
                 }
 
-                SearchUiState.Loading -> Unit
                 SearchUiState.Success -> {
                     listState.onBottomReached(
                         threshold = 3,
@@ -226,13 +225,6 @@ private fun SearchMainScreen(
                             )
                         }
                     }
-                }
-
-                else -> {
-                    SearchEmpty(
-                        title = stringResource(search_filter_empty_title),
-                        subTitle = stringResource(search_filter_empty_subtitle),
-                    )
                 }
             }
         }
