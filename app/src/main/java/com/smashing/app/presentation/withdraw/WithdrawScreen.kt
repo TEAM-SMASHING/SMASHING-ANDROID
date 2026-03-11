@@ -160,7 +160,7 @@ private fun WithdrawScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             SmashingButton(
-                buttonStyle = ButtonStyle.WARNING,
+                buttonStyle = if (uiState.isWithdrawalAgreed) ButtonStyle.WARNING else ButtonStyle.DISABLED_ACTIVE,
                 text = "탈퇴하기",
                 onClick = {
                     //TODO: 탈퇴하기 로직 추가
