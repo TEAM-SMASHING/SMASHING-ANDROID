@@ -1,5 +1,6 @@
 package com.smashing.app.presentation.search.searchmain
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -66,7 +67,6 @@ fun SearchMainRoute(
         gridState.scrollToItem(0)
     }
 
-
     SearchMainScreen(
         uiState = uiState,
         onLoadMoreSearchList = viewModel::fetchRegionUsersList,
@@ -87,6 +87,8 @@ fun SearchMainRoute(
         modifier = modifier,
     )
 }
+
+private const val SEARCH_CONTENT_CROSSFADE = "search_content_crossfade"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -171,57 +173,62 @@ private fun SearchMainScreen(
             )
         }
 
-        when (uiState.searchRegionUsersUiState) {
-            SearchUiState.Idle -> Unit
-            SearchUiState.Empty -> {
-                SearchEmpty(
-                    title = stringResource(search_filter_empty_title),
-                    subTitle = stringResource(search_filter_empty_subtitle),
-                )
-            }
+        Crossfade(
+            targetState = uiState.searchRegionUsersUiState,
+            label = SEARCH_CONTENT_CROSSFADE,
+        ) { searchUiState ->
+            when (searchUiState) {
+                SearchUiState.Idle -> Unit
+                SearchUiState.Empty -> {
+                    SearchEmpty(
+                        title = stringResource(search_filter_empty_title),
+                        subTitle = stringResource(search_filter_empty_subtitle),
+                    )
+                }
 
-            SearchUiState.Loading -> Unit
-            SearchUiState.Success -> {
-                listState.onBottomReached(
-                    threshold = 3,
-                    onLoadMore = onLoadMoreSearchList,
-                    isLoading = currentIsLoading,
-                )
+                SearchUiState.Loading -> Unit
+                SearchUiState.Success -> {
+                    listState.onBottomReached(
+                        threshold = 3,
+                        onLoadMore = onLoadMoreSearchList,
+                        isLoading = currentIsLoading,
+                    )
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier
-                        .padding(top = 10.dp)
-                        .padding(horizontal = 16.dp),
-                    state = listState,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    contentPadding = PaddingValues(bottom = 20.dp)
-                ) {
-                    items(
-                        items = uiState.searchList,
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .padding(horizontal = 16.dp),
+                        state = listState,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        contentPadding = PaddingValues(bottom = 20.dp),
                     ) {
-                        MatchingCard(
-                            cardState = MatchingCardState.Search(
-                                userId = it.userId,
-                                nickname = it.nickname,
-                                genderType = it.gender,
-                                tierType = it.tierType,
-                                onProfileClick = { onProfileClick(it.userId) },
-                                winCount = it.wins,
-                                loseCount = it.losses,
-                                reviewCount = it.reviews,
+                        items(
+                            items = uiState.searchList,
+                        ) {
+                            MatchingCard(
+                                cardState = MatchingCardState.Search(
+                                    userId = it.userId,
+                                    nickname = it.nickname,
+                                    genderType = it.gender,
+                                    tierType = it.tierType,
+                                    onProfileClick = { onProfileClick(it.userId) },
+                                    winCount = it.wins,
+                                    loseCount = it.losses,
+                                    reviewCount = it.reviews,
+                                )
                             )
-                        )
+                        }
                     }
                 }
-            }
 
-            else -> {
-                SearchEmpty(
-                    title = stringResource(search_filter_empty_title),
-                    subTitle = stringResource(search_filter_empty_subtitle),
-                )
+                else -> {
+                    SearchEmpty(
+                        title = stringResource(search_filter_empty_title),
+                        subTitle = stringResource(search_filter_empty_subtitle),
+                    )
+                }
             }
         }
     }
