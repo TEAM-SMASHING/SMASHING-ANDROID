@@ -1,6 +1,6 @@
 package com.smashing.app.presentation.withdraw.type
 
-enum class WithdrawalDeletedData(
+enum class WithdrawalDeletedType(
     val text: String,
 ) {
     PROFILE_AND_ACCOUNT("프로필 및 계정 정보"),

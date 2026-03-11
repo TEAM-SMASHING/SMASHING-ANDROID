@@ -35,7 +35,7 @@ import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.presentation.withdraw.type.WithdrawalDeletedData
+import com.smashing.app.presentation.withdraw.type.WithdrawalDeletedType
 import com.smashing.app.R.drawable.ic_checkbox
 import com.smashing.app.R.drawable.ic_checkbox_empty
 
@@ -107,7 +107,7 @@ private fun WithdrawScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            WithdrawalDeletedData.entries.forEachIndexed { index, item ->
+            WithdrawalDeletedType.entries.forEachIndexed { index, item ->
                 Text(
                     text = item.text,
                     style = SmashingTheme.typography.sm.medium14,
@@ -121,7 +121,7 @@ private fun WithdrawScreen(
                         .padding(horizontal = 16.dp, vertical = 15.dp),
                 )
 
-                if (index < WithdrawalDeletedData.entries.lastIndex) {
+                if (index < WithdrawalDeletedType.entries.lastIndex) {
                     Spacer(modifier = Modifier.height(12.dp))
                 }
             }
