@@ -58,7 +58,6 @@ fun ReportRoute(
         uiState = uiState,
         detailTextFieldState = viewModel.detailTextFieldState,
         onReportTypeSelected = viewModel::updateSelectedReportType,
-        onDetailTextChange = viewModel::updateEtcText,
         onReportClick = {
             showToast("신고가 접수되었습니다.")
             navigateUp()
@@ -73,15 +72,10 @@ private fun ReportScreen(
     uiState: ReportContract.State,
     detailTextFieldState: TextFieldState,
     onReportTypeSelected: (ReportType) -> Unit,
-    onDetailTextChange: (String) -> Unit,
     onReportClick: () -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(detailTextFieldState.text) {
-        onDetailTextChange(detailTextFieldState.text.toString())
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -144,7 +138,7 @@ private fun ReportScreen(
                 .padding(bottom = 48.dp),
             isEnabled = when {
                 uiState.selectedReportType == null -> false
-                uiState.selectedReportType == ReportType.ETC -> !uiState.etcText.isNullOrBlank()
+                uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString().isNotBlank()
                 else -> true
             },
         )
@@ -192,7 +186,6 @@ private fun ReportScreenPreview() {
             uiState = ReportContract.State(selectedReportType = selectedReportType),
             detailTextFieldState = detailState,
             onReportTypeSelected = { selectedReportType = it },
-            onDetailTextChange = {},
             onReportClick = { selectedReportType = null },
             navigateUp = {},
         )

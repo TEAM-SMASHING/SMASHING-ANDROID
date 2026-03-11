@@ -8,7 +8,6 @@ interface ReportContract {
     data class State(
         val reportUiState: ReportUiState = ReportUiState.Idle,
         val selectedReportType: ReportType? = null,
-        val etcText: String? = null,
     )
 }
 

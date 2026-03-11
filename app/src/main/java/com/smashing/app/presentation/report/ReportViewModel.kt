@@ -21,8 +21,4 @@ class ReportViewModel @Inject constructor(
     fun updateSelectedReportType(reportType: ReportType) {
         _uiState.update { it.copy(selectedReportType = reportType) }
     }
-
-    fun updateEtcText(text: String) {
-        _uiState.update { it.copy(etcText = text.ifBlank { null }) }
-    }
 }
