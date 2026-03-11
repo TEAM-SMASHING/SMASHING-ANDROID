@@ -64,11 +64,8 @@ fun SearchMainRoute(
         uiState = uiState,
         onLoadMoreSearchList = viewModel::fetchRegionUsersList,
         onRegionSelectClick = navigateToRegionChange,
-        onRegionDropdownClick = { },
         onSearchClick = navigateToSearchInput,
-        onProfileClick = { userId ->
-            navigateToUserProfile(userId)
-        },
+        onProfileClick = navigateToUserProfile,
         onTierItemClick = viewModel::updateSelectedTierItem,
         onGenderItemClick = viewModel::updateSelectedGenderItem,
         onTierBottomSheetOpen = viewModel::openTierBottomSheet,
@@ -89,7 +86,6 @@ private fun SearchMainScreen(
     uiState: SearchContract.State,
     onLoadMoreSearchList: () -> Unit,
     onRegionSelectClick: () -> Unit,
-    onRegionDropdownClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onProfileClick: (String) -> Unit,
     onTierItemClick: (String) -> Unit,
@@ -104,18 +100,15 @@ private fun SearchMainScreen(
     onDeleteGenderFilter: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     val listState = rememberLazyGridState()
 
-    //Todo: 스크롤 수정
-//    var isFirstLoad by remember { mutableStateOf(true) }
-//
-//    LaunchedEffect(uiState.searchList) {
-//        if (isFirstLoad && uiState.searchList.isNotEmpty()) {
-//            listState.scrollToItem(0)
-//            isFirstLoad = false
-//        }
-//    }
+    LaunchedEffect(
+        uiState.selectedRegion,
+        uiState.currentTierText,
+        uiState.currentGenderText,
+    ) {
+        listState.scrollToItem(0)
+    }
 
     val currentIsLoading = uiState.searchRegionUsersUiState is SearchUiState.Loading
 
@@ -128,7 +121,7 @@ private fun SearchMainScreen(
         SearchTopBar(
             selectedRegion = uiState.selectedRegion,
             regionItems = uiState.regionItems,
-            onRegionDropdownClick = onRegionDropdownClick,
+            onRegionDropdownClick = {},
             onSearchClick = onSearchClick,
             onRegionSelectClick = onRegionSelectClick,
         )
@@ -243,7 +236,6 @@ private fun SearchScreenPreview() {
             uiState = SearchContract.State(),
             onLoadMoreSearchList = {},
             onRegionSelectClick = {},
-            onRegionDropdownClick = {},
             onSearchClick = {},
             onProfileClick = {},
             onTierItemClick = {},
