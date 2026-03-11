@@ -49,6 +49,7 @@ import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.regionGraph
+import com.smashing.app.presentation.report.navigation.reportGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
@@ -232,6 +233,11 @@ private fun MainNavHost(
         )
 
         rankingGraph(
+            navController = appState.navController,
+        )
+
+        reportGraph(
+            innerPadding = innerPadding,
             navController = appState.navController,
         )
 

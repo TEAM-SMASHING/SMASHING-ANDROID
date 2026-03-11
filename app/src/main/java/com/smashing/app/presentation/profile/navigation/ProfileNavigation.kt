@@ -17,6 +17,7 @@ import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
+import com.smashing.app.presentation.report.navigation.navigateToReport
 import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
@@ -67,7 +68,9 @@ fun NavGraphBuilder.profileGraph(
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,
                     )
-                }
+                },
+                navigateToReport = navController::navigateToReport,
+                onBlockClick = { /* TODO: 차단 API 연동 */ },
             )
         }
 
