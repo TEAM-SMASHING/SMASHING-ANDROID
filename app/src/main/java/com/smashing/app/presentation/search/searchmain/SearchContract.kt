@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search
+package com.smashing.app.presentation.search.searchmain
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.core.designsystem.style.TierInfoStyle
@@ -25,10 +25,7 @@ interface SearchContract {
         val currentGenderText: String? = null,
         val selectedTierItem: TierInfoStyle? = null,
         val selectedGenderItem: GenderInfo? = null,
-        val suggestions: ImmutableList<SuggestionItemModel> = persistentListOf(),
-        val isSuggestionVisible: Boolean = false,
         val searchRegionUsersUiState: SearchUiState = SearchUiState.Idle,
-        val searchNickNameUsersUiState: SearchUiState = SearchUiState.Idle,
         val searchRegionUsersCursor: Cursor = Cursor(),
     )
 }

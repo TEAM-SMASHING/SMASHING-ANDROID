@@ -1,4 +1,4 @@
-package com.smashing.app.presentation.search
+package com.smashing.app.presentation.search.searchmain
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
@@ -27,40 +27,6 @@ class SearchViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(SearchContract.State())
     val uiState = _uiState.asStateFlow()
-
-    val searchInputState = TextFieldState()
-
-    init {
-        updateSearchInputText()
-    }
-
-    @OptIn(FlowPreview::class)
-    fun updateSearchInputText() = viewModelScope.launch {
-        snapshotFlow { searchInputState.text }
-            .debounce(SEARCH_NETWORK_DEBOUNCE)
-            .collectLatest { searchInputText ->
-                if (searchInputText.isEmpty()) {
-                    _uiState.update {
-                        it.copy(
-                            suggestions = persistentListOf(),
-                            searchNickNameUsersUiState = SearchUiState.Idle,
-                        )
-                    }
-                } else {
-                    fetchNickNameUsersList(searchInputText)
-                }
-            }
-    }
-
-    fun clearSearchInput() {
-        searchInputState.clearText()
-        _uiState.update {
-            it.copy(
-                suggestions = persistentListOf(),
-                searchNickNameUsersUiState = SearchUiState.Idle,
-            )
-        }
-    }
 
     fun updateSelectedRegion() = viewModelScope.launch {
         _uiState.update { it.copy(regionUiState = SearchUiState.Loading) }
@@ -98,7 +64,7 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedTierItem(tierItem: String?) =
         _uiState.update {
-            it.copy(selectedTierItem = TierInfoStyle.findTierInfo(tierItem))
+            it.copy(selectedTierItem = TierInfoStyle.Companion.findTierInfo(tierItem))
         }
 
     fun applyTierItem() {
@@ -113,7 +79,7 @@ class SearchViewModel @Inject constructor(
         fetchRegionUsersList(isRefresh = true)
     }
 
-    fun updateCurrentTierText(tierText: String?) =
+    private fun updateCurrentTierText(tierText: String?) =
         _uiState.update {
             it.copy(
                 currentTierText = tierText,
@@ -132,10 +98,10 @@ class SearchViewModel @Inject constructor(
 
     fun updateSelectedGenderItem(genderItem: String?) =
         _uiState.update {
-            it.copy(selectedGenderItem = GenderInfo.findGenderInfo(genderItem))
+            it.copy(selectedGenderItem = GenderInfo.Companion.findGenderInfo(genderItem))
         }
 
-    fun updateCurrentGenderText(genderText: String?) =
+    private fun updateCurrentGenderText(genderText: String?) =
         _uiState.update {
             it.copy(
                 currentGenderText = genderText,
@@ -152,29 +118,6 @@ class SearchViewModel @Inject constructor(
         updateCurrentGenderText(null)
         updateSelectedGenderItem(null)
         fetchRegionUsersList(isRefresh = true)
-    }
-
-    fun fetchNickNameUsersList(nickname: CharSequence) = viewModelScope.launch {
-
-        _uiState.update { it.copy(searchNickNameUsersUiState = SearchUiState.Loading) }
-
-        searchRepository.getNickNameUsersSearch(nickname = nickname.toString())
-            .onSuccess { result ->
-                _uiState.update {
-                    it.copy(
-                        suggestions = result.toImmutableList(),
-                        searchNickNameUsersUiState = SearchUiState.Success,
-                    )
-                }
-            }.onFailure { throwable ->
-                _uiState.update {
-                    it.copy(
-                        searchNickNameUsersUiState = SearchUiState.Failure(
-                            throwable.message ?: "Unknown error"
-                        )
-                    )
-                }
-            }
     }
 
     fun fetchRegionUsersList(isRefresh: Boolean = false) = viewModelScope.launch {
@@ -222,6 +165,5 @@ class SearchViewModel @Inject constructor(
 
     companion object {
         private const val CURSOR_SIZE = 20
-        private const val SEARCH_NETWORK_DEBOUNCE = 500L
     }
 }

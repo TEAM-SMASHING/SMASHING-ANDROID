@@ -27,22 +27,17 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.search.SuggestionItemModel
-import com.smashing.app.presentation.search.SearchContract
-import com.smashing.app.presentation.search.SearchUiState
-import com.smashing.app.presentation.search.SearchViewModel
 import com.smashing.app.presentation.search.component.SearchEmpty
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-
 
 @Composable
 fun SearchInputRoute(
     navigateToSearchMain: () -> Unit,
     navigateToUserProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = hiltViewModel(),
+    viewModel: SearchInputViewModel = hiltViewModel(),
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -63,7 +58,7 @@ fun SearchInputRoute(
 
 @Composable
 private fun SearchInputScreen(
-    uiState: SearchContract.State,
+    uiState: SearchInputContract.State,
     items: ImmutableList<SuggestionItemModel>,
     searchState: TextFieldState,
     onBackClick: () -> Unit,
@@ -83,10 +78,10 @@ private fun SearchInputScreen(
         )
 
         when (uiState.searchNickNameUsersUiState) {
-            SearchUiState.Idle -> Unit
-            SearchUiState.Loading -> Unit
-            SearchUiState.Empty -> Unit
-            SearchUiState.Success -> {
+            SearchInputUiState.Idle -> Unit
+            SearchInputUiState.Loading -> Unit
+            SearchInputUiState.Empty -> Unit
+            SearchInputUiState.Success -> {
                 if (uiState.suggestions.isNotEmpty()) {
                     items.forEach { item ->
                         Text(
@@ -121,7 +116,7 @@ private fun SearchInputScreen(
 private fun SearchInputScreenPreview() {
     SmashingAndroidTheme {
         SearchInputScreen(
-            uiState = SearchContract.State(),
+            uiState = SearchInputContract.State(),
             items = persistentListOf(),
             searchState = rememberTextFieldState(),
             onBackClick = {},
