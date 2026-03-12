@@ -11,14 +11,11 @@ import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.mypage.MyPageRoute
 import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
+import com.smashing.app.presentation.withdraw.navigation.navigateToWithdraw
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMyPage(navOptions: NavOptions? = null) {
     this.navigate(MyPage, navOptions)
-}
-
-fun NavController.navigateToWithdraw(navOptions: NavOptions? = null) {
-    this.navigate(Withdraw, navOptions)
 }
 
 fun NavGraphBuilder.myPageGraph(
@@ -39,14 +36,8 @@ fun NavGraphBuilder.myPageGraph(
             modifier = Modifier.padding(innerPadding),
         )
     }
-    composable<Withdraw> {
-    //TODO 회원탈퇴
-    }
 }
 
 
 @Serializable
 data object MyPage : Route
-
-@Serializable
-data object Withdraw : Route
