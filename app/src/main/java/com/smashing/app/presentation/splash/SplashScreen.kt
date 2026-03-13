@@ -19,6 +19,8 @@ private const val PADDING_RATIO = 202/304f
 
 @Composable
 fun SplashRoute(
+    navigateToLogin: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
