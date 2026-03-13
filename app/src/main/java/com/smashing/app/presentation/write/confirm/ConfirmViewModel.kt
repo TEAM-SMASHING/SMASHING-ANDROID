@@ -45,8 +45,6 @@ class ConfirmViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     val reviewTextFieldState: TextFieldState = TextFieldState()
-    val leftTextFieldState: TextFieldState = TextFieldState()
-    val rightTextFieldState: TextFieldState = TextFieldState()
 
     init {
         fetchGameSubmission()
@@ -60,14 +58,6 @@ class ConfirmViewModel @Inject constructor(
             submissionId = submissionId,
         ).onSuccess { submissionDetail ->
             updateGameSubmission(submissionDetail)
-
-            val currentState = _uiState.value
-            leftTextFieldState.edit {
-                replace(0, length, currentState.submitter.score.toString())
-            }
-            rightTextFieldState.edit {
-                replace(0, length, currentState.receiver.score.toString())
-            }
         }.onFailure { throwable ->
             updateConfirmUiState(
                 uiState = ConfirmUiState.Failure(
@@ -85,13 +75,11 @@ class ConfirmViewModel @Inject constructor(
             val submitter = PlayerInfo(
                 userId = submissionDetail.submitter.userId,
                 name = submissionDetail.submitter.nickname,
-                score = if (isSubmitterWinner) submissionDetail.winner.score else submissionDetail.loser.score,
             )
 
             val receiver = PlayerInfo(
                 userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
                 name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
-                score = if (isSubmitterWinner) submissionDetail.loser.score else submissionDetail.winner.score,
             )
 
             currentState.copy(
