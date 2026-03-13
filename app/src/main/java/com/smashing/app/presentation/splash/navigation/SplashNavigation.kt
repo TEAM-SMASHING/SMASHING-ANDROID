@@ -15,15 +15,11 @@ fun NavGraphBuilder.splashGraph(
     innerPadding: PaddingValues,
     navController: NavController,
 ) {
-    navigation<Splash>(
-        startDestination = Splash,
-    ) {
-        composable<Splash> {
-            SplashRoute(
-                navigateToLogin = navController::navigateToLogin,
-                navigateToHome = navController::navigateToHome,
-            )
-        }
+    composable<Splash> {
+        SplashRoute(
+            navigateToLogin = navController::navigateToLogin,
+            navigateToHome = navController::navigateToHome,
+        )
     }
 }
 
