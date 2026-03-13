@@ -21,12 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_crown
-import com.smashing.app.R.string.score_format
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -58,18 +56,14 @@ fun SubmitScoreCard(
         )
 
         Text(
-            text = stringResource(
-                score_format,
-                leftUser.score,
-                rightUser.score
-            ),
+            text = "vs",
             color = SmashingTheme.colors.txtSecondary,
             style = SmashingTheme.typography.hero.semibold28,
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(
-                    top = 50.dp,
-                    bottom = 68.dp,
+                    top = 59.dp,
+                    bottom = 58.dp,
                 ),
         )
 
@@ -137,8 +131,8 @@ private fun ProfileInfo(
 private fun ProfileInfoPreview() {
     SmashingAndroidTheme {
         SubmitScoreCard(
-            leftUser = PlayerInfo(userId = "1", name = "하나둘", score = 0),
-            rightUser = PlayerInfo(userId = "2", name = "하나둘셋넷다여일여아열", score = 0),
+            leftUser = PlayerInfo(userId = "1", name = "하나둘"),
+            rightUser = PlayerInfo(userId = "2", name = "하나둘셋넷다여일여아열"),
             winnerId = "1",
         )
     }

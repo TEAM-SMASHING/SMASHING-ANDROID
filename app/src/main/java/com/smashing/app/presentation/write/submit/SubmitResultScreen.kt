@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,9 +27,9 @@ import com.smashing.app.R.string.submit_matching_result
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
 import com.smashing.app.presentation.write.component.WriteResultContent
@@ -59,26 +58,18 @@ fun SubmitResultRoute(
         uiState = uiState,
         modifier = modifier,
         onBackClick = navigateUp,
-        onLeftDoneClick = viewModel::updateSubmitterScore,
-        onRightDoneClick = viewModel::updateReceiverScore,
         onWinnerSelected = viewModel::updateSelectedWinner,
         onNextClick = if (viewModel.isFirstAttempt) navigateToSubmitReview else viewModel::showResubmitDialog,
         onConfirmResubmit = viewModel::submitGame,
         onDismissResubmit = viewModel::hideResubmitDialog,
-        leftTextFieldState = viewModel.leftTextFieldState,
-        rightTextFieldState = viewModel.rightTextFieldState,
     )
 }
 
 @Composable
 private fun SubmitResultScreen(
     uiState: SubmitContract.State,
-    leftTextFieldState: TextFieldState,
-    rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
     onWinnerSelected: (String) -> Unit,
-    onLeftDoneClick: (Int) -> Unit,
-    onRightDoneClick: (Int) -> Unit,
     onNextClick: () -> Unit,
     onConfirmResubmit: () -> Unit,
     onDismissResubmit: () -> Unit,
@@ -112,11 +103,7 @@ private fun SubmitResultScreen(
                 leftUserInfo = uiState.submitter,
                 rightUserInfo = uiState.receiver,
                 winnerId = uiState.winnerId,
-                leftTextFieldState = leftTextFieldState,
-                rightTextFieldState = rightTextFieldState,
                 onWinnerSelected = onWinnerSelected,
-                onLeftDoneClick = onLeftDoneClick,
-                onRightDoneClick = onRightDoneClick,
                 subTitle = "악의적인 결과 작성 시 활동이 제한될 수 있어요",
             )
 
@@ -153,11 +140,7 @@ private fun SubmitResultScreen(
 private fun SubmitScreenPreview() {
     SubmitResultScreen(
         uiState = SubmitContract.State(),
-        leftTextFieldState = TextFieldState(),
-        rightTextFieldState = TextFieldState(),
         onBackClick = {},
-        onLeftDoneClick = {},
-        onRightDoneClick = {},
         onWinnerSelected = {},
         onNextClick = {},
         onConfirmResubmit = {},
