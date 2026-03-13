@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -172,7 +171,7 @@ class ConfirmViewModel @Inject constructor(
 
     fun rejectSubmission() = viewModelScope.launch {
         val reason = _uiState.value.selectedDenyReason
-        Timber.tag("ooo").d("$reason")
+
         _uiState.update {
             it.copy(
                 confirmUiState = ConfirmUiState.Loading,
