@@ -39,11 +39,7 @@ class MatchingViewModel @Inject constructor(
 
     fun selectMatchingTab(type: MatchingType) {
         updateMatchingType(type)
-        when (type) {
-            MatchingType.RECEIVE -> fetchReceivedMatchingList(true)
-            MatchingType.SEND -> fetchSentMatchingList(true)
-            MatchingType.ACCEPTED -> fetchAcceptedMatchingList(true)
-        }
+        refreshMatchingList()
     }
 
     fun updateMatchingType(type: MatchingType) = _uiState.update {
