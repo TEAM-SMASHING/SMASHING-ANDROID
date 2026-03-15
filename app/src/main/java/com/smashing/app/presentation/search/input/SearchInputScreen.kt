@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R.string.search_input_empty_subtitle
+import com.smashing.app.R.string.search_input_empty_title
 import com.smashing.app.R.string.search_placeholder
 import com.smashing.app.core.designsystem.component.topbar.SmashingSearchTopBar
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -102,8 +104,8 @@ private fun SearchInputScreen(
                     }
                 } else {
                     SearchEmpty(
-                        title = "검색 결과가 없습니다.",
-                        subTitle = "다른 검색어를 입력해보세요",
+                        title = stringResource(search_input_empty_title),
+                        subTitle = stringResource(search_input_empty_subtitle),
                     )
                 }
             }

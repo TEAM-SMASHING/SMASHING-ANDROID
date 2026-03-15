@@ -20,7 +20,8 @@ enum class ButtonStyle {
     SECONDARY,
     DISABLED_ACTIVE,
     REJECTED,
-    TERTIARY;
+    TERTIARY,
+    WARNING;
 
     @ReadOnlyComposable
     @Composable
@@ -55,6 +56,11 @@ enum class ButtonStyle {
         TERTIARY -> SmashingBtnColor(
             backgroundColor = colors.btnBgTertiaryPressed,
             textColor = colors.btnTxtPrimaryPressed,
+        )
+
+        WARNING -> SmashingBtnColor(
+            backgroundColor = colors.btnBgWarning,
+            textColor = colors.btnTxtSecondaryActive,
         )
     }
 }

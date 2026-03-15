@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -19,10 +20,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
+import com.smashing.app.R.string.review
+import com.smashing.app.R.string.confirm
+import com.smashing.app.R.string.confirm_review_arrived_with_nickname
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.ReviewRatingType
@@ -59,9 +63,7 @@ private fun ConfirmReviewScreen(
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
-            title = "후기",
-            topBarType = TopBarType.DEFAULT,
-            onClick = onBackClick,
+            state = TopBarState.Default(title = stringResource(review)),
         )
 
         Column(
@@ -72,7 +74,10 @@ private fun ConfirmReviewScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "${uiState.nickname}님이\n보낸 후기가 도착했어요",
+                text = stringResource(
+                    id = confirm_review_arrived_with_nickname,
+                    uiState.nickname
+                ),
                 style = SmashingTheme.typography.xl.semibold20,
                 color = SmashingTheme.colors.txtPrimary,
             )
@@ -90,7 +95,7 @@ private fun ConfirmReviewScreen(
 
             SmashingButton(
                 buttonStyle = ButtonStyle.PRIMARY,
-                text = "확인",
+                text = stringResource(confirm),
                 onClick = onConfirmClick,
                 modifier = Modifier
                     .fillMaxWidth()

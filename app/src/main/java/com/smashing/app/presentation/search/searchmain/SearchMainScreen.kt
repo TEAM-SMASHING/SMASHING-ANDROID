@@ -18,10 +18,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R.string.search_apply_btn
+import com.smashing.app.R.string.search_filter_empty_subtitle
+import com.smashing.app.R.string.search_filter_empty_title
+import com.smashing.app.R.string.search_gender
+import com.smashing.app.R.string.search_tier
+import com.smashing.app.core.designsystem.component.bottomsheet.BottomSheetButtonConfig
 import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -132,7 +139,7 @@ private fun SearchMainScreen(
         ) {
             MatchingSearchFilterChip(
                 style = if (uiState.currentTierText == null) DEFAULT else VARIANT,
-                text = uiState.currentTierText ?: "티어",
+                text = uiState.currentTierText ?: stringResource(search_tier),
                 onFilterClick = onTierBottomSheetOpen,
                 onFilterDelete = onDeleteTierFilter,
             )
@@ -141,7 +148,7 @@ private fun SearchMainScreen(
 
             MatchingSearchFilterChip(
                 style = if (uiState.currentGenderText == null) DEFAULT else VARIANT,
-                text = uiState.currentGenderText ?: "성별",
+                text = uiState.currentGenderText ?: stringResource(search_gender),
                 onFilterClick = onGenderBottomSheetOpen,
                 onFilterDelete = onDeleteGenderFilter,
             )
@@ -150,26 +157,30 @@ private fun SearchMainScreen(
         if (uiState.isTierBottomSheetEnabled) {
             SmashingBottomSheet(
                 onDismissRequest = onTierBottomSheetClose,
-                title = "티어",
+                title = stringResource(search_tier),
                 items = uiState.tierBottomSheetList,
                 selectedItem = uiState.selectedTierItem?.tierKName ?: "",
-                contentToBtnPadding = 4.dp,
-                btnText = "적용하기",
                 onItemClick = onTierItemClick,
-                onBtnClick = onTierApplyClick,
+                optionalButton = BottomSheetButtonConfig(
+                    btnText = stringResource(search_apply_btn),
+                    contentToBtnPadding = 4.dp,
+                    onBtnClick = onTierApplyClick,
+                ),
             )
         }
 
         if (uiState.isGenderBottomSheetEnabled) {
             SmashingBottomSheet(
                 onDismissRequest = onGenderBottomSheetClose,
-                title = "성별",
+                title = stringResource(search_gender),
                 items = uiState.genderBottomSheetList,
                 selectedItem = uiState.selectedGenderItem?.genderKName ?: "",
-                contentToBtnPadding = 4.dp,
-                btnText = "적용하기",
                 onItemClick = onGenderItemClick,
-                onBtnClick = onGenderApplyClick,
+                optionalButton = BottomSheetButtonConfig(
+                    btnText = stringResource(search_apply_btn),
+                    contentToBtnPadding = 4.dp,
+                    onBtnClick = onGenderApplyClick,
+                ),
             )
         }
 
@@ -177,8 +188,8 @@ private fun SearchMainScreen(
             SearchUiState.Idle -> Unit
             SearchUiState.Empty -> {
                 SearchEmpty(
-                    title = "해당 조건에 맞는 유저가 없어요",
-                    subTitle = "적용된 필터를 변경해보세요",
+                    title = stringResource(search_filter_empty_title),
+                    subTitle = stringResource(search_filter_empty_subtitle),
                 )
             }
 
@@ -221,8 +232,8 @@ private fun SearchMainScreen(
 
             else -> {
                 SearchEmpty(
-                    title = "해당 조건에 맞는 유저가 없어요",
-                    subTitle = "적용된 필터를 변경해보세요",
+                    title = stringResource(search_filter_empty_title),
+                    subTitle = stringResource(search_filter_empty_subtitle),
                 )
             }
         }

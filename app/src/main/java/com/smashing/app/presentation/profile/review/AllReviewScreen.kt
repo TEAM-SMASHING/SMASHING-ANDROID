@@ -38,18 +38,21 @@ import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
 import com.smashing.app.R.drawable.img_app_icon
-import com.smashing.app.R.string.fair_play_review
-import com.smashing.app.R.string.fast_response_review
-import com.smashing.app.R.string.good_manner_review
-import com.smashing.app.R.string.on_time_review
-import com.smashing.app.R.string.receive_review
+import com.smashing.app.R.string.chip_fair_play_review
+import com.smashing.app.R.string.chip_fast_response_review
+import com.smashing.app.R.string.chip_good_manner_review
+import com.smashing.app.R.string.chip_on_time_review
+import com.smashing.app.R.string.review_receive_review
 import com.smashing.app.R.string.review
-import com.smashing.app.R.string.satisfaction_review
-import com.smashing.app.R.string.short_review
+import com.smashing.app.R.string.review_satisfaction_review
+import com.smashing.app.R.string.review_no_fast_reviews_yet
+import com.smashing.app.R.string.review_short_review
+import com.smashing.app.R.string.review_with_count
+import com.smashing.app.R.string.review_no_review_yet
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ChipStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
@@ -100,9 +103,10 @@ private fun AllReviewScreen(
     ) {
         SmashingDefaultTopBar(
             modifier = Modifier.statusBarsPadding(),
-            title = stringResource(receive_review),
-            topBarType = TopBarType.BACK,
-            onClick = onBackClick,
+            state = TopBarState.Back(
+                title = stringResource(review_receive_review),
+                onBackClick = onBackClick,
+            ),
         )
 
         if (uiState.isReviewEmpty) {
@@ -121,7 +125,7 @@ private fun AllReviewScreen(
                 Spacer(Modifier.padding(top = 12.dp))
 
                 Text(
-                    text = "아직 받은 후기가 없어요",
+                    text = stringResource(review_no_review_yet),
                     style = SmashingTheme.typography.md.medium16,
                     color = SmashingTheme.colors.txtSecondary,
                 )
@@ -146,7 +150,7 @@ private fun AllReviewScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = stringResource(id = satisfaction_review),
+                            text = stringResource(id = review_satisfaction_review),
                             style = SmashingTheme.typography.md.semibold16,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -184,7 +188,7 @@ private fun AllReviewScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Text(
-                            text = stringResource(id = short_review),
+                            text = stringResource(id = review_short_review),
                             style = SmashingTheme.typography.md.semibold16,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -197,32 +201,36 @@ private fun AllReviewScreen(
                             ) {
                                 if (uiState.gameReviewResult.onTimeCount > 0) {
                                     SmashingChip(
-                                        text = "${stringResource(id = on_time_review)} ${uiState.gameReviewResult.onTimeCount}",
+                                        text = stringResource(
+                                            id = review_with_count,
+                                            stringResource(id = chip_on_time_review),
+                                            uiState.gameReviewResult.onTimeCount
+                                        ),
                                         style = ChipStyle.DISABLED,
                                     )
                                 }
                                 if (uiState.gameReviewResult.goodMannerCount > 0) {
                                     SmashingChip(
-                                        text = "${stringResource(id = good_manner_review)} ${uiState.gameReviewResult.goodMannerCount}",
+                                        text = "${stringResource(id = chip_good_manner_review)} ${uiState.gameReviewResult.goodMannerCount}",
                                         style = ChipStyle.DISABLED,
                                     )
                                 }
                                 if (uiState.gameReviewResult.fairPlayCount > 0) {
                                     SmashingChip(
-                                        text = "${stringResource(id = fair_play_review)} ${uiState.gameReviewResult.fairPlayCount}",
+                                        text = "${stringResource(id = chip_fair_play_review)} ${uiState.gameReviewResult.fairPlayCount}",
                                         style = ChipStyle.DISABLED,
                                     )
                                 }
                                 if (uiState.gameReviewResult.fastResponseCount > 0) {
                                     SmashingChip(
-                                        text = "${stringResource(id = fast_response_review)} ${uiState.gameReviewResult.fastResponseCount}",
+                                        text = "${stringResource(id = chip_fast_response_review)} ${uiState.gameReviewResult.fastResponseCount}",
                                         style = ChipStyle.DISABLED,
                                     )
                                 }
                             }
                         } else {
                             ReviewEmptyPlaceholder(
-                                text = "아직 받은 빠른 후기가 없어요",
+                                text = stringResource(id = review_no_fast_reviews_yet),
                                 modifier = Modifier.padding(vertical = 20.dp)
                             )
                         }
@@ -258,7 +266,7 @@ private fun AllReviewScreen(
                 } else {
                     item {
                         ReviewEmptyPlaceholder(
-                            text = "아직 받은 후기가 없어요",
+                            text = stringResource(review_no_review_yet),
                             modifier = Modifier.padding(vertical = 40.dp)
                         )
                     }
