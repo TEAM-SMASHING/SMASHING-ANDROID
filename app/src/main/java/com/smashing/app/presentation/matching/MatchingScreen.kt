@@ -21,8 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,8 +50,8 @@ import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.MatchingCardState
-import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.state.TopBarState
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
@@ -88,18 +86,16 @@ fun MatchingRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val hasInitialized = remember { mutableStateOf(false) }
+    val isInitTabApplyRequired = savedInitTab != null && savedInitTab != uiState.selectedType
 
-    if (!hasInitialized.value) {
-        LaunchedEffect(Unit) {
-            if (savedInitTab != null && savedInitTab != uiState.selectedType) {
-                viewModel.selectMatchingTab(savedInitTab)
-                removeSavedInitTab()
-            } else {
-                viewModel.refreshMatchingList()
-            }
-            hasInitialized.value = true
+    LaunchedEffect(Unit) {
+        if (isInitTabApplyRequired) {
+            viewModel.selectMatchingTab(savedInitTab)
+        } else {
+            viewModel.refreshMatchingList()
         }
+        
+        removeSavedInitTab()
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
