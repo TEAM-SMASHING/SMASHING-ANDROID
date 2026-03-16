@@ -31,8 +31,6 @@ class LocalTokenDataSourceImpl @Inject constructor(
         dataStore.edit { prefs ->
             prefs[ENCRYPTED_ACCESS_TOKEN] = crypto.encrypt(accessToken)
             prefs[ENCRYPTED_REFRESH_TOKEN] = crypto.encrypt(refreshToken)
-            prefs.remove(ACCESS_TOKEN_IV)
-            prefs.remove(REFRESH_TOKEN_IV)
         }
     }
 
@@ -40,15 +38,11 @@ class LocalTokenDataSourceImpl @Inject constructor(
         dataStore.edit { prefs ->
             prefs.remove(ENCRYPTED_ACCESS_TOKEN)
             prefs.remove(ENCRYPTED_REFRESH_TOKEN)
-            prefs.remove(ACCESS_TOKEN_IV)
-            prefs.remove(REFRESH_TOKEN_IV)
         }
     }
 
     companion object {
         private val ENCRYPTED_ACCESS_TOKEN = stringPreferencesKey("ENCRYPTED_ACCESS_TOKEN")
         private val ENCRYPTED_REFRESH_TOKEN = stringPreferencesKey("ENCRYPTED_REFRESH_TOKEN")
-        private val ACCESS_TOKEN_IV = stringPreferencesKey("ACCESS_TOKEN_IV")
-        private val REFRESH_TOKEN_IV = stringPreferencesKey("REFRESH_TOKEN_IV")
     }
 }

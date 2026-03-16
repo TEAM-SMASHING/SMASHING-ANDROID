@@ -70,6 +70,5 @@ class CryptoManager @Inject constructor() : CryptoInterface {
         private const val TRANSFORMATION = "AES/GCM/NoPadding"
         private const val GCM_TAG_LENGTH = 128
         private const val GCM_IV_LENGTH = 12
-        private const val DELIMITER = "\u0000"
     }
 }
