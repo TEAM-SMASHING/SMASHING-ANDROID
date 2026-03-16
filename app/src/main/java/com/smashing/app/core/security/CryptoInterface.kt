@@ -1,33 +1,15 @@
 package com.smashing.app.core.security
 
 interface CryptoInterface {
-    suspend fun encrypt(data: List<String>): EncryptedResult
-    suspend fun decrypt(encryptedData: ByteArray, iv: ByteArray): String?
-}
+    /**
+     * Encrypts [data] and returns a single Base64-encoded string containing iv + cipherText.
+     * Caller can store this string as-is (e.g. in DataStore).
+     */
+    suspend fun encrypt(data: List<String>): String
 
-data class EncryptedResult(
-    val ciphertext: ByteArray,
-    val iv: ByteArray
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as EncryptedResult
-
-        if (!ciphertext.contentEquals(other.ciphertext)) return false
-        if (!iv.contentEquals(other.iv)) return false
-
-        return true
-    }
-    
-    override fun hashCode(): Int {
-        var result = ciphertext.contentHashCode()
-        result = HASH_SIZE * result + iv.contentHashCode()
-        return result
-    }
-
-    companion object {
-        private const val HASH_SIZE = 31
-    }
+    /**
+     * Decrypts a Base64-encoded blob produced by [encrypt].
+     * Returns the decrypted string, or null if decoding/decryption fails.
+     */
+    suspend fun decrypt(encodedBlob: String): String?
 }

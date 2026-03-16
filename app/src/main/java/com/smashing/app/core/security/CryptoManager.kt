@@ -1,5 +1,6 @@
 package com.smashing.app.core.security
 
+import android.util.Base64
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import java.security.KeyStore
@@ -11,31 +12,37 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CryptoManager @Inject constructor(): CryptoInterface {
+class CryptoManager @Inject constructor() : CryptoInterface {
 
     private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply { load(null) }
 
-    override suspend fun encrypt(data: List<String>): EncryptedResult {
+    override suspend fun encrypt(data: List<String>): String {
         val secretKey = getOrCreateSecretKey()
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
         val iv = cipher.iv
         val encrypted = cipher.doFinal(data.joinToString(DELIMITER).toByteArray(Charsets.UTF_8))
-
-        return EncryptedResult(
-            ciphertext = encrypted,
-            iv = iv,
-        )
+        val blob = iv + encrypted
+        return Base64.encodeToString(blob, Base64.NO_WRAP)
     }
 
-    override suspend fun decrypt(encryptedData: ByteArray, iv: ByteArray): String? {
-        if (encryptedData.isEmpty() || iv.isEmpty()) return null
+    override suspend fun decrypt(encodedBlob: String): String? {
+        return try {
+            val blob = Base64.decode(encodedBlob, Base64.NO_WRAP) ?: return null
+            if (blob.size <= GCM_IV_LENGTH) return null
+            val iv = blob.copyOfRange(0, GCM_IV_LENGTH)
+            val cipherText = blob.copyOfRange(GCM_IV_LENGTH, blob.size)
+            decryptInternal(cipherText, iv)
+        } catch (e: Exception) {
+            null
+        }
+    }
 
+    private fun decryptInternal(encryptedData: ByteArray, iv: ByteArray): String {
         val secretKey = getOrCreateSecretKey()
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(GCM_TAG_LENGTH, iv))
-
         return String(cipher.doFinal(encryptedData), Charsets.UTF_8)
     }
 
@@ -62,6 +69,7 @@ class CryptoManager @Inject constructor(): CryptoInterface {
         private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
         private const val TRANSFORMATION = "AES/GCM/NoPadding"
         private const val GCM_TAG_LENGTH = 128
+        private const val GCM_IV_LENGTH = 12
         private const val DELIMITER = "\u0000"
     }
 }
