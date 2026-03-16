@@ -62,9 +62,7 @@ class SubmitViewModel @Inject constructor(
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    submitUiState = SubmitContract.SubmitUiState.Failure(
-                        throwable.message ?: "이전 제출 결과 조회 실패"
-                    )
+                    submitUiState = SubmitContract.SubmitUiState.Failure("이전 제출 결과 조회 실패")
                 )
             }
         }
@@ -195,9 +193,7 @@ class SubmitViewModel @Inject constructor(
         }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    submitUiState = SubmitContract.SubmitUiState.Failure(
-                        throwable.message ?: "경기 결과 제출 실패"
-                    ),
+                    submitUiState = SubmitContract.SubmitUiState.Failure("경기 결과 제출 실패"),
                     isResubmitDialogVisible = false,
                     isAlertDialogOpen = false,
                     isConfirmDialogOpen = true,
