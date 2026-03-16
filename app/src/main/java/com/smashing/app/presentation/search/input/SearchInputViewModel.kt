@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,6 +37,7 @@ class SearchInputViewModel @Inject constructor(
     private fun observeSearchInput() = viewModelScope.launch {
         snapshotFlow { searchInputState.text }
             .debounce(SEARCH_NETWORK_DEBOUNCE)
+            .distinctUntilChanged()
             .collectLatest { searchInputText ->
                 if (searchInputText.isEmpty()) {
                     _uiState.update {
