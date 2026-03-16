@@ -3,6 +3,7 @@ package com.smashing.app.core.security
 import android.util.Base64
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import com.smashing.app.BuildConfig
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -10,13 +11,14 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 @Singleton
 class CryptoManager @Inject constructor() : CryptoInterface {
 
     private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply { load(null) }
 
-    override suspend fun encrypt(data: String): String {
+    override suspend fun encrypt(data: String): Result<String> = runCatching {
         val secretKey = getOrCreateSecretKey()
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
@@ -24,18 +26,27 @@ class CryptoManager @Inject constructor() : CryptoInterface {
         val iv = cipher.iv
         val encrypted = cipher.doFinal(data.toByteArray(Charsets.UTF_8))
         val blob = iv + encrypted
-        return Base64.encodeToString(blob, Base64.NO_WRAP)
+        Base64.encodeToString(blob, Base64.NO_WRAP)
+    }.onFailure { throwable ->
+        if (BuildConfig.DEBUG) {
+            Timber.e(throwable, "토큰 암호화에 실패했습니다.")
+        } else {
+            Timber.e(throwable, "토큰 암호화 중 오류가 발생했습니다.")
+        }
     }
 
-    override suspend fun decrypt(encodedBlob: String): String? {
-        return try {
-            val blob = Base64.decode(encodedBlob, Base64.NO_WRAP) ?: return null
-            if (blob.size <= GCM_IV_LENGTH) return null
-            val iv = blob.copyOfRange(0, GCM_IV_LENGTH)
-            val cipherText = blob.copyOfRange(GCM_IV_LENGTH, blob.size)
-            decryptInternal(cipherText, iv)
-        } catch (e: Exception) {
-            null
+    override suspend fun decrypt(encodedBlob: String): Result<String> = runCatching {
+        val blob = Base64.decode(encodedBlob, Base64.NO_WRAP)
+        require(blob.size > GCM_IV_LENGTH) { "Invalid encrypted blob length" }
+
+        val iv = blob.copyOfRange(0, GCM_IV_LENGTH)
+        val cipherText = blob.copyOfRange(GCM_IV_LENGTH, blob.size)
+        decryptInternal(cipherText, iv)
+    }.onFailure { throwable ->
+        if (BuildConfig.DEBUG) {
+            Timber.e(throwable, "토큰 복호화에 실패했습니다. 저장된 데이터가 손상되었을 수 있습니다.")
+        } else {
+            Timber.e(throwable, "토큰 복호화 중 오류가 발생했습니다.")
         }
     }
 
