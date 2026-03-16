@@ -35,13 +35,16 @@ class CryptoManager @Inject constructor() : CryptoInterface {
         }
     }
 
-    override suspend fun decrypt(encodedBlob: String): Result<String> = runCatching {
-        val blob = Base64.decode(encodedBlob, Base64.NO_WRAP)
+    override suspend fun decrypt(data: String): Result<String> = runCatching {
+        val blob = Base64.decode(data, Base64.NO_WRAP)
         require(blob.size > GCM_IV_LENGTH) { "Invalid encrypted blob length" }
 
         val iv = blob.copyOfRange(0, GCM_IV_LENGTH)
         val cipherText = blob.copyOfRange(GCM_IV_LENGTH, blob.size)
-        decryptInternal(cipherText, iv)
+        decryptInternal(
+            encryptedData = cipherText,
+            iv = iv,
+        )
     }.onFailure { throwable ->
         if (BuildConfig.DEBUG) {
             Timber.e(throwable, "토큰 복호화에 실패했습니다. 저장된 데이터가 손상되었을 수 있습니다.")

@@ -18,21 +18,21 @@ class LocalTokenDataSourceImpl @Inject constructor(
     override suspend fun getAccessToken(): String? {
         val prefs = dataStore.data.first()
         val encoded = prefs[ENCRYPTED_ACCESS_TOKEN]
-        return encoded?.let { crypto.decrypt(it).getOrNull() }
+        return encoded?.let { crypto.decrypt(data = it).getOrNull() }
     }
 
     override suspend fun getRefreshToken(): String? {
         val prefs = dataStore.data.first()
         val encoded = prefs[ENCRYPTED_REFRESH_TOKEN]
-        return encoded?.let { crypto.decrypt(it).getOrNull() }
+        return encoded?.let { crypto.decrypt(data = it).getOrNull() }
     }
 
     override suspend fun setTokens(accessToken: String, refreshToken: String) {
         dataStore.edit { prefs ->
-            crypto.encrypt(accessToken).getOrNull()?.let { encryptedAccess ->
+            crypto.encrypt(data = accessToken).getOrNull()?.let { encryptedAccess ->
                 prefs[ENCRYPTED_ACCESS_TOKEN] = encryptedAccess
             }
-            crypto.encrypt(refreshToken).getOrNull()?.let { encryptedRefresh ->
+            crypto.encrypt(data = refreshToken).getOrNull()?.let { encryptedRefresh ->
                 prefs[ENCRYPTED_REFRESH_TOKEN] = encryptedRefresh
             }
         }
@@ -40,8 +40,8 @@ class LocalTokenDataSourceImpl @Inject constructor(
 
     override suspend fun clearTokens() {
         dataStore.edit { prefs ->
-            prefs.remove(ENCRYPTED_ACCESS_TOKEN)
-            prefs.remove(ENCRYPTED_REFRESH_TOKEN)
+            prefs.remove(key = ENCRYPTED_ACCESS_TOKEN)
+            prefs.remove(key = ENCRYPTED_REFRESH_TOKEN)
         }
     }
 
