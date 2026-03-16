@@ -29,8 +29,8 @@ class LocalTokenDataSourceImpl @Inject constructor(
 
     override suspend fun setTokens(accessToken: String, refreshToken: String) {
         dataStore.edit { prefs ->
-            prefs[ENCRYPTED_ACCESS_TOKEN] = crypto.encrypt(listOf(accessToken))
-            prefs[ENCRYPTED_REFRESH_TOKEN] = crypto.encrypt(listOf(refreshToken))
+            prefs[ENCRYPTED_ACCESS_TOKEN] = crypto.encrypt(accessToken)
+            prefs[ENCRYPTED_REFRESH_TOKEN] = crypto.encrypt(refreshToken)
             prefs.remove(ACCESS_TOKEN_IV)
             prefs.remove(REFRESH_TOKEN_IV)
         }

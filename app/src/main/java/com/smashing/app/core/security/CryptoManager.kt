@@ -16,13 +16,13 @@ class CryptoManager @Inject constructor() : CryptoInterface {
 
     private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply { load(null) }
 
-    override suspend fun encrypt(data: List<String>): String {
+    override suspend fun encrypt(data: String): String {
         val secretKey = getOrCreateSecretKey()
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
         val iv = cipher.iv
-        val encrypted = cipher.doFinal(data.joinToString(DELIMITER).toByteArray(Charsets.UTF_8))
+        val encrypted = cipher.doFinal(data.toByteArray(Charsets.UTF_8))
         val blob = iv + encrypted
         return Base64.encodeToString(blob, Base64.NO_WRAP)
     }
