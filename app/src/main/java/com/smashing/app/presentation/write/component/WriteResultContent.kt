@@ -66,7 +66,7 @@ fun WriteResultContent(
             )
         }
 
-        SubmitScoreCard(
+        SubmitCard(
             leftUser = leftUserInfo,
             rightUser = rightUserInfo,
             winnerId = winnerId,

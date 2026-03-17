@@ -32,7 +32,7 @@ import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.presentation.write.model.PlayerInfo
 
 @Composable
-fun SubmitScoreCard(
+fun SubmitCard(
     leftUser: PlayerInfo,
     rightUser: PlayerInfo,
     modifier: Modifier = Modifier,
@@ -128,9 +128,9 @@ private fun ProfileInfo(
 
 @Preview(showBackground = true)
 @Composable
-private fun ProfileInfoPreview() {
+private fun SubmitCardPreview() {
     SmashingAndroidTheme {
-        SubmitScoreCard(
+        SubmitCard(
             leftUser = PlayerInfo(userId = "1", name = "하나둘"),
             rightUser = PlayerInfo(userId = "2", name = "하나둘셋넷다여일여아열"),
             winnerId = "1",
