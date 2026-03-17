@@ -34,19 +34,12 @@ class MatchingViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
-        fetchReceivedMatchingList(isRefresh = true)
-        fetchSentMatchingList(isRefresh = true)
-        fetchAcceptedMatchingList(isRefresh = true)
         observeSseEvents()
     }
 
     fun selectMatchingTab(type: MatchingType) {
         updateMatchingType(type)
-        when (type) {
-            MatchingType.RECEIVE -> fetchReceivedMatchingList(true)
-            MatchingType.SEND -> fetchSentMatchingList(true)
-            MatchingType.ACCEPTED -> fetchAcceptedMatchingList(true)
-        }
+        refreshMatchingList()
     }
 
     fun updateMatchingType(type: MatchingType) = _uiState.update {
