@@ -62,8 +62,8 @@ fun SubmitCard(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(
-                    top = 59.dp,
-                    bottom = 58.dp,
+                    top = 50.dp,
+                    bottom = 68.dp,
                 ),
         )
 
