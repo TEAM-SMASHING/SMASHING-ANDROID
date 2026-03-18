@@ -69,6 +69,12 @@ fun MyPageRoute(
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
     }
+    LaunchedEffect(uiState.isLogoutSuccess) {
+        if (uiState.isLogoutSuccess) {
+            navigateToLogout()
+        }
+    }
+
     var isShowLogoutDialog by remember { mutableStateOf(false) }
     if (isShowLogoutDialog) {
         SmashingDialog(
@@ -81,7 +87,6 @@ fun MyPageRoute(
             onConfirmClick = {
                 isShowLogoutDialog = false
                 viewModel.postLogout()
-                navigateToLogout()
             },
         )
     }

@@ -58,7 +58,10 @@ class MyPageViewModel @Inject constructor(
             authRepository.postLogout()
                 .onSuccess {
                     _uiState.update {
-                        it.copy(profileLoadState = MyPageUiState.Success)
+                        it.copy(
+                            profileLoadState = MyPageUiState.Success,
+                            isLogoutSuccess = true
+                        )
                     }
                 }
                 .onFailure { error ->
