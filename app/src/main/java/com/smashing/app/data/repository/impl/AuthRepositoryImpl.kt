@@ -27,24 +27,24 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postKakaoLogin(authorization: String): Result<KakaoLoginModel> =
         suspendRunCatching {
-            val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization)).requireData()
-
+            val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization))
+                .requireData()
             val loginModel = response.toKakaoLoginToken()
             val (accessToken, refreshToken) = loginModel.accessToken to loginModel.refreshToken
             val (userId, userNickname) = loginModel.userId to loginModel.userNickname
 
-            if(!accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()
-                && !userId.isNullOrEmpty() && !userNickname.isNullOrEmpty()) {
-                    tokenDataStore.setTokens(
-                        accessToken = accessToken,
-                        refreshToken = refreshToken,
-                    )
-                    userDataStore.setUserInfo(
-                        userId = userId,
-                        userNickname = userNickname,
-                    )
+            if (!accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()
+                && !userId.isNullOrEmpty() && !userNickname.isNullOrEmpty()
+            ) {
+                tokenDataStore.setTokens(
+                    accessToken = accessToken,
+                    refreshToken = refreshToken,
+                )
+                userDataStore.setUserInfo(
+                    userId = userId,
+                    userNickname = userNickname,
+                )
             }
-
             loginModel
         }
 
@@ -81,9 +81,14 @@ class AuthRepositoryImpl @Inject constructor(
             response.toSignUpOpenchatValidModel()
         }
 
-    override suspend fun postLogout(token: String): Result<Unit> =
+    override suspend fun postLogout(): Result<Unit> =
         suspendRunCatching {
-            authRemoteDataSource.postLogout(token).requireData()
-        }
+            val token = tokenDataStore.getAccessToken()
+                ?: throw Exception("인증 토큰을 찾을 수 없습니다.")
 
+            authRemoteDataSource.postLogout(token = "Bearer $token")
+
+            tokenDataStore.clearTokens()
+            userDataStore.clearUserInfo()
+        }
 }
