@@ -10,6 +10,7 @@ import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.remote.dto.auth.PostSignUpResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -33,4 +34,9 @@ interface AuthService {
     suspend fun postOpenchatValid(
         @Body request: PostOpenchatValidRequest,
     ): BaseResponse<PostOpenchatValidResponse>
+
+    @POST("/api/v1/auth/logout")
+    suspend fun postLogout(
+        @Header("Authorization")token:String,
+    ): BaseResponse<Unit>
 }
