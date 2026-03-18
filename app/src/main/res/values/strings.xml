@@ -7,6 +7,7 @@
     <string name="mypage">마이페이지</string>
     <string name="count">%d</string>
     <string name="no">아니요</string>
+    <string name="yes">예</string>
     <string name="cancel">취소하기</string>
     <string name="cancel_short">취소</string>
     <string name="score_format">%1$d : %2$d</string>
@@ -16,6 +17,7 @@
     <string name="blank_label"></string>
     <string name="score_separator">:</string>
     <string name="confirm">확인</string>
+    <string name="done">완료</string>
     <string name="win_label">승리</string>
     <string name="lose_label">패배</string>
     <string name="rate_label">승률</string>
@@ -308,6 +310,13 @@
     <string name="home_recommend_title_with_nickname">%1$s님을 위한 추천</string>
     <string name="home_recommend_info_popup">내 동네에서 LP ± 200점 범위 안의 5명의 유저가 랜덤으로 추천돼요!</string>
     <string name="home_btn_go_to_matching_search">매칭 탐색하러 가기</string>
+
+    <!--RegionChange -->
+    <string name="region_change_title">지역 변경</string>
+    <string name="region_change_description">활동 지역을 변경해주세요</string>
+    <string name="region_change_subtitle">서울 소재 주소만 입력 가능해요</string>
+    <string name="region_change_placeholder">주소를 검색해주세요</string>
+    <string name="region_change_dialog_title">지역을 변경하시겠습니까?</string>
 
     <!--Matching -->
     <string name="matching_btn_write">결과 작성하기</string>
