@@ -2,9 +2,10 @@ package com.smashing.app.presentation.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.data.repository.api.MyRepository
-import com.smashing.app.presentation.mypage.MyPageContract.State
 import com.smashing.app.presentation.mypage.MyPageContract.MyPageUiState
+import com.smashing.app.presentation.mypage.MyPageContract.State
 import com.smashing.app.presentation.mypage.model.MyPageProfileUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val myRepository: MyRepository,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState.asStateFlow()
@@ -49,4 +51,22 @@ class MyPageViewModel @Inject constructor(
                 }
         }
     }
+
+    fun postLogout() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(profileLoadState = MyPageUiState.Loading) }
+            authRepository.postLogout()
+                .onSuccess {
+                    _uiState.update {
+                        it.copy(profileLoadState = MyPageUiState.Success)
+                    }
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(profileLoadState = MyPageUiState.Failure(error.message ?: "오류 발생"))
+                    }
+                }
+        }
+    }
+
 }
