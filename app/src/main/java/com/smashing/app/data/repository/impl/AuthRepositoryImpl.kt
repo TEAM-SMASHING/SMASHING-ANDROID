@@ -81,4 +81,9 @@ class AuthRepositoryImpl @Inject constructor(
             response.toSignUpOpenchatValidModel()
         }
 
+    override suspend fun postLogout(token: String): Result<Unit> =
+        suspendRunCatching {
+            authRemoteDataSource.postLogout(token).requireData()
+        }
+
 }
