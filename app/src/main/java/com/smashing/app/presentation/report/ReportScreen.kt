@@ -58,13 +58,14 @@ fun ReportRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showToast = LocalToastTrigger.current
+    val reportSubmittedMessage = stringResource(report_toast_submitted)
 
     ReportScreen(
         uiState = uiState,
         detailTextFieldState = viewModel.detailTextFieldState,
         onReportTypeSelected = viewModel::updateSelectedReportType,
         onReportClick = {
-            showToast(stringResource(report_toast_submitted))
+            showToast(reportSubmittedMessage)
             navigateUp()
         },
         navigateUp = navigateUp,
