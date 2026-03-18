@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
+import com.smashing.app.R.string.home_recommend_info_popup
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 @Composable
@@ -35,7 +35,7 @@ fun RecommendedInfoPopup(
                 ),
         ) {
             Text(
-                text = stringResource(R.string.home_recommend_info_popup),
+                text = stringResource(home_recommend_info_popup),
                 style = SmashingTheme.typography.xxs.medium10,
                 color = SmashingTheme.colors.txtPrimaryReverse,
             )

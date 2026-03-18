@@ -27,6 +27,14 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.smashing.app.R.string.done
+import com.smashing.app.R.string.no
+import com.smashing.app.R.string.region_change_description
+import com.smashing.app.R.string.region_change_dialog_title
+import com.smashing.app.R.string.region_change_placeholder
+import com.smashing.app.R.string.region_change_subtitle
+import com.smashing.app.R.string.region_change_title
+import com.smashing.app.R.string.yes
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -38,7 +46,6 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.domain.model.Region
 import com.smashing.app.presentation.home.regionchange.RegionChangeContract.SideEffect.NavigateToRegion
-import com.smashing.app.R
 
 @Composable
 fun RegionChangeRoute(
@@ -101,7 +108,7 @@ fun RegionChangeScreen(
     ) {
         SmashingDefaultTopBar(
             state = TopBarState.Close(
-                title = stringResource(R.string.region_change_title),
+                title = stringResource(region_change_title),
                 onCloseClick = navigateUp,
             ),
             modifier = Modifier
@@ -118,12 +125,12 @@ fun RegionChangeScreen(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = stringResource(R.string.region_change_description),
+                text = stringResource(region_change_description),
                 style = SmashingTheme.typography.xl.semibold20,
                 color = SmashingTheme.colors.txtPrimary,
             )
             Text(
-                text = stringResource(R.string.region_change_subtitle),
+                text = stringResource(region_change_subtitle),
                 style = SmashingTheme.typography.sm.medium14,
                 color = SmashingTheme.colors.txtTertiary,
             )
@@ -132,7 +139,7 @@ fun RegionChangeScreen(
 
             Text(
                 text = uiState.selectedRegion?.addressName
-                    ?: stringResource(R.string.region_change_placeholder),
+                    ?: stringResource(region_change_placeholder),
                 style = SmashingTheme.typography.sm.medium14,
                 color = if (uiState.selectedRegion != null) SmashingTheme.colors.txtPrimary else SmashingTheme.colors.txtDisabled,
                 modifier = Modifier
@@ -159,7 +166,7 @@ fun RegionChangeScreen(
 
             SmashingButton(
                 buttonStyle = if (uiState.selectedRegion != null) ButtonStyle.PRIMARY else ButtonStyle.DISABLED_ACTIVE,
-                text = stringResource(R.string.done),
+                text = stringResource(done),
                 onClick = {
                     showDialog = true
                 },
@@ -174,11 +181,11 @@ fun RegionChangeScreen(
 
     if (showDialog) {
         SmashingDialog(
-            title = stringResource(R.string.region_change_dialog_title),
+            title = stringResource(region_change_dialog_title),
             onDismissClick = { showDialog = false },
             type = DialogStyle.ALERT,
-            confirmText = stringResource(R.string.yes),
-            dismissText = stringResource(R.string.no),
+            confirmText = stringResource(yes),
+            dismissText = stringResource(no),
             onConfirmClick = {
                 showDialog = false
                 onConfirmRegionChange()
