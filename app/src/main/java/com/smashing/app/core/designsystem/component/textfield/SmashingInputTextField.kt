@@ -91,7 +91,7 @@ fun SmashingInputTextField(
             if (isFocused && isFilled) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_circle_x),
-                    contentDescription = "null",
+                    contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier
                         .noRippleClickable(onClick = state::clearText),
@@ -106,7 +106,7 @@ fun SmashingInputTextField(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_warning),
-                    contentDescription = "null",
+                    contentDescription = null,
                     tint = SmashingTheme.colors.iconError,
                 )
 
