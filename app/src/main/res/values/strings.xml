@@ -329,6 +329,18 @@
     <string name="withdraw_deleted_chat_history">채팅 내역</string>
     <string name="withdraw_deleted_notifications_block_report">알림 및 차단 / 신고 내역</string>
 
+    <!--Report -->
+    <string name="report_title">신고하기</string>
+    <string name="report_description">사용자를 신고하는 이유를 선택해 주세요</string>
+    <string name="report_placeholder">신고 사유를 입력해 주세요</string>
+    <string name="report_btn_submit">신고하기</string>
+    <string name="report_toast_submitted">신고가 접수되었습니다.</string>
+    <string name="report_type_bad_manners">비매너 사용자에요</string>
+    <string name="report_type_profanity_or_hate">욕설, 비방, 혐오 표현을 사용해요</string>
+    <string name="report_type_sexual_harassment">원치 않는 성적 대화 또는 만남을 요구해요</string>
+    <string name="report_type_post_match_dispute">경기 이후 분쟁이 발생했어요\n(결과 조작, 패배 후 매칭 나감 등)</string>
+    <string name="report_type_etc">기타</string>
+
     <!--Matching -->
     <string name="matching_btn_write">결과 작성하기</string>
     <string name="matching_btn_rejected">결과가 반려되었어요!</string>
