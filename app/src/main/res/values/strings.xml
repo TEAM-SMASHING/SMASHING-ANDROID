@@ -343,6 +343,10 @@
     <string name="report_type_post_match_dispute">경기 이후 분쟁이 발생했어요\n(결과 조작, 패배 후 매칭 나감 등)</string>
     <string name="report_type_etc">기타</string>
 
+    <!--TierInfo -->
+    <string name="tier_info_actual_standard_format">실제 기준 %1$s</string>
+    <string name="tier_info_skill_guide">승급을 위해 아래의 기술들을 연마해보세요</string>
+
     <!--Matching -->
     <string name="matching_btn_write">결과 작성하기</string>
     <string name="matching_btn_rejected">결과가 반려되었어요!</string>
