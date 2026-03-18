@@ -265,12 +265,15 @@ private fun HomeScreen(
                     ) {
                         Column {
                             Text(
-                                text = "${uiState.activeMyProfile.nickname}님,",
+                                text = stringResource(
+                                    R.string.home_greeting_with_nickname,
+                                    uiState.activeMyProfile.nickname,
+                                ),
                                 style = SmashingTheme.typography.lg.semibold18,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
-                                text = stringResource(R.string.home_clos_matching_txt),
+                                text = stringResource(R.string.home_close_matching_txt),
                                 style = SmashingTheme.typography.md.medium16,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
@@ -347,7 +350,10 @@ private fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "${uiState.activeMyProfile.nickname}님을 위한 추천",
+                            text = stringResource(
+                                R.string.home_recommend_title_with_nickname,
+                                uiState.activeMyProfile.nickname,
+                            ),
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )

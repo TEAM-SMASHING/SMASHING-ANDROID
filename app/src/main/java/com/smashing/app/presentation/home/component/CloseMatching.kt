@@ -125,7 +125,7 @@ fun CloseMatching(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 28.dp),
-                text = "매칭 탐색하러 가기",
+                text = stringResource(R.string.home_btn_go_to_matching_search),
                 textStyle = SmashingTheme.typography.md.medium16,
                 onClick = navigateToSearch,
                 buttonColor = SmashingBtnColor(
