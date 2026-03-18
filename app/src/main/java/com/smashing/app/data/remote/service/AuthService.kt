@@ -37,6 +37,6 @@ interface AuthService {
 
     @POST("/api/v1/auth/logout")
     suspend fun postLogout(
-        @Header("Authorization")token:String,
+        @Header("Authorization") token: String,
     ): BaseResponse<Unit>
 }
