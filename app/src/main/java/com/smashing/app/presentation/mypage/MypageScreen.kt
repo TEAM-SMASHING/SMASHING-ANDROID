@@ -80,8 +80,8 @@ fun MyPageRoute(
             dismissText = stringResource(cancel_short),
             onConfirmClick = {
                 isShowLogoutDialog = false
-                navigateToLogout()
                 viewModel.postLogout()
+                navigateToLogout()
             },
         )
     }
