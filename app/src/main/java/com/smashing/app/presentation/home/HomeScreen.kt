@@ -47,6 +47,8 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R
+import com.smashing.app.R.string.home_close_matching_txt
+import com.smashing.app.R.string.home_new_matching_txt
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -270,7 +272,9 @@ private fun HomeScreen(
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
-                                text = stringResource(R.string.home_clos_matching_txt),
+                                text = if (uiState.matchedUser != null) stringResource(
+                                    home_close_matching_txt
+                                ) else stringResource(home_new_matching_txt),
                                 style = SmashingTheme.typography.md.medium16,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
