@@ -3,7 +3,6 @@ package com.smashing.app.core.security
 import android.util.Base64
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import com.smashing.app.BuildConfig
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -28,11 +27,7 @@ class CryptoManager @Inject constructor() : CryptoInterface {
         val blob = iv + encrypted
         Base64.encodeToString(blob, Base64.NO_WRAP)
     }.onFailure { throwable ->
-        if (BuildConfig.DEBUG) {
-            Timber.e(throwable, "토큰 암호화에 실패했습니다.")
-        } else {
-            Timber.e(throwable, "토큰 암호화 중 오류가 발생했습니다.")
-        }
+        Timber.e(throwable, "토큰 암호화에 실패했습니다.")
     }
 
     override suspend fun decrypt(data: String): Result<String> = runCatching {
@@ -46,11 +41,7 @@ class CryptoManager @Inject constructor() : CryptoInterface {
             iv = iv,
         )
     }.onFailure { throwable ->
-        if (BuildConfig.DEBUG) {
-            Timber.e(throwable, "토큰 복호화에 실패했습니다. 저장된 데이터가 손상되었을 수 있습니다.")
-        } else {
-            Timber.e(throwable, "토큰 복호화 중 오류가 발생했습니다.")
-        }
+        Timber.e(throwable, "토큰 복호화에 실패했습니다.")
     }
 
     private fun decryptInternal(encryptedData: ByteArray, iv: ByteArray): String {
