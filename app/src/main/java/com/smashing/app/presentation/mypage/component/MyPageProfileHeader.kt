@@ -21,14 +21,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R.drawable.img_profile
+import com.smashing.app.R.string.mypage_my_profile
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.type.TierType
-import com.smashing.app.R.string.mypage_my_profile
 
 @Composable
 fun MyPageProfileHeader(
@@ -45,7 +45,7 @@ fun MyPageProfileHeader(
             .fillMaxWidth(),
     ) {
         UrlImage(
-            placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+            placeholderDrawable = img_profile,
             modifier = Modifier
                 .height(60.dp)
                 .aspectRatio(1f)
