@@ -68,7 +68,6 @@ fun MyPageRoute(
 
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
-        viewModel.postLogout()
     }
     var isShowLogoutDialog by remember { mutableStateOf(false) }
     if (isShowLogoutDialog) {
@@ -82,6 +81,7 @@ fun MyPageRoute(
             onConfirmClick = {
                 isShowLogoutDialog = false
                 navigateToLogout()
+                viewModel.postLogout()
             },
         )
     }
