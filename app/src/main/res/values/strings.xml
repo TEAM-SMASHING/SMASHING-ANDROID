@@ -24,6 +24,8 @@
 
     <!--Ranking -->
     <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
+    <string name="ranking_title">전체 랭킹</string>
+    <string name="ranking_empty_title">아직 동네 랭커가 없어요.</string>
 
     <!--Card  -->
     <string name="record">기록</string>
