@@ -14,5 +14,4 @@ interface AuthRemoteDataSource {
     suspend fun postSignUp(request: PostSignUpRequest): BaseResponse<PostSignUpResponse>
     suspend fun getNicknameAvailable(nickname: String): BaseResponse<GetNickNameAvailableResponse>
     suspend fun postOpenchatValid(request: PostOpenchatValidRequest): BaseResponse<PostOpenchatValidResponse>
-    suspend fun postLogout(token: String): BaseResponse<Unit>
 }

@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val myRepository: MyRepository,
-    private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState.asStateFlow()
@@ -59,7 +58,7 @@ class MyPageViewModel @Inject constructor(
     fun postLogout() {
         viewModelScope.launch {
             _uiState.update { it.copy(profileLoadState = MyPageUiState.Loading) }
-            authRepository.postLogout()
+            myRepository.postLogout()
                 .onSuccess {
                     _uiState.update {
                         it.copy(

@@ -30,8 +30,4 @@ class AuthRemoteDataSourceImpl @Inject constructor(
     override suspend fun postOpenchatValid(request: PostOpenchatValidRequest): BaseResponse<PostOpenchatValidResponse> {
         return authService.postOpenchatValid(request = request)
     }
-
-    override suspend fun postLogout(token: String): BaseResponse<Unit> {
-        return authService.postLogout(token = token)
-    }
 }

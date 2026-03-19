@@ -12,5 +12,4 @@ interface AuthRepository {
     suspend fun postSignUp(request: PostSignUpRequest): Result<SignUpModel>
     suspend fun getNicknameAvailable(nickname: String): Result<SignUpNickNameAvailableModel>
     suspend fun postOpenchatValid(request: PostOpenchatValidRequest): Result<SignUpOpenchatValidModel>
-    suspend fun postLogout(): Result<Unit>
 }

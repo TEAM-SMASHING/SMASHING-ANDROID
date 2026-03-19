@@ -81,14 +81,4 @@ class AuthRepositoryImpl @Inject constructor(
             response.toSignUpOpenchatValidModel()
         }
 
-    override suspend fun postLogout(): Result<Unit> =
-        suspendRunCatching {
-            val token = tokenDataStore.getAccessToken()
-                ?: throw Exception("인증 토큰을 찾을 수 없습니다.")
-
-            authRemoteDataSource.postLogout(token = "Bearer $token")
-
-            tokenDataStore.clearTokens()
-            userDataStore.clearUserInfo()
-        }
 }
