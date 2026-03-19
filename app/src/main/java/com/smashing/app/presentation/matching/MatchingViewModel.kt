@@ -53,13 +53,6 @@ class MatchingViewModel @Inject constructor(
         )
     }
 
-    fun showDeleteAcceptedMatchingDialog(gameId: String) = _uiState.update {
-        it.copy(
-            isDialogVisible = true,
-            selectedGameId = gameId,
-        )
-    }
-
     fun hideDialogVisible() = _uiState.update {
         it.copy(
             isDialogVisible = false,
@@ -243,29 +236,6 @@ class MatchingViewModel @Inject constructor(
             }
         }.onFailure { throwable ->
             updateSentUiState(
-                MatchingUiState.Failure(throwable.message ?: "Unknown error")
-            )
-        }
-    }
-
-    fun confirmDeleteAcceptedMatching() = viewModelScope.launch {
-        val gameId = _uiState.value.selectedGameId ?: return@launch
-        hideDialogVisible()
-
-        matchingRepository.putCancelGame(gameId).onSuccess {
-            _uiState.update { state ->
-                state.copy(
-                    acceptedList = state.acceptedList.map { matching ->
-                        if (matching.gameId == gameId) {
-                            matching.copy(resultStatus = GameResultStatusType.CANCELED)
-                        } else {
-                            matching
-                        }
-                    }.toImmutableList()
-                )
-            }
-        }.onFailure { throwable ->
-            updateAcceptedUiState(
                 MatchingUiState.Failure(throwable.message ?: "Unknown error")
             )
         }

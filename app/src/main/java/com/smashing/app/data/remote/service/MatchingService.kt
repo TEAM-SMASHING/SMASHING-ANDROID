@@ -65,12 +65,6 @@ interface MatchingService {
         matchingId: String,
     ): BaseResponse<Unit>
 
-    @PUT("/api/v1/games/{gameId}")
-    suspend fun putCancelGame(
-        @Path("gameId")
-        gameId: String,
-    ): BaseResponse<Unit>
-
     @POST("/api/v1/matchings/profiles/{receiverProfileId}")
     suspend fun postMatching(
         @Path("receiverProfileId")
