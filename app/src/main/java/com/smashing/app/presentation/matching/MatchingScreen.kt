@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +54,6 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
-import com.smashing.app.core.extension.openUrl
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.component.MatchingTabBar
@@ -99,7 +97,6 @@ fun MatchingRoute(
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
     val showToast = LocalToastTrigger.current
 
     LaunchedEffect(Unit) {
@@ -140,7 +137,6 @@ fun MatchingRoute(
         onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
         onReceivedSkipClick = viewModel::rejectReceivedMatching,
         onAcceptedMatchingClick = viewModel::handleAcceptedMatchingClick,
-        onAcceptedKakaoLinkClick = { kakaoLink -> context.openUrl(kakaoLink) },
         onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
         onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
         onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
@@ -160,7 +156,6 @@ private fun MatchingScreen(
     onSentCloseClick: (String) -> Unit = {},
     onReceivedSkipClick: (String) -> Unit = {},
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit = {},
-    onAcceptedKakaoLinkClick: (String?) -> Unit = {},
     onAcceptedCloseClick: (String) -> Unit = {},
     onConfirmDeleteSentMatching: () -> Unit = {},
     onConfirmDeleteAcceptedMatching: () -> Unit = {},
@@ -252,7 +247,6 @@ private fun MatchingScreen(
                         onReceivedSkipClick = onReceivedSkipClick,
                         onReceivedAcceptClick = onReceivedAcceptClick,
                         onAcceptedMatchingClick = onAcceptedMatchingClick,
-                        onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
                         onAcceptedCloseClick = onAcceptedCloseClick,
                     )
                 }
@@ -306,7 +300,6 @@ private fun MatchingList(
     onReceivedAcceptClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit = {},
-    onAcceptedKakaoLinkClick: (String?) -> Unit = {},
     onAcceptedCloseClick: (String) -> Unit = {},
 ) {
     val currentIsLoading = when (uiState.selectedType) {
@@ -401,7 +394,7 @@ private fun MatchingList(
                             tierType = matching.tierType,
                             onProfileClick = { onProfileClick(matching.userId) },
                             onConfirmClick = { onAcceptedMatchingClick(matching) },
-                            onKakaoLinkClick = { onAcceptedKakaoLinkClick(matching.openChatUrl) },
+                            onKakaoLinkClick = { /*TODO 추후 채팅 구현시 삭제 예정*/ },
                             onCloseClick = { onAcceptedCloseClick(matching.gameId) },
                             gameStatusType = matching.resultStatus,
                         ),
@@ -439,7 +432,6 @@ private fun MatchingScreenPreview() {
             onSentCloseClick = {},
             onReceivedSkipClick = {},
             onAcceptedMatchingClick = {},
-            onAcceptedKakaoLinkClick = {},
             onAcceptedCloseClick = {},
             onConfirmDeleteSentMatching = {},
             onConfirmDeleteAcceptedMatching = {},
