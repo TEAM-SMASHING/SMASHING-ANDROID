@@ -2,7 +2,6 @@ package com.smashing.app.presentation.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.data.repository.api.AuthRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.presentation.mypage.MyPageContract.MyPageUiState
 import com.smashing.app.presentation.mypage.MyPageContract.State
@@ -56,14 +55,14 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun postLogout() {
+        if (_uiState.value.logoutLoadState == MyPageUiState.Loading) return
         viewModelScope.launch {
-            _uiState.update { it.copy(profileLoadState = MyPageUiState.Loading) }
+            _uiState.update { it.copy(logoutLoadState = MyPageUiState.Loading) }
             myRepository.postLogout()
                 .onSuccess {
                     _uiState.update {
                         it.copy(
-                            profileLoadState = MyPageUiState.Success,
-                            isLogoutSuccess = true
+                            logoutLoadState = MyPageUiState.Success,
                         )
                     }
                     _sideEffect.emit(MyPageUiState.MyPageSideEffect.NavigateToLogin)
@@ -71,7 +70,7 @@ class MyPageViewModel @Inject constructor(
                 .onFailure { error ->
                     _uiState.update {
                         it.copy(
-                            profileLoadState = MyPageUiState.Failure(
+                            logoutLoadState = MyPageUiState.Failure(
                                 error.message ?: "로그아웃 실패"
                             )
                         )

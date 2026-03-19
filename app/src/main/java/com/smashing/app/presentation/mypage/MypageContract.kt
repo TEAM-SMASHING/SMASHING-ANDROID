@@ -10,7 +10,7 @@ interface MyPageContract {
         val profileLoadState: MyPageUiState = MyPageUiState.Idle,
         val myPageProfileInfo: MyPageProfileUiModel = MyPageProfileUiModel(),
         val selectedSportProfileId: String = "",
-        val isLogoutSuccess: Boolean = false
+        val logoutLoadState: MyPageUiState = MyPageUiState.Idle,
     )
 
     sealed interface MyPageUiState {
