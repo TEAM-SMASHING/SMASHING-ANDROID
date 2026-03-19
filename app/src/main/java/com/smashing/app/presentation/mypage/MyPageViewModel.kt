@@ -66,7 +66,7 @@ class MyPageViewModel @Inject constructor(
                 }
                 .onFailure { error ->
                     _uiState.update {
-                        it.copy(profileLoadState = MyPageUiState.Failure(error.message ?: "오류 발생"))
+                        it.copy(profileLoadState = MyPageUiState.Failure(error.message ?: "로그아웃 실패"))
                     }
                 }
         }
