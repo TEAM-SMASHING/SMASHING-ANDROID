@@ -5,41 +5,48 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.smashing.app.core.local.datastore.di.TokenDataStore
+import com.smashing.app.core.security.CryptoInterface
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class LocalTokenDataSourceImpl @Inject constructor(
-    @TokenDataStore private val dataStore: DataStore<Preferences>,
+    @param:TokenDataStore private val dataStore: DataStore<Preferences>,
+    private val crypto: CryptoInterface,
 ) : LocalTokenDataSource {
 
-    override suspend fun getAccessToken(): String? = dataStore.data
-        .map { prefs ->
-            prefs[ACCESS_TOKEN]
-        }.firstOrNull()
+    override suspend fun getAccessToken(): String? {
+        val prefs = dataStore.data.first()
+        val encoded = prefs[ENCRYPTED_ACCESS_TOKEN]
+        return encoded?.let { crypto.decrypt(data = it).getOrNull() }
+    }
 
-    override suspend fun getRefreshToken(): String? = dataStore.data
-        .map { prefs ->
-            prefs[REFRESH_TOKEN]
-        }.firstOrNull()
+    override suspend fun getRefreshToken(): String? {
+        val prefs = dataStore.data.first()
+        val encoded = prefs[ENCRYPTED_REFRESH_TOKEN]
+        return encoded?.let { crypto.decrypt(data = it).getOrNull() }
+    }
 
     override suspend fun setTokens(accessToken: String, refreshToken: String) {
         dataStore.edit { prefs ->
-            prefs[ACCESS_TOKEN] = accessToken
-            prefs[REFRESH_TOKEN] = refreshToken
+            crypto.encrypt(data = accessToken).getOrNull()?.let { encryptedAccess ->
+                prefs[ENCRYPTED_ACCESS_TOKEN] = encryptedAccess
+            }
+            crypto.encrypt(data = refreshToken).getOrNull()?.let { encryptedRefresh ->
+                prefs[ENCRYPTED_REFRESH_TOKEN] = encryptedRefresh
+            }
         }
     }
 
     override suspend fun clearTokens() {
         dataStore.edit { prefs ->
-            prefs.remove(ACCESS_TOKEN)
-            prefs.remove(REFRESH_TOKEN)
+            prefs.remove(key = ENCRYPTED_ACCESS_TOKEN)
+            prefs.remove(key = ENCRYPTED_REFRESH_TOKEN)
         }
     }
 
     companion object {
-        private val ACCESS_TOKEN = stringPreferencesKey("ACCESS_TOKEN")
-        private val REFRESH_TOKEN = stringPreferencesKey("REFRESH_TOKEN")
+        private val ENCRYPTED_ACCESS_TOKEN = stringPreferencesKey("ENCRYPTED_ACCESS_TOKEN")
+        private val ENCRYPTED_REFRESH_TOKEN = stringPreferencesKey("ENCRYPTED_REFRESH_TOKEN")
     }
 }
