@@ -361,11 +361,11 @@ private fun MatchingList(
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
-                        profileId = it.userId,
+                        profileId = it.profileId,
                         nickname = it.nickname,
                         genderType = it.genderType,
                         tierType = it.tierType,
-                        onProfileClick = { onProfileClick(it.userId) },
+                        onProfileClick = { onProfileClick(it.profileId) },
                         onCloseClick = { onSentCloseClick(it.matchingId) },
                         winCount = it.winCount,
                         loseCount = it.loseCount,
