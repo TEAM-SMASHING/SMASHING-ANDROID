@@ -20,5 +20,8 @@ interface MyPageContract {
         data class Failure(
             val msg: String,
         ) : MyPageUiState
+        sealed interface MyPageSideEffect {
+            data object NavigateToLogin : MyPageSideEffect
+        }
     }
 }
