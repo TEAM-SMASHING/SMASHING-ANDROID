@@ -298,7 +298,7 @@ private fun HomeScreen(
                                 GameResultStatusType.PENDING_RESULT -> {
                                     navigateToSubmit(
                                         matching.gameId,
-                                        matching.userId,
+                                        matching.profileId,
                                         matching.nickname,
                                         true,
                                         matching.latestSubmissionId,
@@ -308,7 +308,7 @@ private fun HomeScreen(
                                 GameResultStatusType.RESULT_REJECTED -> {
                                     navigateToSubmit(
                                         matching.gameId,
-                                        matching.userId,
+                                        matching.profileId,
                                         matching.nickname,
                                         false,
                                         matching.latestSubmissionId,

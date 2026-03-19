@@ -247,7 +247,7 @@ class MatchingViewModel @Inject constructor(
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.userId,
+                        opponentUserId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = true,
                     )
@@ -259,7 +259,7 @@ class MatchingViewModel @Inject constructor(
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.userId,
+                        opponentUserId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = false,
                         submissionId = submissionId,

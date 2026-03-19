@@ -42,7 +42,7 @@ private fun AcceptedMatchingListResponse.toAcceptedMatching(): AcceptedMatching 
         gameId = gameId,
         resultStatus = resultStatus,
         createdAt = createdAt,
-        userId = opponentSummary.profileId,
+        profileId = opponentSummary.profileId,
         nickname = opponentSummary.nickname,
         genderType = GenderType.findByName(opponentSummary.gender),
         tierType = TierType.findTierType(opponentSummary.tierCode),

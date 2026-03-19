@@ -8,7 +8,7 @@ data class AcceptedMatching(
     val gameId: String,
     val resultStatus: GameResultStatusType,
     val createdAt: String,
-    val userId: String,
+    val profileId: String,
     val nickname: String,
     val genderType: GenderType,
     val tierType: TierType,

@@ -362,11 +362,11 @@ private fun MatchingList(
                 ) {
                     MatchingCard(
                         cardState = MatchingCardState.Confirm(
-                            profileId = matching.userId,
+                            profileId = matching.profileId,
                             nickname = matching.nickname,
                             genderType = matching.genderType,
                             tierType = matching.tierType,
-                            onProfileClick = { onProfileClick(matching.userId) },
+                            onProfileClick = { onProfileClick(matching.profileId) },
                             onConfirmClick = { onAcceptedMatchingClick(matching) },
                             onKakaoLinkClick = { /*TODO 추후 채팅 구현시 삭제 예정*/ },
                             onCloseClick = { /*TODO 디자인 변경사항 수정 예정*/ },
