@@ -15,7 +15,7 @@ import retrofit2.http.Query
 
 interface MatchingService {
 
-    @GET("/api/v1/users/me/matchings/received")
+    @GET("/api/v1/matchings/received")
     suspend fun getMeReceivedMatchingList(
         @Query("snapshotAt")
         snapshotAt: String?,
@@ -25,7 +25,7 @@ interface MatchingService {
         size: Long?,
     ): BaseResponse<CursorDto<ReceivedMatchingListResponse>>
 
-    @GET("/api/v1/users/me/matchings/sent")
+    @GET("/api/v1/matchings/sent")
     suspend fun getMeSentMatchingList(
         @Query("snapshotAt")
         snapshotAt: String?,
@@ -35,7 +35,7 @@ interface MatchingService {
         size: Long?,
     ): BaseResponse<CursorDto<SentMatchingListResponse>>
 
-    @GET("/api/v1/users/me/games/pending-results")
+    @GET("/api/v1/games/pending-results")
     suspend fun getMeAcceptedMatchingList(
         @Query("snapshotAt")
         snapshotAt: String?,
