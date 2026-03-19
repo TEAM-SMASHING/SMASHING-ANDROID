@@ -27,7 +27,7 @@ fun NavGraphBuilder.myPageGraph(
             navigateUp = navController::navigateUp,
             navigateToMyProfile = navController::navigateToMyProfile,
             navigateToWithDraw = navController::navigateToWithdraw,
-            navigateToLogout = {
+            navigateToLogin = {
                 navController.navigate(Login) {
                     popUpTo<MyPage> { inclusive = true }
                     launchSingleTop = true

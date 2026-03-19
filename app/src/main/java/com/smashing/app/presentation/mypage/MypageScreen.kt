@@ -58,7 +58,7 @@ import com.smashing.app.presentation.mypage.component.MyPageProfileHeader
 fun MyPageRoute(
     navigateUp: () -> Unit,
     navigateToMyProfile: () -> Unit,
-    navigateToLogout: () -> Unit,
+    navigateToLogin: () -> Unit,
     navigateToWithDraw: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
@@ -71,7 +71,7 @@ fun MyPageRoute(
     }
     LaunchedEffect(uiState.isLogoutSuccess) {
         if (uiState.isLogoutSuccess) {
-            navigateToLogout()
+            navigateToLogin()
         }
     }
 
