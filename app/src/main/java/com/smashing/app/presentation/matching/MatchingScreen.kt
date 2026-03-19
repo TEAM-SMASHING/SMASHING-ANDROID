@@ -336,14 +336,14 @@ private fun MatchingList(
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
-                        userId = it.userId,
+                        profileId = it.profileId,
                         nickname = it.nickname,
                         genderType = it.genderType,
                         tierType = it.tierType,
                         winCount = it.winCount,
                         loseCount = it.loseCount,
                         reviewCount = it.reviewCount,
-                        onProfileClick = { onProfileClick(it.userId) },
+                        onProfileClick = { onProfileClick(it.profileId) },
                         onSkipClick = { onReceivedSkipClick(it.matchingId) },
                         onAcceptClick = { onReceivedAcceptClick(it.matchingId) },
                     ),
@@ -361,7 +361,7 @@ private fun MatchingList(
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
-                        userId = it.userId,
+                        profileId = it.userId,
                         nickname = it.nickname,
                         genderType = it.genderType,
                         tierType = it.tierType,
@@ -395,7 +395,7 @@ private fun MatchingList(
                 ) {
                     MatchingCard(
                         cardState = MatchingCardState.Confirm(
-                            userId = matching.userId,
+                            profileId = matching.userId,
                             nickname = matching.nickname,
                             genderType = matching.genderType,
                             tierType = matching.tierType,

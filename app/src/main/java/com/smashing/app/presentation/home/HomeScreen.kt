@@ -390,7 +390,7 @@ private fun HomeScreen(
                                 key = { it.userId }
                             ) { user ->
                                 val cardState = MatchingCardState.Search(
-                                    userId = user.userId,
+                                    profileId = user.userId,
                                     nickname = user.nickname,
                                     genderType = user.gender,
                                     tierType = user.tierType,

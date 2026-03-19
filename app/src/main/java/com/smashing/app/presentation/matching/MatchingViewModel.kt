@@ -367,7 +367,7 @@ class MatchingViewModel @Inject constructor(
     private fun handleMatchingReceived(event: SseEvent.MatchingReceived) {
         val newMatching = ReceivedMatching(
             matchingId = event.matchingId,
-            userId = event.requester.userId,
+            profileId = event.requester.userId,
             nickname = event.requester.nickname,
             genderType = event.requester.genderType,
             tierType = event.requester.tierType,
