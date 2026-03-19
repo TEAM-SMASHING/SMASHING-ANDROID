@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
@@ -60,7 +61,8 @@ fun NavGraphBuilder.profileGraph(
             )
         }
 
-        composable<UserProfile> {
+        composable<UserProfile> { backStackEntry ->
+            val userProfile = backStackEntry.toRoute<UserProfile>()
             UserProfileRoute(
                 navigateToReview = navController::navigateToReview,
                 navigateUp = navController::navigateUp,
@@ -69,7 +71,9 @@ fun NavGraphBuilder.profileGraph(
                         initTab = MatchingType.SEND,
                     )
                 },
-                navigateToReport = navController::navigateToReport,
+                navigateToReport = {
+                    navController.navigateToReport(userProfile.userId)
+                },
                 onBlockClick = { /* TODO: 차단 API 연동 */ },
             )
         }
