@@ -7,8 +7,10 @@
     <string name="mypage">마이페이지</string>
     <string name="count">%d</string>
     <string name="no">아니요</string>
+    <string name="yes">예</string>
     <string name="cancel">취소하기</string>
     <string name="cancel_short">취소</string>
+    <string name="delete">삭제</string>
     <string name="score_format">%1$d : %2$d</string>
     <string name="next">다음</string>
     <string name="asterisk_label">*</string>
@@ -16,12 +18,15 @@
     <string name="blank_label"></string>
     <string name="score_separator">:</string>
     <string name="confirm">확인</string>
+    <string name="done">완료</string>
     <string name="win_label">승리</string>
     <string name="lose_label">패배</string>
     <string name="rate_label">승률</string>
 
     <!--Ranking -->
     <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
+    <string name="ranking_title">전체 랭킹</string>
+    <string name="ranking_empty_title">아직 동네 랭커가 없어요.</string>
 
     <!--Card  -->
     <string name="record">기록</string>
@@ -304,7 +309,45 @@
     <string name="home_region_ranker">우리 동네 랭커</string>
     <string name="home_no_user">아직 동네 유저가 없어요</string>
     <string name="home_close_matching_txt">곧 다가오는 매칭이 있어요</string>
+    <string name="home_greeting_with_nickname">%1$s님,</string>
+    <string name="home_recommend_title_with_nickname">%1$s님을 위한 추천</string>
+    <string name="home_recommend_info_popup">내 동네에서 LP ± 200점 범위 안의 5명의 유저가 랜덤으로 추천돼요!</string>
+    <string name="home_btn_go_to_matching_search">매칭 탐색하러 가기</string>
     <string name="home_new_matching_txt">새로운 매칭을 잡아볼까요?</string>
+
+    <!--RegionChange -->
+    <string name="region_change_title">지역 변경</string>
+    <string name="region_change_description">활동 지역을 변경해주세요</string>
+    <string name="region_change_subtitle">서울 소재 주소만 입력 가능해요</string>
+    <string name="region_change_placeholder">주소를 검색해주세요</string>
+    <string name="region_change_dialog_title">지역을 변경하시겠습니까?</string>
+
+    <!--Withdraw -->
+    <string name="withdraw_title_question">정말 탈퇴하시겠습니까?</string>
+    <string name="withdraw_deleted_info">회원 탈퇴 시 아래 정보가 삭제됩니다</string>
+    <string name="withdraw_agreement_text">주의사항을 인지하였으며, 이에 동의합니다</string>
+    <string name="withdraw_btn_withdraw">탈퇴하기</string>
+    <string name="withdraw_deleted_profile_account">프로필 및 계정 정보</string>
+    <string name="withdraw_deleted_matching_game_records">매칭 및 경기 기록</string>
+    <string name="withdraw_deleted_reviews_ratings">작성한 후기 및 평가</string>
+    <string name="withdraw_deleted_chat_history">채팅 내역</string>
+    <string name="withdraw_deleted_notifications_block_report">알림 및 차단 / 신고 내역</string>
+
+    <!--Report -->
+    <string name="report_title">신고하기</string>
+    <string name="report_description">사용자를 신고하는 이유를 선택해 주세요</string>
+    <string name="report_placeholder">신고 사유를 입력해 주세요</string>
+    <string name="report_btn_submit">신고하기</string>
+    <string name="report_toast_submitted">신고가 접수되었습니다.</string>
+    <string name="report_type_bad_manners">비매너 사용자에요</string>
+    <string name="report_type_profanity_or_hate">욕설, 비방, 혐오 표현을 사용해요</string>
+    <string name="report_type_sexual_harassment">원치 않는 성적 대화 또는 만남을 요구해요</string>
+    <string name="report_type_post_match_dispute">경기 이후 분쟁이 발생했어요\n(결과 조작, 패배 후 매칭 나감 등)</string>
+    <string name="report_type_etc">기타</string>
+
+    <!--TierInfo -->
+    <string name="tier_info_actual_standard_format">실제 기준 %1$s</string>
+    <string name="tier_info_skill_guide">승급을 위해 아래의 기술들을 연마해보세요</string>
 
     <!--Matching -->
     <string name="matching_btn_write">결과 작성하기</string>

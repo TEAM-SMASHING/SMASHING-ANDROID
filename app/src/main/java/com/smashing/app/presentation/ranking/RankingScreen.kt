@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.img_profile
+import com.smashing.app.R.string.ranking_empty_title
+import com.smashing.app.R.string.ranking_title
 import com.smashing.app.R.string.ranking_tier_with_lp
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
@@ -114,7 +116,7 @@ private fun RankingScreen(
         ) {
             SmashingDefaultTopBar(
                 state = TopBarState.Back(
-                    title = "전체 랭킹",
+                    title = stringResource(ranking_title),
                     onBackClick = navigateUp,
                 ),
             )
@@ -182,7 +184,7 @@ private fun RankingScreen(
                 ) {
                     Spacer(modifier = Modifier.weight(0.3f))
                     Text(
-                        text = "아직 동네 랭커가 없어요.",
+                        text = stringResource(ranking_empty_title),
                         style = typography.md.medium16,
                         color = colors.txtTertiary,
                         textAlign = TextAlign.Center,
