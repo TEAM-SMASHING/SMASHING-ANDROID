@@ -20,17 +20,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R
 import com.smashing.app.R.string.count
+import com.smashing.app.R.string.profile_win_lose_count
 import com.smashing.app.R.string.record
 import com.smashing.app.R.string.review
-import com.smashing.app.R.string.profile_win_lose_count
-import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.badge.TierBadge
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.mapper.icon20
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.util.ProfileImageProvider
 
 @Composable
 fun MatchingCardContent(
@@ -42,7 +42,7 @@ fun MatchingCardContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         UrlImage(
-            placeholderDrawable = ProfileImageProvider.getTempImg(cardState.nickname),
+            placeholderDrawable = R.drawable.img_profile,
             modifier = Modifier
                 .height(52.dp)
                 .aspectRatio(1f)

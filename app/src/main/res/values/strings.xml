@@ -303,7 +303,8 @@
     <string name="home_all_text">모두 보기</string>
     <string name="home_region_ranker">우리 동네 랭커</string>
     <string name="home_no_user">아직 동네 유저가 없어요</string>
-    <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요</string>
+    <string name="home_close_matching_txt">곧 다가오는 매칭이 있어요</string>
+    <string name="home_new_matching_txt">새로운 매칭을 잡아볼까요?</string>
 
     <!--Matching -->
     <string name="matching_btn_write">결과 작성하기</string>
