@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import com.smashing.app.R
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.presentation.chatting.navigation.Chatting
 import com.smashing.app.presentation.home.navigation.HomeUser
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.profile.navigation.MyProfile
@@ -38,7 +39,7 @@ enum class MainTab(
         selectedIconRes = R.drawable.ic_chat_selected,
         unselectedIconRes = R.drawable.ic_chat_unselected,
         titleRes = R.string.chatting,
-        route = MyProfile,
+        route = Chatting,
     );
 
     companion object {
