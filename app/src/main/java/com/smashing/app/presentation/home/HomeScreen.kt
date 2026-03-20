@@ -53,6 +53,7 @@ import com.smashing.app.R.string.home_greeting_with_nickname
 import com.smashing.app.R.string.home_no_user
 import com.smashing.app.R.string.home_recommend_title_with_nickname
 import com.smashing.app.R.string.home_region_ranker
+import com.smashing.app.R.string.home_new_matching_txt
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -279,7 +280,9 @@ private fun HomeScreen(
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
-                                text = stringResource(home_close_matching_txt),
+                                text = if (uiState.matchedUser != null) stringResource(
+                                    home_close_matching_txt
+                                ) else stringResource(home_new_matching_txt),
                                 style = SmashingTheme.typography.md.medium16,
                                 color = SmashingTheme.colors.txtPrimary,
                             )

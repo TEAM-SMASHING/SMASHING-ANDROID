@@ -25,10 +25,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_crown
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.presentation.write.model.PlayerInfo
 
 @Composable
@@ -97,7 +97,7 @@ private fun ProfileInfo(
                 contentAlignment = Alignment.TopCenter,
             ) {
                 UrlImage(
-                    placeholderDrawable = ProfileImageProvider.getTempImg(player.name),
+                    placeholderDrawable = img_profile,
                     modifier = Modifier
                         .height(64.dp)
                         .aspectRatio(1f)

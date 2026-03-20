@@ -28,13 +28,13 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.img_dummy_versus
 import com.smashing.app.R.string.home_btn_go_to_matching_search
 import com.smashing.app.R.string.home_no_matching
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.style.getMatchButtonColor
 import com.smashing.app.core.designsystem.style.getMatchButtonTitle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.matching.AcceptedMatching
 
 @Composable
@@ -162,7 +162,7 @@ private fun MatchedUserItem(
                 )
         ) {
             UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+                placeholderDrawable = img_profile,
                 modifier = Modifier
                     .height(64.dp)
                     .aspectRatio(1f)
