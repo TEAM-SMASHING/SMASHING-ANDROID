@@ -34,10 +34,10 @@ enum class MainTab(
         titleRes = R.string.matching_manage,
         route = Matching,
     ),
-    PROFILE(
-        selectedIconRes = R.drawable.ic_profile_selected,
-        unselectedIconRes = R.drawable.ic_profile_unselected,
-        titleRes = R.string.profile,
+    CHATTING(
+        selectedIconRes = R.drawable.ic_chat_selected,
+        unselectedIconRes = R.drawable.ic_chat_unselected,
+        titleRes = R.string.chatting,
         route = MyProfile,
     );
 
