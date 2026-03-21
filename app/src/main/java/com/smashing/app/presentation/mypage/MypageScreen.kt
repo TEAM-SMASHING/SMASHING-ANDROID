@@ -29,7 +29,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.BuildConfig
 import com.smashing.app.R.drawable.ic_arrow_next
 import com.smashing.app.R.string.cancel_short
@@ -58,17 +60,30 @@ import com.smashing.app.presentation.mypage.component.MyPageProfileHeader
 fun MyPageRoute(
     navigateUp: () -> Unit,
     navigateToMyProfile: () -> Unit,
-    navigateToLogout: () -> Unit,
+    navigateToLogin: () -> Unit,
     navigateToWithDraw: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchProfileInfo()
+
     }
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner.lifecycle) {
+        viewModel.sideEffect
+            .flowWithLifecycle(lifecycleOwner.lifecycle)
+            .collect { effect ->
+                when (effect) {
+                    is MyPageContract.MyPageUiState.MyPageSideEffect.NavigateToLogin -> navigateToLogin()
+                }
+            }
+    }
+
+
     var isShowLogoutDialog by remember { mutableStateOf(false) }
     if (isShowLogoutDialog) {
         SmashingDialog(
@@ -80,7 +95,7 @@ fun MyPageRoute(
             dismissText = stringResource(cancel_short),
             onConfirmClick = {
                 isShowLogoutDialog = false
-                navigateToLogout()
+                viewModel.postLogout()
             },
         )
     }

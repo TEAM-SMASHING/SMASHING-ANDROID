@@ -15,4 +15,5 @@ interface MyRepository {
     suspend fun addSportsProfile(info: AddSportsInfo): Result<Unit>
 
     suspend fun getMyRecentReviewStats(): Result<GameReviewResult>
+    suspend fun postLogout(): Result<Unit>
 }
