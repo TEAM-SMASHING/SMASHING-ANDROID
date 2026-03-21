@@ -1,11 +1,18 @@
 package com.smashing.app.data.type
 
+import androidx.annotation.StringRes
+import com.smashing.app.R.string.report_type_bad_manners
+import com.smashing.app.R.string.report_type_etc
+import com.smashing.app.R.string.report_type_post_match_dispute
+import com.smashing.app.R.string.report_type_profanity_or_hate
+import com.smashing.app.R.string.report_type_sexual_harassment
+
 enum class ReportType(
-    val text: String,
+    @StringRes val textResId: Int,
 ) {
-    MANNER("비매너 사용자에요"),
-    ABUSE("욕설, 비방, 혐오 표현을 사용해요"),
-    SEXUAL("원치 않는 성적 대화 또는 만남을 요구해요"),
-    DISPUTE("경기 이후 분쟁이 발생했어요\n(결과 조작, 패배 후 매칭 나감 등)"),
-    ETC("기타"),
+    MANNER(report_type_bad_manners),
+    ABUSE(report_type_profanity_or_hate),
+    SEXUAL(report_type_sexual_harassment),
+    DISPUTE(report_type_post_match_dispute),
+    ETC(report_type_etc),
 }

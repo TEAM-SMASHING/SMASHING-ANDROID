@@ -196,7 +196,7 @@ private fun ReportTypeItem(
         )
         Spacer(modifier = Modifier.width(15.dp))
         Text(
-            text = reportType.text,
+            text = stringResource(reportType.textResId),
             color = SmashingTheme.colors.txtSecondary,
             style = SmashingTheme.typography.md.medium16,
         )
