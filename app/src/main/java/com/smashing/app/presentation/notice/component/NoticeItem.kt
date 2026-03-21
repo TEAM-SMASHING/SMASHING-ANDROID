@@ -20,11 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.type.SportType
 
 @Composable
@@ -63,7 +63,7 @@ fun NoticeItem(
                 )
         ) {
             UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+                placeholderDrawable = img_profile,
                 modifier = Modifier
                     .height(40.dp)
                     .aspectRatio(1f)
