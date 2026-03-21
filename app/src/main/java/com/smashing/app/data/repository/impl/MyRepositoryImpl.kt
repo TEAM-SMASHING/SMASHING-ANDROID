@@ -57,12 +57,15 @@ class MyRepositoryImpl @Inject constructor(
 
     override suspend fun postLogout(): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.postLogout()
-        tokenDataStore.clearTokens()
-        userDataStore.clearUserInfo()
+        clearLocalSession()
     }
 
     override suspend fun postWithdraw(): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.postWithdraw()
+        clearLocalSession()
+    }
+
+    private suspend fun clearLocalSession() {
         tokenDataStore.clearTokens()
         userDataStore.clearUserInfo()
     }
