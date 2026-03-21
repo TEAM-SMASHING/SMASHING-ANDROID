@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,7 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.mypage_account_withdraw
 import com.smashing.app.R.string.withdraw_agreement_text
 import com.smashing.app.R.string.withdraw_btn_withdraw
@@ -38,6 +41,7 @@ import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.style.ButtonStyle
+import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -53,12 +57,23 @@ fun WithdrawRoute(
     viewModel: WithdrawViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner.lifecycle) {
+        viewModel.sideEffect
+            .flowWithLifecycle(lifecycleOwner.lifecycle)
+            .collect { effect ->
+                when (effect) {
+                    is WithdrawContract.WithdrawSideEffect.NavigateToLogin -> navigateToLogin()
+                }
+            }
+    }
 
     WithdrawScreen(
         uiState = uiState,
         onWithdrawalAgreedChange = viewModel::updateWithdrawalAgreed,
         navigateUp = navigateUp,
-        navigateToLogin = navigateToLogin,
+        onWithdrawClick = viewModel::postWithdraw,
         modifier = modifier,
     )
 }
@@ -68,7 +83,7 @@ private fun WithdrawScreen(
     uiState: WithdrawContract.State,
     onWithdrawalAgreedChange: (Boolean) -> Unit,
     navigateUp: () -> Unit,
-    navigateToLogin: () -> Unit,
+    onWithdrawClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -166,14 +181,12 @@ private fun WithdrawScreen(
             SmashingButton(
                 buttonStyle = if (uiState.isWithdrawalAgreed) ButtonStyle.WARNING else ButtonStyle.DISABLED_ACTIVE,
                 text = stringResource(withdraw_btn_withdraw),
-                onClick = {
-                    //TODO: 탈퇴하기 로직 추가
-                    navigateToLogin()
-                },
+                onClick = onWithdrawClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 49.dp),
-                isEnabled = uiState.isWithdrawalAgreed,
+                isEnabled = uiState.isWithdrawalAgreed &&
+                        uiState.withdrawUiState != WithdrawUiState.Loading,
             )
         }
     }
@@ -189,7 +202,7 @@ private fun WithdrawScreenPreview() {
             uiState = WithdrawContract.State(isWithdrawalAgreed = isAgreed),
             onWithdrawalAgreedChange = { isAgreed = it },
             navigateUp = {},
-            navigateToLogin = {},
+            onWithdrawClick = {},
         )
     }
 }
