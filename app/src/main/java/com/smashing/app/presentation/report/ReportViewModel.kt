@@ -9,7 +9,9 @@ import com.smashing.app.data.repository.api.ReportRepository
 import com.smashing.app.presentation.report.navigation.ReportPage
 import com.smashing.app.data.type.ReportType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,6 +28,9 @@ class ReportViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ReportContract.State())
     val uiState = _uiState.asStateFlow()
 
+    private val _sideEffect = MutableSharedFlow<ReportContract.SideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
+
     val detailTextFieldState: TextFieldState = TextFieldState()
 
     fun updateSelectedReportType(reportType: ReportType) {
@@ -35,7 +40,7 @@ class ReportViewModel @Inject constructor(
     fun postReport() {
         val type = _uiState.value.selectedReportType ?: return
         viewModelScope.launch {
-            _uiState.update { it.copy(reportUiState = ReportUiState.Loading) }
+            _uiState.update { it.copy(isSubmitting = true) }
             val reasonDetail = if (type == ReportType.ETC) {
                 detailTextFieldState.text.toString().trim().takeIf { it.isNotEmpty() }
             } else {
@@ -46,15 +51,15 @@ class ReportViewModel @Inject constructor(
                 reportTypeCode = type.toString(),
                 reasonDetail = reasonDetail,
             ).onSuccess {
-                _uiState.update { it.copy(reportUiState = ReportUiState.Success) }
+                _uiState.update { it.copy(isSubmitting = false) }
+                _sideEffect.emit(ReportContract.SideEffect.ReportSubmitted)
             }.onFailure { e ->
-                _uiState.update {
-                    it.copy(
-                        reportUiState = ReportUiState.Failure(
-                            msg = e.message ?: "신고에 실패했습니다.",
-                        ),
-                    )
-                }
+                _uiState.update { it.copy(isSubmitting = false) }
+                _sideEffect.emit(
+                    ReportContract.SideEffect.ReportFailed(
+                        message = e.message ?: "신고에 실패했습니다.",
+                    ),
+                )
             }
         }
     }

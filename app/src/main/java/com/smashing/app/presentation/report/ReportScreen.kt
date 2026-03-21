@@ -32,7 +32,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.drawable.ic_radio_empty
 import com.smashing.app.R.drawable.ic_radio_fill
 import com.smashing.app.R.string.report_btn_submit
@@ -50,6 +52,8 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.data.type.ReportType
+import com.smashing.app.presentation.report.ReportContract.SideEffect.ReportFailed
+import com.smashing.app.presentation.report.ReportContract.SideEffect.ReportSubmitted
 
 @Composable
 fun ReportRoute(
@@ -60,18 +64,19 @@ fun ReportRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showToast = LocalToastTrigger.current
     val reportSubmittedMessage = stringResource(report_toast_submitted)
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(uiState.reportUiState) {
-        when (val s = uiState.reportUiState) {
-            ReportUiState.Success -> {
-                showToast("신고가 접수되었습니다.")
-                navigateUp()
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { effect ->
+                when (effect) {
+                    ReportSubmitted -> {
+                        showToast(reportSubmittedMessage)
+                        navigateUp()
+                    }
+                    is ReportFailed -> showToast(effect.message)
+                }
             }
-            is ReportUiState.Failure -> {
-                showToast(s.msg)
-            }
-            else -> Unit
-        }
     }
 
     ReportScreen(
@@ -154,7 +159,7 @@ private fun ReportScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 48.dp),
             isEnabled = when {
-                uiState.reportUiState is ReportUiState.Loading -> false
+                uiState.isSubmitting -> false
                 uiState.selectedReportType == null -> false
                 uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString().isNotBlank()
                 else -> true
@@ -186,7 +191,7 @@ private fun ReportTypeItem(
         )
         Spacer(modifier = Modifier.width(15.dp))
         Text(
-            text = stringResource(reportType.textResId),
+            text = reportType.text,
             color = SmashingTheme.colors.txtSecondary,
             style = SmashingTheme.typography.md.medium16,
         )
