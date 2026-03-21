@@ -1,7 +1,7 @@
 package com.smashing.app.presentation.report
 
 import androidx.compose.runtime.Immutable
-import com.smashing.app.presentation.report.type.ReportType
+import com.smashing.app.data.type.ReportType
 
 interface ReportContract {
     @Immutable

@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +43,7 @@ import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.presentation.report.type.ReportType
+import com.smashing.app.data.type.ReportType
 
 @Composable
 fun ReportRoute(
@@ -53,14 +54,26 @@ fun ReportRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showToast = LocalToastTrigger.current
 
+    LaunchedEffect(uiState.reportUiState) {
+        when (val s = uiState.reportUiState) {
+            ReportUiState.Success -> {
+                showToast("신고가 접수되었습니다.")
+                viewModel.consumeReportUiState()
+                navigateUp()
+            }
+            is ReportUiState.Failure -> {
+                showToast(s.msg)
+                viewModel.consumeReportUiState()
+            }
+            else -> Unit
+        }
+    }
+
     ReportScreen(
         uiState = uiState,
         detailTextFieldState = viewModel.detailTextFieldState,
         onReportTypeSelected = viewModel::updateSelectedReportType,
-        onReportClick = {
-            showToast("신고가 접수되었습니다.")
-            navigateUp()
-        },
+        onReportClick = viewModel::submitReport,
         navigateUp = navigateUp,
         modifier = modifier,
     )
@@ -136,6 +149,7 @@ private fun ReportScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 48.dp),
             isEnabled = when {
+                uiState.reportUiState is ReportUiState.Loading -> false
                 uiState.selectedReportType == null -> false
                 uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString().isNotBlank()
                 else -> true
@@ -177,7 +191,7 @@ private fun ReportTypeItem(
 @Preview(showBackground = true)
 @Composable
 private fun ReportScreenPreview() {
-    var selectedReportType by remember { mutableStateOf<ReportType?>(ReportType.BAD_MANNERS) }
+    var selectedReportType by remember { mutableStateOf<ReportType?>(ReportType.MANNER) }
     val detailState = rememberTextFieldState()
 
     SmashingAndroidTheme {
