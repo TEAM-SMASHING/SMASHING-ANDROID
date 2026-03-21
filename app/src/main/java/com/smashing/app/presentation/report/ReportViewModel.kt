@@ -32,7 +32,7 @@ class ReportViewModel @Inject constructor(
         _uiState.update { it.copy(selectedReportType = reportType) }
     }
 
-    fun submitReport() {
+    fun postReport() {
         val type = _uiState.value.selectedReportType ?: return
         viewModelScope.launch {
             _uiState.update { it.copy(reportUiState = ReportUiState.Loading) }

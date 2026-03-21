@@ -73,7 +73,7 @@ fun ReportRoute(
         uiState = uiState,
         detailTextFieldState = viewModel.detailTextFieldState,
         onReportTypeSelected = viewModel::updateSelectedReportType,
-        onReportClick = viewModel::submitReport,
+        onReportClick = viewModel::postReport,
         navigateUp = navigateUp,
         modifier = modifier,
     )
