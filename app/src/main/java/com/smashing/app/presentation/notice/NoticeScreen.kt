@@ -24,8 +24,8 @@ import com.smashing.app.R
 import com.smashing.app.core.designsystem.component.appicon.AppIcon
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
-import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.state.TopBarState
+import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
@@ -122,11 +122,8 @@ private fun NoticeScreen(
                     NoticeItem(
                         title = it.title,
                         description = it.description,
-                        userId = it.userId,
-                        sportType = it.sportType,
                         isRead = it.isRead,
                         timeAgo = it.timeAgo,
-                        nickname = it.senderProfileId,
                         onItemClick = { onNoticeClick(it) },
                     )
                 }
@@ -146,7 +143,7 @@ private fun NoticeScreen(
                     type = DialogStyle.ALERT,
                     confirmText = "변경하기",
                     dismissText = "아니요",
-                    onConfirmClick = { onConfirmChangeProfile(uiState.selectedNoticeItem.userId) },
+                    onConfirmClick = { /* TODO profileId 로직 확인 후 수정 예정 onConfirmChangeProfile(uiState.selectedNoticeItem.userId) */ },
                 )
             }
         }

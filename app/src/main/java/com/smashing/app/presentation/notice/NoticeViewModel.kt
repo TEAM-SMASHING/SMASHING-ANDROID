@@ -12,8 +12,8 @@ import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.navigation.Notice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -98,7 +98,7 @@ class NoticeViewModel @Inject constructor(
 
     fun onNoticeClick(notice: Notification) = viewModelScope.launch {
         val currentProfileId = _uiState.value.currentProfileId
-        if (notice.userId != currentProfileId) {
+        if (notice.senderProfileId != currentProfileId) { // TODO 검증 로직 수정 예정
             updateSelectedNoticeItem(notice)
             updateIsChangeDialogVisible(true)
             return@launch
@@ -145,15 +145,12 @@ class NoticeViewModel @Inject constructor(
 
             NotificationType.MATCHING_ACCEPTED,
             NotificationType.MATCHING_RESULT_SUBMITTED,
-            NotificationType.RESULT_REJECTED_SCORE_MISMATCH,
-            NotificationType.RESULT_REJECTED_WIN_LOSE_REVERSED,
-            NotificationType.RESULT_REJECTED_SCORE_AND_WIN_LOSE_MISMATCH,
-            NotificationType.RESULT_REJECTED_GAME_NOT_PLAYED_YET,
+            NotificationType.MATCHING_RESULT_REJECTED,
                 -> _sideEffect.emit(NoticeContract.SideEffect.NavigateToMatching(MatchingType.ACCEPTED))
 
             NotificationType.REVIEW_RECEIVED -> {
-                notice.reviewId?.let { reviewId ->
-                    _sideEffect.emit(NoticeContract.SideEffect.NavigateToConfirmReview(reviewId))
+                notice.reviewId?.let { id ->
+                    _sideEffect.emit(NoticeContract.SideEffect.NavigateToConfirmReview(id))
                 }
             }
         }
