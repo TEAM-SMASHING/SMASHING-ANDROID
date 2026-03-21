@@ -60,4 +60,10 @@ class MyRepositoryImpl @Inject constructor(
         tokenDataStore.clearTokens()
         userDataStore.clearUserInfo()
     }
+
+    override suspend fun postWithdraw(): Result<Unit> = suspendRunCatching {
+        myRemoteDataSource.postWithdraw()
+        tokenDataStore.clearTokens()
+        userDataStore.clearUserInfo()
+    }
 }
