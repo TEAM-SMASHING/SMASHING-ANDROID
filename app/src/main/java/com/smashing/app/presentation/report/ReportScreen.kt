@@ -58,12 +58,10 @@ fun ReportRoute(
         when (val s = uiState.reportUiState) {
             ReportUiState.Success -> {
                 showToast("신고가 접수되었습니다.")
-                viewModel.consumeReportUiState()
                 navigateUp()
             }
             is ReportUiState.Failure -> {
                 showToast(s.msg)
-                viewModel.consumeReportUiState()
             }
             else -> Unit
         }

@@ -58,8 +58,4 @@ class ReportViewModel @Inject constructor(
             }
         }
     }
-
-    fun consumeReportUiState() {
-        _uiState.update { it.copy(reportUiState = ReportUiState.Idle) }
-    }
 }
