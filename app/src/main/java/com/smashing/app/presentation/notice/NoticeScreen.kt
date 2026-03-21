@@ -126,7 +126,7 @@ private fun NoticeScreen(
                         sportType = it.sportType,
                         isRead = it.isRead,
                         timeAgo = it.timeAgo,
-                        nickname = it.nickname,
+                        nickname = it.senderProfileId,
                         onItemClick = { onNoticeClick(it) },
                     )
                 }

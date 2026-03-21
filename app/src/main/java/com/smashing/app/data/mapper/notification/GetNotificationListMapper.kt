@@ -5,7 +5,7 @@ import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
 import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.notification.NotificationSummaryResponse
-import com.smashing.app.data.type.SportType
+import com.smashing.app.data.type.NotificationType.REVIEW_RECEIVED
 import com.smashing.app.domain.model.Notification
 
 fun CursorDto<NotificationSummaryResponse>.toNotificationList(): CursorPage<Notification> {
@@ -20,21 +20,26 @@ fun CursorDto<NotificationSummaryResponse>.toNotificationList(): CursorPage<Noti
 }
 
 private fun NotificationSummaryResponse.toNotification(): Notification {
+    val reviewId =
+        if (notificationType == REVIEW_RECEIVED) extractReviewIdFromLinkUrl(linkUrl) else null
+
     return Notification(
         notificationId = notificationId,
-        userId = receiverProfileId,
-        nickname = senderNickName,
-        sportType = SportType.findSportType(receiverSportId),
+        senderProfileId = senderProfileId,
         notificationType = notificationType,
         title = title,
         description = content,
         isRead = isRead,
         timeAgo = calculateNotificationTime(createdAt),
         linkUrl = linkUrl,
-        relatedId = extractIdFromLinkUrl(linkUrl),
+        reviewId = reviewId,
     )
 }
 
-private fun extractIdFromLinkUrl(linkUrl: String): String? {
-    return linkUrl.substringAfterLast("/", "").takeIf { it.isNotEmpty() }
+private fun extractReviewIdFromLinkUrl(linkUrl: String): String? {
+    val prefix = "/api/v1/reviews/"
+    if (!linkUrl.startsWith(prefix)) return null
+
+    val id = linkUrl.removePrefix(prefix).substringBefore("/")
+    return id.takeIf { it.isNotBlank() }
 }

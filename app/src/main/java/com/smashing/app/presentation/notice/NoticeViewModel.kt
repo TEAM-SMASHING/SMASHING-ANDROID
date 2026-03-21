@@ -152,7 +152,7 @@ class NoticeViewModel @Inject constructor(
                 -> _sideEffect.emit(NoticeContract.SideEffect.NavigateToMatching(MatchingType.ACCEPTED))
 
             NotificationType.REVIEW_RECEIVED -> {
-                notice.relatedId?.let { reviewId ->
+                notice.reviewId?.let { reviewId ->
                     _sideEffect.emit(NoticeContract.SideEffect.NavigateToConfirmReview(reviewId))
                 }
             }

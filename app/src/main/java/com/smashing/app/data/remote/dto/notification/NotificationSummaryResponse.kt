@@ -20,10 +20,6 @@ data class NotificationSummaryResponse(
     val isRead: Boolean,
     @SerialName("createdAt")
     val createdAt: String,
-    @SerialName("senderNickname")
-    val senderNickName: String,
-    @SerialName("receiverProfileId")
-    val receiverProfileId: String,
-    @SerialName("receiverSportId")
-    val receiverSportId: Long,
+    @SerialName("senderProfileId")
+    val senderProfileId: String?,
 )
