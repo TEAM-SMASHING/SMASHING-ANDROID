@@ -6,15 +6,25 @@ import com.smashing.app.data.type.ReportType
 interface ReportContract {
     @Immutable
     data class State(
-        val isSubmitting: Boolean = false,
+        val reportUiState: ReportUiState = ReportUiState.Idle,
         val selectedReportType: ReportType? = null,
     )
 
     sealed interface SideEffect {
         data object ReportSubmitted : SideEffect
 
-        data class ReportFailed(
-            val message: String,
-        ) : SideEffect
+        data object ReportAlreadyReported : SideEffect
     }
+}
+
+sealed interface ReportUiState {
+    data object Idle : ReportUiState
+
+    data object Loading : ReportUiState
+
+    data object Success : ReportUiState
+
+    data class Failure(
+        val msg: String,
+    ) : ReportUiState
 }

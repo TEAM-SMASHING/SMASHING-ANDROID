@@ -41,6 +41,7 @@ import com.smashing.app.R.string.report_btn_submit
 import com.smashing.app.R.string.report_description
 import com.smashing.app.R.string.report_placeholder
 import com.smashing.app.R.string.report_title
+import com.smashing.app.R.string.report_toast_already_reported
 import com.smashing.app.R.string.report_toast_submitted
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.textfield.SmashingAreaTextField
@@ -52,7 +53,7 @@ import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.data.type.ReportType
-import com.smashing.app.presentation.report.ReportContract.SideEffect.ReportFailed
+import com.smashing.app.presentation.report.ReportContract.SideEffect.ReportAlreadyReported
 import com.smashing.app.presentation.report.ReportContract.SideEffect.ReportSubmitted
 
 @Composable
@@ -64,6 +65,7 @@ fun ReportRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showToast = LocalToastTrigger.current
     val reportSubmittedMessage = stringResource(report_toast_submitted)
+    val reportAlreadyReportedMessage = stringResource(report_toast_already_reported)
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
@@ -74,7 +76,10 @@ fun ReportRoute(
                         showToast(reportSubmittedMessage)
                         navigateUp()
                     }
-                    is ReportFailed -> showToast(effect.message)
+                    ReportAlreadyReported -> {
+                        showToast(reportAlreadyReportedMessage)
+                        navigateUp()
+                    }
                 }
             }
     }
@@ -159,7 +164,7 @@ private fun ReportScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 48.dp),
             isEnabled = when {
-                uiState.isSubmitting -> false
+                uiState.reportUiState is ReportUiState.Loading -> false
                 uiState.selectedReportType == null -> false
                 uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString().isNotBlank()
                 else -> true

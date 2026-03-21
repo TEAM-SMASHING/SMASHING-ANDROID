@@ -15,7 +15,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
+
+private const val HTTP_STATUS_ALREADY_REPORTED = 409
 
 @HiltViewModel
 class ReportViewModel @Inject constructor(
@@ -33,14 +36,18 @@ class ReportViewModel @Inject constructor(
 
     val detailTextFieldState: TextFieldState = TextFieldState()
 
-    fun updateSelectedReportType(reportType: ReportType) {
-        _uiState.update { it.copy(selectedReportType = reportType) }
+    fun updateSelectedReportType(reportType: ReportType) = _uiState.update {
+        it.copy(selectedReportType = reportType)
+    }
+
+    private fun updateReportUiState(reportUiState: ReportUiState) = _uiState.update {
+        it.copy(reportUiState = reportUiState)
     }
 
     fun postReport() {
         val type = _uiState.value.selectedReportType ?: return
         viewModelScope.launch {
-            _uiState.update { it.copy(isSubmitting = true) }
+            updateReportUiState(ReportUiState.Loading)
             val reasonDetail = if (type == ReportType.ETC) {
                 detailTextFieldState.text.toString().trim().takeIf { it.isNotEmpty() }
             } else {
@@ -51,15 +58,22 @@ class ReportViewModel @Inject constructor(
                 reportTypeCode = type.toString(),
                 reasonDetail = reasonDetail,
             ).onSuccess {
-                _uiState.update { it.copy(isSubmitting = false) }
+                updateReportUiState(ReportUiState.Success)
                 _sideEffect.emit(ReportContract.SideEffect.ReportSubmitted)
-            }.onFailure { e ->
-                _uiState.update { it.copy(isSubmitting = false) }
-                _sideEffect.emit(
-                    ReportContract.SideEffect.ReportFailed(
-                        message = e.message ?: "신고에 실패했습니다.",
-                    ),
-                )
+                updateReportUiState(ReportUiState.Idle)
+            }.onFailure { throwable ->
+                when {
+                    throwable is HttpException && throwable.code() == HTTP_STATUS_ALREADY_REPORTED -> {
+                        _sideEffect.emit(ReportContract.SideEffect.ReportAlreadyReported)
+                        updateReportUiState(ReportUiState.Idle)
+                    }
+
+                    else -> {
+                        updateReportUiState(
+                            ReportUiState.Failure(msg = throwable.message ?: "신고에 실패했습니다."),
+                        )
+                    }
+                }
             }
         }
     }

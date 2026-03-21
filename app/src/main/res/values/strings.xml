@@ -339,6 +339,7 @@
     <string name="report_placeholder">신고 사유를 입력해 주세요</string>
     <string name="report_btn_submit">신고하기</string>
     <string name="report_toast_submitted">신고가 접수되었습니다.</string>
+    <string name="report_toast_already_reported">해당 유저는 이미 신고한 상대입니다.</string>
     <string name="report_type_bad_manners">비매너 사용자에요</string>
     <string name="report_type_profanity_or_hate">욕설, 비방, 혐오 표현을 사용해요</string>
     <string name="report_type_sexual_harassment">원치 않는 성적 대화 또는 만남을 요구해요</string>
