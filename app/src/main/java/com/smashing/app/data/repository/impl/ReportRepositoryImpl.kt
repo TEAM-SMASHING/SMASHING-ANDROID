@@ -3,6 +3,7 @@ package com.smashing.app.data.repository.impl
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.remote.datasource.api.ReportRemoteDataSource
 import com.smashing.app.data.remote.dto.report.ReportUserRequest
+import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.ReportRepository
 import javax.inject.Inject
 
@@ -21,6 +22,6 @@ class ReportRepositoryImpl @Inject constructor(
                 reportType = reportTypeCode,
                 reasonDetail = reasonDetail,
             ),
-        )
+        ).requireData()
     }
 }
