@@ -33,4 +33,5 @@ interface AuthService {
     suspend fun postOpenchatValid(
         @Body request: PostOpenchatValidRequest,
     ): BaseResponse<PostOpenchatValidResponse>
+
 }

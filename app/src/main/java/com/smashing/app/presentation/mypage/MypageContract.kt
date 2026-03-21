@@ -10,6 +10,7 @@ interface MyPageContract {
         val profileLoadState: MyPageUiState = MyPageUiState.Idle,
         val myPageProfileInfo: MyPageProfileUiModel = MyPageProfileUiModel(),
         val selectedSportProfileId: String = "",
+        val logoutLoadState: MyPageUiState = MyPageUiState.Idle,
     )
 
     sealed interface MyPageUiState {
@@ -19,5 +20,8 @@ interface MyPageContract {
         data class Failure(
             val msg: String,
         ) : MyPageUiState
+        sealed interface MyPageSideEffect {
+            data object NavigateToLogin : MyPageSideEffect
+        }
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +35,11 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.ic_radio_empty
 import com.smashing.app.R.drawable.ic_radio_fill
+import com.smashing.app.R.string.report_btn_submit
+import com.smashing.app.R.string.report_description
+import com.smashing.app.R.string.report_placeholder
+import com.smashing.app.R.string.report_title
+import com.smashing.app.R.string.report_toast_submitted
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.textfield.SmashingAreaTextField
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
@@ -53,6 +59,7 @@ fun ReportRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showToast = LocalToastTrigger.current
+    val reportSubmittedMessage = stringResource(report_toast_submitted)
 
     LaunchedEffect(uiState.reportUiState) {
         when (val s = uiState.reportUiState) {
@@ -95,7 +102,7 @@ private fun ReportScreen(
     ) {
         SmashingDefaultTopBar(
             state = TopBarState.Close(
-                title = "신고하기",
+                title = stringResource(report_title),
                 onCloseClick = navigateUp,
             ),
             modifier = Modifier.fillMaxWidth(),
@@ -108,7 +115,7 @@ private fun ReportScreen(
                 .padding(horizontal = 16.dp),
         ) {
             Text(
-                text = "사용자를 신고하는 이유를 선택해 주세요",
+                text = stringResource(report_description),
                 style = SmashingTheme.typography.lg.semibold18,
                 color = SmashingTheme.colors.txtPrimary,
                 textAlign = TextAlign.Start,
@@ -131,7 +138,7 @@ private fun ReportScreen(
 
             SmashingAreaTextField(
                 state = detailTextFieldState,
-                placeholder = "신고 사유를 입력해 주세요",
+                placeholder = stringResource(report_placeholder),
                 enabled = uiState.selectedReportType == ReportType.ETC,
             )
         }
@@ -140,7 +147,7 @@ private fun ReportScreen(
 
         SmashingButton(
             buttonStyle = ButtonStyle.PRIMARY_WITH_DISABLED,
-            text = "신고하기",
+            text = stringResource(report_btn_submit),
             onClick = onReportClick,
             modifier = Modifier
                 .fillMaxWidth()
@@ -179,7 +186,7 @@ private fun ReportTypeItem(
         )
         Spacer(modifier = Modifier.width(15.dp))
         Text(
-            text = reportType.text,
+            text = stringResource(reportType.textResId),
             color = SmashingTheme.colors.txtSecondary,
             style = SmashingTheme.typography.md.medium16,
         )

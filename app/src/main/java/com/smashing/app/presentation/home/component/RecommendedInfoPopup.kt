@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R.string.home_recommend_info_popup
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 
 @Composable
@@ -33,7 +35,7 @@ fun RecommendedInfoPopup(
                 ),
         ) {
             Text(
-                text = "내 동네에서 LP ± 200점 범위 안의 5명의 유저가 랜덤으로 추천돼요!",
+                text = stringResource(home_recommend_info_popup),
                 style = SmashingTheme.typography.xxs.medium10,
                 color = SmashingTheme.colors.txtPrimaryReverse,
             )
