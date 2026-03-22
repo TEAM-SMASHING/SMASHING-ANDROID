@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -39,6 +40,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.smashing.app.R.drawable.ic_plus
+import com.smashing.app.R.string.lose_label
+import com.smashing.app.R.string.profile_lp_remaining_text
+import com.smashing.app.R.string.profile_lp_status
+import com.smashing.app.R.string.profile_tier_description
+import com.smashing.app.R.string.rate_label
+import com.smashing.app.R.string.win_label
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
@@ -211,13 +218,13 @@ fun HomeDropdown(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "LP 남았어요!",
+                            text = stringResource(profile_lp_remaining_text),
                             style = SmashingTheme.typography.md.semibold16,
                             color = SmashingTheme.colors.txtTertiary,
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
-                            text = "LP",
+                            text = stringResource(profile_lp_status),
                             style = SmashingTheme.typography.md.semibold16,
                             color = SmashingTheme.colors.txtTertiary,
                         )
@@ -233,7 +240,7 @@ fun HomeDropdown(
 
                     SmashingBaseButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "티어 설명",
+                        text = stringResource(profile_tier_description),
                         textStyle = SmashingTheme.typography.lg.semibold18,
                         onClick = onTierClick,
                         buttonColor = SmashingBtnColor(
@@ -261,7 +268,7 @@ fun HomeDropdown(
                 ) {
                     MatchRecordItem(
                         title = winCount.toString(),
-                        subTitle = "승리",
+                        subTitle = stringResource(win_label),
                         contentColor = SmashingTheme.colors.txtEmphasis,
                         modifier = Modifier.weight(1f)
                     )
@@ -272,7 +279,7 @@ fun HomeDropdown(
                     )
                     MatchRecordItem(
                         title = loseCount.toString(),
-                        subTitle = "패배",
+                        subTitle = stringResource(lose_label),
                         contentColor = SmashingTheme.colors.txtRed,
                         modifier = Modifier.weight(1f)
                     )
@@ -283,7 +290,7 @@ fun HomeDropdown(
                     )
                     MatchRecordItem(
                         title = "${winRate(winCount = winCount, loseCount = loseCount)}%",
-                        subTitle = "승률",
+                        subTitle = stringResource(rate_label),
                         contentColor = SmashingTheme.colors.txtPrimary,
                         modifier = Modifier.weight(1f),
                     )

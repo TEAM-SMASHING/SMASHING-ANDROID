@@ -22,10 +22,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R.string.profile_tier_description
+import com.smashing.app.R.string.tier_info_actual_standard_format
+import com.smashing.app.R.string.tier_info_skill_guide
 import com.smashing.app.core.designsystem.component.appicon.AppIcon
 import com.smashing.app.core.designsystem.component.chip.SmashingChip
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -66,7 +70,10 @@ private fun TierInfoScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SmashingDefaultTopBar(
-            state = TopBarState.Close(title = "티어 설명", onCloseClick = onBack),
+            state = TopBarState.Close(
+                title = stringResource(profile_tier_description),
+                onCloseClick = onBack,
+            ),
         )
 
         Column(
@@ -101,7 +108,10 @@ private fun TierInfoScreen(
                     }
                     if (!uiState.tierInfoDetail.progressInfo.levelText.isNullOrBlank()) {
                         TierTag(
-                            tagText = "실제 기준 ${uiState.tierInfoDetail.progressInfo.levelText}",
+                            tagText = stringResource(
+                                tier_info_actual_standard_format,
+                                uiState.tierInfoDetail.progressInfo.levelText,
+                            ),
                         )
                     }
                 }
@@ -141,7 +151,7 @@ private fun TierInfoScreen(
         ) {
             if (uiState.selectedTierInfoStyle != TierInfoStyle.CHALLENGER && uiState.selectedTierInfoStyle != TierInfoStyle.IRON) {
                 Text(
-                    text = "승급을 위해 아래의 기술들을 연마해보세요",
+                    text = stringResource(tier_info_skill_guide),
                     style = SmashingTheme.typography.md.semibold16,
                     color = SmashingTheme.colors.txtPrimary,
                 )

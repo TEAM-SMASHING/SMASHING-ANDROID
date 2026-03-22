@@ -22,11 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R
+import com.smashing.app.R.string.delete
+import com.smashing.app.R.string.search_placeholder
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -41,7 +44,7 @@ import com.smashing.app.core.extension.noRippleClickable
 fun SearchTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
-    placeholder: String = "닉네임을 입력해주세요",
+    placeholder: String,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -84,7 +87,7 @@ fun SearchTextField(
                 if (isFocused && isFilled) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_circle_x),
-                        contentDescription = "삭제",
+                        contentDescription = stringResource(delete),
                         tint = Color.Unspecified,
                         modifier = Modifier
                             .noRippleClickable(onClick = state::clearText)

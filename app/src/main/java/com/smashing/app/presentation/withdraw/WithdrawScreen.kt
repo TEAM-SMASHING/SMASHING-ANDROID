@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R.string.mypage_account_withdraw
+import com.smashing.app.R.string.withdraw_agreement_text
+import com.smashing.app.R.string.withdraw_btn_withdraw
+import com.smashing.app.R.string.withdraw_deleted_info
+import com.smashing.app.R.string.withdraw_title_question
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.state.TopBarState
@@ -74,7 +80,7 @@ private fun WithdrawScreen(
     ) {
         SmashingDefaultTopBar(
             state = TopBarState.Back(
-                title = "계정 탈퇴",
+                title = stringResource(mypage_account_withdraw),
                 onBackClick = navigateUp,
             ),
             modifier = Modifier.fillMaxWidth(),
@@ -88,7 +94,7 @@ private fun WithdrawScreen(
                 .padding(horizontal = 16.dp),
         ) {
             Text(
-                text = "정말 탈퇴하시겠습니까?",
+                text = stringResource(withdraw_title_question),
                 style = SmashingTheme.typography.xl.semibold20,
                 color = SmashingTheme.colors.txtPrimary,
                 textAlign = TextAlign.Start,
@@ -97,7 +103,7 @@ private fun WithdrawScreen(
             )
 
             Text(
-                text = "회원 탈퇴 시 아래 정보가 삭제됩니다",
+                text = stringResource(withdraw_deleted_info),
                 style = SmashingTheme.typography.md.medium16,
                 color = SmashingTheme.colors.txtPrimary,
                 textAlign = TextAlign.Start,
@@ -109,7 +115,7 @@ private fun WithdrawScreen(
 
             WithdrawalDeletedType.entries.forEach { item ->
                 Text(
-                    text = item.text,
+                    text = stringResource(item.textResId),
                     style = SmashingTheme.typography.sm.medium14,
                     color = SmashingTheme.colors.txtPrimary,
                     modifier = Modifier
@@ -149,7 +155,7 @@ private fun WithdrawScreen(
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Text(
-                    text = "주의사항을 인지하였으며, 이에 동의합니다",
+                    text = stringResource(withdraw_agreement_text),
                     style = SmashingTheme.typography.sm.regular14,
                     color = SmashingTheme.colors.txtPrimary,
                 )
@@ -159,7 +165,7 @@ private fun WithdrawScreen(
 
             SmashingButton(
                 buttonStyle = if (uiState.isWithdrawalAgreed) ButtonStyle.WARNING else ButtonStyle.DISABLED_ACTIVE,
-                text = "탈퇴하기",
+                text = stringResource(withdraw_btn_withdraw),
                 onClick = {
                     //TODO: 탈퇴하기 로직 추가
                     navigateToLogin()
