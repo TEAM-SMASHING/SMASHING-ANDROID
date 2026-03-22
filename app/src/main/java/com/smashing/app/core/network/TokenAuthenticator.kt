@@ -1,0 +1,62 @@
+package com.smashing.app.core.network
+
+import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
+import com.smashing.app.data.remote.dto.auth.PostTokenReissueRequest
+import com.smashing.app.data.repository.api.AuthRepository
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import okhttp3.Authenticator
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.Route
+import timber.log.Timber
+import javax.inject.Inject
+
+class TokenAuthenticator @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val tokenDataStore: LocalTokenDataSource,
+) : Authenticator {
+
+    private val mutex = Mutex()
+
+    override fun authenticate(route: Route?, response: Response): Request? {
+        if (responseCount(response) >= 2) return null
+
+        return runBlocking {
+            updateToken(response)
+        }
+    }
+
+    private suspend fun updateToken(response: Response): Request? = mutex.withLock {
+        val refreshToken = tokenDataStore.getRefreshToken() ?: throw IllegalStateException("token is null") //TODO: 로그인 or 앱 재시작..
+        var newAccessToken: String? = null
+        authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
+            .onSuccess {
+                tokenDataStore.setTokens(
+                    accessToken = it.accessToken,
+                    refreshToken = it.refreshToken,
+                )
+                newAccessToken = it.accessToken
+            }
+            .onFailure { error ->
+                Timber.tag("Authenticator").e("토큰 재발급 실패 : ${error.message}")
+                return null
+            }
+        return response.request.newBuilder()
+            .header("Authorization", "Bearer $newAccessToken")
+            .build()
+    }
+
+    private fun responseCount(response: Response): Int {
+        var count = 1
+        var response = response.priorResponse
+        while (response != null) {
+            count++
+            response = response.priorResponse
+        }
+        return count
+    }
+}
+
+
