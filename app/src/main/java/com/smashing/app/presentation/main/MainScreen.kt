@@ -37,6 +37,7 @@ import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.toast.SmashingToast
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
+import com.smashing.app.presentation.chatting.navigation.chattingGraph
 import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.login.navigation.loginGraph
@@ -258,6 +259,10 @@ private fun MainNavHost(
         withdrawGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
+        )
+        chattingGraph(
+            navController = appState.navController,
+            innerPadding = innerPadding,
         )
     }
 }
