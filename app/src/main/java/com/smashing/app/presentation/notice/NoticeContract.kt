@@ -16,7 +16,6 @@ interface NoticeContract {
         val cursor: Cursor = Cursor(),
         val selectedNoticeItem: Notification = Notification(),
         val isChangeDialogVisible: Boolean = false,
-        val currentProfileId: String = "",
     )
 
     sealed interface SideEffect {
