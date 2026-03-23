@@ -15,11 +15,9 @@ data class NotificationSummaryResponse(
     @SerialName("content")
     val content: String,
     @SerialName("linkUrl")
-    val linkUrl: String,
+    val linkUrl: String?,
     @SerialName("isRead")
     val isRead: Boolean,
     @SerialName("createdAt")
     val createdAt: String,
-    @SerialName("senderProfileId")
-    val senderProfileId: String?,
 )

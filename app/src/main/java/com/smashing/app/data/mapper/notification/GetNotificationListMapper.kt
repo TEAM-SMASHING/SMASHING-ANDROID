@@ -22,8 +22,9 @@ fun CursorDto<NotificationSummaryResponse>.toNotificationList(): CursorPage<Noti
 }
 
 private fun NotificationSummaryResponse.toNotification(): Notification {
-    val reviewId =
-        if (notificationType == REVIEW_RECEIVED) extractReviewIdFromLinkUrl(linkUrl) else null
+    val reviewId = linkUrl
+        ?.takeIf { notificationType == REVIEW_RECEIVED }
+        ?.let(::extractReviewIdFromLinkUrl)
 
     return Notification(
         notificationId = notificationId,
