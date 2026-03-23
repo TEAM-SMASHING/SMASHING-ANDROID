@@ -98,11 +98,11 @@ class NoticeViewModel @Inject constructor(
 
     fun onNoticeClick(notice: Notification) = viewModelScope.launch {
         val currentProfileId = _uiState.value.currentProfileId
-        if (notice.senderProfileId != currentProfileId) { // TODO 검증 로직 수정 예정
-            updateSelectedNoticeItem(notice)
-            updateIsChangeDialogVisible(true)
-            return@launch
-        }
+//        if (notice.senderProfileId != currentProfileId) { // TODO 검증 로직 수정 예정
+//            updateSelectedNoticeItem(notice)
+//            updateIsChangeDialogVisible(true)
+//            return@launch
+//        }
         handleNoticeNavigation(notice)
     }
 

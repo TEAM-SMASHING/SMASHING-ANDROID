@@ -25,13 +25,11 @@ private fun NotificationSummaryResponse.toNotification(): Notification {
 
     return Notification(
         notificationId = notificationId,
-        senderProfileId = senderProfileId,
         notificationType = notificationType,
         title = title,
         description = content,
         isRead = isRead,
         timeAgo = calculateNotificationTime(createdAt),
-        linkUrl = linkUrl,
         reviewId = reviewId,
     )
 }
