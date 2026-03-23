@@ -3,7 +3,9 @@ package com.smashing.app.data.mapper.notification
 import com.smashing.app.core.util.ConvertTimeProvider.calculateNotificationTime
 import com.smashing.app.data.model.cursor.Cursor
 import com.smashing.app.data.model.cursor.CursorPage
+import com.smashing.app.data.model.notification.NotificationSportMatch
 import com.smashing.app.data.remote.dto.cursor.CursorDto
+import com.smashing.app.data.remote.dto.notification.GetNotificationSportMatchResponse
 import com.smashing.app.data.remote.dto.notification.NotificationSummaryResponse
 import com.smashing.app.data.type.NotificationType.REVIEW_RECEIVED
 import com.smashing.app.domain.model.Notification
@@ -40,4 +42,11 @@ private fun extractReviewIdFromLinkUrl(linkUrl: String): String? {
 
     val id = linkUrl.removePrefix(prefix).substringBefore("/")
     return id.takeIf { it.isNotBlank() }
+}
+
+fun GetNotificationSportMatchResponse.toNotificationSportMatch(): NotificationSportMatch {
+    return NotificationSportMatch(
+        receiverUserProfileId = receiverUserProfileId,
+        isMatch = isMatch,
+    )
 }
