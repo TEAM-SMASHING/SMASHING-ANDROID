@@ -27,24 +27,24 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postKakaoLogin(authorization: String): Result<KakaoLoginModel> =
         suspendRunCatching {
-            val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization)).requireData()
-
+            val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization))
+                .requireData()
             val loginModel = response.toKakaoLoginToken()
             val (accessToken, refreshToken) = loginModel.accessToken to loginModel.refreshToken
             val (userId, userNickname) = loginModel.userId to loginModel.userNickname
 
-            if(!accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()
-                && !userId.isNullOrEmpty() && !userNickname.isNullOrEmpty()) {
-                    tokenDataStore.setTokens(
-                        accessToken = accessToken,
-                        refreshToken = refreshToken,
-                    )
-                    userDataStore.setUserInfo(
-                        userId = userId,
-                        userNickname = userNickname,
-                    )
+            if (!accessToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()
+                && !userId.isNullOrEmpty() && !userNickname.isNullOrEmpty()
+            ) {
+                tokenDataStore.setTokens(
+                    accessToken = accessToken,
+                    refreshToken = refreshToken,
+                )
+                userDataStore.setUserInfo(
+                    userId = userId,
+                    userNickname = userNickname,
+                )
             }
-
             loginModel
         }
 

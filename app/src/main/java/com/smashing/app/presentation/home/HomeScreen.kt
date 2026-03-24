@@ -46,7 +46,14 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
+import com.smashing.app.R.drawable.ic_info
+import com.smashing.app.R.string.home_all_text
+import com.smashing.app.R.string.home_close_matching_txt
+import com.smashing.app.R.string.home_greeting_with_nickname
+import com.smashing.app.R.string.home_no_user
+import com.smashing.app.R.string.home_recommend_title_with_nickname
+import com.smashing.app.R.string.home_region_ranker
+import com.smashing.app.R.string.home_new_matching_txt
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -265,19 +272,24 @@ private fun HomeScreen(
                     ) {
                         Column {
                             Text(
-                                text = "${uiState.activeMyProfile.nickname}님,",
+                                text = stringResource(
+                                    home_greeting_with_nickname,
+                                    uiState.activeMyProfile.nickname,
+                                ),
                                 style = SmashingTheme.typography.lg.semibold18,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
-                                text = stringResource(R.string.home_clos_matching_txt),
+                                text = if (uiState.matchedUser != null) stringResource(
+                                    home_close_matching_txt
+                                ) else stringResource(home_new_matching_txt),
                                 style = SmashingTheme.typography.md.medium16,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                         }
 
                         Text(
-                            text = stringResource(R.string.home_all_text),
+                            text = stringResource(home_all_text),
                             style = SmashingTheme.typography.sm.medium14,
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
@@ -347,7 +359,10 @@ private fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "${uiState.activeMyProfile.nickname}님을 위한 추천",
+                            text = stringResource(
+                                home_recommend_title_with_nickname,
+                                uiState.activeMyProfile.nickname,
+                            ),
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -355,7 +370,7 @@ private fun HomeScreen(
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_info),
+                            imageVector = ImageVector.vectorResource(ic_info),
                             contentDescription = null,
                             tint = SmashingTheme.colors.iconTertiary,
                             modifier = Modifier
@@ -406,7 +421,7 @@ private fun HomeScreen(
                         }
                     } else {
                         Text(
-                            text = stringResource(R.string.home_no_user),
+                            text = stringResource(home_no_user),
                             style = SmashingTheme.typography.md.medium16,
                             color = SmashingTheme.colors.txtTertiary,
                             textAlign = TextAlign.Center,
@@ -441,7 +456,7 @@ private fun HomeScreen(
                         verticalAlignment = Alignment.Bottom,
                     ) {
                         Text(
-                            text = stringResource(R.string.home_region_ranker),
+                            text = stringResource(home_region_ranker),
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -449,7 +464,7 @@ private fun HomeScreen(
                         Spacer(modifier = Modifier.weight(1f))
 
                         Text(
-                            text = stringResource(R.string.home_all_text),
+                            text = stringResource(home_all_text),
                             style = SmashingTheme.typography.sm.medium14,
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
