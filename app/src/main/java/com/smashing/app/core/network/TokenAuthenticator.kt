@@ -30,7 +30,7 @@ class TokenAuthenticator @Inject constructor(
         }
     }
 
-    private suspend fun updateToken(response: Response): Request = mutex.withLock {
+    private suspend fun updateToken(response: Response): Request? = mutex.withLock {
         val accessToken = tokenDataStore.getAccessToken()
         val oldAccessToken =
             response.request.header("Authorization")?.replace("$BEARER_SUFFIX ", "")
@@ -59,6 +59,7 @@ class TokenAuthenticator @Inject constructor(
                 .onFailure { error ->
                     Timber.tag(AUTHORIZATION).e("토큰 재발급 실패 : ${error.message}")
                     handleReissueFailure()
+                    return null
                 }
         }
 
