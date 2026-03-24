@@ -15,6 +15,7 @@ import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.MyRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class MyRepositoryImpl @Inject constructor(
@@ -66,7 +67,15 @@ class MyRepositoryImpl @Inject constructor(
     }
 
     private suspend fun clearLocalSession() {
-        tokenDataStore.clearTokens()
-        userDataStore.clearUserInfo()
+        runCatching {
+            tokenDataStore.clearTokens()
+        }.onFailure {
+            Timber.e(it, "Failed to clear tokens")
+        }
+        runCatching {
+            userDataStore.clearUserInfo()
+        }.onFailure {
+            Timber.e(it, "Failed to clear user info")
+        }
     }
 }
