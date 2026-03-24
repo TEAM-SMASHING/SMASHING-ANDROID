@@ -30,7 +30,17 @@ class TokenAuthenticator @Inject constructor(
         }
     }
 
-    private suspend fun updateToken(response: Response): Request? = mutex.withLock {
+    private suspend fun updateToken(response: Response): Request = mutex.withLock {
+        val accessToken = tokenDataStore.getAccessToken()
+        val oldAccessToken = response.request.header("Authorization")
+
+        if ("Bearer $accessToken" != oldAccessToken && accessToken != null) {
+            Timber.tag("Authenticator").d("원래꺼 $oldAccessToken \n 새거 $accessToken")
+            return response.request.newBuilder()
+                .header("Authorization", "Bearer $accessToken")
+                .build()
+        }
+
         val refreshToken = tokenDataStore.getRefreshToken()
         var newAccessToken: String? = null
 
@@ -48,7 +58,7 @@ class TokenAuthenticator @Inject constructor(
                 }
                 .onFailure { error ->
                     Timber.tag("Authenticator").e("토큰 재발급 실패 : ${error.message}")
-                    return null
+                    handleReissueFailure()
                 }
         }
 
