@@ -1,5 +1,6 @@
 package com.smashing.app.core.network
 
+import com.smashing.app.core.network.token.AuthManager
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import com.smashing.app.data.remote.dto.auth.PostTokenReissueRequest
 import com.smashing.app.data.repository.api.AuthRepository
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class TokenAuthenticator @Inject constructor(
     private val authRepository: AuthRepository,
     private val tokenDataStore: LocalTokenDataSource,
+    private val authManager: AuthManager,
 ) : Authenticator {
 
     private val mutex = Mutex()
@@ -29,24 +31,35 @@ class TokenAuthenticator @Inject constructor(
     }
 
     private suspend fun updateToken(response: Response): Request? = mutex.withLock {
-        val refreshToken = tokenDataStore.getRefreshToken() ?: throw IllegalStateException("token is null") //TODO: 로그인 or 앱 재시작..
+        val refreshToken = tokenDataStore.getRefreshToken()
         var newAccessToken: String? = null
-        authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
-            .onSuccess {
-                Timber.tag("Authenticator").e("토큰 재발급 성공 : $newAccessToken")
-                tokenDataStore.setTokens(
-                    accessToken = it.accessToken,
-                    refreshToken = it.refreshToken,
-                )
-                newAccessToken = it.accessToken
-            }
-            .onFailure { error ->
-                Timber.tag("Authenticator").e("토큰 재발급 실패 : ${error.message}")
-                return null
-            }
+
+        if (refreshToken == null) {
+            handleReissueFailure()
+        } else {
+            authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
+                .onSuccess {
+                    Timber.tag("Authenticator").e("토큰 재발급 성공")
+                    tokenDataStore.setTokens(
+                        accessToken = it.accessToken,
+                        refreshToken = it.refreshToken,
+                    )
+                    newAccessToken = it.accessToken
+                }
+                .onFailure { error ->
+                    Timber.tag("Authenticator").e("토큰 재발급 실패 : ${error.message}")
+                    return null
+                }
+        }
+
         return response.request.newBuilder()
             .header("Authorization", "Bearer $newAccessToken")
             .build()
+    }
+
+    private suspend fun handleReissueFailure(){
+        tokenDataStore.clearTokens()
+        authManager.emitAuthEvent()
     }
 
     private fun responseCount(response: Response): Int {
