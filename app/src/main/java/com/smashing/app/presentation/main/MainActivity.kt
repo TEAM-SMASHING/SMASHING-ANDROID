@@ -45,15 +45,11 @@ class MainActivity : ComponentActivity() {
                 val appState = rememberMainAppState()
 
                 LaunchedEffect(Unit) {
-                    lifecycleScope.launch {
-                        repeatOnLifecycle(Lifecycle.State.STARTED) {
-                            authManager.authEvent.collect {
-                                appState.navController.navigate(
-                                    Login,
-                                    appState.navController.clearBackStackNavOptions()
-                                )
-                            }
-                        }
+                    authManager.authEvent.collect {
+                        appState.navController.navigate(
+                            Login,
+                            appState.navController.clearBackStackNavOptions()
+                        )
                     }
                 }
 
