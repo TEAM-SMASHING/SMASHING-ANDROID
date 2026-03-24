@@ -1,7 +1,7 @@
 package com.smashing.app.presentation.notice.model
 
 import com.smashing.app.data.type.SportType
-import com.smashing.app.domain.model.Notification
+import com.smashing.app.data.model.notification.Notification
 
 data class NoticeChangeSportUiModel(
     val sportType: SportType = SportType.PING_PONG,

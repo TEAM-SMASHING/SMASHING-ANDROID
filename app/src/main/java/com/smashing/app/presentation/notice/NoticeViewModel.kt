@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.NotificationRepository
 import com.smashing.app.data.type.NotificationType
-import com.smashing.app.domain.model.Notification
+import com.smashing.app.data.model.notification.Notification
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.model.NoticeChangeSportUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel

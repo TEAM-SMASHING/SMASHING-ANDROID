@@ -9,7 +9,7 @@ import com.smashing.app.data.remote.dto.notification.GetNotificationSportMatchRe
 import com.smashing.app.data.remote.dto.notification.NotificationSummaryResponse
 import com.smashing.app.data.type.NotificationType.REVIEW_RECEIVED
 import com.smashing.app.data.type.SportType
-import com.smashing.app.domain.model.Notification
+import com.smashing.app.data.model.notification.Notification
 
 fun CursorDto<NotificationSummaryResponse>.toNotificationList(): CursorPage<Notification> {
     return CursorPage(

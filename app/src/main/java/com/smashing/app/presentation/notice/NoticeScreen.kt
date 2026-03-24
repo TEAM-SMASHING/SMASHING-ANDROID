@@ -29,7 +29,7 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
-import com.smashing.app.domain.model.Notification
+import com.smashing.app.data.model.notification.Notification
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.component.NoticeItem
 

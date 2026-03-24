@@ -8,7 +8,7 @@ import com.smashing.app.data.model.notification.NotificationSportMatch
 import com.smashing.app.data.remote.datasource.api.NotificationRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.NotificationRepository
-import com.smashing.app.domain.model.Notification
+import com.smashing.app.data.model.notification.Notification
 import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
