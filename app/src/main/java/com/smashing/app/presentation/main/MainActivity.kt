@@ -7,10 +7,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
+import com.smashing.app.core.extension.clearBackStackNavOptions
 import com.smashing.app.core.network.sse.SseManager
+import com.smashing.app.core.network.token.AuthManager
+import com.smashing.app.presentation.login.navigation.Login
+import com.smashing.app.presentation.login.navigation.navigateToLogin
 import com.smashing.app.presentation.main.state.rememberMainAppState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -18,6 +27,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var sseManager: SseManager
+
+    @Inject
+    lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +44,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             SmashingAndroidTheme {
                 val appState = rememberMainAppState()
+
+                LaunchedEffect(Unit) {
+                    lifecycleScope.launch {
+                        repeatOnLifecycle(Lifecycle.State.STARTED) {
+                            authManager.authEvent.collect {
+                                appState.navController.navigate(
+                                    Login,
+                                    appState.navController.clearBackStackNavOptions()
+                                )
+                            }
+                        }
+                    }
+                }
 
                 MainScreen(
                     appState = appState,
