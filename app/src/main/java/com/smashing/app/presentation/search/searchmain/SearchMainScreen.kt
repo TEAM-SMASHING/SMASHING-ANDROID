@@ -213,7 +213,7 @@ private fun SearchMainScreen(
                         ) {
                             MatchingCard(
                                 cardState = MatchingCardState.Search(
-                                    userId = it.userId,
+                                    profileId = it.userId,
                                     nickname = it.nickname,
                                     genderType = it.gender,
                                     tierType = it.tierType,

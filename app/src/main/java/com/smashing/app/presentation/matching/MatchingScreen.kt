@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,8 +35,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.drawable.img_app_icon
 import com.smashing.app.R.string.cancel
-import com.smashing.app.R.string.matching_accepted_dialog_description
-import com.smashing.app.R.string.matching_accepted_dialog_title
 import com.smashing.app.R.string.matching_confirm_empty
 import com.smashing.app.R.string.matching_empty_description
 import com.smashing.app.R.string.matching_receive_empty
@@ -55,7 +52,6 @@ import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
-import com.smashing.app.core.extension.openUrl
 import com.smashing.app.data.model.matching.AcceptedMatching
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.component.MatchingTabBar
@@ -99,7 +95,6 @@ fun MatchingRoute(
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
     val showToast = LocalToastTrigger.current
 
     LaunchedEffect(Unit) {
@@ -140,10 +135,7 @@ fun MatchingRoute(
         onSentCloseClick = viewModel::showDeleteSentMatchingDialog,
         onReceivedSkipClick = viewModel::rejectReceivedMatching,
         onAcceptedMatchingClick = viewModel::handleAcceptedMatchingClick,
-        onAcceptedKakaoLinkClick = { kakaoLink -> context.openUrl(kakaoLink) },
-        onAcceptedCloseClick = viewModel::showDeleteAcceptedMatchingDialog,
         onConfirmDeleteSentMatching = viewModel::deleteSentMatching,
-        onConfirmDeleteAcceptedMatching = viewModel::confirmDeleteAcceptedMatching,
         modifier = modifier,
     )
 }
@@ -160,10 +152,7 @@ private fun MatchingScreen(
     onSentCloseClick: (String) -> Unit = {},
     onReceivedSkipClick: (String) -> Unit = {},
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit = {},
-    onAcceptedKakaoLinkClick: (String?) -> Unit = {},
-    onAcceptedCloseClick: (String) -> Unit = {},
     onConfirmDeleteSentMatching: () -> Unit = {},
-    onConfirmDeleteAcceptedMatching: () -> Unit = {},
 ) {
     val gridState = rememberLazyGridState()
 
@@ -252,8 +241,6 @@ private fun MatchingScreen(
                         onReceivedSkipClick = onReceivedSkipClick,
                         onReceivedAcceptClick = onReceivedAcceptClick,
                         onAcceptedMatchingClick = onAcceptedMatchingClick,
-                        onAcceptedKakaoLinkClick = onAcceptedKakaoLinkClick,
-                        onAcceptedCloseClick = onAcceptedCloseClick,
                     )
                 }
 
@@ -264,33 +251,15 @@ private fun MatchingScreen(
         }
 
         if (uiState.isDialogVisible) {
-            when (uiState.selectedType) {
-                MatchingType.SEND -> {
-                    SmashingDialog(
-                        title = stringResource(matching_send_dialog_title),
-                        onDismissClick = onDialogDismissClick,
-                        subtitle = stringResource(matching_send_dialog_description),
-                        type = DialogStyle.ALERT,
-                        confirmText = stringResource(cancel),
-                        dismissText = stringResource(no),
-                        onConfirmClick = onConfirmDeleteSentMatching,
-                    )
-                }
-
-                MatchingType.ACCEPTED -> {
-                    SmashingDialog(
-                        title = stringResource(matching_accepted_dialog_title),
-                        onDismissClick = onDialogDismissClick,
-                        subtitle = stringResource(matching_accepted_dialog_description),
-                        type = DialogStyle.ALERT,
-                        confirmText = stringResource(cancel),
-                        dismissText = stringResource(no),
-                        onConfirmClick = onConfirmDeleteAcceptedMatching,
-                    )
-                }
-
-                else -> Unit
-            }
+            SmashingDialog(
+                title = stringResource(matching_send_dialog_title),
+                onDismissClick = onDialogDismissClick,
+                subtitle = stringResource(matching_send_dialog_description),
+                type = DialogStyle.ALERT,
+                confirmText = stringResource(cancel),
+                dismissText = stringResource(no),
+                onConfirmClick = onConfirmDeleteSentMatching,
+            )
         }
     }
 }
@@ -306,8 +275,6 @@ private fun MatchingList(
     onReceivedAcceptClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     onAcceptedMatchingClick: (AcceptedMatching) -> Unit = {},
-    onAcceptedKakaoLinkClick: (String?) -> Unit = {},
-    onAcceptedCloseClick: (String) -> Unit = {},
 ) {
     val currentIsLoading = when (uiState.selectedType) {
         MatchingType.SEND -> uiState.sentUiState is MatchingUiState.Loading
@@ -336,14 +303,14 @@ private fun MatchingList(
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Receive(
-                        userId = it.userId,
+                        profileId = it.profileId,
                         nickname = it.nickname,
                         genderType = it.genderType,
                         tierType = it.tierType,
                         winCount = it.winCount,
                         loseCount = it.loseCount,
                         reviewCount = it.reviewCount,
-                        onProfileClick = { onProfileClick(it.userId) },
+                        onProfileClick = { onProfileClick(it.profileId) },
                         onSkipClick = { onReceivedSkipClick(it.matchingId) },
                         onAcceptClick = { onReceivedAcceptClick(it.matchingId) },
                     ),
@@ -361,11 +328,11 @@ private fun MatchingList(
             ) {
                 MatchingCard(
                     cardState = MatchingCardState.Send(
-                        userId = it.userId,
+                        profileId = it.profileId,
                         nickname = it.nickname,
                         genderType = it.genderType,
                         tierType = it.tierType,
-                        onProfileClick = { onProfileClick(it.userId) },
+                        onProfileClick = { onProfileClick(it.profileId) },
                         onCloseClick = { onSentCloseClick(it.matchingId) },
                         winCount = it.winCount,
                         loseCount = it.loseCount,
@@ -395,14 +362,14 @@ private fun MatchingList(
                 ) {
                     MatchingCard(
                         cardState = MatchingCardState.Confirm(
-                            userId = matching.userId,
+                            profileId = matching.profileId,
                             nickname = matching.nickname,
                             genderType = matching.genderType,
                             tierType = matching.tierType,
-                            onProfileClick = { onProfileClick(matching.userId) },
+                            onProfileClick = { onProfileClick(matching.profileId) },
                             onConfirmClick = { onAcceptedMatchingClick(matching) },
-                            onKakaoLinkClick = { onAcceptedKakaoLinkClick(matching.openChatUrl) },
-                            onCloseClick = { onAcceptedCloseClick(matching.gameId) },
+                            onKakaoLinkClick = { /*TODO 추후 채팅 구현시 삭제 예정*/ },
+                            onCloseClick = { /*TODO 디자인 변경사항 수정 예정*/ },
                             gameStatusType = matching.resultStatus,
                         ),
                         modifier = Modifier.fillMaxWidth()
@@ -439,10 +406,7 @@ private fun MatchingScreenPreview() {
             onSentCloseClick = {},
             onReceivedSkipClick = {},
             onAcceptedMatchingClick = {},
-            onAcceptedKakaoLinkClick = {},
-            onAcceptedCloseClick = {},
             onConfirmDeleteSentMatching = {},
-            onConfirmDeleteAcceptedMatching = {},
             modifier = Modifier
                 .background(Color.Black),
         )

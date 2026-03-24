@@ -22,6 +22,8 @@
     <string name="win_label">승리</string>
     <string name="lose_label">패배</string>
     <string name="rate_label">승률</string>
+    <string name="chatting">채팅</string>
+
 
     <!--Ranking -->
     <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
