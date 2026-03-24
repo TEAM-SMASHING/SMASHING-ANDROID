@@ -40,7 +40,7 @@ class AuthRepositoryImpl @Inject constructor(
                 && !userId.isNullOrEmpty() && !userNickname.isNullOrEmpty()
             ) {
                 tokenDataStore.setTokens(
-                    accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwUDhaOTA0MDZLUjZDIiwidHlwZSI6IkFDQ0VTU19UT0tFTiIsInJvbGVzIjpbXSwiaWF0IjoxNzczMjQyNjMyLCJleHAiOjE3NzMyNDYyMzJ9.931ofPiEUsktcH7vPM3nUFpVP8ZW6kgkQLiMyQQ4tIo",
+                    accessToken = accessToken,
                     refreshToken = refreshToken,
                 )
                 userDataStore.setUserInfo(
