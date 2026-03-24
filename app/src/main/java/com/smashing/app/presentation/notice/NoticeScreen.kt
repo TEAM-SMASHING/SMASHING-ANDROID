@@ -76,7 +76,7 @@ private fun NoticeScreen(
     onBackBtnClick: () -> Unit,
     onLoadMore: () -> Unit,
     onNoticeClick: (Notification) -> Unit,
-    onConfirmChangeProfile: (String) -> Unit,
+    onConfirmChangeProfile: () -> Unit,
     onDismissChangeProfile: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
@@ -136,14 +136,15 @@ private fun NoticeScreen(
             )
 
             if (uiState.isChangeDialogVisible) {
+                val sportName = uiState.targetChangeSport.sportType.sportName
                 SmashingDialog(
-                    title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
+                    title = "${sportName}로 종목을 변경하시겠어요?",
                     onDismissClick = onDismissChangeProfile,
                     subtitle = "종목은 재변경 가능합니다.",
                     type = DialogStyle.ALERT,
                     confirmText = "변경하기",
                     dismissText = "아니요",
-                    onConfirmClick = { /* TODO profileId 로직 확인 후 수정 예정 onConfirmChangeProfile(uiState.selectedNoticeItem.userId) */ },
+                    onConfirmClick = onConfirmChangeProfile,
                 )
             }
         }

@@ -7,6 +7,7 @@ import com.smashing.app.data.repository.api.NotificationRepository
 import com.smashing.app.data.type.NotificationType
 import com.smashing.app.domain.model.Notification
 import com.smashing.app.presentation.matching.type.MatchingType
+import com.smashing.app.presentation.notice.model.NoticeChangeSportUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,7 +29,7 @@ class NoticeViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
-        fetchNotificationList()
+        fetchNotificationList(isRefresh = true)
     }
 
     private fun fetchNotificationList(isRefresh: Boolean = false) = viewModelScope.launch {
@@ -86,24 +87,41 @@ class NoticeViewModel @Inject constructor(
         }
     }
 
-    fun updateSelectedNoticeItem(noticeItem: Notification) = _uiState.update {
-        it.copy(selectedNoticeItem = noticeItem)
+    fun updateTargetChangeSport(
+        targetChangeSport: NoticeChangeSportUiModel,
+    ) = _uiState.update {
+        it.copy(
+            targetChangeSport = targetChangeSport,
+        )
     }
 
     fun onNoticeClick(notice: Notification) = viewModelScope.launch {
-//        if (notice.senderProfileId != currentProfileId) { // TODO 검증 로직 수정 예정
-//            updateSelectedNoticeItem(notice)
-//            updateIsChangeDialogVisible(true)
-//            return@launch
-//        }
-        handleNoticeNavigation(notice)
+        notificationRepository.getNotificationSportMatch(
+            notificationId = notice.notificationId,
+        ).onSuccess { sportMatch ->
+            if (sportMatch.isMatch) {
+                handleNoticeNavigation(notice)
+            } else {
+                updateTargetChangeSport(
+                    targetChangeSport = NoticeChangeSportUiModel(
+                        sportType = sportMatch.receiverSportType,
+                        profileId = sportMatch.receiverUserProfileId,
+                        noticeItem = notice,
+                    )
+                )
+                updateIsChangeDialogVisible(true)
+            }
+        }.onFailure {
+            updateNoticeUiState(NoticeUiState.Failure("유효하지 않은 알림입니다."))
+        }
     }
 
-    fun changeMyProfile(profileId: String) = viewModelScope.launch {
-        myRepository.switchActiveMyProfile(profileId)
+    fun changeMyProfile() = viewModelScope.launch {
+        val targetProfileId = _uiState.value.targetChangeSport.profileId ?: return@launch
+        myRepository.switchActiveMyProfile(targetProfileId)
             .onSuccess {
                 updateIsChangeDialogVisible(false)
-                val selectedNotice = _uiState.value.selectedNoticeItem
+                val selectedNotice = _uiState.value.targetChangeSport.noticeItem
                 if (selectedNotice.notificationId.isNotEmpty()) {
                     handleNoticeNavigation(selectedNotice)
                 }

@@ -8,6 +8,7 @@ import com.smashing.app.data.remote.dto.cursor.CursorDto
 import com.smashing.app.data.remote.dto.notification.GetNotificationSportMatchResponse
 import com.smashing.app.data.remote.dto.notification.NotificationSummaryResponse
 import com.smashing.app.data.type.NotificationType.REVIEW_RECEIVED
+import com.smashing.app.data.type.SportType
 import com.smashing.app.domain.model.Notification
 
 fun CursorDto<NotificationSummaryResponse>.toNotificationList(): CursorPage<Notification> {
@@ -49,5 +50,6 @@ fun GetNotificationSportMatchResponse.toNotificationSportMatch(): NotificationSp
     return NotificationSportMatch(
         receiverUserProfileId = receiverUserProfileId,
         isMatch = isMatch,
+        receiverSportType = SportType.findSportTypeToSportCode(notificationSportCode),
     )
 }

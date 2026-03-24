@@ -5,7 +5,6 @@ import com.smashing.app.data.type.SportType
 
 data class Notification(
     val notificationId: String = "",
-    val sportType: SportType = SportType.PING_PONG,
     val notificationType: NotificationType = NotificationType.REVIEW_RECEIVED,
     val title: String = "",
     val description: String = "",

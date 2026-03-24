@@ -9,4 +9,6 @@ data class GetNotificationSportMatchResponse(
     val receiverUserProfileId: String,
     @SerialName("isMatch")
     val isMatch: Boolean,
+    @SerialName("notificationSportCode")
+    val notificationSportCode: String,
 )
