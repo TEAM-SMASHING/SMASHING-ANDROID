@@ -32,10 +32,9 @@ class TokenAuthenticator @Inject constructor(
 
     private suspend fun updateToken(response: Response): Request = mutex.withLock {
         val accessToken = tokenDataStore.getAccessToken()
-        val oldAccessToken = response.request.header("Authorization")
+        val oldAccessToken = response.request.header("Authorization")?.replace("Bearer ", "")
 
-        if ("Bearer $accessToken" != oldAccessToken && accessToken != null) {
-            Timber.tag("Authenticator").d("원래꺼 $oldAccessToken \n 새거 $accessToken")
+        if (accessToken != oldAccessToken && accessToken != null) {
             return response.request.newBuilder()
                 .header("Authorization", "Bearer $accessToken")
                 .build()
