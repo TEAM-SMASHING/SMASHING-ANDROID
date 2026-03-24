@@ -23,7 +23,7 @@ class TokenAuthenticator @Inject constructor(
     private val mutex = Mutex()
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        if (responseCount(response) >= 2) return null
+        if (responseCount(response) >= MAX_RESPONSE_COUNT) return null
 
         return runBlocking {
             updateToken(response)
@@ -32,11 +32,12 @@ class TokenAuthenticator @Inject constructor(
 
     private suspend fun updateToken(response: Response): Request = mutex.withLock {
         val accessToken = tokenDataStore.getAccessToken()
-        val oldAccessToken = response.request.header("Authorization")?.replace("Bearer ", "")
+        val oldAccessToken =
+            response.request.header("Authorization")?.replace("$BEARER_SUFFIX ", "")
 
         if (accessToken != oldAccessToken && accessToken != null) {
             return response.request.newBuilder()
-                .header("Authorization", "Bearer $accessToken")
+                .header("Authorization", "$BEARER_SUFFIX $accessToken")
                 .build()
         }
 
@@ -56,17 +57,17 @@ class TokenAuthenticator @Inject constructor(
                     newAccessToken = it.accessToken
                 }
                 .onFailure { error ->
-                    Timber.tag("Authenticator").e("토큰 재발급 실패 : ${error.message}")
+                    Timber.tag(AUTHORIZATION).e("토큰 재발급 실패 : ${error.message}")
                     handleReissueFailure()
                 }
         }
 
         return response.request.newBuilder()
-            .header("Authorization", "Bearer $newAccessToken")
+            .header(AUTHORIZATION, "$BEARER_SUFFIX $newAccessToken")
             .build()
     }
 
-    private suspend fun handleReissueFailure(){
+    private suspend fun handleReissueFailure() {
         tokenDataStore.clearTokens()
         authManager.emitAuthEvent()
     }
@@ -80,6 +81,10 @@ class TokenAuthenticator @Inject constructor(
         }
         return count
     }
+
+    companion object {
+        private const val MAX_RESPONSE_COUNT = 2
+        private const val AUTHORIZATION = "Authorization"
+        private const val BEARER_SUFFIX = "Bearer"
+    }
 }
-
-
