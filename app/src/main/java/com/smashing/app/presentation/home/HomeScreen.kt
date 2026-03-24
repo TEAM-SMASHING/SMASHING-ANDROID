@@ -402,14 +402,14 @@ private fun HomeScreen(
                         ) {
                             items(
                                 items = uiState.recommendedUserList,
-                                key = { it.userId }
+                                key = { it.userProfileId }
                             ) { user ->
                                 val cardState = MatchingCardState.Search(
-                                    profileId = user.userId,
+                                    profileId = user.userProfileId,
                                     nickname = user.nickname,
                                     genderType = user.gender,
                                     tierType = user.tierType,
-                                    onProfileClick = { navigateToUserProfile(user.userId) },
+                                    onProfileClick = { navigateToUserProfile(user.userProfileId) },
                                     winCount = user.wins,
                                     loseCount = user.losses,
                                     reviewCount = user.reviews,
@@ -625,7 +625,7 @@ private fun HomeScreenPreview() {
             ).toImmutableList(),
             recommendedUserList = listOf(
                 SearchMainItemModel(
-                    userId = "match1",
+                    userProfileId = "match1",
                     nickname = "탁구의신",
                     gender = GenderType.MALE,
                     tierType = TierType.DIAMOND_1,
@@ -634,7 +634,7 @@ private fun HomeScreenPreview() {
                     reviews = 32,
                 ),
                 SearchMainItemModel(
-                    userId = "match2",
+                    userProfileId = "match2",
                     nickname = "테니스마스터",
                     gender = GenderType.FEMALE,
                     tierType = TierType.PLATINUM_2,
@@ -643,7 +643,7 @@ private fun HomeScreenPreview() {
                     reviews = 28,
                 ),
                 SearchMainItemModel(
-                    userId = "match3",
+                    userProfileId = "match3",
                     nickname = "배드민턴킹",
                     gender = GenderType.MALE,
                     tierType = TierType.GOLD_1,
