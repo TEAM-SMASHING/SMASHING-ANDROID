@@ -38,10 +38,6 @@ interface MatchingRepository {
         matchingId: String,
     ): Result<Unit>
 
-    suspend fun putCancelGame(
-        gameId: String,
-    ): Result<Unit>
-
     suspend fun postMatching(
         receiverProfileId: String,
     ): Result<Unit>

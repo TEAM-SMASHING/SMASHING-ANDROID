@@ -30,8 +30,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postKakaoLogin(authorization: String): Result<KakaoLoginModel> =
         suspendRunCatching {
-            val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization)).requireData()
-
+            val response = authRemoteDataSource.postKakaoLogin(PostKakaoLoginRequest(authorization))
+                .requireData()
             val loginModel = response.toKakaoLoginToken()
             val (accessToken, refreshToken) = loginModel.accessToken to loginModel.refreshToken
             val (userId, userNickname) = loginModel.userId to loginModel.userNickname
@@ -48,7 +48,6 @@ class AuthRepositoryImpl @Inject constructor(
                     userNickname = userNickname,
                 )
             }
-
             loginModel
         }
 

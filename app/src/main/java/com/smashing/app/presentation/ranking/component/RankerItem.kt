@@ -37,12 +37,12 @@ import com.smashing.app.R.drawable.ic_crown
 import com.smashing.app.R.drawable.ic_rank_first
 import com.smashing.app.R.drawable.ic_rank_second
 import com.smashing.app.R.drawable.ic_rank_third
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.type.TierType
 import com.smashing.app.presentation.ranking.type.RankerType
@@ -159,7 +159,7 @@ private fun RankerItem(
 
         if (userRank != null) {
             UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(userRank.nickname),
+                placeholderDrawable = img_profile,
                 modifier = Modifier
                     .size(40.dp)
                     .aspectRatio(1f)

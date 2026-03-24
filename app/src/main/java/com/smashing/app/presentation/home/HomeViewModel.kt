@@ -33,17 +33,16 @@ class HomeViewModel @Inject constructor(
 
     init {
         observeSseEvents()
-        fetchMatchedUser()
     }
 
-    fun refreshHomeData() {
+    fun fetchHome() {
         fetchMyTierProfile()
         fetchRegionRankerList()
         fetchRecommendedUserList()
         fetchMatchedUser()
     }
 
-    fun fetchMyTierProfile() = viewModelScope.launch {
+    private fun fetchMyTierProfile() = viewModelScope.launch {
         myRepository.getMyTierProfile()
             .onSuccess { myTierProfile ->
                 _uiState.update { currentState ->
@@ -64,7 +63,7 @@ class HomeViewModel @Inject constructor(
             }
     }
 
-    fun fetchRecommendedUserList() = viewModelScope.launch {
+    private fun fetchRecommendedUserList() = viewModelScope.launch {
         searchRepository.getRecommendedUsers()
             .onSuccess { recommendedUsers ->
                 _uiState.update { currentState ->
@@ -78,12 +77,13 @@ class HomeViewModel @Inject constructor(
             }
     }
 
-    fun fetchMatchedUser(snapshotAt: String? = null, cursor: String? = null) {
+    private fun fetchMatchedUser(snapshotAt: String? = null, cursor: String? = null) {
         viewModelScope.launch {
             fetchMatchedUserInternal(snapshotAt, cursor)
         }
     }
 
+    // TODO 서버와 이야기 후 해당 로직 수정 필요
     private suspend fun fetchMatchedUserInternal(snapshotAt: String?, cursor: String?) {
         matchingRepository.getMeAcceptedMatchingList(
             snapshotAt = snapshotAt,
@@ -119,7 +119,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun fetchRegionRankerList() = viewModelScope.launch {
+    private fun fetchRegionRankerList() = viewModelScope.launch {
         updateLoadState(HomeUiState.Loading)
 
         rankingRepository.getRankingList()
@@ -150,7 +150,7 @@ class HomeViewModel @Inject constructor(
         }.toImmutableList()
 
         val optimisticActiveProfile = currentActiveProfile.copy(
-            myProfileInfo =currentActiveProfile.myProfileInfo.copy(
+            myProfileInfo = currentActiveProfile.myProfileInfo.copy(
                 profileId = selectedProfile.profileId,
                 sportType = selectedProfile.sportType,
             ),
@@ -160,16 +160,14 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 activeMyProfile = optimisticActiveProfile,
+                matchedUser = null,
             )
         }
 
         viewModelScope.launch {
             myRepository.switchActiveMyProfile(profileId)
                 .onSuccess {
-                    fetchMyTierProfile()
-                    fetchRegionRankerList()
-                    fetchRecommendedUserList()
-                    fetchMatchedUser()
+                    fetchHome()
                 }
                 .onFailure { throwable ->
                     Timber.tag("HomeViewModel").e(throwable, "Failed to switch sport profile")
@@ -177,7 +175,6 @@ class HomeViewModel @Inject constructor(
                 }
         }
     }
-
 
     private fun updateLoadState(state: HomeUiState) = _uiState.update { currentState ->
         currentState.copy(loadState = state)

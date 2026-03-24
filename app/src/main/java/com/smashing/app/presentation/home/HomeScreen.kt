@@ -23,7 +23,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,11 +45,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.smashing.app.R
+import com.smashing.app.R.drawable.ic_info
+import com.smashing.app.R.string.home_all_text
+import com.smashing.app.R.string.home_close_matching_txt
+import com.smashing.app.R.string.home_greeting_with_nickname
+import com.smashing.app.R.string.home_no_user
+import com.smashing.app.R.string.home_recommend_title_with_nickname
+import com.smashing.app.R.string.home_region_ranker
+import com.smashing.app.R.string.home_new_matching_txt
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -96,23 +99,15 @@ fun HomeRoute(
         isFirstAttempt: Boolean,
     ) -> Unit,
     navigateToMyProfile: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val recommendedUserListState = rememberLazyListState()
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_START) {
-                viewModel.refreshHomeData()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
+    LaunchedEffect(Unit) {
+        viewModel.fetchHome()
     }
 
     LaunchedEffect(uiState.recommendedUserList) {
@@ -143,6 +138,7 @@ fun HomeRoute(
         onSportsChipClick = viewModel::fetchSelectSportProfile,
         recommendedUserListState = recommendedUserListState,
         modifier = modifier,
+        navigateToMyPage = navigateToMyPage,
     )
 }
 
@@ -171,6 +167,7 @@ private fun HomeScreen(
     ) -> Unit,
     navigateToMyProfile: () -> Unit,
     onSportsChipClick: (String) -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     recommendedUserListState: LazyListState = rememberLazyListState(),
 ) {
@@ -215,6 +212,7 @@ private fun HomeScreen(
                 onClickSportChip = { isDropdownExpanded = !isDropdownExpanded },
                 onClickNotice = navigateToNotice,
                 isNotice = uiState.isNotice,
+                onMyPageClick = navigateToMyPage,
             )
         }
 
@@ -274,19 +272,24 @@ private fun HomeScreen(
                     ) {
                         Column {
                             Text(
-                                text = "${uiState.activeMyProfile.nickname}님,",
+                                text = stringResource(
+                                    home_greeting_with_nickname,
+                                    uiState.activeMyProfile.nickname,
+                                ),
                                 style = SmashingTheme.typography.lg.semibold18,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                             Text(
-                                text = stringResource(R.string.home_clos_matching_txt),
+                                text = if (uiState.matchedUser != null) stringResource(
+                                    home_close_matching_txt
+                                ) else stringResource(home_new_matching_txt),
                                 style = SmashingTheme.typography.md.medium16,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                         }
 
                         Text(
-                            text = stringResource(R.string.home_all_text),
+                            text = stringResource(home_all_text),
                             style = SmashingTheme.typography.sm.medium14,
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
@@ -307,7 +310,7 @@ private fun HomeScreen(
                                 GameResultStatusType.PENDING_RESULT -> {
                                     navigateToSubmit(
                                         matching.gameId,
-                                        matching.userId,
+                                        matching.profileId,
                                         matching.nickname,
                                         true,
                                         matching.latestSubmissionId,
@@ -317,7 +320,7 @@ private fun HomeScreen(
                                 GameResultStatusType.RESULT_REJECTED -> {
                                     navigateToSubmit(
                                         matching.gameId,
-                                        matching.userId,
+                                        matching.profileId,
                                         matching.nickname,
                                         false,
                                         matching.latestSubmissionId,
@@ -356,7 +359,10 @@ private fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "${uiState.activeMyProfile.nickname}님을 위한 추천",
+                            text = stringResource(
+                                home_recommend_title_with_nickname,
+                                uiState.activeMyProfile.nickname,
+                            ),
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -364,7 +370,7 @@ private fun HomeScreen(
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_info),
+                            imageVector = ImageVector.vectorResource(ic_info),
                             contentDescription = null,
                             tint = SmashingTheme.colors.iconTertiary,
                             modifier = Modifier
@@ -399,7 +405,7 @@ private fun HomeScreen(
                                 key = { it.userId }
                             ) { user ->
                                 val cardState = MatchingCardState.Search(
-                                    userId = user.userId,
+                                    profileId = user.userId,
                                     nickname = user.nickname,
                                     genderType = user.gender,
                                     tierType = user.tierType,
@@ -415,7 +421,7 @@ private fun HomeScreen(
                         }
                     } else {
                         Text(
-                            text = stringResource(R.string.home_no_user),
+                            text = stringResource(home_no_user),
                             style = SmashingTheme.typography.md.medium16,
                             color = SmashingTheme.colors.txtTertiary,
                             textAlign = TextAlign.Center,
@@ -450,7 +456,7 @@ private fun HomeScreen(
                         verticalAlignment = Alignment.Bottom,
                     ) {
                         Text(
-                            text = stringResource(R.string.home_region_ranker),
+                            text = stringResource(home_region_ranker),
                             style = SmashingTheme.typography.lg.semibold18,
                             color = SmashingTheme.colors.txtPrimary,
                         )
@@ -458,7 +464,7 @@ private fun HomeScreen(
                         Spacer(modifier = Modifier.weight(1f))
 
                         Text(
-                            text = stringResource(R.string.home_all_text),
+                            text = stringResource(home_all_text),
                             style = SmashingTheme.typography.sm.medium14,
                             color = SmashingTheme.colors.txtTertiary,
                             modifier = Modifier
@@ -544,7 +550,7 @@ private fun HomeScreenPreview() {
                     loseCount = 7,
                 ),
                 myProfileItem = listOf(),
-                ),
+            ),
             topRankerList = listOf(
                 UserRank(
                     userId = "user1",
@@ -658,10 +664,11 @@ private fun HomeScreenPreview() {
         navigateToUserProfile = {},
         navigateToSportAdd = {},
         navigateToSearch = {},
-        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
-        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
+        navigateToSubmit = { _, _, _, _, _ -> },
+        navigateToConfirm = { _, _, _ -> },
         navigateToMyProfile = {},
         onSportsChipClick = {},
+        navigateToMyPage = {},
     )
 }
 
@@ -708,8 +715,9 @@ private fun HomeScreenEmptyValuePreview() {
         navigateToSportAdd = {},
         navigateToSearch = {},
         navigateToMyProfile = {},
-        navigateToSubmit = { gameId, opponentUserId, opponentNickname, isFirstAttempt, submissionId -> },
-        navigateToConfirm = { submissionId, gameId, isFirstAttempt -> },
+        navigateToSubmit = { _, _, _, _, _ -> },
+        navigateToConfirm = { _, _, _ -> },
         onSportsChipClick = {},
+        navigateToMyPage = {},
     )
 }

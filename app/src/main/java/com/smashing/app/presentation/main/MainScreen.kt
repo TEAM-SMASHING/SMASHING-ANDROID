@@ -37,6 +37,7 @@ import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.toast.SmashingToast
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.presentation.addsports.navigation.addSportsGraph
+import com.smashing.app.presentation.chatting.navigation.chattingGraph
 import com.smashing.app.presentation.confirmreview.navigation.confirmReviewGraph
 import com.smashing.app.presentation.home.navigation.homeGraph
 import com.smashing.app.presentation.login.navigation.loginGraph
@@ -44,13 +45,16 @@ import com.smashing.app.presentation.main.component.MainBottomBar
 import com.smashing.app.presentation.main.component.MainTab
 import com.smashing.app.presentation.main.state.MainAppState
 import com.smashing.app.presentation.matching.navigation.matchingGraph
+import com.smashing.app.presentation.mypage.navigation.myPageGraph
 import com.smashing.app.presentation.notice.navigation.noticeGraph
 import com.smashing.app.presentation.profile.navigation.profileGraph
 import com.smashing.app.presentation.ranking.navigation.rankingGraph
 import com.smashing.app.presentation.region.navigation.regionGraph
+import com.smashing.app.presentation.report.navigation.reportGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.signUpGraph
 import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
+import com.smashing.app.presentation.withdraw.navigation.withdrawGraph
 import com.smashing.app.presentation.write.navigation.writeGraph
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
@@ -203,6 +207,10 @@ private fun MainNavHost(
             navController = appState.navController,
             innerPadding = innerPadding,
         )
+        myPageGraph(
+            navController = appState.navController,
+            innerPadding = innerPadding,
+        )
 
         loginGraph(
             navController = appState.navController,
@@ -230,6 +238,11 @@ private fun MainNavHost(
             navController = appState.navController,
         )
 
+        reportGraph(
+            innerPadding = innerPadding,
+            navController = appState.navController,
+        )
+
         tierInfoGraph(
             innerPadding = innerPadding,
             navController = appState.navController,
@@ -241,6 +254,15 @@ private fun MainNavHost(
 
         confirmReviewGraph(
             navController = appState.navController,
+        )
+
+        withdrawGraph(
+            innerPadding = innerPadding,
+            navController = appState.navController,
+        )
+        chattingGraph(
+            navController = appState.navController,
+            innerPadding = innerPadding,
         )
     }
 }

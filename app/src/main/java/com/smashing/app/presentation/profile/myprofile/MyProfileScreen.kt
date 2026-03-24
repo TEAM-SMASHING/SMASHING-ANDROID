@@ -24,7 +24,7 @@ import com.smashing.app.R.string.profile
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.TierInfoStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.style.toTierInfoStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -88,9 +88,7 @@ private fun MyProfileScreen(
     ) {
 
         SmashingDefaultTopBar(
-            title = stringResource(profile),
-            topBarType = TopBarType.DEFAULT,
-            onClick = null,
+            state = TopBarState.Default(title = stringResource(profile)),
         )
 
         Column(
@@ -114,7 +112,7 @@ private fun MyProfileScreen(
                 sportProfileList = uiState.sportProfileList.toImmutableList(),
                 selectedProfileId = uiState.selectedSportProfileId,
                 onSportClick = onSportClick,
-                tierIconResId = uiState.myProfileInfo.myProfileInfo.tierType.img(),
+                tierIconResId = uiState.myProfileInfo.profileInfo.tierType.img(),
                 progress = ((uiState.activeProfile.lp - uiState.activeProfile.minLp).toFloat() /
                         (uiState.activeProfile.maxLp - uiState.activeProfile.minLp).toFloat()),
                 lpStatus = (uiState.activeProfile.maxLp - uiState.activeProfile.lp) + 1,

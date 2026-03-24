@@ -16,6 +16,7 @@ import com.smashing.app.presentation.home.HomeRoute
 import com.smashing.app.presentation.home.regionchange.RegionChangeRoute
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
+import com.smashing.app.presentation.mypage.navigation.navigateToMyPage
 import com.smashing.app.presentation.notice.navigation.navigateToNotice
 import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
 import com.smashing.app.presentation.profile.navigation.navigateToUserProfile
@@ -67,6 +68,7 @@ fun NavGraphBuilder.homeGraph(
                 navigateToSubmit = navController::navigateToSubmit,
                 navigateToConfirm = navController::navigateToConfirm,
                 navigateToMyProfile = navController::navigateToMyProfile,
+                navigateToMyPage = navController::navigateToMyPage,
             )
         }
 

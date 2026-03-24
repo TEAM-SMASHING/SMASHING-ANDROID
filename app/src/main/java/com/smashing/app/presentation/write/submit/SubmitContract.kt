@@ -10,8 +10,8 @@ import kotlinx.collections.immutable.persistentSetOf
 interface SubmitContract {
     @Immutable
     data class State(
-        val submitter: PlayerInfo = PlayerInfo("", "", 0),
-        val receiver: PlayerInfo = PlayerInfo("", "", 0),
+        val submitter: PlayerInfo = PlayerInfo("", ""),
+        val receiver: PlayerInfo = PlayerInfo("", ""),
         val winnerId: String? = null,
         val isButtonEnabled: Boolean = false,
         val selectedRating: ReviewRatingType? = null,

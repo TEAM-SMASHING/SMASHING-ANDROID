@@ -20,18 +20,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.smashing.app.R.string.done
+import com.smashing.app.R.string.no
+import com.smashing.app.R.string.region_change_description
+import com.smashing.app.R.string.region_change_dialog_title
+import com.smashing.app.R.string.region_change_placeholder
+import com.smashing.app.R.string.region_change_subtitle
+import com.smashing.app.R.string.region_change_title
+import com.smashing.app.R.string.yes
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
@@ -98,9 +107,10 @@ fun RegionChangeScreen(
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
-            title = "지역 변경",
-            topBarType = TopBarType.CLOSE,
-            onClick = navigateUp,
+            state = TopBarState.Close(
+                title = stringResource(region_change_title),
+                onCloseClick = navigateUp,
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -115,12 +125,12 @@ fun RegionChangeScreen(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = "활동 지역을 변경해주세요",
+                text = stringResource(region_change_description),
                 style = SmashingTheme.typography.xl.semibold20,
                 color = SmashingTheme.colors.txtPrimary,
             )
             Text(
-                text = "서울 소재 주소만 입력 가능해요",
+                text = stringResource(region_change_subtitle),
                 style = SmashingTheme.typography.sm.medium14,
                 color = SmashingTheme.colors.txtTertiary,
             )
@@ -128,7 +138,8 @@ fun RegionChangeScreen(
             Spacer(modifier = Modifier.height(28.dp))
 
             Text(
-                text = if (uiState.selectedRegion != null) uiState.selectedRegion.addressName else "주소를 검색해주세요",
+                text = uiState.selectedRegion?.addressName
+                    ?: stringResource(region_change_placeholder),
                 style = SmashingTheme.typography.sm.medium14,
                 color = if (uiState.selectedRegion != null) SmashingTheme.colors.txtPrimary else SmashingTheme.colors.txtDisabled,
                 modifier = Modifier
@@ -155,7 +166,7 @@ fun RegionChangeScreen(
 
             SmashingButton(
                 buttonStyle = if (uiState.selectedRegion != null) ButtonStyle.PRIMARY else ButtonStyle.DISABLED_ACTIVE,
-                text = "완료",
+                text = stringResource(done),
                 onClick = {
                     showDialog = true
                 },
@@ -170,19 +181,14 @@ fun RegionChangeScreen(
 
     if (showDialog) {
         SmashingDialog(
-            title = "지역을 변경하시겠습니까?",
+            title = stringResource(region_change_dialog_title),
+            onDismissClick = { showDialog = false },
             type = DialogStyle.ALERT,
-            confirmText = "예",
-            dismissText = "아니요",
+            confirmText = stringResource(yes),
+            dismissText = stringResource(no),
             onConfirmClick = {
                 showDialog = false
                 onConfirmRegionChange()
-            },
-            onDismissClick = {
-                showDialog = false
-            },
-            onDismissRequest = {
-                showDialog = false
             },
         )
     }

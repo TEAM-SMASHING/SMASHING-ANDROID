@@ -5,10 +5,11 @@ import androidx.annotation.StringRes
 import com.smashing.app.R
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.presentation.chatting.navigation.Chatting
 import com.smashing.app.presentation.home.navigation.HomeUser
 import com.smashing.app.presentation.matching.navigation.Matching
 import com.smashing.app.presentation.profile.navigation.MyProfile
-import com.smashing.app.presentation.search.navigation.SearchMain
+import com.smashing.app.presentation.search.navigation.Search
 
 enum class MainTab(
     @DrawableRes val selectedIconRes: Int,
@@ -26,7 +27,7 @@ enum class MainTab(
         selectedIconRes = R.drawable.ic_search_selected,
         unselectedIconRes = R.drawable.ic_search_unselected,
         titleRes = R.string.matching_search,
-        route = SearchMain,
+        route = Search,
     ),
     MATCHING(
         selectedIconRes = R.drawable.ic_trophy_selected,
@@ -34,11 +35,11 @@ enum class MainTab(
         titleRes = R.string.matching_manage,
         route = Matching,
     ),
-    PROFILE(
-        selectedIconRes = R.drawable.ic_profile_selected,
-        unselectedIconRes = R.drawable.ic_profile_unselected,
-        titleRes = R.string.profile,
-        route = MyProfile,
+    CHATTING(
+        selectedIconRes = R.drawable.ic_chat_selected,
+        unselectedIconRes = R.drawable.ic_chat_unselected,
+        titleRes = R.string.chatting,
+        route = Chatting,
     );
 
     companion object {

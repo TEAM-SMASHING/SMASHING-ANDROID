@@ -13,5 +13,5 @@ interface MyRemoteDataSource {
     suspend fun addSportProfile(request: AddSportProfileRequest): BaseResponse<Unit?>
     suspend fun putActiveMyProfile(request: MyProfileSwitchRequest): BaseResponse<Unit?>
     suspend fun getMyRecentReviewStats(): BaseResponse<GetMyRecentReviewStatsResponse>
-
+    suspend fun postLogout(): BaseResponse<Unit>
 }
