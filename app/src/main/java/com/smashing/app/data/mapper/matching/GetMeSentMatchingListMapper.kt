@@ -22,7 +22,7 @@ fun CursorDto<SentMatchingListResponse>.toSentMatchingList(): CursorPage<SentMat
 private fun SentMatchingListResponse.toSentMatching(): SentMatching {
     return SentMatching(
         matchingId = matchingId,
-        userId = receiver.userId,
+        profileId = receiver.profileId,
         nickname = receiver.nickname,
         genderType = GenderType.findByName(receiver.gender),
         tierType = TierType.findTierType(receiver.tierCode),
