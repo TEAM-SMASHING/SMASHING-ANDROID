@@ -33,6 +33,7 @@ class TokenAuthenticator @Inject constructor(
         var newAccessToken: String? = null
         authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
             .onSuccess {
+                Timber.tag("Authenticator").e("토큰 재발급 성공 : $newAccessToken")
                 tokenDataStore.setTokens(
                     accessToken = it.accessToken,
                     refreshToken = it.refreshToken,
