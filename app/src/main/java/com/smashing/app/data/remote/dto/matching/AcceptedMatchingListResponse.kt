@@ -13,27 +13,19 @@ data class AcceptedMatchingListResponse(
     val createdAt: String,
     @SerialName("opponent")
     val opponentSummary: OpponentSummary,
-    @SerialName("submitAvailableAt")
-    val submitAvailableAt: String,
-    @SerialName("remainingSeconds")
-    val remainingSeconds: Long,
-    @SerialName("isSubmitLocked")
-    val isSubmitLocked: Boolean,
     @SerialName("latestSubmissionId")
     val latestSubmissionId: String? = null,
     @SerialName("latestAttemptNo")
     val latestAttemptNo: Int? = null,
-    @SerialName("latestSubmitterId")
-    val latestSubmitterId: String? = null,
+    @SerialName("latestSubmitterProfileId")
+    val latestSubmitterProfileId: String? = null,
 ) {
     @Serializable
     data class OpponentSummary(
-        @SerialName("userId")
-        val userId: String,
+        @SerialName("opponentProfileId")
+        val profileId: String,
         @SerialName("nickname")
         val nickname: String,
-        @SerialName("openchatUrl")
-        val openChatUrl: String?,
         @SerialName("gender")
         val gender: String,
         @SerialName("tierCode")

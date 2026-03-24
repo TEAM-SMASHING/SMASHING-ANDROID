@@ -5,7 +5,7 @@ import com.smashing.app.data.type.TierType
 
 data class SentMatching(
     val matchingId: String,
-    val userId: String,
+    val profileId: String,
     val nickname: String,
     val genderType: GenderType,
     val tierType: TierType,

@@ -53,13 +53,6 @@ class MatchingViewModel @Inject constructor(
         )
     }
 
-    fun showDeleteAcceptedMatchingDialog(gameId: String) = _uiState.update {
-        it.copy(
-            isDialogVisible = true,
-            selectedGameId = gameId,
-        )
-    }
-
     fun hideDialogVisible() = _uiState.update {
         it.copy(
             isDialogVisible = false,
@@ -248,36 +241,13 @@ class MatchingViewModel @Inject constructor(
         }
     }
 
-    fun confirmDeleteAcceptedMatching() = viewModelScope.launch {
-        val gameId = _uiState.value.selectedGameId ?: return@launch
-        hideDialogVisible()
-
-        matchingRepository.putCancelGame(gameId).onSuccess {
-            _uiState.update { state ->
-                state.copy(
-                    acceptedList = state.acceptedList.map { matching ->
-                        if (matching.gameId == gameId) {
-                            matching.copy(resultStatus = GameResultStatusType.CANCELED)
-                        } else {
-                            matching
-                        }
-                    }.toImmutableList()
-                )
-            }
-        }.onFailure { throwable ->
-            updateAcceptedUiState(
-                MatchingUiState.Failure(throwable.message ?: "Unknown error")
-            )
-        }
-    }
-
     fun handleAcceptedMatchingClick(matching: AcceptedMatching) = viewModelScope.launch {
         when (matching.resultStatus) {
             GameResultStatusType.PENDING_RESULT -> {
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.userId,
+                        opponentUserId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = true,
                     )
@@ -289,7 +259,7 @@ class MatchingViewModel @Inject constructor(
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.userId,
+                        opponentUserId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = false,
                         submissionId = submissionId,
@@ -367,7 +337,7 @@ class MatchingViewModel @Inject constructor(
     private fun handleMatchingReceived(event: SseEvent.MatchingReceived) {
         val newMatching = ReceivedMatching(
             matchingId = event.matchingId,
-            userId = event.requester.userId,
+            profileId = event.requester.userId,
             nickname = event.requester.nickname,
             genderType = event.requester.genderType,
             tierType = event.requester.tierType,
