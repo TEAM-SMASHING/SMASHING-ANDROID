@@ -154,13 +154,13 @@ class SubmitViewModel @Inject constructor(
 
     fun submitGame() = viewModelScope.launch {
         val state = _uiState.value
-        val winnerId = state.winnerId ?: return@launch
+        val winnerProfileId = state.winnerId ?: return@launch
 
         _uiState.update { it.copy(submitUiState = SubmitContract.SubmitUiState.Loading) }
 
-        val isSubmitterWinner = winnerId == state.submitter.userId
+        val isSubmitterWinner = winnerProfileId == state.submitter.userId
 
-        val loserId = if (isSubmitterWinner) state.receiver.userId else state.submitter.userId
+        val loserProfileId = if (isSubmitterWinner) state.receiver.userId else state.submitter.userId
 
         val review = if (!isFirstAttempt) null else
             state.selectedRating?.let { rating ->
@@ -172,8 +172,8 @@ class SubmitViewModel @Inject constructor(
             }
 
         val gameSubmission = GameSubmission(
-            winnerUserId = winnerId,
-            loserUserId = loserId,
+            winnerProfileId = winnerProfileId,
+            loserProfileId = loserProfileId,
             review = review,
         )
 
