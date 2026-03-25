@@ -2,8 +2,9 @@ package com.smashing.app.presentation.notice
 
 import androidx.compose.runtime.Immutable
 import com.smashing.app.data.model.cursor.Cursor
-import com.smashing.app.domain.model.Notification
+import com.smashing.app.data.model.notification.Notification
 import com.smashing.app.presentation.matching.type.MatchingType
+import com.smashing.app.presentation.notice.model.NoticeChangeSportUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -14,9 +15,8 @@ interface NoticeContract {
         val noticeList: ImmutableList<Notification> = persistentListOf(),
         val loadState: NoticeUiState = NoticeUiState.Idle,
         val cursor: Cursor = Cursor(),
-        val selectedNoticeItem: Notification = Notification(),
+        val targetChangeSport: NoticeChangeSportUiModel = NoticeChangeSportUiModel(),
         val isChangeDialogVisible: Boolean = false,
-        val currentProfileId: String = "",
     )
 
     sealed interface SideEffect {

@@ -50,10 +50,10 @@ import com.smashing.app.R.drawable.ic_info
 import com.smashing.app.R.string.home_all_text
 import com.smashing.app.R.string.home_close_matching_txt
 import com.smashing.app.R.string.home_greeting_with_nickname
+import com.smashing.app.R.string.home_new_matching_txt
 import com.smashing.app.R.string.home_no_user
 import com.smashing.app.R.string.home_recommend_title_with_nickname
 import com.smashing.app.R.string.home_region_ranker
-import com.smashing.app.R.string.home_new_matching_txt
 import com.smashing.app.core.designsystem.component.card.MatchingCard
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.state.MatchingCardState
@@ -78,7 +78,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
-    navigateToNotice: (String) -> Unit,
+    navigateToNotice: () -> Unit,
     navigateToRegionChange: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToRanking: () -> Unit,
@@ -116,9 +116,7 @@ fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
-        navigateToNotice = {
-            uiState.activeMyProfile?.myProfileInfo?.profileId?.let(navigateToNotice)
-        },
+        navigateToNotice = navigateToNotice,
         navigateToRegionChange = navigateToRegionChange,
         navigateToTierInfo = {
             navigateToTierInfo(
