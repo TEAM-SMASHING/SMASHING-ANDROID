@@ -33,11 +33,11 @@ class TokenAuthenticator @Inject constructor(
     private suspend fun updateToken(response: Response): Request? = mutex.withLock {
         val accessToken = tokenDataStore.getAccessToken()
         val oldAccessToken =
-            response.request.header("Authorization")?.replace("$BEARER_SUFFIX ", "")
+            response.request.header(AUTHORIZATION)?.replace("$BEARER_SUFFIX ", "")
 
         if (accessToken != oldAccessToken && accessToken != null) {
             return response.request.newBuilder()
-                .header("Authorization", "$BEARER_SUFFIX $accessToken")
+                .header(AUTHORIZATION, "$BEARER_SUFFIX $accessToken")
                 .build()
         }
 
@@ -49,7 +49,7 @@ class TokenAuthenticator @Inject constructor(
         } else {
             authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
                 .onSuccess {
-                    Timber.tag("Authenticator").e("토큰 재발급 성공")
+                    Timber.tag(AUTHORIZATION).d("토큰 재발급 성공")
                     tokenDataStore.setTokens(
                         accessToken = it.accessToken,
                         refreshToken = it.refreshToken,
