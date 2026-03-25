@@ -8,6 +8,7 @@ import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,7 @@ class HomeViewModel @Inject constructor(
     private val myRepository: MyRepository,
     private val matchingRepository: MatchingRepository,
     private val eventRepository: EventRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
@@ -45,6 +47,11 @@ class HomeViewModel @Inject constructor(
     private fun fetchMyTierProfile() = viewModelScope.launch {
         myRepository.getMyTierProfile()
             .onSuccess { myTierProfile ->
+                userRepository.setUserInfo(
+                    myTierProfile.myProfileInfo.profileId,
+                    myTierProfile.nickname,
+                )
+
                 _uiState.update { currentState ->
                     currentState.copy(
                         activeMyProfile = myTierProfile

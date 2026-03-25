@@ -15,7 +15,7 @@ class LocalUserDataSourceImpl @Inject constructor(
 ): LocalUserDataSource {
     override suspend fun getUserId(): String? = dataStore.data
         .map { prefs ->
-            prefs[USER_ID]
+            prefs[USER_PROFILE_ID]
         }.firstOrNull()
 
     override suspend fun getUserNickName(): String? = dataStore.data
@@ -23,22 +23,22 @@ class LocalUserDataSourceImpl @Inject constructor(
             prefs[USER_NICKNAME]
         }.firstOrNull()
 
-    override suspend fun setUserInfo(userId: String, userNickname: String) {
+    override suspend fun setUserInfo(userProfileId: String, userNickname: String) {
         dataStore.edit { prefs ->
-            prefs[USER_ID] = userId
+            prefs[USER_PROFILE_ID] = userProfileId
             prefs[USER_NICKNAME] = userNickname
         }
     }
 
     override suspend fun clearUserInfo() {
         dataStore.edit { prefs ->
-            prefs.remove(USER_ID)
+            prefs.remove(USER_PROFILE_ID)
             prefs.remove(USER_NICKNAME)
         }
     }
 
     companion object {
-        private val USER_ID = stringPreferencesKey("USER_ID")
+        private val USER_PROFILE_ID = stringPreferencesKey("USER_PROFILE_ID")
         private val USER_NICKNAME = stringPreferencesKey("USER_NICKNAME")
     }
 }

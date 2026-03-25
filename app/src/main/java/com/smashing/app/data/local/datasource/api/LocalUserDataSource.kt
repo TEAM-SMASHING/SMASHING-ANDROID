@@ -5,7 +5,7 @@ interface LocalUserDataSource {
 
     suspend fun getUserNickName(): String?
 
-    suspend fun setUserInfo(userId: String, userNickname: String)
+    suspend fun setUserInfo(userProfileId: String, userNickname: String)
 
     suspend fun clearUserInfo()
 }

@@ -21,8 +21,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserNickname(): String? =
         localUserDataSource.getUserNickName()
 
-    override suspend fun setUserInfo(userId: String, userNickname: String) =
-        localUserDataSource.setUserInfo(userId, userNickname)
+    override suspend fun setUserInfo(userProfileId: String, userNickname: String) =
+        localUserDataSource.setUserInfo(userProfileId, userNickname)
 
     override suspend fun clearUserInfo() =
         localUserDataSource.clearUserInfo()

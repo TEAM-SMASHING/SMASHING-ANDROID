@@ -63,7 +63,7 @@ private const val MATCHING_CONTENT_CROSSFADE = "matching_content_crossfade"
 fun MatchingRoute(
     navigateToSubmit: (
         gameId: String,
-        opponentUserId: String,
+        opponentUserProfileId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
         submissionId: String?,
@@ -103,7 +103,7 @@ fun MatchingRoute(
                 when (sideEffect) {
                     is MatchingContract.SideEffect.NavigateToSubmit -> navigateToSubmit(
                         sideEffect.gameId,
-                        sideEffect.opponentUserId,
+                        sideEffect.opponentUserProfileId,
                         sideEffect.opponentNickname,
                         sideEffect.isFirstAttempt,
                         sideEffect.submissionId,
