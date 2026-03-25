@@ -62,12 +62,18 @@ class UserProfileViewModel @Inject constructor(
                     )
                 }
             }.onFailure { exception ->
-                _uiState.update {
-                    it.copy(
-                        loadState = UserProfileUiState.Failure(
-                            exception.message ?: "오류 발생",
+                val isNotFound = (exception as? retrofit2.HttpException)?.code() == 404
+
+                if (isNotFound) {
+                    _uiState.update { it.copy(isUserNotFound = true) }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            loadState = UserProfileUiState.Failure(
+                                exception.message ?: "오류 발생"
+                            )
                         )
-                    )
+                    }
                 }
             }
         }

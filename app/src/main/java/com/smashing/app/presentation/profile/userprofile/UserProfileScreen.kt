@@ -275,6 +275,18 @@ private fun UserProfileScreen(
                 },
             )
         }
+
+        if (uiState.isUserNotFound) {
+            SmashingDialog(
+                title = "확인할 수 없는 프로필",
+                subtitle = "해당 사용자의 프로필을 확인할 수 없습니다.",
+                type = DialogStyle.CONFIRM,
+                confirmText = "확인",
+                onConfirmClick = { onBackClick() },
+                onDismissClick = {},
+            )
+        }
+
     }
 }
 
