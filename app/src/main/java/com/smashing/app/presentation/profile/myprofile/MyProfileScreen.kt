@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -38,6 +39,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun MyProfileRoute(
+    navigateUp: () -> Unit,
     navigateToSportAdd: () -> Unit,
     navigateToTierInfo: (TierInfoStyle, SportType) -> Unit,
     navigateToReview: (String?) -> Unit,
@@ -66,6 +68,7 @@ fun MyProfileRoute(
             )
         },
         onReviewClick = navigateToReview,
+        onBackClick = navigateUp,
     )
 }
 
@@ -76,6 +79,7 @@ private fun MyProfileScreen(
     navigateToTierInfo: () -> Unit,
     onReviewClick: (String?) -> Unit,
     onSportClick: (String) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -84,11 +88,15 @@ private fun MyProfileScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = SmashingTheme.colors.bgCanvas),
+            .background(color = SmashingTheme.colors.bgCanvas)
+            .systemBarsPadding(),
     ) {
 
         SmashingDefaultTopBar(
-            state = TopBarState.Default(title = stringResource(profile)),
+            state = TopBarState.Back(
+                title = stringResource(profile),
+                onBackClick = onBackClick,
+            ),
         )
 
         Column(
@@ -147,6 +155,7 @@ private fun ProfileScreenPreview() {
             navigateToTierInfo = {},
             onReviewClick = {},
             onSportClick = {},
+            onBackClick = {},
         )
     }
 }

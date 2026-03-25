@@ -22,6 +22,7 @@ class UserProfileContract {
         val isMatchingRequest: Boolean = true,
         val userProfileCursor: Cursor = Cursor(),
         val isDialogVisible: Boolean = false,
+        val isUserNotFound: Boolean = false,
     ) {
         val activeProfile: ProfileInfo
             get() = userProfileInfo.userProfileInfo
