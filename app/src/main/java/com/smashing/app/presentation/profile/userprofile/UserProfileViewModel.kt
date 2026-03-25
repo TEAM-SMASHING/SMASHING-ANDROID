@@ -62,22 +62,11 @@ class UserProfileViewModel @Inject constructor(
                     )
                 }
             }.onFailure { exception ->
-                val isNotFound = (exception as? retrofit2.HttpException)?.code() == 404
-
-                _uiState.update { currentState ->
-                    if (isNotFound) {
-                        currentState.copy(
-                            loadState = UserProfileUiState.Idle,
-                            isUserNotFound = true,
-                        )
-                    } else {
-                        currentState.copy(
-                            isUserNotFound = false,
-                            loadState = UserProfileUiState.Failure(
-                                exception.message ?: "오류 발생"
-                            ),
-                        )
-                    }
+                _uiState.update {
+                    it.copy(
+                        isUserNotFound = true,
+                        loadState = UserProfileUiState.Failure(exception.message ?: "오류 발생")
+                    )
                 }
             }
         }
