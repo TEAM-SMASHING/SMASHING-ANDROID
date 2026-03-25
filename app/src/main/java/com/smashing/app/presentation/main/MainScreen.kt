@@ -209,7 +209,6 @@ private fun MainNavHost(
         )
         myPageGraph(
             navController = appState.navController,
-            innerPadding = innerPadding,
         )
 
         loginGraph(
