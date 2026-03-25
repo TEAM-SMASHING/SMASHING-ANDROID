@@ -45,9 +45,9 @@ import com.smashing.app.core.extension.noRippleClickable
 @Composable
 fun SmashingDialog(
     title: String,
-    onDismissClick: () -> Unit,
     type: DialogStyle,
     confirmText: String,
+    onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
@@ -190,7 +190,6 @@ private fun SmashingAlertButton(
 }
 
 
-
 @Preview
 @Composable
 private fun SmashingDialogAlertPreview() {
@@ -232,6 +231,21 @@ private fun SmashingDialogDestructivePreview() {
             type = DialogStyle.DESTRUCTIVE,
             confirmText = "차단하기",
             dismissText = "취소",
+            onConfirmClick = {},
+            onDismissClick = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SmashingDialogConfirmPreview() {
+    SmashingAndroidTheme {
+        SmashingDialog(
+            title = "확인할 수 없는 프로필",
+            subtitle = "해당 사용자의 프로필을 확인할 수 없습니다.",
+            type = DialogStyle.CONFIRM,
+            confirmText = "확인",
             onConfirmClick = {},
             onDismissClick = {},
         )

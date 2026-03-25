@@ -25,15 +25,11 @@ import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.data.type.SportType
 
 @Composable
 fun NoticeItem(
     title: String,
     description: String,
-    userId: String,
-    nickname: String,
-    sportType: SportType,
     isRead: Boolean,
     timeAgo: String,
     onItemClick: () -> Unit,
@@ -119,23 +115,17 @@ private fun NoticeItemPreview() {
             NoticeItem(
                 title = "매칭 결과가 반려되었어요",
                 description = "\"와쿠와쿠\"님이 결과 입력을 거절했습니다. (사유: 점수 오류)",
-                userId = "323",
-                sportType = SportType.PING_PONG,
                 isRead = false,
                 timeAgo = "2시간 전",
                 onItemClick = {},
-                nickname = "와쿠와쿠"
             )
 
             NoticeItem(
                 title = "매칭이 수락 되었어요",
                 description = "\"닝우닝\"(Silver)님이 매칭을 수락했어요! 지금 확인 해볼까요?",
-                userId = "323",
-                sportType = SportType.TENNIS,
                 isRead = true,
                 timeAgo = "2시간 전",
                 onItemClick = {},
-                nickname = "닝우닝"
             )
         }
     }
