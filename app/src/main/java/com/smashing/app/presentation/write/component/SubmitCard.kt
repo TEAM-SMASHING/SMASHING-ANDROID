@@ -51,7 +51,7 @@ fun SubmitCard(
     ) {
         ProfileInfo(
             player = leftUser,
-            isWinner = winnerId == leftUser.userId,
+            isWinner = winnerId == leftUser.profileId,
             modifier = Modifier.align(Alignment.CenterStart),
         )
 
@@ -69,7 +69,7 @@ fun SubmitCard(
 
         ProfileInfo(
             player = rightUser,
-            isWinner = winnerId == rightUser.userId,
+            isWinner = winnerId == rightUser.profileId,
             modifier = Modifier.align(Alignment.CenterEnd),
         )
     }
@@ -131,8 +131,8 @@ private fun ProfileInfo(
 private fun SubmitCardPreview() {
     SmashingAndroidTheme {
         SubmitCard(
-            leftUser = PlayerInfo(userId = "1", name = "하나둘"),
-            rightUser = PlayerInfo(userId = "2", name = "하나둘셋넷다여일여아열"),
+            leftUser = PlayerInfo(profileId = "1", name = "하나둘"),
+            rightUser = PlayerInfo(profileId = "2", name = "하나둘셋넷다여일여아열"),
             winnerId = "1",
         )
     }

@@ -102,7 +102,7 @@ private fun SubmitResultScreen(
             WriteResultContent(
                 leftUserInfo = uiState.submitter,
                 rightUserInfo = uiState.receiver,
-                winnerId = uiState.winnerId,
+                winnerId = uiState.winnerProfileId,
                 onWinnerSelected = onWinnerSelected,
                 subTitle = "악의적인 결과 작성 시 활동이 제한될 수 있어요",
             )

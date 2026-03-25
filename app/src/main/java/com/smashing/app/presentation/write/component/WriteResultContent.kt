@@ -43,8 +43,8 @@ fun WriteResultContent(
     )
 
     val winnerName = when (winnerId) {
-        rightUserInfo.userId -> rightUserInfo.name
-        leftUserInfo.userId -> leftUserInfo.name
+        rightUserInfo.profileId -> rightUserInfo.name
+        leftUserInfo.profileId -> leftUserInfo.name
         else -> null
     }
 
@@ -122,8 +122,8 @@ private fun WriteResultPreview() {
     SmashingAndroidTheme {
         WriteResultContent(
             modifier = Modifier.background(color = Color.Black),
-            rightUserInfo = PlayerInfo(userId = "1", name = "Submitter"),
-            leftUserInfo = PlayerInfo(userId = "2", name = "Receiver"),
+            rightUserInfo = PlayerInfo(profileId = "1", name = "Submitter"),
+            leftUserInfo = PlayerInfo(profileId = "2", name = "Receiver"),
             winnerId = "1",
             onWinnerSelected = {},
         )
