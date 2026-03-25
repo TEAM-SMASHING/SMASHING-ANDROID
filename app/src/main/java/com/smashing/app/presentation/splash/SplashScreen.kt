@@ -9,14 +9,20 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.drawable.img_splash_logo
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
+import com.smashing.app.presentation.splash.SplashContract.SideEffect.NavigateToHome
+import com.smashing.app.presentation.splash.SplashContract.SideEffect.NavigateToLogin
+import kotlinx.coroutines.delay
 
 private const val PADDING_RATIO = 202/304f
 
@@ -27,6 +33,22 @@ fun SplashRoute(
     modifier: Modifier = Modifier,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    NavigateToHome -> navigateToHome()
+                    NavigateToLogin -> navigateToLogin()
+                }
+            }
+    }
+
+    LaunchedEffect(Unit) {
+        delay(2000L)
+        viewModel.tryAutoLogin()
+    }
 
     SplashScreen(
         modifier = modifier,
