@@ -190,7 +190,6 @@ private fun SmashingAlertButton(
 }
 
 
-
 @Preview
 @Composable
 private fun SmashingDialogAlertPreview() {
@@ -239,7 +238,8 @@ private fun SmashingDialogDestructivePreview() {
 }
 
 @Preview
-@Composable private fun SmashingDialogConfirmPreview() {
+@Composable
+private fun SmashingDialogConfirmPreview() {
     SmashingAndroidTheme {
         SmashingDialog(
             title = "확인할 수 없는 프로필",
@@ -248,6 +248,6 @@ private fun SmashingDialogDestructivePreview() {
             confirmText = "확인",
             onConfirmClick = {},
             onDismissClick = {},
-            )
+        )
     }
 }
