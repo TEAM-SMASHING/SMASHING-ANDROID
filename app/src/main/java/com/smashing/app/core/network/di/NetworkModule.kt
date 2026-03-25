@@ -5,6 +5,7 @@ import com.smashing.app.BuildConfig
 import com.smashing.app.BuildConfig.BASE_URL
 import com.smashing.app.BuildConfig.KAKAO_BASE_URL
 import com.smashing.app.core.network.AuthInterceptor
+import com.smashing.app.core.network.TokenAuthenticator
 import com.smashing.app.core.network.isJsonArray
 import com.smashing.app.core.network.isJsonObject
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
@@ -82,9 +83,11 @@ object NetworkModule {
     fun provideAuthOkHttpClient(
         loggingInterceptor: Interceptor,
         @Auth headerInterceptor: AuthInterceptor,
+        authenticator: TokenAuthenticator,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .addInterceptor(headerInterceptor)
+        .authenticator(authenticator)
         .build()
 
     @Provides

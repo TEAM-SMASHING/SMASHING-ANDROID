@@ -34,4 +34,7 @@ interface MyService {
     @POST("/api/v1/auth/logout")
     suspend fun postLogout(): BaseResponse<Unit>
 
+    @POST("/api/v1/auth/withdraw")
+    suspend fun postWithdraw(): BaseResponse<Unit>
+
 }
