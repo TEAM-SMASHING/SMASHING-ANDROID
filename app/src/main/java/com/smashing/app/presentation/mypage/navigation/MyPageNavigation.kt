@@ -21,7 +21,6 @@ fun NavController.navigateToMyPage(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.myPageGraph(
     navController: NavController,
-    innerPadding: PaddingValues,
 ) {
     composable<MyPage> {
         MyPageRoute(
@@ -34,7 +33,6 @@ fun NavGraphBuilder.myPageGraph(
                     navController.clearBackStackNavOptions()
                 )
             },
-            modifier = Modifier.padding(innerPadding),
         )
     }
 }
