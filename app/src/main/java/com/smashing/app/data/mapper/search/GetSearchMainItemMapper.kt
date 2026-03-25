@@ -22,7 +22,7 @@ fun CursorDto<GetRegionUsersSearchResponse>.toSearchMainItemModelList(): CursorP
 
 private fun GetRegionUsersSearchResponse.toSearchMainItemModel(): SearchMainItemModel {
     return SearchMainItemModel(
-        userId = this.userId,
+        userProfileId = this.userProfileId,
         nickname = this.nickname,
         gender = GenderType.findByName(this.gender),
         tierType = TierType.findTierType(this.tierCode),

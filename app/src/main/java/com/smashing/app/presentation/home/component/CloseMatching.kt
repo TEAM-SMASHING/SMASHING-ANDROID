@@ -84,7 +84,7 @@ fun CloseMatching(
                 )
 
                 MatchedUserItem(
-                    userId = matchedUser.userId,
+                    userId = matchedUser.profileId,
                     nickname = matchedUser.nickname,
                     modifier = Modifier.align(Alignment.CenterEnd)
                 )

@@ -2,6 +2,7 @@ package com.smashing.app.data.remote.service
 
 import com.smashing.app.data.remote.dto.BaseResponse
 import com.smashing.app.data.remote.dto.cursor.CursorDto
+import com.smashing.app.data.remote.dto.notification.GetNotificationSportMatchResponse
 import com.smashing.app.data.remote.dto.notification.NotificationSummaryResponse
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -9,7 +10,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NotificationService {
-    
+
     @GET("/api/v1/notifications/me")
     suspend fun getNotificationList(
         @Query("snapshotAt")
@@ -25,4 +26,10 @@ interface NotificationService {
         @Path("notificationId")
         notificationId: String,
     ): BaseResponse<Unit>
+
+    @GET("/api/v1/notifications/{notificationId}/sport-match")
+    suspend fun getNotificationSportMatch(
+        @Path("notificationId")
+        notificationId: String,
+    ): BaseResponse<GetNotificationSportMatchResponse>
 }
