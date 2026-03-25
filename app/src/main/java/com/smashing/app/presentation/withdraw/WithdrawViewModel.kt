@@ -27,7 +27,7 @@ class WithdrawViewModel @Inject constructor(
         it.copy(isWithdrawalAgreed = agreed)
     }
 
-    fun updateWithdrawUiState(state: WithdrawUiState) = _uiState.update {
+    private fun updateWithdrawUiState(state: WithdrawUiState) = _uiState.update {
         it.copy(withdrawUiState = state)
     }
 
