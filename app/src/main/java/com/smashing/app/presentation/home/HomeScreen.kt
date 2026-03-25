@@ -400,14 +400,14 @@ private fun HomeScreen(
                         ) {
                             items(
                                 items = uiState.recommendedUserList,
-                                key = { it.userId }
+                                key = { it.userProfileId }
                             ) { user ->
                                 val cardState = MatchingCardState.Search(
-                                    profileId = user.userId,
+                                    profileId = user.userProfileId,
                                     nickname = user.nickname,
                                     genderType = user.gender,
                                     tierType = user.tierType,
-                                    onProfileClick = { navigateToUserProfile(user.userId) },
+                                    onProfileClick = { navigateToUserProfile(user.userProfileId) },
                                     winCount = user.wins,
                                     loseCount = user.losses,
                                     reviewCount = user.reviews,
@@ -477,10 +477,10 @@ private fun HomeScreen(
                             nickname = ranker.nickname,
                             tier = ranker.tier,
                             lp = ranker.lp,
-                            userId = ranker.userId,
+                            userProfileId = ranker.userProfileId,
                             onClick = {
                                 if (ranker.nickname != uiState.activeMyProfile.nickname) {
-                                    navigateToUserProfile(ranker.userId)
+                                    navigateToUserProfile(ranker.userProfileId)
                                 } else {
                                     navigateToMyProfile()
                                 }
@@ -551,70 +551,70 @@ private fun HomeScreenPreview() {
             ),
             topRankerList = listOf(
                 UserRank(
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
                     lp = 2500,
                 ),
                 UserRank(
-                    userId = "user2",
+                    userProfileId = "user2",
                     nickname = "열글자테스트중입니다",
                     rank = 2,
                     tier = TierType.CHALLENGER,
                     lp = 2450,
                 ),
                 UserRank(
-                    userId = "user3",
+                    userProfileId = "user3",
                     nickname = "1위 유저",
                     rank = 3,
                     tier = TierType.CHALLENGER,
                     lp = 2400,
                 ),
                 UserRank(
-                    userId = "user4",
+                    userProfileId = "user4",
                     nickname = "프로게이머",
                     rank = 4,
                     tier = TierType.DIAMOND_1,
                     lp = 2350,
                 ),
                 UserRank(
-                    userId = "user5",
+                    userProfileId = "user5",
                     nickname = "랭커킹커",
                     rank = 5,
                     tier = TierType.DIAMOND_1,
                     lp = 2300,
                 ),
                 UserRank(
-                    userId = "user6",
+                    userProfileId = "user6",
                     nickname = "승리만추구",
                     rank = 6,
                     tier = TierType.DIAMOND_2,
                     lp = 2250,
                 ),
                 UserRank(
-                    userId = "user7",
+                    userProfileId = "user7",
                     nickname = "플래티넘마스터",
                     rank = 7,
                     tier = TierType.DIAMOND_2,
                     lp = 2200,
                 ),
                 UserRank(
-                    userId = "user8",
+                    userProfileId = "user8",
                     nickname = "골드라이더",
                     rank = 8,
                     tier = TierType.DIAMOND_3,
                     lp = 2150,
                 ),
                 UserRank(
-                    userId = "user9",
+                    userProfileId = "user9",
                     nickname = "실버도전자",
                     rank = 9,
                     tier = TierType.PLATINUM_1,
                     lp = 2100,
                 ),
                 UserRank(
-                    userId = "user10",
+                    userProfileId = "user10",
                     nickname = "브론즈탈출",
                     rank = 10,
                     tier = TierType.PLATINUM_2,
@@ -623,7 +623,7 @@ private fun HomeScreenPreview() {
             ).toImmutableList(),
             recommendedUserList = listOf(
                 SearchMainItemModel(
-                    userId = "match1",
+                    userProfileId = "match1",
                     nickname = "탁구의신",
                     gender = GenderType.MALE,
                     tierType = TierType.DIAMOND_1,
@@ -632,7 +632,7 @@ private fun HomeScreenPreview() {
                     reviews = 32,
                 ),
                 SearchMainItemModel(
-                    userId = "match2",
+                    userProfileId = "match2",
                     nickname = "테니스마스터",
                     gender = GenderType.FEMALE,
                     tierType = TierType.PLATINUM_2,
@@ -641,7 +641,7 @@ private fun HomeScreenPreview() {
                     reviews = 28,
                 ),
                 SearchMainItemModel(
-                    userId = "match3",
+                    userProfileId = "match3",
                     nickname = "배드민턴킹",
                     gender = GenderType.MALE,
                     tierType = TierType.GOLD_1,
@@ -693,7 +693,7 @@ private fun HomeScreenEmptyValuePreview() {
             ),
             topRankerList = listOf(
                 UserRank(
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
