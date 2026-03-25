@@ -69,7 +69,7 @@ class ConfirmViewModel @Inject constructor(
     private fun updateGameSubmission(submissionDetail: GameSubmissionDetail) {
         _uiState.update { currentState ->
             val isSubmitterWinner =
-                submissionDetail.winner.userId == submissionDetail.submitter.userId
+                submissionDetail.winner.profileId == submissionDetail.submitter.userId
 
             val submitter = PlayerInfo(
                 userId = submissionDetail.submitter.userId,
@@ -77,14 +77,14 @@ class ConfirmViewModel @Inject constructor(
             )
 
             val receiver = PlayerInfo(
-                userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
+                userId = if (isSubmitterWinner) submissionDetail.loser.profileId else submissionDetail.winner.profileId,
                 name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
             )
 
             currentState.copy(
                 submitter = submitter,
                 receiver = receiver,
-                winnerId = submissionDetail.winner.userId,
+                winnerId = submissionDetail.winner.profileId,
                 confirmUiState = ConfirmUiState.Idle,
             )
         }

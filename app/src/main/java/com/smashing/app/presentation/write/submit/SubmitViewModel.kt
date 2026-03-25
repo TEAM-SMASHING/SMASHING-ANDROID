@@ -70,7 +70,7 @@ class SubmitViewModel @Inject constructor(
 
     private fun updateFromSubmissionDetail(submissionDetail: GameSubmissionDetail) {
         val isSubmitterWinner =
-            submissionDetail.winner.userId == submissionDetail.submitter.userId
+            submissionDetail.winner.profileId == submissionDetail.submitter.userId
 
         val submitter = PlayerInfo(
             userId = submissionDetail.submitter.userId,
@@ -78,7 +78,7 @@ class SubmitViewModel @Inject constructor(
         )
 
         val receiver = PlayerInfo(
-            userId = if (isSubmitterWinner) submissionDetail.loser.userId else submissionDetail.winner.userId,
+            userId = if (isSubmitterWinner) submissionDetail.loser.profileId else submissionDetail.winner.profileId,
             name = if (isSubmitterWinner) submissionDetail.loser.nickname else submissionDetail.winner.nickname,
         )
 
@@ -86,7 +86,7 @@ class SubmitViewModel @Inject constructor(
             state.copy(
                 submitter = submitter,
                 receiver = receiver,
-                winnerId = submissionDetail.winner.userId,
+                winnerId = submissionDetail.winner.profileId,
                 isButtonEnabled = true,
             )
         }
