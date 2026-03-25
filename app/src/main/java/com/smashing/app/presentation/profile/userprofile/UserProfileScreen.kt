@@ -284,8 +284,8 @@ private fun UserProfileScreen(
                 subtitle = stringResource(profile_not_found_subtitle),
                 type = DialogStyle.CONFIRM,
                 confirmText = stringResource(confirm),
-                onConfirmClick = { onBackClick() },
-                onDismissClick = {},
+                onConfirmClick = onBackClick,
+                onDismissClick = onBackClick,
             )
         }
 
