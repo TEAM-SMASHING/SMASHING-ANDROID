@@ -69,13 +69,7 @@ class MyRepositoryImpl @Inject constructor(
     private suspend fun clearLocalSession() {
         runCatching {
             tokenDataStore.clearTokens()
-        }.onFailure {
-            Timber.e(it, "Failed to clear tokens")
-        }
-        runCatching {
             userDataStore.clearUserInfo()
-        }.onFailure {
-            Timber.e(it, "Failed to clear user info")
         }
     }
 }
