@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -25,14 +26,12 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R
 import com.smashing.app.R.drawable.ic_close_sm
 import com.smashing.app.R.drawable.ic_link
-import com.smashing.app.R.string.accept
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.state.MatchingCardState
 import com.smashing.app.core.designsystem.state.MatchingCardState.Confirm
 import com.smashing.app.core.designsystem.state.MatchingCardState.Receive
 import com.smashing.app.core.designsystem.state.MatchingCardState.Search
 import com.smashing.app.core.designsystem.state.MatchingCardState.Send
-import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.getMatchButtonColor
 import com.smashing.app.core.designsystem.style.getMatchButtonTitle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
@@ -179,23 +178,26 @@ private fun SendButtons(
                 alignment = Alignment.CenterHorizontally,
             ),
     ) {
-        Text(
-            text = stringResource(R.string.skip),
-            style = SmashingTheme.typography.xs.regular12,
-            color = SmashingTheme.colors.txtSecondary,
-            modifier = Modifier.noRippleClickable(onClick = onSkipClick),
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_close_sm),
+            tint = SmashingTheme.colors.iconPrimary,
+            modifier = Modifier
+                .noRippleClickable(onClick = onSkipClick),
+            contentDescription = null,
         )
 
-        SmashingBaseButton(
-            text = stringResource(accept),
-            textStyle = SmashingTheme.typography.sm.medium14,
-            onClick = onAcceptClick,
-            buttonColor = ButtonStyle.SECONDARY.getButtonColor(),
-            contentPadding = PaddingValues(
-                vertical = 3.dp,
-                horizontal = 15.dp,
-            ),
-            shape = RoundedCornerShape(4.dp),
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_check_lg),
+            tint = SmashingTheme.colors.iconPrimary,
+            modifier = Modifier
+                .noRippleClickable(onClick = onAcceptClick)
+                .clip(shape = RoundedCornerShape(4.dp))
+                .background(SmashingTheme.colors.btnBgSecondaryActive)
+                .padding(
+                    vertical = 2.dp,
+                    horizontal = 15.dp,
+                ),
+            contentDescription = null,
         )
     }
 }
@@ -216,7 +218,7 @@ private fun MatchingCardPreview() {
             ) {
                 MatchingCard(
                     cardState = Send(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,
@@ -230,7 +232,7 @@ private fun MatchingCardPreview() {
 
                 MatchingCard(
                     cardState = Receive(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,
@@ -245,7 +247,7 @@ private fun MatchingCardPreview() {
 
                 MatchingCard(
                     cardState = Confirm(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,
@@ -259,7 +261,7 @@ private fun MatchingCardPreview() {
 
                 MatchingCard(
                     cardState = Search(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,

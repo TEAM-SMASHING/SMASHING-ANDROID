@@ -16,7 +16,7 @@ fun RankingListResponse.toRankingData(): Ranking {
 private fun RankingListResponse.TopUserResponse.toUserRankInfo(): UserRank {
     return UserRank(
         rank = rank,
-        userId = userId,
+        userProfileId = userProfileId,
         nickname = nickname,
         tier = TierType.findTierType(tierCode),
         lp = lp,

@@ -27,7 +27,7 @@ import com.smashing.app.data.type.TierType
 
 @Stable
 sealed interface MatchingCardState {
-    val userId: String
+    val profileId: String
     val nickname: String
     val genderType: GenderType
     val tierType: TierType
@@ -45,7 +45,7 @@ sealed interface MatchingCardState {
 
     @Stable
     data class Search(
-        override val userId: String,
+        override val profileId: String,
         override val nickname: String,
         override val genderType: GenderType,
         override val tierType: TierType,
@@ -57,7 +57,7 @@ sealed interface MatchingCardState {
 
     @Stable
     data class Send(
-        override val userId: String,
+        override val profileId: String,
         override val nickname: String,
         override val genderType: GenderType,
         override val tierType: TierType,
@@ -70,7 +70,7 @@ sealed interface MatchingCardState {
 
     @Stable
     data class Receive(
-        override val userId: String,
+        override val profileId: String,
         override val nickname: String,
         override val genderType: GenderType,
         override val tierType: TierType,
@@ -84,7 +84,7 @@ sealed interface MatchingCardState {
 
     @Stable
     data class Confirm(
-        override val userId: String,
+        override val profileId: String,
         override val nickname: String,
         override val genderType: GenderType,
         override val tierType: TierType,

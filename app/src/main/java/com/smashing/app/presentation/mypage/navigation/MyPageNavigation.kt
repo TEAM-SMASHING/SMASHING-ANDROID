@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.smashing.app.core.common.navigation.Route
+import com.smashing.app.core.extension.clearBackStackNavOptions
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.mypage.MyPageRoute
 import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
@@ -20,20 +21,18 @@ fun NavController.navigateToMyPage(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.myPageGraph(
     navController: NavController,
-    innerPadding: PaddingValues,
 ) {
     composable<MyPage> {
         MyPageRoute(
             navigateUp = navController::navigateUp,
             navigateToMyProfile = navController::navigateToMyProfile,
             navigateToWithDraw = navController::navigateToWithdraw,
-            navigateToLogout = {
-                navController.navigate(Login) {
-                    popUpTo<MyPage> { inclusive = true }
-                    launchSingleTop = true
-                }
+            navigateToLogin = {
+                navController.navigate(
+                    Login,
+                    navController.clearBackStackNavOptions()
+                )
             },
-            modifier = Modifier.padding(innerPadding),
         )
     }
 }

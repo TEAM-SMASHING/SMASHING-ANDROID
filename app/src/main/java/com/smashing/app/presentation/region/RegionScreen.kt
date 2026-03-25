@@ -20,12 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.smashing.app.R.string.sign_up_location_placeholder
 import com.smashing.app.core.common.state.UiState
 import com.smashing.app.core.designsystem.component.topbar.SmashingSearchTopBar
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -104,7 +106,7 @@ private fun RegionScreen(
     ) {
         SmashingSearchTopBar(
             searchState = searchState,
-            placeholder = "도로명 주소를 검색해주세요",
+            placeholder = stringResource(sign_up_location_placeholder),
             onBackClick = navigateUp,
             modifier = Modifier.fillMaxWidth()
         )

@@ -8,6 +8,8 @@ import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidResponse
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.remote.dto.auth.PostSignUpResponse
+import com.smashing.app.data.remote.dto.auth.PostTokenReissueRequest
+import com.smashing.app.data.remote.dto.auth.PostTokenReissueResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -33,4 +35,9 @@ interface AuthService {
     suspend fun postOpenchatValid(
         @Body request: PostOpenchatValidRequest,
     ): BaseResponse<PostOpenchatValidResponse>
+
+    @POST("/api/v1/auth/reissue")
+    suspend fun postTokenReissue(
+        @Body request: PostTokenReissueRequest,
+    ): BaseResponse<PostTokenReissueResponse>
 }

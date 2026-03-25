@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -33,9 +31,9 @@ import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSh
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.ConfirmDenyType
@@ -66,8 +64,6 @@ fun ConfirmResultRoute(
 
     ConfirmResultScreen(
         uiState = uiState,
-        leftTextFieldState = viewModel.leftTextFieldState,
-        rightTextFieldState = viewModel.rightTextFieldState,
         onBackClick = navigateUp,
         onConfirmClick = navigateToConfirmReview,
         onDenyClick = if (viewModel.isFirstAttempt) viewModel::showDenyBottomSheet else viewModel::showRejectDialog,
@@ -83,8 +79,6 @@ fun ConfirmResultRoute(
 @Composable
 private fun ConfirmResultScreen(
     uiState: ConfirmContract.State,
-    leftTextFieldState: TextFieldState,
-    rightTextFieldState: TextFieldState,
     onBackClick: () -> Unit,
     onConfirmClick: () -> Unit,
     onDenyClick: () -> Unit,
@@ -121,9 +115,7 @@ private fun ConfirmResultScreen(
                 leftUserInfo = uiState.receiver,
                 rightUserInfo = uiState.submitter,
                 winnerId = uiState.winnerId,
-                leftTextFieldState = rightTextFieldState,
-                rightTextFieldState = leftTextFieldState,
-                isTextFieldsEnabled = false,
+                isContentEnabled = false,
                 title = "경기 결과를 확인해주세요",
             )
 
@@ -198,8 +190,6 @@ private fun ConfirmResultScreenPreview() {
     SmashingAndroidTheme {
         ConfirmResultScreen(
             uiState = ConfirmContract.State(),
-            leftTextFieldState = rememberTextFieldState(3.toString()),
-            rightTextFieldState = rememberTextFieldState(1.toString()),
             onBackClick = {},
             onConfirmClick = {},
             onDenyClick = {},

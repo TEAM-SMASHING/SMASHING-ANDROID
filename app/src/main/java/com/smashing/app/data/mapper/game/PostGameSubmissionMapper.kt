@@ -7,8 +7,6 @@ fun GameSubmission.toRequest(): PostGameSubmissionRequest {
     return PostGameSubmissionRequest(
         winnerUserId = winnerUserId,
         loserUserId = loserUserId,
-        winnerScore = winnerScore,
-        loserScore = loserScore,
         review = review?.toDto(),
     )
 }
@@ -20,4 +18,3 @@ private fun GameSubmission.Review.toDto(): PostGameSubmissionRequest.Review {
         tags = tags,
     )
 }
-

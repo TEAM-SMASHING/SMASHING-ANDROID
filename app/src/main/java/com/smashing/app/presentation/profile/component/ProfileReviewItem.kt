@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.review.GameReview
 
 @Composable
@@ -28,7 +28,7 @@ fun ReviewItem(
     ) {
 
         UrlImage(
-            placeholderDrawable = ProfileImageProvider.getTempImg(review.opponentNickname),
+            placeholderDrawable = img_profile,
             modifier = Modifier
                 .height(32.dp)
                 .aspectRatio(1f)

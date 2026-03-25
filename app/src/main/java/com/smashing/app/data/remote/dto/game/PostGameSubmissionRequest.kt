@@ -9,10 +9,6 @@ data class PostGameSubmissionRequest(
     val winnerUserId: String,
     @SerialName("loserUserId")
     val loserUserId: String,
-    @SerialName("scoreWinner")
-    val winnerScore: Int,
-    @SerialName("scoreLoser")
-    val loserScore: Int,
     @SerialName("review")
     val review: Review?,
 ) {
