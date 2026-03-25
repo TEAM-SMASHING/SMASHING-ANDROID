@@ -9,6 +9,8 @@ import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidResponse
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
 import com.smashing.app.data.remote.dto.auth.PostSignUpResponse
+import com.smashing.app.data.remote.dto.auth.PostTokenReissueRequest
+import com.smashing.app.data.remote.dto.auth.PostTokenReissueResponse
 import com.smashing.app.data.remote.service.AuthService
 import javax.inject.Inject
 
@@ -30,4 +32,10 @@ class AuthRemoteDataSourceImpl @Inject constructor(
     override suspend fun postOpenchatValid(request: PostOpenchatValidRequest): BaseResponse<PostOpenchatValidResponse> {
         return authService.postOpenchatValid(request = request)
     }
+
+    override suspend fun postTokenReissue(request: PostTokenReissueRequest): BaseResponse<PostTokenReissueResponse> {
+        return authService.postTokenReissue(request = request)
+    }
+
+
 }
