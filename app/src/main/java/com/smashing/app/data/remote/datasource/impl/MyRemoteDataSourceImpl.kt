@@ -37,4 +37,8 @@ class MyRemoteDataSourceImpl @Inject constructor(
     override suspend fun postLogout(): BaseResponse<Unit> {
         return myService.postLogout()
     }
+
+    override suspend fun postWithdraw(): BaseResponse<Unit> {
+        return myService.postWithdraw()
+    }
 }

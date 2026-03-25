@@ -16,4 +16,5 @@ interface MyRepository {
 
     suspend fun getMyRecentReviewStats(): Result<GameReviewResult>
     suspend fun postLogout(): Result<Unit>
+    suspend fun postWithdraw(): Result<Unit>
 }
