@@ -14,8 +14,8 @@ data class RankingListResponse(
     data class TopUserResponse(
         @SerialName("rank")
         val rank: Int,
-        @SerialName("userId")
-        val userId: String,
+        @SerialName("userProfileId")
+        val userProfileId: String,
         @SerialName("nickname")
         val nickname: String,
         @SerialName("tierCode")

@@ -213,11 +213,11 @@ private fun SearchMainScreen(
                         ) {
                             MatchingCard(
                                 cardState = MatchingCardState.Search(
-                                    profileId = it.userId,
+                                    profileId = it.userProfileId,
                                     nickname = it.nickname,
                                     genderType = it.gender,
                                     tierType = it.tierType,
-                                    onProfileClick = { onProfileClick(it.userId) },
+                                    onProfileClick = { onProfileClick(it.userProfileId) },
                                     winCount = it.wins,
                                     loseCount = it.losses,
                                     reviewCount = it.reviews,
