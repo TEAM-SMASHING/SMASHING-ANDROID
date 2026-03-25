@@ -39,6 +39,8 @@ import com.smashing.app.R.string.profile_go_to_link
 import com.smashing.app.R.string.accept
 import com.smashing.app.R.string.skip
 import com.smashing.app.R.string.confirm
+import com.smashing.app.R.string.profile_not_found_title
+import com.smashing.app.R.string.profile_not_found_subtitle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
@@ -278,10 +280,10 @@ private fun UserProfileScreen(
 
         if (uiState.isUserNotFound) {
             SmashingDialog(
-                title = "확인할 수 없는 프로필",
-                subtitle = "해당 사용자의 프로필을 확인할 수 없습니다.",
+                title = stringResource(profile_not_found_title),
+                subtitle = stringResource(profile_not_found_subtitle),
                 type = DialogStyle.CONFIRM,
-                confirmText = "확인",
+                confirmText = stringResource(confirm),
                 onConfirmClick = { onBackClick() },
                 onDismissClick = {},
             )
