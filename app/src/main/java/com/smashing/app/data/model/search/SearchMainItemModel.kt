@@ -6,7 +6,7 @@ import javax.annotation.concurrent.Immutable
 
 @Immutable
 data class SearchMainItemModel(
-    val userId: String,
+    val userProfileId: String,
     val nickname: String,
     val gender: GenderType,
     val tierType: TierType,

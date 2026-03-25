@@ -123,7 +123,7 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
-                myUserId = uiState.userInfo?.userId,
+                myUserId = uiState.userInfo?.userProfileId,
                 navigateToProfile = navigateToProfile,
                 navigateToMyProfile = navigateToMyProfile,
             )
@@ -155,14 +155,14 @@ private fun RankingScreen(
                         items = uiState.restRankingList,
                     ) { user ->
                         SmashingRankingItem(
-                            userId = user.userId,
+                            userProfileId = user.userProfileId,
                             nickname = user.nickname,
                             rank = user.rank,
                             tier = user.tier,
                             lp = user.lp,
                             onClick = {
-                                if (user.userId != uiState.userInfo?.userId) {
-                                    navigateToProfile(user.userId)
+                                if (user.userProfileId != uiState.userInfo?.userProfileId) {
+                                    navigateToProfile(user.userProfileId)
                                 } else {
                                     navigateToMyProfile()
                                 }
@@ -292,7 +292,7 @@ fun RankingScreenPreview_OnlyFirst() {
         uiState = RankingContract.State(
             totalRankingList = listOf(
                 UserRank(
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
@@ -301,7 +301,7 @@ fun RankingScreenPreview_OnlyFirst() {
             ).toImmutableList(),
             topRankingList = listOf(
                 UserRank(
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
@@ -323,7 +323,7 @@ fun RankingScreenPreview() {
             totalRankingList = listOf(
                 UserRank(
                     rank = 1,
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     tier = TierType.CHALLENGER,
                     lp = 2500,
@@ -332,7 +332,7 @@ fun RankingScreenPreview() {
             topRankingList = listOf(
                 UserRank(
                     rank = 1,
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     tier = TierType.CHALLENGER,
                     lp = 2500,
