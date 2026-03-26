@@ -15,6 +15,7 @@ import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.MyRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class MyRepositoryImpl @Inject constructor(
@@ -57,7 +58,18 @@ class MyRepositoryImpl @Inject constructor(
 
     override suspend fun postLogout(): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.postLogout()
-        tokenDataStore.clearTokens()
-        userDataStore.clearUserInfo()
+        clearLocalSession()
+    }
+
+    override suspend fun postWithdraw(): Result<Unit> = suspendRunCatching {
+        myRemoteDataSource.postWithdraw()
+        clearLocalSession()
+    }
+
+    private suspend fun clearLocalSession() {
+        runCatching {
+            tokenDataStore.clearTokens()
+            userDataStore.clearUserInfo()
+        }
     }
 }
