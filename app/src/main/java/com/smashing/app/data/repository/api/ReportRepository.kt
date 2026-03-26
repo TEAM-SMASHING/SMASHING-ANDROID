@@ -6,4 +6,8 @@ interface ReportRepository {
         reportTypeCode: String,
         reasonDetail: String?,
     ): Result<Unit>
+
+    suspend fun postBlockUser(
+        blockedUserProfileId: String,
+    ): Result<Unit>
 }
