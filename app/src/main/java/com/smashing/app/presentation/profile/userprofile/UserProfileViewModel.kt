@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.repository.api.MatchingRepository
-import com.smashing.app.data.repository.api.ReportRepository
+import com.smashing.app.data.repository.api.ModerationRepository
 import com.smashing.app.data.repository.api.ReviewRepository
 import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.presentation.profile.navigation.UserProfile
@@ -29,7 +29,7 @@ class UserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val reviewRepository: ReviewRepository,
     private val matchingRepository: MatchingRepository,
-    private val reportRepository: ReportRepository,
+    private val moderationRepository: ModerationRepository,
 ) : ViewModel() {
 
     private val userInfo = savedStateHandle.toRoute<UserProfile>()
@@ -237,7 +237,7 @@ class UserProfileViewModel @Inject constructor(
 
     fun postBlockUser() = viewModelScope.launch {
         _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
-        reportRepository.postBlockUser(
+        moderationRepository.postBlockUser(
             blockedUserProfileId = userId,
         ).onSuccess {
             _uiState.update { it.copy(loadState = UserProfileUiState.Success) }

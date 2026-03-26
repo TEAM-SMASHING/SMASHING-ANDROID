@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.data.repository.api.ReportRepository
+import com.smashing.app.data.repository.api.ModerationRepository
 import com.smashing.app.presentation.report.navigation.ReportPage
 import com.smashing.app.data.type.ReportType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ private const val HTTP_STATUS_ALREADY_REPORTED = 409
 @HiltViewModel
 class ReportViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val reportRepository: ReportRepository,
+    private val moderationRepository: ModerationRepository,
 ) : ViewModel() {
 
     private val reportedUserId = savedStateHandle.toRoute<ReportPage>().reportedUserId
@@ -53,7 +53,7 @@ class ReportViewModel @Inject constructor(
             } else {
                 null
             }
-            reportRepository.postReportUser(
+            moderationRepository.postReportUser(
                 reportedUserId = reportedUserId,
                 reportTypeCode = type.toString(),
                 reasonDetail = reasonDetail,

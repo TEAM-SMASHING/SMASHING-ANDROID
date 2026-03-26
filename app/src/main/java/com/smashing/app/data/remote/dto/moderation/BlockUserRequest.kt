@@ -1,4 +1,4 @@
-package com.smashing.app.data.remote.dto.report
+package com.smashing.app.data.remote.dto.moderation
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

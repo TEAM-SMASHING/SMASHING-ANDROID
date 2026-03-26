@@ -1,6 +1,6 @@
 package com.smashing.app.data.repository.api
 
-interface ReportRepository {
+interface ModerationRepository {
     suspend fun postReportUser(
         reportedUserId: String,
         reportTypeCode: String,

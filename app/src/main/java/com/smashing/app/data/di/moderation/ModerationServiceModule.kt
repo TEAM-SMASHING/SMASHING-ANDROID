@@ -1,6 +1,6 @@
-package com.smashing.app.data.di.report
+package com.smashing.app.data.di.moderation
 
-import com.smashing.app.data.remote.service.ReportService
+import com.smashing.app.data.remote.service.ModerationService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,11 +11,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ReportServiceModule {
+object ModerationServiceModule {
 
     @Provides
     @Singleton
-    fun provideReportService(
+    fun provideModerationService(
         retrofit: Retrofit,
-    ): ReportService = retrofit.create()
+    ): ModerationService = retrofit.create()
 }

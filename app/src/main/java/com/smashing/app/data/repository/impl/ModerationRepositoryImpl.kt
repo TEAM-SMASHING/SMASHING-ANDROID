@@ -1,23 +1,23 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
-import com.smashing.app.data.remote.datasource.api.ReportRemoteDataSource
-import com.smashing.app.data.remote.dto.report.BlockUserRequest
-import com.smashing.app.data.remote.dto.report.ReportUserRequest
+import com.smashing.app.data.remote.datasource.api.ModerationRemoteDataSource
+import com.smashing.app.data.remote.dto.moderation.BlockUserRequest
+import com.smashing.app.data.remote.dto.moderation.ReportUserRequest
 import com.smashing.app.data.remote.dto.requireData
-import com.smashing.app.data.repository.api.ReportRepository
+import com.smashing.app.data.repository.api.ModerationRepository
 import javax.inject.Inject
 
-class ReportRepositoryImpl @Inject constructor(
-    private val reportRemoteDataSource: ReportRemoteDataSource,
-) : ReportRepository {
+class ModerationRepositoryImpl @Inject constructor(
+    private val moderationRemoteDataSource: ModerationRemoteDataSource,
+) : ModerationRepository {
 
     override suspend fun postReportUser(
         reportedUserId: String,
         reportTypeCode: String,
         reasonDetail: String?,
     ): Result<Unit> = suspendRunCatching {
-        reportRemoteDataSource.postReportUser(
+        moderationRemoteDataSource.postReportUser(
             ReportUserRequest(
                 reportedUserId = reportedUserId,
                 reportType = reportTypeCode,
@@ -29,10 +29,10 @@ class ReportRepositoryImpl @Inject constructor(
     override suspend fun postBlockUser(
         blockedUserProfileId: String,
     ): Result<Unit> = suspendRunCatching {
-        reportRemoteDataSource.postBlockUser(
+        moderationRemoteDataSource.postBlockUser(
             BlockUserRequest(
                 blockedUserProfileId = blockedUserProfileId,
             ),
-        )
+        ).requireData()
     }
 }
