@@ -1,11 +1,13 @@
 package com.smashing.app.data.repository.api
 
+import com.smashing.app.data.model.moderation.ReportSubmitResult
+
 interface ModerationRepository {
     suspend fun postReportUser(
         reportedUserProfileId: String,
         reportTypeCode: String,
         reasonDetail: String?,
-    ): Result<Unit>
+    ): ReportSubmitResult
 
     suspend fun postBlockUser(
         blockedUserProfileId: String,
