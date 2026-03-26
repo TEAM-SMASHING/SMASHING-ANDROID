@@ -46,7 +46,6 @@ fun SplashRoute(
     }
 
     LaunchedEffect(Unit) {
-        delay(2000L)
         viewModel.tryAutoLogin()
     }
 
