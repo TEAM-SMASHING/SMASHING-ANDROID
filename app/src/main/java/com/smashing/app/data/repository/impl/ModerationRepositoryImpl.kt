@@ -23,7 +23,7 @@ class ModerationRepositoryImpl @Inject constructor(
                 reportType = reportTypeCode,
                 reasonDetail = reasonDetail,
             ),
-        ).requireData()
+        )
     }
 
     override suspend fun postBlockUser(
@@ -33,6 +33,6 @@ class ModerationRepositoryImpl @Inject constructor(
             BlockUserRequest(
                 blockedUserProfileId = blockedUserProfileId,
             ),
-        ).requireData()
+        )
     }
 }
