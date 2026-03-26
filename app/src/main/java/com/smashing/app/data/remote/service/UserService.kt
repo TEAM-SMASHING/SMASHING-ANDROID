@@ -9,17 +9,17 @@ import retrofit2.http.Query
 
 interface UserService {
 
-    @GET("/api/v1/users/{userId}/profiles")
+    @GET("/api/v1/users/{userProfileId}/profiles")
     suspend fun getUserInfoDetail(
-        @Path("userId")
+        @Path("userProfileId")
         userId: String,
         @Query("sportCode")
         sportCode: String?,
     ): BaseResponse<GetUserInfoDetailResponse>
 
-    @GET("/api/v1/users/{userId}/reviews/summary")
+    @GET("/api/v1/users/{userProfileId}/reviews/summary")
     suspend fun getUserRecentReviewStats(
-        @Path("userId")
+        @Path("userProfileId")
         userId: String,
         @Query("sportCode")
         sportCode: String?,
