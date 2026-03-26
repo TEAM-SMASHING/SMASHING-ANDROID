@@ -22,6 +22,8 @@
     <string name="win_label">승리</string>
     <string name="lose_label">패배</string>
     <string name="rate_label">승률</string>
+    <string name="chatting">채팅</string>
+
 
     <!--Ranking -->
     <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
@@ -395,7 +397,8 @@
     <string name="profile_go_to_link">바로가기</string>
     <string name="profile_win_lose_count">%1$d승 %2$d패</string>
     <string name="profile_apply_competition">경쟁 신청하기</string>
-
+    <string name="profile_not_found_title">확인할 수 없는 프로필</string>
+    <string name="profile_not_found_subtitle">해당 사용자의 프로필을 확인할 수 없습니다.</string>
 
     <!--AllReveiw-->
     <string name="review_receive_review">받은 후기</string>

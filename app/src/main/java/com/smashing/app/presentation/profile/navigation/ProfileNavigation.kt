@@ -24,9 +24,8 @@ import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMyProfile(
-    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions(),
+    navOptions: NavOptions? = null,
 ) = navigate(Profile, navOptions)
-
 
 fun NavController.navigateToUserProfile(
     userId: String,
@@ -50,6 +49,7 @@ fun NavGraphBuilder.profileGraph(
     ) {
         composable<MyProfile> {
             MyProfileRoute(
+                navigateUp = navController::navigateUp,
                 navigateToSportAdd = navController::navigateToAddSports,
                 navigateToReview = navController::navigateToReview,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
@@ -58,7 +58,6 @@ fun NavGraphBuilder.profileGraph(
                         sportName = sportType.name,
                     )
                 },
-                modifier = Modifier.padding(innerPadding),
             )
         }
 
@@ -88,10 +87,10 @@ fun NavGraphBuilder.profileGraph(
 }
 
 @Serializable
-data object Profile : MainTabRoute
+data object Profile : Route
 
 @Serializable
-data object MyProfile : MainTabRoute
+data object MyProfile : Route
 
 @Serializable
 data class UserProfile(

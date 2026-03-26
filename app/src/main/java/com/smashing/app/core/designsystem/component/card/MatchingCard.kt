@@ -218,7 +218,7 @@ private fun MatchingCardPreview() {
             ) {
                 MatchingCard(
                     cardState = Send(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,
@@ -232,7 +232,7 @@ private fun MatchingCardPreview() {
 
                 MatchingCard(
                     cardState = Receive(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,
@@ -247,7 +247,7 @@ private fun MatchingCardPreview() {
 
                 MatchingCard(
                     cardState = Confirm(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,
@@ -261,7 +261,7 @@ private fun MatchingCardPreview() {
 
                 MatchingCard(
                     cardState = Search(
-                        userId = "userId",
+                        profileId = "userId",
                         nickname = "하나둘셋넷다여칠팔",
                         genderType = GenderType.MALE,
                         tierType = TierType.BRONZE_2,

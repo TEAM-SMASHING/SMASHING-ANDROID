@@ -16,8 +16,8 @@ data class SentMatchingListResponse(
 ) {
     @Serializable
     data class ReceiverSummary(
-        @SerialName("userId")
-        val userId: String,
+        @SerialName("receiverProfileId")
+        val profileId: String,
         @SerialName("nickname")
         val nickname: String,
         @SerialName("gender")

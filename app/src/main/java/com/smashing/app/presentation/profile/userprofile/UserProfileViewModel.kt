@@ -66,9 +66,8 @@ class UserProfileViewModel @Inject constructor(
             }.onFailure { exception ->
                 _uiState.update {
                     it.copy(
-                        loadState = UserProfileUiState.Failure(
-                            exception.message ?: "오류 발생",
-                        ),
+                        isUserNotFound = true,
+                        loadState = UserProfileUiState.Failure(exception.message ?: "오류 발생")
                     )
                 }
             }

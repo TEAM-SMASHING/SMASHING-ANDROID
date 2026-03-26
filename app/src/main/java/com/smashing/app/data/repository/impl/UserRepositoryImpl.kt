@@ -31,16 +31,34 @@ class UserRepositoryImpl @Inject constructor(
         userId: String,
         sportCode: String?
     ): Result<UserProfileInfo> =
-        suspendRunCatching{
-            userRemoteDataSource.getUserInfoDetail(userId, sportCode).requireData().toUserProfileInfo()
+        suspendRunCatching {
+            userRemoteDataSource.getUserInfoDetail(userId, sportCode).requireData()
+                .toUserProfileInfo()
+        }.recoverCatching { exception ->
+            if (exception is retrofit2.HttpException) {
+                val errorBody = exception.response()?.errorBody()?.string()
+                when {
+                    errorBody?.contains("USER-003") == true -> {
+                        throw Exception("존재하지 않는 유저입니다.")
+                    }
+
+                    errorBody?.contains("USER-002") == true -> {
+                        throw Exception("활성화된 스포츠 프로필이 없습니다.")
+                    }
+
+                    else -> throw exception
+                }
+            }
+            throw exception
         }
 
     override suspend fun getUserRecentReviewStats(
         userId: String,
         sportCode: String?
     ): Result<GameReviewResult> =
-        suspendRunCatching{
-            userRemoteDataSource.getUserRecentReviewStats(userId, sportCode).requireData().toGameReviewResult()
+        suspendRunCatching {
+            userRemoteDataSource.getUserRecentReviewStats(userId, sportCode).requireData()
+                .toGameReviewResult()
         }
 
 }

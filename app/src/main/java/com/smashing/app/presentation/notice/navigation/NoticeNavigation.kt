@@ -11,9 +11,8 @@ import com.smashing.app.presentation.notice.NoticeRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToNotice(
-    profileId: String,
-    navOptions: NavOptions? = null
-) = navigate(Notice(profileId = profileId), navOptions)
+    navOptions: NavOptions? = null,
+) = navigate(Notice, navOptions)
 
 fun NavGraphBuilder.noticeGraph(
     navController: NavController,
@@ -32,6 +31,4 @@ fun NavGraphBuilder.noticeGraph(
 }
 
 @Serializable
-data class Notice(
-    val profileId: String,
-) : Route
+data object Notice : Route

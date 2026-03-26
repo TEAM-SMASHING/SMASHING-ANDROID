@@ -170,7 +170,7 @@ private fun RankerItem(
                         shape = CircleShape,
                     )
                     .noRippleClickable(
-                        onClick = { onProfileClick(userRank.userId) }
+                        onClick = { onProfileClick(userRank.userProfileId) }
                     ),
             )
 
@@ -184,7 +184,7 @@ private fun RankerItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable(
-                        onClick = { onProfileClick(userRank.userId) }
+                        onClick = { onProfileClick(userRank.userProfileId) }
                     ),
             )
         }
@@ -270,7 +270,7 @@ private fun RankLp(
 private fun RankerItemPreview_FirstPlace() {
     RankerItem(
         userRank = UserRank(
-            userId = "user1",
+            userProfileId = "user1",
             nickname = "1위 유저",
             rank = 1,
             tier = TierType.CHALLENGER,
@@ -288,7 +288,7 @@ private fun RankerItemPreview_FirstPlace() {
 private fun RankerItemPreview_SecondPlace() {
     RankerItem(
         userRank = UserRank(
-            userId = "user2",
+            userProfileId = "user2",
             nickname = "2위 유저",
             rank = 2,
             tier = TierType.DIAMOND_1,
@@ -321,21 +321,21 @@ private fun RankerPreview_AllThree() {
     Ranker(
         rankerList = listOf(
             UserRank(
-                userId = "user1",
+                userProfileId = "user1",
                 nickname = "1위 유저1위 유저1위 유저1위 유저",
                 rank = 1,
                 tier = TierType.CHALLENGER,
                 lp = 2500,
             ),
             UserRank(
-                userId = "user2",
+                userProfileId = "user2",
                 nickname = "긴 이름은 열글자",
                 rank = 2,
                 tier = TierType.CHALLENGER,
                 lp = 2450,
             ),
             UserRank(
-                userId = "user3",
+                userProfileId = "user3",
                 nickname = "3위 유저",
                 rank = 3,
                 tier = TierType.CHALLENGER,
@@ -358,14 +358,14 @@ private fun RankerPreview_FirstAndSecond() {
     Ranker(
         rankerList = listOf(
             UserRank(
-                userId = "user1",
+                userProfileId = "user1",
                 nickname = "1위 유저",
                 rank = 1,
                 tier = TierType.CHALLENGER,
                 lp = 2500,
             ),
             UserRank(
-                userId = "user2",
+                userProfileId = "user2",
                 nickname = "2위 유저",
                 rank = 2,
                 tier = TierType.CHALLENGER,
