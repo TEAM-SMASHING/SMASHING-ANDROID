@@ -50,7 +50,7 @@ class SplashViewModel @Inject constructor(
     }
 
 
-    suspend fun postTokenReissue() {
+    private suspend fun postTokenReissue() {
         val refreshToken = tokenDataSource.getRefreshToken() ?: ""
 
         authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
