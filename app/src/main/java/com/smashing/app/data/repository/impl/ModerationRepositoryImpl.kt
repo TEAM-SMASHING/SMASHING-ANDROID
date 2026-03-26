@@ -13,13 +13,13 @@ class ModerationRepositoryImpl @Inject constructor(
 ) : ModerationRepository {
 
     override suspend fun postReportUser(
-        reportedUserId: String,
+        reportedUserProfileId: String,
         reportTypeCode: String,
         reasonDetail: String?,
     ): Result<Unit> = suspendRunCatching {
         moderationRemoteDataSource.postReportUser(
             ReportUserRequest(
-                reportedUserId = reportedUserId,
+                reportedUserProfileId = reportedUserProfileId,
                 reportType = reportTypeCode,
                 reasonDetail = reasonDetail,
             ),

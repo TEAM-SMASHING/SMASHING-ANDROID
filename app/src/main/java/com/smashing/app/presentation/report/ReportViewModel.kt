@@ -54,7 +54,7 @@ class ReportViewModel @Inject constructor(
                 null
             }
             moderationRepository.postReportUser(
-                reportedUserId = reportedUserId,
+                reportedUserProfileId = reportedUserId,
                 reportTypeCode = type.toString(),
                 reasonDetail = reasonDetail,
             ).onSuccess {

@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ReportUserRequest(
-    @SerialName("reportedUserId")
-    val reportedUserId: String,
+    @SerialName("reportedUserProfileId")
+    val reportedUserProfileId: String,
     @SerialName("reportType")
     val reportType: String,
     @SerialName("reasonDetail")
