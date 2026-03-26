@@ -74,7 +74,6 @@ fun NavGraphBuilder.profileGraph(
                 navigateToReport = {
                     navController.navigateToReport(userProfile.userId)
                 },
-                onBlockClick = { /* TODO: 차단 API 연동 */ },
             )
         }
 

@@ -69,7 +69,6 @@ fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
     navigateToSentMatching: () -> Unit,
     navigateToReport: () -> Unit,
-    onBlockClick: () -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
@@ -100,7 +99,7 @@ fun UserProfileRoute(
         onConfirmClick = navigateToSentMatching,
         onDialogDismissClick = viewModel::dismissDialog,
         navigateToReport = navigateToReport,
-        onBlockClick = onBlockClick,
+        onBlockClick = viewModel::postBlockUser,
         modifier = modifier,
     )
 }
