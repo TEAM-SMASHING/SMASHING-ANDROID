@@ -370,20 +370,6 @@ class MatchingViewModel @Inject constructor(
                 }
             }
 
-            GameResultStatusType.CANCELED -> {
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        acceptedList = currentState.acceptedList.map { matching ->
-                            if (matching.gameId == event.gameId) {
-                                matching.copy(resultStatus = GameResultStatusType.CANCELED)
-                            } else {
-                                matching
-                            }
-                        }.toImmutableList()
-                    )
-                }
-            }
-
             GameResultStatusType.WAITING_CONFIRMATION -> {
                 _uiState.update { currentState ->
                     currentState.copy(
