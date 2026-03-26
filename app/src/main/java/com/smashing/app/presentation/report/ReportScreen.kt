@@ -70,13 +70,13 @@ fun ReportRoute(
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .collect { effect ->
-                when (effect) {
-                    ReportSubmitted -> {
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is ReportSubmitted -> {
                         showToast(reportSubmittedMessage)
                         navigateUp()
                     }
-                    ReportAlreadyReported -> {
+                    is ReportAlreadyReported -> {
                         showToast(reportAlreadyReportedMessage)
                         navigateUp()
                     }
@@ -166,7 +166,8 @@ private fun ReportScreen(
             isEnabled = when {
                 uiState.reportUiState is ReportUiState.Loading -> false
                 uiState.selectedReportType == null -> false
-                uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString().isNotBlank()
+                uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString()
+                    .isNotBlank()
                 else -> true
             },
         )
