@@ -191,7 +191,6 @@ private fun MainNavHost(
     ) {
         splashGraph(
             navController = appState.navController,
-            innerPadding = innerPadding,
         )
 
         homeGraph(
