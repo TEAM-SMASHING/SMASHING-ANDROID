@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,7 +52,6 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.data.model.matching.AcceptedMatching
-import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.presentation.matching.component.MatchingTabBar
 import com.smashing.app.presentation.matching.type.MatchingType
 
@@ -350,41 +348,25 @@ private fun MatchingList(
                 items = uiState.acceptedList,
                 key = { "${MatchingType.ACCEPTED}_${it.gameId}" }
             ) { matching ->
-                val isCanceled = matching.resultStatus == GameResultStatusType.CANCELED
-
-                Box(
+                MatchingCard(
+                    cardState = MatchingCardState.Confirm(
+                        profileId = matching.profileId,
+                        nickname = matching.nickname,
+                        genderType = matching.genderType,
+                        tierType = matching.tierType,
+                        onProfileClick = { onProfileClick(matching.profileId) },
+                        onConfirmClick = { onAcceptedMatchingClick(matching) },
+                        onKakaoLinkClick = { /*TODO 추후 채팅 구현시 삭제 예정*/ },
+                        gameStatusType = matching.resultStatus,
+                    ),
                     modifier = Modifier
+                        .fillMaxWidth()
                         .animateItem(
                             fadeInSpec = tween(300),
                             fadeOutSpec = tween(300),
                             placementSpec = tween(300),
                         )
-                ) {
-                    MatchingCard(
-                        cardState = MatchingCardState.Confirm(
-                            profileId = matching.profileId,
-                            nickname = matching.nickname,
-                            genderType = matching.genderType,
-                            tierType = matching.tierType,
-                            onProfileClick = { onProfileClick(matching.profileId) },
-                            onConfirmClick = { onAcceptedMatchingClick(matching) },
-                            onKakaoLinkClick = { /*TODO 추후 채팅 구현시 삭제 예정*/ },
-                            onCloseClick = { /*TODO 디자인 변경사항 수정 예정*/ },
-                            gameStatusType = matching.resultStatus,
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    if (isCanceled) {
-                        Box(
-                            modifier = Modifier
-                                .matchParentSize()
-                                .background(SmashingTheme.colors.bgDimmed)
-                                .pointerInput(Unit) {}
-                        )
-                    }
-                }
-
+                )
             }
         }
     }
