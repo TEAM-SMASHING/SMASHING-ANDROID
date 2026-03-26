@@ -72,7 +72,7 @@ class ConfirmViewModel @Inject constructor(
                 submissionDetail.winner.profileId == submissionDetail.submitter.profileId
 
             val submitter = PlayerInfo(
-                profileId = submissionDetail.submitter.userId,
+                profileId = submissionDetail.submitter.profileId,
                 name = submissionDetail.submitter.nickname,
             )
 
@@ -84,7 +84,7 @@ class ConfirmViewModel @Inject constructor(
             currentState.copy(
                 submitter = submitter,
                 receiver = receiver,
-                winnerId = submissionDetail.winner.profileId,
+                winnerProfileId = submissionDetail.winner.profileId,
                 confirmUiState = ConfirmUiState.Idle,
             )
         }

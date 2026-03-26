@@ -32,7 +32,7 @@ class SubmitViewModel @Inject constructor(
 ) : ViewModel() {
     private val submitRoute = savedStateHandle.toRoute<Submit>()
     private val gameId = submitRoute.gameId
-    private val opponentUserId = submitRoute.opponentUserId
+    private val opponentUserProfileId = submitRoute.opponentUserProfileId
     private val opponentNickname = submitRoute.opponentNickname
     val isFirstAttempt = submitRoute.isFirstAttempt
     private val submissionId = submitRoute.submissionId
@@ -59,7 +59,7 @@ class SubmitViewModel @Inject constructor(
             submissionId = currentSubmissionId,
         ).onSuccess { submissionDetail ->
             updateFromSubmissionDetail(submissionDetail)
-        }.onFailure { throwable ->
+        }.onFailure {
             _uiState.update {
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Failure("이전 제출 결과 조회 실패")
@@ -70,7 +70,7 @@ class SubmitViewModel @Inject constructor(
 
     private fun updateFromSubmissionDetail(submissionDetail: GameSubmissionDetail) {
         val isSubmitterWinner =
-            submissionDetail.winner.profileId == submissionDetail.submitter.userId
+            submissionDetail.winner.profileId == submissionDetail.submitter.profileId
 
         val submitter = PlayerInfo(
             profileId = submissionDetail.submitter.profileId,
@@ -103,7 +103,7 @@ class SubmitViewModel @Inject constructor(
                     name = currentUserNickname,
                 ),
                 receiver = PlayerInfo(
-                    profileId = opponentUserId,
+                    profileId = opponentUserProfileId,
                     name = opponentNickname,
                 ),
             )
@@ -180,7 +180,7 @@ class SubmitViewModel @Inject constructor(
         gameRepository.postGameSubmission(
             gameId = gameId,
             gameSubmission = gameSubmission,
-        ).onSuccess { reviewId ->
+        ).onSuccess {
             _uiState.update {
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Success,
@@ -190,7 +190,7 @@ class SubmitViewModel @Inject constructor(
                 )
             }
             _sideEffect.emit(SideEffect.NavigateToMatching)
-        }.onFailure { throwable ->
+        }.onFailure {
             _uiState.update {
                 it.copy(
                     submitUiState = SubmitContract.SubmitUiState.Failure("경기 결과 제출 실패"),

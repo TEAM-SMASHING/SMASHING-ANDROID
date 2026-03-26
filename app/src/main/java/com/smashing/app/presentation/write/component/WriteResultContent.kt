@@ -30,7 +30,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun WriteResultContent(
     leftUserInfo: PlayerInfo,
     rightUserInfo: PlayerInfo,
-    winnerId: String?,
+    winnerProfileId: String?,
     modifier: Modifier = Modifier,
     isContentEnabled: Boolean = true,
     title: String = stringResource(submit_title),
@@ -42,7 +42,7 @@ fun WriteResultContent(
         rightUserInfo.name,
     )
 
-    val winnerName = when (winnerId) {
+    val winnerName = when (winnerProfileId) {
         rightUserInfo.profileId -> rightUserInfo.name
         leftUserInfo.profileId -> leftUserInfo.name
         else -> null
@@ -69,7 +69,7 @@ fun WriteResultContent(
         SubmitCard(
             leftUser = leftUserInfo,
             rightUser = rightUserInfo,
-            winnerId = winnerId,
+            winnerProfileId = winnerProfileId,
             modifier = Modifier.padding(top = 28.dp),
         )
 
@@ -124,7 +124,7 @@ private fun WriteResultPreview() {
             modifier = Modifier.background(color = Color.Black),
             rightUserInfo = PlayerInfo(profileId = "1", name = "Submitter"),
             leftUserInfo = PlayerInfo(profileId = "2", name = "Receiver"),
-            winnerId = "1",
+            winnerProfileId = "1",
             onWinnerSelected = {},
         )
     }
