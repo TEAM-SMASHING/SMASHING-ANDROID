@@ -13,6 +13,7 @@ import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
+import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
@@ -66,6 +67,7 @@ fun NavGraphBuilder.profileGraph(
             UserProfileRoute(
                 navigateToReview = navController::navigateToReview,
                 navigateUp = navController::navigateUp,
+                navigateToHome = navController::navigateToHome,
                 navigateToSentMatching = {
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,

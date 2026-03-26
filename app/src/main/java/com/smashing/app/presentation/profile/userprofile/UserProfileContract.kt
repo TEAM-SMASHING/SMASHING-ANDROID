@@ -44,6 +44,7 @@ class UserProfileContract {
 
     sealed interface SideEffect {
         data class NavigateToAllReview(val userId: String?) : SideEffect
+        data object NavigateToHome : SideEffect
         data class ShowToast(val content: String) : SideEffect
     }
 }

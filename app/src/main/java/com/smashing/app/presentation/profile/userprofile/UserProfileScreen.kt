@@ -56,6 +56,7 @@ import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.ShowToast
 import com.smashing.app.presentation.profile.userprofile.type.UserProfileMenu
 import kotlinx.collections.immutable.ImmutableList
@@ -69,6 +70,7 @@ fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
     navigateToSentMatching: () -> Unit,
     navigateToReport: () -> Unit,
+    navigateToHome: () -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
@@ -83,6 +85,7 @@ fun UserProfileRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToAllReview -> navigateToReview(sideEffect.userId)
+                    is NavigateToHome -> navigateToHome()
                     is ShowToast -> show.invoke(sideEffect.content)
                 }
             }
