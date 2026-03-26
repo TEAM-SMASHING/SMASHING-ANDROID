@@ -5,7 +5,6 @@ import com.smashing.app.data.model.moderation.ReportSubmitResult
 import com.smashing.app.data.remote.datasource.api.ModerationRemoteDataSource
 import com.smashing.app.data.remote.dto.moderation.BlockUserRequest
 import com.smashing.app.data.remote.dto.moderation.ReportUserRequest
-import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.ModerationRepository
 import retrofit2.HttpException
 import javax.inject.Inject
