@@ -15,7 +15,6 @@ import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.MyRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 class MyRepositoryImpl @Inject constructor(
@@ -41,6 +40,15 @@ class MyRepositoryImpl @Inject constructor(
         profileId: String
     ): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.putActiveMyProfile(MyProfileSwitchRequest(profileId = profileId))
+
+        val myTierProfile = myRemoteDataSource.getMyTierProfile()
+            .requireData()
+            .toMyProfileTierInfo()
+
+        userDataStore.setUserInfo(
+            userProfileId = myTierProfile.myProfileInfo.profileId,
+            userNickname = myTierProfile.nickname,
+        )
     }
 
     override suspend fun addSportsProfile(

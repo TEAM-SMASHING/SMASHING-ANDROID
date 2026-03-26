@@ -15,8 +15,8 @@ class UserRepositoryImpl @Inject constructor(
     private val localUserDataSource: LocalUserDataSource,
     private val userRemoteDataSource: UserRemoteDataSource,
 ) : UserRepository {
-    override suspend fun getUserId(): String? =
-        localUserDataSource.getUserId()
+    override suspend fun getUserProfileId(): String? =
+        localUserDataSource.getUserProfileId()
 
     override suspend fun getUserNickname(): String? =
         localUserDataSource.getUserNickName()

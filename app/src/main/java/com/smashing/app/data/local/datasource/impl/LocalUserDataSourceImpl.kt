@@ -13,7 +13,7 @@ import javax.inject.Inject
 class LocalUserDataSourceImpl @Inject constructor(
     @UserDataStore private val dataStore: DataStore<Preferences>,
 ): LocalUserDataSource {
-    override suspend fun getUserId(): String? = dataStore.data
+    override suspend fun getUserProfileId(): String? = dataStore.data
         .map { prefs ->
             prefs[USER_PROFILE_ID]
         }.firstOrNull()

@@ -93,13 +93,13 @@ class SubmitViewModel @Inject constructor(
     }
 
     private fun initUserInfo() = viewModelScope.launch {
-        val currentUserId = userRepository.getUserId() ?: ""
+        val currentUserProfileId = userRepository.getUserProfileId() ?: ""
         val currentUserNickname = userRepository.getUserNickname() ?: ""
 
         _uiState.update { state ->
             state.copy(
                 submitter = PlayerInfo(
-                    profileId = currentUserId,
+                    profileId = currentUserProfileId,
                     name = currentUserNickname,
                 ),
                 receiver = PlayerInfo(

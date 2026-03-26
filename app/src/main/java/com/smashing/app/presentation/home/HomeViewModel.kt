@@ -48,8 +48,8 @@ class HomeViewModel @Inject constructor(
         myRepository.getMyTierProfile()
             .onSuccess { myTierProfile ->
                 userRepository.setUserInfo(
-                    myTierProfile.myProfileInfo.profileId,
-                    myTierProfile.nickname,
+                    userProfileId = myTierProfile.myProfileInfo.profileId,
+                    userNickname = myTierProfile.nickname,
                 )
 
                 _uiState.update { currentState ->

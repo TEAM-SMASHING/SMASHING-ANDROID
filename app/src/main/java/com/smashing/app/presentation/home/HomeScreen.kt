@@ -479,7 +479,7 @@ private fun HomeScreen(
                             lp = ranker.lp,
                             userProfileId = ranker.userProfileId,
                             onClick = {
-                                if (ranker.nickname != uiState.activeMyProfile.nickname) {
+                                if (ranker.userProfileId != uiState.activeMyProfile.myProfileInfo.profileId) {
                                     navigateToUserProfile(ranker.userProfileId)
                                 } else {
                                     navigateToMyProfile()

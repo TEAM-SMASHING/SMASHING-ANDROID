@@ -1,7 +1,7 @@
 package com.smashing.app.data.local.datasource.api
 
 interface LocalUserDataSource {
-    suspend fun getUserId(): String?
+    suspend fun getUserProfileId(): String?
 
     suspend fun getUserNickName(): String?
 
