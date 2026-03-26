@@ -60,12 +60,10 @@ class ReportViewModel @Inject constructor(
                     ReportSubmitResult.Success -> {
                         updateReportUiState(ReportUiState.Success)
                         _sideEffect.emit(ReportContract.SideEffect.ReportSubmitted)
-                        updateReportUiState(ReportUiState.Idle)
                     }
 
                     ReportSubmitResult.AlreadyReported -> {
                         _sideEffect.emit(ReportContract.SideEffect.ReportAlreadyReported)
-                        updateReportUiState(ReportUiState.Idle)
                     }
 
                     is ReportSubmitResult.Failure -> {
