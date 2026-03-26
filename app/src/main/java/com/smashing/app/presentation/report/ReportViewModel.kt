@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.smashing.app.data.model.moderation.ReportSubmitResult
 import com.smashing.app.data.repository.api.ModerationRepository
 import com.smashing.app.presentation.report.navigation.ReportPage
 import com.smashing.app.data.type.ReportType
@@ -15,10 +16,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
-
-private const val HTTP_STATUS_ALREADY_REPORTED = 409
 
 @HiltViewModel
 class ReportViewModel @Inject constructor(
@@ -57,20 +55,22 @@ class ReportViewModel @Inject constructor(
                 reportedUserProfileId = reportedUserId,
                 reportTypeCode = type.toString(),
                 reasonDetail = reasonDetail,
-            ).onSuccess {
-                updateReportUiState(ReportUiState.Success)
-                _sideEffect.emit(ReportContract.SideEffect.ReportSubmitted)
-                updateReportUiState(ReportUiState.Idle)
-            }.onFailure { throwable ->
-                when {
-                    throwable is HttpException && throwable.code() == HTTP_STATUS_ALREADY_REPORTED -> {
+            ).let { result ->
+                when (result) {
+                    ReportSubmitResult.Success -> {
+                        updateReportUiState(ReportUiState.Success)
+                        _sideEffect.emit(ReportContract.SideEffect.ReportSubmitted)
+                        updateReportUiState(ReportUiState.Idle)
+                    }
+
+                    ReportSubmitResult.AlreadyReported -> {
                         _sideEffect.emit(ReportContract.SideEffect.ReportAlreadyReported)
                         updateReportUiState(ReportUiState.Idle)
                     }
 
-                    else -> {
+                    is ReportSubmitResult.Failure -> {
                         updateReportUiState(
-                            ReportUiState.Failure(msg = throwable.message ?: "신고에 실패했습니다."),
+                            ReportUiState.Failure(msg = result.message?.message ?: "신고에 실패했습니다."),
                         )
                     }
                 }
