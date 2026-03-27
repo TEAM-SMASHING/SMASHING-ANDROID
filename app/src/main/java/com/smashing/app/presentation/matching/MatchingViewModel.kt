@@ -358,7 +358,8 @@ class MatchingViewModel @Inject constructor(
 
     private fun handleGameUpdated(event: SseEvent.GameUpdated) {
         when (event.resultStatus) {
-            GameResultStatusType.RESULT_CONFIRMED -> {
+            GameResultStatusType.RESULT_CONFIRMED,
+            GameResultStatusType.CANCELED -> {
                 _uiState.update { currentState ->
                     val updatedList = currentState.acceptedList
                         .filter { it.gameId != event.gameId }
