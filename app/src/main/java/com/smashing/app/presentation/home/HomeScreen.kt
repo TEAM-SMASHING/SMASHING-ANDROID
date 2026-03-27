@@ -88,7 +88,7 @@ fun HomeRoute(
     navigateToSearch: () -> Unit,
     navigateToSubmit: (
         gameId: String,
-        opponentUserId: String,
+        opponentUserProfileId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
         submissionId: String?,
@@ -153,7 +153,7 @@ private fun HomeScreen(
     navigateToSearch: () -> Unit,
     navigateToSubmit: (
         gameId: String,
-        opponentUserId: String,
+        opponentUserProfileId: String,
         opponentNickname: String,
         isFirstAttempt: Boolean,
         submissionId: String?,
@@ -479,7 +479,7 @@ private fun HomeScreen(
                             lp = ranker.lp,
                             userProfileId = ranker.userProfileId,
                             onClick = {
-                                if (ranker.nickname != uiState.activeMyProfile.nickname) {
+                                if (ranker.userProfileId != uiState.activeMyProfile.myProfileInfo.profileId) {
                                     navigateToUserProfile(ranker.userProfileId)
                                 } else {
                                     navigateToMyProfile()

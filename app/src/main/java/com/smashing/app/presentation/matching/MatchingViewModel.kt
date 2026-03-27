@@ -247,7 +247,7 @@ class MatchingViewModel @Inject constructor(
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.profileId,
+                        opponentUserProfileId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = true,
                     )
@@ -259,7 +259,7 @@ class MatchingViewModel @Inject constructor(
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.profileId,
+                        opponentUserProfileId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = false,
                         submissionId = submissionId,
@@ -366,20 +366,6 @@ class MatchingViewModel @Inject constructor(
                     currentState.copy(
                         acceptedList = updatedList,
                         acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
-                    )
-                }
-            }
-
-            GameResultStatusType.CANCELED -> {
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        acceptedList = currentState.acceptedList.map { matching ->
-                            if (matching.gameId == event.gameId) {
-                                matching.copy(resultStatus = GameResultStatusType.CANCELED)
-                            } else {
-                                matching
-                            }
-                        }.toImmutableList()
                     )
                 }
             }

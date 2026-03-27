@@ -2,7 +2,6 @@ package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
-import com.smashing.app.data.local.datasource.api.LocalUserDataSource
 import com.smashing.app.data.mapper.auth.toKakaoLoginToken
 import com.smashing.app.data.mapper.auth.toSignUpModel
 import com.smashing.app.data.mapper.auth.toSignUpNickNameAvailableModel
@@ -25,7 +24,6 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource,
     private val tokenDataStore: LocalTokenDataSource,
-    private val userDataStore: LocalUserDataSource,
 ) : AuthRepository {
 
     override suspend fun postKakaoLogin(authorization: String): Result<KakaoLoginModel> =
@@ -43,10 +41,6 @@ class AuthRepositoryImpl @Inject constructor(
                     accessToken = accessToken,
                     refreshToken = refreshToken,
                 )
-                userDataStore.setUserInfo(
-                    userId = userId,
-                    userNickname = userNickname,
-                )
             }
             loginModel
         }
@@ -60,11 +54,6 @@ class AuthRepositoryImpl @Inject constructor(
             tokenDataStore.setTokens(
                 accessToken = signUpModel.accessToken,
                 refreshToken = signUpModel.refreshToken,
-            )
-
-            userDataStore.setUserInfo(
-                userId = signUpModel.userId,
-                userNickname = signUpModel.userNickname,
             )
 
             signUpModel

@@ -5,8 +5,8 @@ import com.smashing.app.data.remote.dto.game.PostGameSubmissionRequest
 
 fun GameSubmission.toRequest(): PostGameSubmissionRequest {
     return PostGameSubmissionRequest(
-        winnerUserId = winnerUserId,
-        loserUserId = loserUserId,
+        winnerProfileId = winnerProfileId,
+        loserProfileId = loserProfileId,
         review = review?.toDto(),
     )
 }
