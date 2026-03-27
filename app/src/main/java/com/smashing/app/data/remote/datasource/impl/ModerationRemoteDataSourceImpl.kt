@@ -11,9 +11,9 @@ class ModerationRemoteDataSourceImpl @Inject constructor(
     private val moderationService: ModerationService,
 ) : ModerationRemoteDataSource {
 
-    override suspend fun postReportUser(request: ReportUserRequest): BaseResponse<Unit?> =
+    override suspend fun postReportUser(request: ReportUserRequest): BaseResponse<Unit> =
         moderationService.postReportUser(request)
 
-    override suspend fun postBlockUser(request: BlockUserRequest): BaseResponse<Unit?> =
+    override suspend fun postBlockUser(request: BlockUserRequest): BaseResponse<Unit> =
         moderationService.postBlockUser(request)
 }
