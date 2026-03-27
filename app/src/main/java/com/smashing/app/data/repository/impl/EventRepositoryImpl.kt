@@ -4,14 +4,9 @@ import com.smashing.app.core.common.di.ApplicationScope
 import com.smashing.app.data.mapper.event.toEvent
 import com.smashing.app.data.model.event.SseEvent
 import com.smashing.app.data.remote.datasource.api.EventRemoteDataSource
-import com.smashing.app.data.remote.dto.event.GameResultRejectedNotificationDto
-import com.smashing.app.data.remote.dto.event.GameResultSubmittedNotificationDto
 import com.smashing.app.data.remote.dto.event.GameUpdatedDto
-import com.smashing.app.data.remote.dto.event.MatchingAcceptNotificationDto
 import com.smashing.app.data.remote.dto.event.MatchingReceivedDto
-import com.smashing.app.data.remote.dto.event.MatchingRequestNotificationDto
 import com.smashing.app.data.remote.dto.event.MatchingUpdatedDto
-import com.smashing.app.data.remote.dto.event.ReviewReceivedNotificationDto
 import com.smashing.app.data.repository.api.EventRepository
 import com.smashing.app.data.type.SseEventType
 import kotlinx.coroutines.CoroutineScope
@@ -57,26 +52,8 @@ class EventRepositoryImpl @Inject constructor(
                         SseEventType.MATCHING_UPDATED ->
                             json.decodeFromString<MatchingUpdatedDto>(raw.data).toEvent()
 
-                        SseEventType.MATCHING_REQUEST_NOTIFICATION_CREATED ->
-                            json.decodeFromString<MatchingRequestNotificationDto>(raw.data)
-                                .toEvent()
-
-                        SseEventType.MATCHING_ACCEPT_NOTIFICATION_CREATED ->
-                            json.decodeFromString<MatchingAcceptNotificationDto>(raw.data).toEvent()
-
                         SseEventType.GAME_UPDATED ->
                             json.decodeFromString<GameUpdatedDto>(raw.data).toEvent()
-
-                        SseEventType.GAME_RESULT_SUBMITTED_NOTIFICATION_CREATED ->
-                            json.decodeFromString<GameResultSubmittedNotificationDto>(raw.data)
-                                .toEvent()
-
-                        SseEventType.GAME_RESULT_REJECTED_NOTIFICATION_CREATED ->
-                            json.decodeFromString<GameResultRejectedNotificationDto>(raw.data)
-                                .toEvent()
-
-                        SseEventType.REVIEW_RECEIVED_NOTIFICATION_CREATED ->
-                            json.decodeFromString<ReviewReceivedNotificationDto>(raw.data).toEvent()
                     }
                 }.onFailure { error ->
                     Timber.tag(SSE_LOG_TAG)
