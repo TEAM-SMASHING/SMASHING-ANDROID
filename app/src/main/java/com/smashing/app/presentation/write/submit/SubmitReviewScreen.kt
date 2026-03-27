@@ -27,7 +27,7 @@ import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.clearFocus
@@ -99,9 +99,7 @@ private fun SubmitReviewScreen(
             .clearFocus(focusManager),
     ) {
         SmashingDefaultTopBar(
-            title = "후기 작성",
-            topBarType = TopBarType.BACK,
-            onClick = onBackClick,
+            state = TopBarState.Back(title = "후기 작성", onBackClick = onBackClick),
         )
 
         Column(
@@ -138,23 +136,22 @@ private fun SubmitReviewScreen(
         if (isAlertDialogOpen) {
             SmashingDialog(
                 title = "매칭 결과를 제출하시겠습니까?",
+                onDismissClick = onAlertDialogDismiss,
                 subtitle = "정확한 경기 결과가 아닐 경우 반려될 수 있어요.",
                 type = DialogStyle.ALERT,
                 confirmText = "제출하기",
                 dismissText = "아니요",
-                onDismissRequest = onAlertDialogDismiss,
                 onConfirmClick = onSubmitGame,
-                onDismissClick = onAlertDialogDismiss,
             )
         }
 
         if (isConfirmDialogOpen) {
             SmashingDialog(
                 title = "매칭 상대가 작성 완료한 경기입니다",
+                onDismissClick = onConfirmDialogDismiss,
                 subtitle = "매칭 결과를 확인해주세요.",
                 type = DialogStyle.CONFIRM,
                 confirmText = "확인",
-                onDismissRequest = onConfirmDialogDismiss,
                 onConfirmClick = onConfirmDialogClick,
             )
         }

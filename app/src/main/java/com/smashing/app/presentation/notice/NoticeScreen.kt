@@ -24,12 +24,12 @@ import com.smashing.app.R
 import com.smashing.app.core.designsystem.component.appicon.AppIcon
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
-import com.smashing.app.domain.model.Notification
+import com.smashing.app.data.model.notification.Notification
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.component.NoticeItem
 
@@ -76,7 +76,7 @@ private fun NoticeScreen(
     onBackBtnClick: () -> Unit,
     onLoadMore: () -> Unit,
     onNoticeClick: (Notification) -> Unit,
-    onConfirmChangeProfile: (String) -> Unit,
+    onConfirmChangeProfile: () -> Unit,
     onDismissChangeProfile: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
@@ -89,9 +89,10 @@ private fun NoticeScreen(
             .systemBarsPadding(),
     ) {
         SmashingDefaultTopBar(
-            title = stringResource(R.string.notice),
-            topBarType = TopBarType.BACK,
-            onClick = onBackBtnClick,
+            state = TopBarState.Back(
+                title = stringResource(R.string.notice),
+                onBackClick = onBackBtnClick,
+            ),
         )
 
         if (uiState.loadState is NoticeUiState.Empty) {
@@ -121,11 +122,8 @@ private fun NoticeScreen(
                     NoticeItem(
                         title = it.title,
                         description = it.description,
-                        userId = it.userId,
-                        sportType = it.sportType,
                         isRead = it.isRead,
                         timeAgo = it.timeAgo,
-                        nickname = it.nickname,
                         onItemClick = { onNoticeClick(it) },
                     )
                 }
@@ -138,15 +136,15 @@ private fun NoticeScreen(
             )
 
             if (uiState.isChangeDialogVisible) {
+                val sportName = uiState.targetChangeSport.sportType.sportName
                 SmashingDialog(
-                    title = "${uiState.selectedNoticeItem.sportType.sportName}로 종목을 변경하시겠어요?",
+                    title = "${sportName}로 종목을 변경하시겠어요?",
+                    onDismissClick = onDismissChangeProfile,
                     subtitle = "종목은 재변경 가능합니다.",
                     type = DialogStyle.ALERT,
                     confirmText = "변경하기",
                     dismissText = "아니요",
-                    onConfirmClick = { onConfirmChangeProfile(uiState.selectedNoticeItem.userId) },
-                    onDismissClick = onDismissChangeProfile,
-                    onDismissRequest = onDismissChangeProfile,
+                    onConfirmClick = onConfirmChangeProfile,
                 )
             }
         }

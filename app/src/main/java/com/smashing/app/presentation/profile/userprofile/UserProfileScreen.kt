@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,14 +39,17 @@ import com.smashing.app.R.string.profile_go_to_link
 import com.smashing.app.R.string.accept
 import com.smashing.app.R.string.skip
 import com.smashing.app.R.string.confirm
+import com.smashing.app.R.string.profile_not_found_title
+import com.smashing.app.R.string.profile_not_found_subtitle
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
+import com.smashing.app.core.designsystem.component.bottomsheet.SmashingBottomSheet
 import com.smashing.app.core.designsystem.mapper.img
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.style.DialogStyle
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.data.model.review.GameReview
@@ -55,6 +59,7 @@ import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.ShowToast
+import com.smashing.app.presentation.profile.userprofile.type.UserProfileMenu
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -65,6 +70,8 @@ private const val BTN_WEIGHT = 131f / 185f
 fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
     navigateToSentMatching: () -> Unit,
+    navigateToReport: () -> Unit,
+    onBlockClick: () -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
@@ -94,10 +101,13 @@ fun UserProfileRoute(
         onCompeteClick = viewModel::requestCompetition,
         onConfirmClick = navigateToSentMatching,
         onDialogDismissClick = viewModel::dismissDialog,
+        navigateToReport = navigateToReport,
+        onBlockClick = onBlockClick,
         modifier = modifier,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserProfileScreen(
     uiState: UserProfileContract.State,
@@ -109,13 +119,19 @@ private fun UserProfileScreen(
     onCompeteClick: () -> Unit,
     onConfirmClick: () -> Unit,
     onDialogDismissClick: () -> Unit,
+    navigateToReport: () -> Unit,
+    onBlockClick: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
 
     var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    var showMenuBottomSheet by remember { mutableStateOf(false) }
+    var showBlockDialog by remember { mutableStateOf(false) }
+
     val density = LocalDensity.current
 
+    val userProfileMenuItems = UserProfileMenu.entries.map { it.text }.toImmutableList()
 
     Column(
         modifier = modifier
@@ -125,9 +141,11 @@ private fun UserProfileScreen(
     ) {
 
         SmashingDefaultTopBar(
-            title = stringResource(profile),
-            topBarType = TopBarType.BACK,
-            onClick = onBackClick,
+            state = TopBarState.BackWithMenu(
+                title = stringResource(profile),
+                onBackClick = onBackClick,
+                onMenuClick = { showMenuBottomSheet = true },
+            ),
         )
 
         Box(
@@ -155,13 +173,12 @@ private fun UserProfileScreen(
 
                     SmashingDialog(
                         title = stringResource(profile_competition_applied),
+                        onDismissClick = onDialogDismissClick,
                         subtitle = stringResource(profile_check_matching_tab),
                         type = DialogStyle.ALERT,
                         confirmText = stringResource(profile_go_to_link),
                         dismissText = stringResource(confirm),
                         onConfirmClick = onConfirmClick,
-                        onDismissClick = onDialogDismissClick,
-                        onDismissRequest = onDialogDismissClick,
                     )
                 }
 
@@ -228,6 +245,50 @@ private fun UserProfileScreen(
                 }
             }
         }
+
+        if (showMenuBottomSheet) {
+            SmashingBottomSheet(
+                items = userProfileMenuItems,
+                selectedItem = "",
+                onItemClick = { item ->
+                    showMenuBottomSheet = false
+                    when (UserProfileMenu.entries.find { it.text == item }) {
+                        UserProfileMenu.REPORT -> navigateToReport()
+                        UserProfileMenu.BLOCK -> showBlockDialog = true
+                        null -> {}
+                    }
+                },
+                onDismissRequest = { showMenuBottomSheet = false },
+                itemTextColor = { if (it == UserProfileMenu.BLOCK.text) colors.txtRed else null },
+            )
+        }
+
+        if (showBlockDialog) {
+            SmashingDialog(
+                title = "정말 차단하시겠습니까?",
+                onDismissClick = { showBlockDialog = false },
+                subtitle = "차단 시 서로 프로필과 매칭에서\n보이지 않게 됩니다.",
+                type = DialogStyle.DESTRUCTIVE,
+                confirmText = "차단하기",
+                dismissText = "아니요",
+                onConfirmClick = {
+                    showBlockDialog = false
+                    onBlockClick()
+                },
+            )
+        }
+
+        if (uiState.isUserNotFound) {
+            SmashingDialog(
+                title = stringResource(profile_not_found_title),
+                subtitle = stringResource(profile_not_found_subtitle),
+                type = DialogStyle.CONFIRM,
+                confirmText = stringResource(confirm),
+                onConfirmClick = onBackClick,
+                onDismissClick = onBackClick,
+            )
+        }
+
     }
 }
 
@@ -246,6 +307,8 @@ private fun ProfileScreenPreview() {
             onConfirmClick = {},
             onDialogDismissClick = {},
             onBackClick = {},
+            navigateToReport = {},
+            onBlockClick = {},
         )
     }
 }

@@ -9,11 +9,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.smashing.app.core.extension.stateInWhileSubscribed
+import com.smashing.app.presentation.chatting.navigation.navigateToChatting
 import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.main.component.MainTab
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
-import com.smashing.app.presentation.profile.navigation.navigateToMyProfile
 import com.smashing.app.presentation.search.navigation.navigateToSearch
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -85,7 +85,7 @@ class MainAppState(
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.SEARCH -> navController.navigateToSearch(navOptions = navOptions)
             MainTab.MATCHING -> navController.navigateToMatching(navOptions = navOptions)
-            MainTab.PROFILE -> navController.navigateToMyProfile(navOptions = navOptions)
+            MainTab.CHATTING -> navController.navigateToChatting(navOptions = navOptions)
         }
     }
 

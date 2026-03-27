@@ -17,13 +17,13 @@ import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
 import com.smashing.app.presentation.profile.review.AllReviewRoute
 import com.smashing.app.presentation.profile.userprofile.UserProfileRoute
+import com.smashing.app.presentation.report.navigation.navigateToReport
 import com.smashing.app.presentation.tierinfo.navigation.navigateToTierInfo
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMyProfile(
-    navOptions: NavOptions? = clearBackStackWithRestoreNavOptions(),
+    navOptions: NavOptions? = null,
 ) = navigate(Profile, navOptions)
-
 
 fun NavController.navigateToUserProfile(
     userId: String,
@@ -47,6 +47,7 @@ fun NavGraphBuilder.profileGraph(
     ) {
         composable<MyProfile> {
             MyProfileRoute(
+                navigateUp = navController::navigateUp,
                 navigateToSportAdd = navController::navigateToAddSports,
                 navigateToReview = navController::navigateToReview,
                 navigateToTierInfo = { tierInfoStyle, sportType ->
@@ -55,7 +56,6 @@ fun NavGraphBuilder.profileGraph(
                         sportName = sportType.name,
                     )
                 },
-                modifier = Modifier.padding(innerPadding),
             )
         }
 
@@ -67,7 +67,9 @@ fun NavGraphBuilder.profileGraph(
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,
                     )
-                }
+                },
+                navigateToReport = navController::navigateToReport,
+                onBlockClick = { /* TODO: 차단 API 연동 */ },
             )
         }
 
@@ -80,10 +82,10 @@ fun NavGraphBuilder.profileGraph(
 }
 
 @Serializable
-data object Profile : MainTabRoute
+data object Profile : Route
 
 @Serializable
-data object MyProfile : MainTabRoute
+data object MyProfile : Route
 
 @Serializable
 data class UserProfile(

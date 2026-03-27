@@ -39,22 +39,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.smashing.app.R.drawable.img_profile
+import com.smashing.app.R.string.ranking_empty_title
+import com.smashing.app.R.string.ranking_title
 import com.smashing.app.R.string.ranking_tier_with_lp
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
 import com.smashing.app.core.designsystem.mapper.img
-import com.smashing.app.core.designsystem.style.TopBarType
+import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
-import com.smashing.app.core.util.ProfileImageProvider
-import com.smashing.app.presentation.ranking.component.Ranker
-import kotlinx.collections.immutable.toImmutableList
 import com.smashing.app.core.designsystem.theme.primary300
 import com.smashing.app.core.extension.dropShadow
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.data.model.rank.UserRank
 import com.smashing.app.data.type.TierType
+import com.smashing.app.presentation.ranking.component.Ranker
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun RankingRoute(
@@ -113,14 +115,15 @@ private fun RankingScreen(
                 .fillMaxSize()
         ) {
             SmashingDefaultTopBar(
-                title = "전체 랭킹",
-                topBarType = TopBarType.BACK,
-                onClick = navigateUp,
+                state = TopBarState.Back(
+                    title = stringResource(ranking_title),
+                    onBackClick = navigateUp,
+                ),
             )
 
             Ranker(
                 rankerList = uiState.topRankingList,
-                myUserId = uiState.userInfo?.userId,
+                myUserId = uiState.userInfo?.userProfileId,
                 navigateToProfile = navigateToProfile,
                 navigateToMyProfile = navigateToMyProfile,
             )
@@ -152,14 +155,14 @@ private fun RankingScreen(
                         items = uiState.restRankingList,
                     ) { user ->
                         SmashingRankingItem(
-                            userId = user.userId,
+                            userProfileId = user.userProfileId,
                             nickname = user.nickname,
                             rank = user.rank,
                             tier = user.tier,
                             lp = user.lp,
                             onClick = {
-                                if (user.userId != uiState.userInfo?.userId) {
-                                    navigateToProfile(user.userId)
+                                if (user.userProfileId != uiState.userInfo?.userProfileId) {
+                                    navigateToProfile(user.userProfileId)
                                 } else {
                                     navigateToMyProfile()
                                 }
@@ -181,7 +184,7 @@ private fun RankingScreen(
                 ) {
                     Spacer(modifier = Modifier.weight(0.3f))
                     Text(
-                        text = "아직 동네 랭커가 없어요.",
+                        text = stringResource(ranking_empty_title),
                         style = typography.md.medium16,
                         color = colors.txtTertiary,
                         textAlign = TextAlign.Center,
@@ -242,7 +245,7 @@ private fun MyRanking(
 
     ) {
         UrlImage(
-            placeholderDrawable = ProfileImageProvider.getTempImg(myRank.nickname),
+            placeholderDrawable = img_profile,
             modifier = Modifier
                 .size(40.dp)
                 .aspectRatio(1f)
@@ -289,7 +292,7 @@ fun RankingScreenPreview_OnlyFirst() {
         uiState = RankingContract.State(
             totalRankingList = listOf(
                 UserRank(
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
@@ -298,7 +301,7 @@ fun RankingScreenPreview_OnlyFirst() {
             ).toImmutableList(),
             topRankingList = listOf(
                 UserRank(
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     rank = 1,
                     tier = TierType.CHALLENGER,
@@ -320,7 +323,7 @@ fun RankingScreenPreview() {
             totalRankingList = listOf(
                 UserRank(
                     rank = 1,
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     tier = TierType.CHALLENGER,
                     lp = 2500,
@@ -329,7 +332,7 @@ fun RankingScreenPreview() {
             topRankingList = listOf(
                 UserRank(
                     rank = 1,
-                    userId = "user1",
+                    userProfileId = "user1",
                     nickname = "1위 유저",
                     tier = TierType.CHALLENGER,
                     lp = 2500,

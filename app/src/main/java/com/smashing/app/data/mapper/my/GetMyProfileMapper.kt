@@ -13,7 +13,7 @@ fun GetMyProfileResponse.toMyProfileInfo(): MyProfileInfo {
     return MyProfileInfo(
         nickname = nickname,
         genderType = GenderType.findByName(this.gender),
-        myProfileInfo = toProfileInfo(),
+        profileInfo = toProfileInfo(),
         reviewCount = activeProfile.reviews,
         myProfileItem = allProfiles.map { it.toProfileItem() },
     )

@@ -1,0 +1,168 @@
+require 'toml-rb'
+
+default_platform(:android)
+
+platform :android do
+  private_lane :get_version_info do
+    UI.message("버전 정보를 가져오는 중...")
+
+    toml = TomlRB.load_file("../gradle/libs.versions.toml")
+
+    version_code = toml["versions"]["versionCode"]
+    version_name = toml["versions"]["versionName"]
+
+    { version_code: version_code, version_name: version_name }
+  end
+
+  private_lane :get_qa_notes do |options|
+    build = (options[:build] || "debug").downcase
+    notes_path = "notes/qa/#{build}.txt"
+
+    if File.exist?(notes_path)
+      File.read(notes_path).strip
+    else
+      "Git 마지막 커밋 메시지: #{last_git_commit[:message]}"
+    end
+  end
+
+  private_lane :qa_config do |options|
+    build = (options[:build] || "debug").downcase
+
+    case build
+    when "debug"
+      {
+        build: "debug",
+        gradle_task: "clean assembleDebug",
+        firebase_app_id: ENV["FIREBASE_APP_ID_DEBUG"],
+        artifact_type: "APK",
+        artifact_path: "app/build/outputs/apk/debug/app-debug.apk",
+        display_name: "Debug APK"
+      }
+    when "release"
+      {
+        build: "release",
+        gradle_task: "clean assembleRelease",
+        firebase_app_id: ENV["FIREBASE_APP_ID_RELEASE"],
+        artifact_type: "APK",
+        artifact_path: "app/build/outputs/apk/release/app-release.apk",
+        display_name: "Release APK"
+      }
+    else
+      UI.user_error!("지원하지 않는 build 옵션입니다: #{build} (debug / release)")
+    end
+  end
+
+  # ========================================================================
+  # ==================== Firebase App Distribution Lane ====================
+  # ========================================================================
+
+  desc "Build and deploy a new QA build to Firebase App Distribution (build: debug | release)"
+  lane :qa do |options|
+    config = qa_config(options)
+    qa_notes = get_qa_notes(options)
+
+    begin
+      UI.header("Firebase QA Deployment")
+      UI.message("Build Type: #{config[:build]}")
+      UI.message("#{config[:display_name]} 빌드를 시작합니다...")
+
+      gradle(
+        task: config[:gradle_task]
+      )
+
+      UI.success("✅ #{config[:display_name]} 빌드 완료")
+
+      version_info = get_version_info
+
+      UI.message("Firebase App Distribution 업로드 중...")
+
+      firebase_app_distribution(
+        app: config[:firebase_app_id],
+        service_credentials_file: ENV["APP_DISTRIBUTION_JSON_KEY_PATH"],
+        groups: "smashing_qa",
+        release_notes: qa_notes,
+        android_artifact_type: config[:artifact_type],
+        android_artifact_path: config[:artifact_path]
+      )
+
+      UI.success("🚀 Firebase QA 배포 완료!")
+
+      discord_notifier(
+        webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
+        title: "✅ 새로운 QA #{config[:build].upcase} 빌드 배포 완료! Firebase에서 확인해주세요. 🚀",
+        description: "✅ 스매싱(#{config[:build].upcase}) v#{version_info[:version_name]}(#{version_info[:version_code]})가 배포되었습니다!\n\n노트: #{qa_notes}",
+        success: true,
+      )
+    rescue => exception
+      UI.error("❌ QA 빌드 배포에 실패했습니다.")
+      UI.error("에러: #{exception}")
+
+      discord_notifier(
+        webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
+        title: "❌ QA 스매싱(#{config[:build].upcase}) 빌드 배포에 실패했습니다. 로그를 확인해주세요.",
+        description: "에러: #{exception}",
+        success: false,
+      )
+
+      raise exception
+    end
+  end
+
+  # ====================================================================
+  # ===================== Google Play Store Lane =======================
+  # ====================================================================
+
+  desc "Upload Release AAB to Google Play Store (track: internal | beta | production, status: draft | completed | inProgress)"
+  lane :release do |options|
+    track = (options[:track] || "internal").downcase
+    status = options[:status] || "draft"
+
+    begin
+      UI.header("Google Play Deployment")
+      UI.message("Track: #{track}")
+      UI.message("Status: #{status}")
+      UI.message("Release AAB 빌드를 시작합니다...")
+
+      gradle(
+        task: "clean bundleRelease"
+      )
+
+      UI.success("✅ Release AAB 빌드 완료")
+
+      version_info = get_version_info
+
+      UI.message("Google Play 업로드 중...")
+
+      upload_to_play_store(
+        track: track,
+        release_status: status,
+        package_name: "com.smashing.app",
+        aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+        skip_upload_screenshots: true,
+        skip_upload_images: true,
+        metadata_path: "fastlane/metadata/android"
+      )
+
+      UI.success("🎉 Google Play 배포 완료!")
+
+      discord_notifier(
+        webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
+        title: "✅ 새로운 릴리즈 빌드 배포 완료! Play Store에서 확인해주세요. 🚀",
+        description: "트랙: #{track} 상태: #{status} 버전: v#{version_info[:version_name]} (#{version_info[:version_code]})",
+        success: true,
+      )
+    rescue => exception
+      UI.error("❌ Play 배포에 실패했습니다.")
+      UI.error("에러: #{exception}")
+
+      discord_notifier(
+        webhook_url: ENV["DISCORD_DEPLOY_WEBHOOK_URL"],
+        title: "❌ Play 배포에 실패했습니다. 로그를 확인해주세요.",
+        description: "트랙: #{track} 상태: #{status} 버전: v#{version_info[:version_name]} (#{version_info[:version_code]})\n에러: #{exception}",
+        success: false,
+      )
+
+      raise exception
+    end
+  end
+end

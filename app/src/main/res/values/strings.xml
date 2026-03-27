@@ -4,9 +4,13 @@
     <string name="matching_search">매칭 탐색</string>
     <string name="matching_manage">매칭 관리</string>
     <string name="profile">프로필</string>
+    <string name="mypage">마이페이지</string>
     <string name="count">%d</string>
     <string name="no">아니요</string>
+    <string name="yes">예</string>
     <string name="cancel">취소하기</string>
+    <string name="cancel_short">취소</string>
+    <string name="delete">삭제</string>
     <string name="score_format">%1$d : %2$d</string>
     <string name="next">다음</string>
     <string name="asterisk_label">*</string>
@@ -14,12 +18,17 @@
     <string name="blank_label"></string>
     <string name="score_separator">:</string>
     <string name="confirm">확인</string>
+    <string name="done">완료</string>
     <string name="win_label">승리</string>
     <string name="lose_label">패배</string>
     <string name="rate_label">승률</string>
+    <string name="chatting">채팅</string>
+
 
     <!--Ranking -->
     <string name="ranking_tier_with_lp">%1$s · %2$d LP</string>
+    <string name="ranking_title">전체 랭킹</string>
+    <string name="ranking_empty_title">아직 동네 랭커가 없어요.</string>
 
     <!--Card  -->
     <string name="record">기록</string>
@@ -275,12 +284,6 @@
 
     <!-- Login -->
     <string name="kakao_login">카카오로 시작하기</string>
-    <string name="login_description_s">스</string>
-    <string name="login_description_for_ports">포츠인들을 위한&#160;</string>
-    <string name="login_description_m">매</string>
-    <string name="login_description_athching">칭서비스는&#160;</string>
-    <string name="login_description_ing">계속된다</string>
-
 
     <!--SignUp  -->
     <string name="sign_up_next_btn">다음</string>
@@ -298,7 +301,7 @@
     <string name="sign_up_skill_subtitle">구력을 통해 임시 티어가 결정돼요</string>
     <string name="sign_up_location_title">활동 지역을 설정해주세요</string>
     <string name="sign_up_location_subtitle">서울 소재 주소만 입력 가능해요</string>
-    <string name="sign_up_location_placeholder">주소를 검색해주세요</string>
+    <string name="sign_up_location_placeholder">도로명 주소를 검색해주세요</string>
     <string name="sign_up_finish_title">환영합니다!</string>
     <string name="sign_up_finish_subtitle">스매싱과 함께 동네 최강이 되어봐요!</string>
 
@@ -307,7 +310,46 @@
     <string name="home_all_text">모두 보기</string>
     <string name="home_region_ranker">우리 동네 랭커</string>
     <string name="home_no_user">아직 동네 유저가 없어요</string>
-    <string name="home_clos_matching_txt">곧 다가오는 매칭이 있어요</string>
+    <string name="home_close_matching_txt">곧 다가오는 매칭이 있어요</string>
+    <string name="home_greeting_with_nickname">%1$s님,</string>
+    <string name="home_recommend_title_with_nickname">%1$s님을 위한 추천</string>
+    <string name="home_recommend_info_popup">내 동네에서 LP ± 200점 범위 안의 5명의 유저가 랜덤으로 추천돼요!</string>
+    <string name="home_btn_go_to_matching_search">매칭 탐색하러 가기</string>
+    <string name="home_new_matching_txt">새로운 매칭을 잡아볼까요?</string>
+
+    <!--RegionChange -->
+    <string name="region_change_title">지역 변경</string>
+    <string name="region_change_description">활동 지역을 변경해주세요</string>
+    <string name="region_change_subtitle">서울 소재 주소만 입력 가능해요</string>
+    <string name="region_change_placeholder">주소를 검색해주세요</string>
+    <string name="region_change_dialog_title">지역을 변경하시겠습니까?</string>
+
+    <!--Withdraw -->
+    <string name="withdraw_title_question">정말 탈퇴하시겠습니까?</string>
+    <string name="withdraw_deleted_info">회원 탈퇴 시 아래 정보가 삭제됩니다</string>
+    <string name="withdraw_agreement_text">주의사항을 인지하였으며, 이에 동의합니다</string>
+    <string name="withdraw_btn_withdraw">탈퇴하기</string>
+    <string name="withdraw_deleted_profile_account">프로필 및 계정 정보</string>
+    <string name="withdraw_deleted_matching_game_records">매칭 및 경기 기록</string>
+    <string name="withdraw_deleted_reviews_ratings">작성한 후기 및 평가</string>
+    <string name="withdraw_deleted_chat_history">채팅 내역</string>
+    <string name="withdraw_deleted_notifications_block_report">알림 및 차단 / 신고 내역</string>
+
+    <!--Report -->
+    <string name="report_title">신고하기</string>
+    <string name="report_description">사용자를 신고하는 이유를 선택해 주세요</string>
+    <string name="report_placeholder">신고 사유를 입력해 주세요</string>
+    <string name="report_btn_submit">신고하기</string>
+    <string name="report_toast_submitted">신고가 접수되었습니다.</string>
+    <string name="report_type_bad_manners">비매너 사용자에요</string>
+    <string name="report_type_profanity_or_hate">욕설, 비방, 혐오 표현을 사용해요</string>
+    <string name="report_type_sexual_harassment">원치 않는 성적 대화 또는 만남을 요구해요</string>
+    <string name="report_type_post_match_dispute">경기 이후 분쟁이 발생했어요\n(결과 조작, 패배 후 매칭 나감 등)</string>
+    <string name="report_type_etc">기타</string>
+
+    <!--TierInfo -->
+    <string name="tier_info_actual_standard_format">실제 기준 %1$s</string>
+    <string name="tier_info_skill_guide">승급을 위해 아래의 기술들을 연마해보세요</string>
 
     <!--Matching -->
     <string name="matching_btn_write">결과 작성하기</string>
@@ -329,7 +371,14 @@
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료됩니다.</string>
 
     <!--Search  -->
+    <string name="search_tier">티어</string>
+    <string name="search_gender">성별</string>
     <string name="search_placeholder">닉네임을 검색해주세요</string>
+    <string name="search_apply_btn">적용하기</string>
+    <string name="search_filter_empty_title">해당 조건에 맞는 유저가 없어요</string>
+    <string name="search_filter_empty_subtitle">적용된 필터를 변경해보세요</string>
+    <string name="search_input_empty_title">검색 결과가 없습니다.</string>
+    <string name="search_input_empty_subtitle">다른 검색어를 입력해보세요</string>
 
     <!--Notice  -->
     <string name="notice">알림</string>
@@ -347,7 +396,8 @@
     <string name="profile_go_to_link">바로가기</string>
     <string name="profile_win_lose_count">%1$d승 %2$d패</string>
     <string name="profile_apply_competition">경쟁 신청하기</string>
-
+    <string name="profile_not_found_title">확인할 수 없는 프로필</string>
+    <string name="profile_not_found_subtitle">해당 사용자의 프로필을 확인할 수 없습니다.</string>
 
     <!--AllReveiw-->
     <string name="review_receive_review">받은 후기</string>
@@ -377,6 +427,18 @@
     <!--Confirm  -->
     <string name="confirm_result">결과 확인</string>
     <string name="confirm_result_title">경기 결과를 확인해주세요</string>
+
+    <!--MyPage  -->
+    <string name="mypage_account_manage">계정 관리</string>
+    <string name="mypage_account_logout">로그아웃</string>
+    <string name="mypage_account_withdraw">계정 탈퇴</string>
+    <string name="mypage_policy_title">정책 및 정보</string>
+    <string name="mypage_policy_privacy">개인정보 처리방침</string>
+    <string name="mypage_policy_terms">이용약관</string>
+    <string name="mypage_info_version">버전 정보</string>
+    <string name="mypage_my_profile">내 프로필</string>
+    <string name="mypage_logout_message">정말 로그아웃하시겠습니까?</string>
+
 
 
 </resources>

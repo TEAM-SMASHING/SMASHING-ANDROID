@@ -1,6 +1,8 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.util.suspendRunCatching
+import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
+import com.smashing.app.data.local.datasource.api.LocalUserDataSource
 import com.smashing.app.data.mapper.my.toGameReviewResult
 import com.smashing.app.data.mapper.my.toMyProfileInfo
 import com.smashing.app.data.mapper.my.toMyProfileTierInfo
@@ -13,10 +15,13 @@ import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.MyRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class MyRepositoryImpl @Inject constructor(
-    private val myRemoteDataSource: MyRemoteDataSource
+    private val myRemoteDataSource: MyRemoteDataSource,
+    private val tokenDataStore: LocalTokenDataSource,
+    private val userDataStore: LocalUserDataSource,
 ) : MyRepository {
 
     override suspend fun getMyTierProfile(): Result<MyProfileTierInfo> = suspendRunCatching {
@@ -49,5 +54,22 @@ class MyRepositoryImpl @Inject constructor(
         myRemoteDataSource.getMyRecentReviewStats()
             .requireData()
             .toGameReviewResult()
+    }
+
+    override suspend fun postLogout(): Result<Unit> = suspendRunCatching {
+        myRemoteDataSource.postLogout()
+        clearLocalSession()
+    }
+
+    override suspend fun postWithdraw(): Result<Unit> = suspendRunCatching {
+        myRemoteDataSource.postWithdraw()
+        clearLocalSession()
+    }
+
+    private suspend fun clearLocalSession() {
+        runCatching {
+            tokenDataStore.clearTokens()
+            userDataStore.clearUserInfo()
+        }
     }
 }

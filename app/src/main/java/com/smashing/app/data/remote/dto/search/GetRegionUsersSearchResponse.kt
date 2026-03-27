@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetRegionUsersSearchResponse(
-    @SerialName("userId")
-    val userId: String,
+    @SerialName("userProfileId")
+    val userProfileId: String,
     @SerialName("nickname")
     val nickname: String,
     @SerialName("gender")

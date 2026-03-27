@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -35,6 +34,8 @@ import com.smashing.app.core.designsystem.style.BorderInputStyle
 import com.smashing.app.core.designsystem.component.textfield.SmashingBasicTextField
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
+import com.smashing.app.core.extension.checkLength
+import com.smashing.app.core.extension.checkMaxLength
 
 @Composable
 fun NicknameInputTextField(
@@ -49,7 +50,8 @@ fun NicknameInputTextField(
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
-    val currentLength = state.text.length
+    val currentLength = state.text.toString().checkLength()
+    val lengthLimitTransformation = InputTransformation.checkMaxLength(maxLength)
     val isFilled = state.text.isNotEmpty()
     val isError = !errorText.isNullOrEmpty()
     val isConfirm = !confirmText.isNullOrEmpty()
@@ -84,7 +86,7 @@ fun NicknameInputTextField(
                     focusManager.clearFocus()
                 },
 
-                inputTransformation = InputTransformation.maxLength(maxLength),
+                inputTransformation = lengthLimitTransformation,
 
                 suffix = {
                     Text(

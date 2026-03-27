@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.ic_bronze
 import com.smashing.app.R.drawable.ic_gold
 import com.smashing.app.R.drawable.ic_silver
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.R.string.ranking_tier_with_lp
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.mapper.img
@@ -36,14 +37,13 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme.colors
 import com.smashing.app.core.designsystem.theme.SmashingTheme.typography
 import com.smashing.app.core.extension.noRippleClickable
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.type.TierType
 
 /**
  * 랭킹 아이템 컴포넌트
  * 랭킹 목록에서 사용자 정보를 표시하는 컴포넌트입니다.
  * 순위에 따라 금/은/동 메달 아이콘 또는 숫자를 표시하며, 사용자 프로필 이미지, 닉네임, 티어, LP를 표시합니다.
- * @param userId 사용자 식별자
+ * @param userProfileId 사용자 식별자
  * @param nickname 사용자 닉네임
  * @param rank 순위 (1위는 금메달, 2위는 은메달, 3위는 동메달, 그 외는 숫자로 표시)
  * @param tier 사용자의 티어 타입
@@ -54,7 +54,7 @@ import com.smashing.app.data.type.TierType
 
 @Composable
 fun SmashingRankingItem(
-    userId: String,
+    userProfileId: String,
     nickname: String,
     rank: Int,
     tier: TierType,
@@ -106,7 +106,7 @@ fun SmashingRankingItem(
         Spacer(modifier = Modifier.width(10.dp))
 
         UrlImage(
-            placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+            placeholderDrawable = img_profile,
             modifier = Modifier
                 .height(40.dp)
                 .aspectRatio(1f)
@@ -157,7 +157,7 @@ private fun SmashingRankingItemPreview() {
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             SmashingRankingItem(
-                userId = "user1",
+                userProfileId = "user1",
                 nickname = "플레이어1",
                 rank = 1,
                 tier = TierType.CHALLENGER,
@@ -165,7 +165,7 @@ private fun SmashingRankingItemPreview() {
                 onClick = { },
             )
             SmashingRankingItem(
-                userId = "user2",
+                userProfileId = "user2",
                 nickname = "플레이어2",
                 rank = 2,
                 tier = TierType.DIAMOND_1,
@@ -173,7 +173,7 @@ private fun SmashingRankingItemPreview() {
                 onClick = { },
             )
             SmashingRankingItem(
-                userId = "user3",
+                userProfileId = "user3",
                 nickname = "플레이어3",
                 rank = 3,
                 tier = TierType.PLATINUM_2,
@@ -181,7 +181,7 @@ private fun SmashingRankingItemPreview() {
                 onClick = { },
             )
             SmashingRankingItem(
-                userId = "user4",
+                userProfileId = "user4",
                 nickname = "플레이어4",
                 rank = 4,
                 tier = TierType.GOLD_1,

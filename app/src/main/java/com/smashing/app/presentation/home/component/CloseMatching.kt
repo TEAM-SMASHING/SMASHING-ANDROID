@@ -25,15 +25,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R
 import com.smashing.app.R.drawable.img_dummy_versus
+import com.smashing.app.R.string.home_btn_go_to_matching_search
+import com.smashing.app.R.string.home_no_matching
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
 import com.smashing.app.core.designsystem.style.getMatchButtonColor
 import com.smashing.app.core.designsystem.style.getMatchButtonTitle
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.model.matching.AcceptedMatching
 
 @Composable
@@ -83,7 +84,7 @@ fun CloseMatching(
                 )
 
                 MatchedUserItem(
-                    userId = matchedUser.userId,
+                    userId = matchedUser.profileId,
                     nickname = matchedUser.nickname,
                     modifier = Modifier.align(Alignment.CenterEnd)
                 )
@@ -91,7 +92,7 @@ fun CloseMatching(
 
         } else {
             Text(
-                text = stringResource(R.string.home_no_matching),
+                text = stringResource(home_no_matching),
                 style = SmashingTheme.typography.md.medium16,
                 color = SmashingTheme.colors.txtTertiary,
                 textAlign = TextAlign.Center,
@@ -125,7 +126,7 @@ fun CloseMatching(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 28.dp),
-                text = "매칭 탐색하러 가기",
+                text = stringResource(home_btn_go_to_matching_search),
                 textStyle = SmashingTheme.typography.md.medium16,
                 onClick = navigateToSearch,
                 buttonColor = SmashingBtnColor(
@@ -161,7 +162,7 @@ private fun MatchedUserItem(
                 )
         ) {
             UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+                placeholderDrawable = img_profile,
                 modifier = Modifier
                     .height(64.dp)
                     .aspectRatio(1f)

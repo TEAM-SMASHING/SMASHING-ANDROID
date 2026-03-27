@@ -16,8 +16,8 @@ data class ReceivedMatchingListResponse(
 ) {
     @Serializable
     data class RequesterSummary(
-        @SerialName("userId")
-        val userId: String,
+        @SerialName("requesterProfileId")
+        val profileId: String,
         @SerialName("nickname")
         val nickname: String,
         @SerialName("gender")

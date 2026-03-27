@@ -23,18 +23,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.smashing.app.R.string.profile_record_label
-import com.smashing.app.R.string.review
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.R.string.profile_apply_competition
+import com.smashing.app.R.string.profile_record_label
 import com.smashing.app.R.string.profile_win_lose_count
-import com.smashing.app.core.designsystem.component.image.UrlImage
+import com.smashing.app.R.string.review
 import com.smashing.app.core.designsystem.component.badge.TierBadge
 import com.smashing.app.core.designsystem.component.button.SmashingButton
+import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.mapper.icon20
 import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
-import com.smashing.app.core.util.ProfileImageProvider
 import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
 
@@ -62,7 +62,7 @@ fun UserProfileCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             UrlImage(
-                placeholderDrawable = ProfileImageProvider.getTempImg(nickname),
+                placeholderDrawable = img_profile,
                 modifier = Modifier
                     .height(60.dp)
                     .aspectRatio(1f)
