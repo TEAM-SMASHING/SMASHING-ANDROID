@@ -28,7 +28,7 @@ fun UserSummaryDto.toDomain(): UserSummary =
 
 fun RequesterDto.toDomain(): Requester =
     Requester(
-        userId = userId,
+        profileId = requesterProfileId,
         nickname = nickname,
         genderType = GenderType.findByName(gender),
         tierType = TierType.findTierType(tierCode),
@@ -40,7 +40,7 @@ fun RequesterDto.toDomain(): Requester =
 fun MatchingReceivedDto.toEvent(): SseEvent.MatchingReceived =
     SseEvent.MatchingReceived(
         matchingId = matchingId,
-        sportType = SportType.findSportType(sportId),
+        sportType = SportType.findSportTypeToSportCode(sportCode),
         receiverProfileId = receiverProfileId,
         requester = requester.toDomain(),
     )
