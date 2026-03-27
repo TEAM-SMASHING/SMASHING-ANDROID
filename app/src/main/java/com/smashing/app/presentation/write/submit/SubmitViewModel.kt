@@ -190,10 +190,12 @@ class SubmitViewModel @Inject constructor(
                 )
             }
             _sideEffect.emit(SideEffect.NavigateToMatching)
-        }.onFailure {
+        }.onFailure { throwable ->
             _uiState.update {
                 it.copy(
-                    submitUiState = SubmitContract.SubmitUiState.Failure("경기 결과 제출 실패"),
+                    submitUiState = SubmitContract.SubmitUiState.Failure(
+                        throwable.message ?: "매칭 결과를 확인해주세요."
+                    ),
                     isResubmitDialogVisible = false,
                     isAlertDialogOpen = false,
                     isConfirmDialogOpen = true,
