@@ -66,7 +66,6 @@ fun NavGraphBuilder.profileGraph(
             UserProfileRoute(
                 navigateToReview = navController::navigateToReview,
                 navigateUp = navController::navigateUp,
-                navigateToHome = navController::navigateToHome,
                 navigateToSentMatching = {
                     navController.navigateToMatching(
                         initTab = MatchingType.SEND,

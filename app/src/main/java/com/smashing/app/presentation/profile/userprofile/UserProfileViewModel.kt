@@ -243,7 +243,7 @@ class UserProfileViewModel @Inject constructor(
             _sideEffect.emit(
                 UserProfileContract.SideEffect.ShowToast("차단되었습니다."),
             )
-            _sideEffect.emit(UserProfileContract.SideEffect.NavigateToHome)
+            _sideEffect.emit(UserProfileContract.SideEffect.NavigateUp)
         }.onFailure { exception ->
             _uiState.update {
                 it.copy(
