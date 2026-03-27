@@ -10,8 +10,8 @@ data class GetNicknameUsersSearchResponse(
 ) {
     @Serializable
     data class NickNameUser(
-        @SerialName("userId")
-        val userId: String,
+        @SerialName("userProfileId")
+        val userProfileId: String,
         @SerialName("nickname")
         val nickname: String,
     )
