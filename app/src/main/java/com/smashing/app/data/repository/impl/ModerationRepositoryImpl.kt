@@ -13,10 +13,6 @@ class ModerationRepositoryImpl @Inject constructor(
     private val moderationRemoteDataSource: ModerationRemoteDataSource,
 ) : ModerationRepository {
 
-    companion object {
-        private const val HTTP_STATUS_ALREADY_REPORTED = 409
-    }
-
     override suspend fun postReportUser(
         reportedUserProfileId: String,
         reportTypeCode: String,
@@ -49,5 +45,9 @@ class ModerationRepositoryImpl @Inject constructor(
                 blockedUserProfileId = blockedUserProfileId,
             ),
         )
+    }
+
+    companion object {
+        private const val HTTP_STATUS_ALREADY_REPORTED = 409
     }
 }
