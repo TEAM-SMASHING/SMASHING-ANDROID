@@ -28,7 +28,6 @@ class HomeViewModel @Inject constructor(
     private val myRepository: MyRepository,
     private val matchingRepository: MatchingRepository,
     private val eventRepository: EventRepository,
-    private val userRepository: UserRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.State())
     val uiState = _uiState.asStateFlow()
@@ -47,11 +46,6 @@ class HomeViewModel @Inject constructor(
     private fun fetchMyTierProfile() = viewModelScope.launch {
         myRepository.getMyTierProfile()
             .onSuccess { myTierProfile ->
-                userRepository.setUserInfo(
-                    userProfileId = myTierProfile.myProfileInfo.profileId,
-                    userNickname = myTierProfile.nickname,
-                )
-
                 _uiState.update { currentState ->
                     currentState.copy(
                         activeMyProfile = myTierProfile
