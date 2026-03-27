@@ -11,10 +11,10 @@ interface ModerationService {
     @POST("/api/v1/reports")
     suspend fun postReportUser(
         @Body request: ReportUserRequest,
-    ): BaseResponse<Unit?>
+    ): BaseResponse<Unit>
 
     @POST("/api/v1/users/block")
     suspend fun postBlockUser(
         @Body request: BlockUserRequest,
-    ): BaseResponse<Unit?>
+    ): BaseResponse<Unit>
 }
