@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostGameSubmissionResponse(
-    @SerialName("reviewId")
-    val reviewId: String?,
+    @SerialName("submissionId")
+    val submissionId: String?,
 )

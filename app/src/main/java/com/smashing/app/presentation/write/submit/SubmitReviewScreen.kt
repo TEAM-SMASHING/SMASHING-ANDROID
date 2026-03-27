@@ -145,9 +145,10 @@ private fun SubmitReviewScreen(
             )
         }
 
+        // TODO 임시 기능, 결과 제출 예외 정책시 띄움(ex.HOST 가 아닌 경우)
         if (isConfirmDialogOpen) {
             SmashingDialog(
-                title = "매칭 상대가 작성 완료한 경기입니다",
+                title = "경기 결과 제출 오류입니다.",
                 onDismissClick = onConfirmDialogDismiss,
                 subtitle = "매칭 결과를 확인해주세요.",
                 type = DialogStyle.CONFIRM,

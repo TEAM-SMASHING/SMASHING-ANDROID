@@ -179,7 +179,7 @@ private fun SendButtons(
             ),
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_close_sm),
+            imageVector = ImageVector.vectorResource(id = ic_close_sm),
             tint = SmashingTheme.colors.iconPrimary,
             modifier = Modifier
                 .noRippleClickable(onClick = onSkipClick),
@@ -253,7 +253,6 @@ private fun MatchingCardPreview() {
                         tierType = TierType.BRONZE_2,
                         onProfileClick = {},
                         onKakaoLinkClick = {},
-                        onCloseClick = {},
                         onConfirmClick = {},
                         gameStatusType = GameResultStatusType.PENDING_RESULT,
                     ),
