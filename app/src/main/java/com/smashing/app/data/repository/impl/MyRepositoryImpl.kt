@@ -8,14 +8,13 @@ import com.smashing.app.data.mapper.my.toMyProfileInfo
 import com.smashing.app.data.mapper.my.toMyProfileTierInfo
 import com.smashing.app.data.mapper.my.toRequest
 import com.smashing.app.data.model.addsports.AddSportsInfo
-import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.profile.home.MyProfileTierInfo
+import com.smashing.app.data.model.profile.my.MyProfileInfo
 import com.smashing.app.data.model.review.GameReviewResult
 import com.smashing.app.data.remote.datasource.api.MyRemoteDataSource
 import com.smashing.app.data.remote.dto.my.MyProfileSwitchRequest
 import com.smashing.app.data.remote.dto.requireData
 import com.smashing.app.data.repository.api.MyRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 class MyRepositoryImpl @Inject constructor(
@@ -25,9 +24,16 @@ class MyRepositoryImpl @Inject constructor(
 ) : MyRepository {
 
     override suspend fun getMyTierProfile(): Result<MyProfileTierInfo> = suspendRunCatching {
-        myRemoteDataSource.getMyTierProfile()
+        val myTierProfile = myRemoteDataSource.getMyTierProfile()
             .requireData()
             .toMyProfileTierInfo()
+
+        userDataStore.setUserInfo(
+            userProfileId = myTierProfile.myProfileInfo.profileId,
+            userNickname = myTierProfile.nickname,
+        )
+
+        myTierProfile
     }
 
     override suspend fun getMyProfileInfo(): Result<MyProfileInfo> = suspendRunCatching {
@@ -41,6 +47,15 @@ class MyRepositoryImpl @Inject constructor(
         profileId: String
     ): Result<Unit> = suspendRunCatching {
         myRemoteDataSource.putActiveMyProfile(MyProfileSwitchRequest(profileId = profileId))
+
+        val myTierProfile = myRemoteDataSource.getMyTierProfile()
+            .requireData()
+            .toMyProfileTierInfo()
+
+        userDataStore.setUserInfo(
+            userProfileId = myTierProfile.myProfileInfo.profileId,
+            userNickname = myTierProfile.nickname,
+        )
     }
 
     override suspend fun addSportsProfile(

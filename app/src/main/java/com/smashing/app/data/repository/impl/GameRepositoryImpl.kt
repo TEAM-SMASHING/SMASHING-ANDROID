@@ -23,7 +23,7 @@ class GameRepositoryImpl @Inject constructor(
         gameRemoteDataSource.postGameSubmission(
             gameId = gameId,
             request = gameSubmission.toRequest(),
-        ).requireData().reviewId
+        ).requireData().submissionId
     }
 
     override suspend fun postConfirmSubmission(

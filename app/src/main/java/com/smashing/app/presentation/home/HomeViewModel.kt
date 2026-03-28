@@ -8,6 +8,7 @@ import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
+import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -92,18 +93,12 @@ class HomeViewModel @Inject constructor(
             order = OrderType.OLDEST,
         )
             .onSuccess { cursorPage ->
-                val activeMatching =
-                    cursorPage.items.firstOrNull { it.resultStatus != GameResultStatusType.CANCELED }
+                val activeMatching = cursorPage.items.firstOrNull()
 
                 if (activeMatching != null) {
                     _uiState.update { currentState ->
                         currentState.copy(matchedUser = activeMatching)
                     }
-                } else if (cursorPage.cursor.hasNext) {
-                    fetchMatchedUserInternal(
-                        cursorPage.cursor.snapshotAt,
-                        cursorPage.cursor.nextCursor
-                    )
                 } else {
                     _uiState.update { currentState ->
                         currentState.copy(matchedUser = null)
@@ -194,7 +189,7 @@ class HomeViewModel @Inject constructor(
         if (currentMatchedUser.gameId != event.gameId) return
 
         when (event.resultStatus) {
-            GameResultStatusType.RESULT_CONFIRMED, GameResultStatusType.CANCELED -> {
+            GameResultStatusType.RESULT_CONFIRMED -> {
                 _uiState.update { it.copy(matchedUser = null) }
                 fetchMatchedUser()
             }

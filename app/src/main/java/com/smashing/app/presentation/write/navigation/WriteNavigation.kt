@@ -22,7 +22,7 @@ import com.smashing.app.presentation.confirmreview.navigation.navigateToConfirmR
 
 fun NavController.navigateToSubmit(
     gameId: String,
-    opponentUserId: String,
+    opponentUserProfileId: String,
     opponentNickname: String,
     isFirstAttempt: Boolean,
     submissionId: String? = null,
@@ -30,7 +30,7 @@ fun NavController.navigateToSubmit(
 ) = navigate(
     route = Submit(
         gameId = gameId,
-        opponentUserId = opponentUserId,
+        opponentUserProfileId = opponentUserProfileId,
         opponentNickname = opponentNickname,
         isFirstAttempt = isFirstAttempt,
         submissionId = submissionId,
@@ -135,7 +135,7 @@ fun NavGraphBuilder.writeGraph(
 @Serializable
 data class Submit(
     val gameId: String,
-    val opponentUserId: String,
+    val opponentUserProfileId: String,
     val opponentNickname: String,
     val isFirstAttempt: Boolean,
     val submissionId: String? = null,

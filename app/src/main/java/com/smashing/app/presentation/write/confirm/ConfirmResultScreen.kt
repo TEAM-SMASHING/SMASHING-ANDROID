@@ -114,7 +114,7 @@ private fun ConfirmResultScreen(
             WriteResultContent(
                 leftUserInfo = uiState.receiver,
                 rightUserInfo = uiState.submitter,
-                winnerId = uiState.winnerId,
+                winnerProfileId = uiState.winnerProfileId,
                 isContentEnabled = false,
                 title = "경기 결과를 확인해주세요",
             )

@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.smashing.app.R.string.matching_btn_canceled
 import com.smashing.app.R.string.matching_btn_confirm
 import com.smashing.app.R.string.matching_btn_rejected
 import com.smashing.app.R.string.matching_btn_unknown
@@ -87,11 +86,6 @@ fun GameResultStatusType.getMatchButtonColor() = when(this) {
         textColor = colors.txtEmphasis,
     )
 
-    GameResultStatusType.CANCELED -> SmashingBtnColor(
-        backgroundColor = colors.btnBgPrimaryDisabled,
-        textColor = colors.btnTxtPrimaryDisabled
-    )
-
     GameResultStatusType.RESULT_CONFIRMED -> SmashingBtnColor(
         backgroundColor = colors.btnBgPrimaryDisabled,
         textColor = colors.btnTxtPrimaryDisabled,
@@ -109,7 +103,6 @@ fun GameResultStatusType.getMatchButtonTitle() = when(this) {
     GameResultStatusType.RESULT_REJECTED -> stringResource(matching_btn_rejected)
     GameResultStatusType.WAITING_CONFIRMATION -> stringResource(matching_btn_confirm)
     GameResultStatusType.PENDING_RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
-    GameResultStatusType.CANCELED -> stringResource(matching_btn_canceled)
     GameResultStatusType.RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
     GameResultStatusType.UNKNOWN -> stringResource(matching_btn_unknown)
 }
