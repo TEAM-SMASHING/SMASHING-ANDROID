@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,13 +32,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.drawable.ic_radio_empty
 import com.smashing.app.R.drawable.ic_radio_fill
 import com.smashing.app.R.string.report_btn_submit
 import com.smashing.app.R.string.report_description
 import com.smashing.app.R.string.report_placeholder
 import com.smashing.app.R.string.report_title
+import com.smashing.app.R.string.report_toast_already_reported
 import com.smashing.app.R.string.report_toast_submitted
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.textfield.SmashingAreaTextField
@@ -48,7 +52,9 @@ import com.smashing.app.core.designsystem.state.TopBarState
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.noRippleClickable
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
-import com.smashing.app.presentation.report.type.ReportType
+import com.smashing.app.data.type.ReportType
+import com.smashing.app.presentation.report.ReportContract.SideEffect.ReportAlreadyReported
+import com.smashing.app.presentation.report.ReportContract.SideEffect.ReportSubmitted
 
 @Composable
 fun ReportRoute(
@@ -59,15 +65,30 @@ fun ReportRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showToast = LocalToastTrigger.current
     val reportSubmittedMessage = stringResource(report_toast_submitted)
+    val reportAlreadyReportedMessage = stringResource(report_toast_already_reported)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is ReportSubmitted -> {
+                        showToast(reportSubmittedMessage)
+                        navigateUp()
+                    }
+                    is ReportAlreadyReported -> {
+                        showToast(reportAlreadyReportedMessage)
+                        navigateUp()
+                    }
+                }
+            }
+    }
 
     ReportScreen(
         uiState = uiState,
         detailTextFieldState = viewModel.detailTextFieldState,
         onReportTypeSelected = viewModel::updateSelectedReportType,
-        onReportClick = {
-            showToast(reportSubmittedMessage)
-            navigateUp()
-        },
+        onReportClick = viewModel::postReport,
         navigateUp = navigateUp,
         modifier = modifier,
     )
@@ -143,8 +164,10 @@ private fun ReportScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 48.dp),
             isEnabled = when {
+                uiState.reportUiState is ReportUiState.Loading -> false
                 uiState.selectedReportType == null -> false
-                uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString().isNotBlank()
+                uiState.selectedReportType == ReportType.ETC -> detailTextFieldState.text.toString()
+                    .isNotBlank()
                 else -> true
             },
         )
@@ -184,7 +207,7 @@ private fun ReportTypeItem(
 @Preview(showBackground = true)
 @Composable
 private fun ReportScreenPreview() {
-    var selectedReportType by remember { mutableStateOf<ReportType?>(ReportType.BAD_MANNERS) }
+    var selectedReportType by remember { mutableStateOf<ReportType?>(ReportType.MANNER) }
     val detailState = rememberTextFieldState()
 
     SmashingAndroidTheme {
