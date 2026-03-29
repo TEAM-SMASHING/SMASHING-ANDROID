@@ -20,7 +20,7 @@ interface ReviewService {
     @GET("/api/v1/users/{userProfileId}/reviews/recent")
     suspend fun getUserRecentReviewList(
         @Path("userProfileId")
-        userId: String,
+        userProfileId: String,
         @Query("sportCode")
         sportCode: String?,
         @Query("cursor")

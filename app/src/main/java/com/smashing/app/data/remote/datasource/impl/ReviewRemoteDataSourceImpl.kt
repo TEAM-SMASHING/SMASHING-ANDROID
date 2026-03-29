@@ -26,7 +26,7 @@ class ReviewRemoteDataSourceImpl @Inject constructor(
         snapshotAt: String?,
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>> =
         reviewService.getUserRecentReviewList(
-            userId = userProfileId,
+            userProfileId = userProfileId,
             sportCode = sportCode,
             cursor = cursor,
             size = size,
