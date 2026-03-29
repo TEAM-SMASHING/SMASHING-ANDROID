@@ -12,7 +12,7 @@ interface UserService {
     @GET("/api/v1/users/{userProfileId}/profiles")
     suspend fun getUserInfoDetail(
         @Path("userProfileId")
-        userId: String,
+        userProfileId: String,
         @Query("sportCode")
         sportCode: String?,
     ): BaseResponse<GetUserInfoDetailResponse>
@@ -20,7 +20,7 @@ interface UserService {
     @GET("/api/v1/users/{userProfileId}/reviews/summary")
     suspend fun getUserRecentReviewStats(
         @Path("userProfileId")
-        userId: String,
+        userProfileId: String,
         @Query("sportCode")
         sportCode: String?,
     ): BaseResponse<GetUserRecentReviewStatsResponse>

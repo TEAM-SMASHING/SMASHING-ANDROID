@@ -23,16 +23,16 @@ fun NavController.navigateToMyProfile(
 ) = navigate(Profile, navOptions)
 
 fun NavController.navigateToUserProfile(
-    userId: String,
+    userProfileId: String,
     sportCode: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(UserProfile(userId, sportCode), navOptions)
+) = navigate(UserProfile(userProfileId, sportCode), navOptions)
 
 fun NavController.navigateToReview(
-    userId: String? = null,
+    userProfileId: String? = null,
     sportCode: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(Review(userId, sportCode), navOptions)
+) = navigate(Review(userProfileId, sportCode), navOptions)
 
 
 fun NavGraphBuilder.profileGraph(
