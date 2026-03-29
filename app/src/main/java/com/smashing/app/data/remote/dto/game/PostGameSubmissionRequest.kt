@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostGameSubmissionRequest(
-    @SerialName("winnerUserId")
-    val winnerUserId: String,
-    @SerialName("loserUserId")
-    val loserUserId: String,
+    @SerialName("winnerProfileId")
+    val winnerProfileId: String,
+    @SerialName("loserProfileId")
+    val loserProfileId: String,
     @SerialName("review")
     val review: Review?,
 ) {

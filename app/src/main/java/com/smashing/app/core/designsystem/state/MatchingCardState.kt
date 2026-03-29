@@ -15,7 +15,7 @@ import com.smashing.app.data.type.TierType
  * - [Search]  : 전적/리뷰 정보를 포함한 탐색 상태
  * - [Send]    : 전적 정보와 함께 닫기(X) 액션이 가능한 요청 전송 상태
  * - [Receive] : 전적 정보와 수락/건너뛰기 액션을 제공하는 요청 수신 상태
- * - [Confirm] : 닫기(X), 카카오 링크, 결과 작성 액션을 제공하는 확정 상태
+ * - [Confirm] : 카카오 링크, 결과 작성 액션을 제공하는 확정 상태
  *
  * ### 공통 규칙
  * - 모든 상태는 프로필 영역을 가지며, 프로필 클릭 시 [onProfileClick]이 호출됩니다.
@@ -89,9 +89,8 @@ sealed interface MatchingCardState {
         override val genderType: GenderType,
         override val tierType: TierType,
         override val onProfileClick: () -> Unit,
-        override val onCloseClick: (() -> Unit),
         val gameStatusType: GameResultStatusType,
         val onKakaoLinkClick: () -> Unit,
         val onConfirmClick: () -> Unit,
-    ) : Closable
+    ) : MatchingCardState
 }

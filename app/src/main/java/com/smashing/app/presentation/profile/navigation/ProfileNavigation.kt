@@ -8,10 +8,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
 import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
+import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
@@ -59,7 +61,8 @@ fun NavGraphBuilder.profileGraph(
             )
         }
 
-        composable<UserProfile> {
+        composable<UserProfile> { backStackEntry ->
+            val userProfile = backStackEntry.toRoute<UserProfile>()
             UserProfileRoute(
                 navigateToReview = navController::navigateToReview,
                 navigateUp = navController::navigateUp,
@@ -68,8 +71,9 @@ fun NavGraphBuilder.profileGraph(
                         initTab = MatchingType.SEND,
                     )
                 },
-                navigateToReport = navController::navigateToReport,
-                onBlockClick = { /* TODO: 차단 API 연동 */ },
+                navigateToReport = {
+                    navController.navigateToReport(userProfile.userId)
+                },
             )
         }
 

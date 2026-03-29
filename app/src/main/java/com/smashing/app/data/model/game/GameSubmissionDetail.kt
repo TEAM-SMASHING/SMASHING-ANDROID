@@ -9,11 +9,11 @@ data class GameSubmissionDetail(
     data class SubmitterInfo(
         val userId: String,
         val nickname: String,
+        val profileId: String,
     )
 
     data class PlayerInfo(
-        val userId: String,
+        val profileId: String,
         val nickname: String,
-        val score: Int,
     )
 }

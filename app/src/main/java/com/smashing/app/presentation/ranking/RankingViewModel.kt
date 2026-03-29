@@ -31,7 +31,7 @@ class RankingViewModel @Inject constructor(
         rankingRepository.getRankingList()
             .onSuccess { rankingData ->
                 val userRankList = rankingData.topUsers
-                val storedUserId = userRepository.getUserId()
+                val storedUserProfileId = userRepository.getUserProfileId()
 
                 _uiState.update { currentState ->
                     currentState.copy(
@@ -41,7 +41,7 @@ class RankingViewModel @Inject constructor(
                         restRankingList = userRankList.drop(3).toImmutableList(),
                         userInfo = rankingData.myRank?.let { user ->
                             UserRank(
-                                userProfileId = storedUserId ?: "",
+                                userProfileId = storedUserProfileId ?: "",
                                 nickname = user.nickname,
                                 tier = user.tierType,
                                 lp = user.lp,

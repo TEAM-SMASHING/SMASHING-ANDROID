@@ -12,7 +12,7 @@ interface SubmitContract {
     data class State(
         val submitter: PlayerInfo = PlayerInfo("", ""),
         val receiver: PlayerInfo = PlayerInfo("", ""),
-        val winnerId: String? = null,
+        val winnerProfileId: String? = null,
         val isButtonEnabled: Boolean = false,
         val selectedRating: ReviewRatingType? = null,
         val selectedTagList: ImmutableSet<ReviewTagType> = persistentSetOf(),

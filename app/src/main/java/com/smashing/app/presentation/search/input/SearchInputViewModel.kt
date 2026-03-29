@@ -52,16 +52,6 @@ class SearchInputViewModel @Inject constructor(
             }
     }
 
-    fun clearSearchInput() {
-        searchInputState.clearText()
-        _uiState.update {
-            it.copy(
-                suggestions = persistentListOf(),
-                searchNickNameUsersUiState = SearchInputUiState.Idle,
-            )
-        }
-    }
-
     private suspend fun fetchNickNameUsersList(nickname: String) {
 
         _uiState.update { it.copy(searchNickNameUsersUiState = SearchInputUiState.Loading) }
