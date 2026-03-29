@@ -17,7 +17,7 @@ interface ReviewService {
         reviewId: String,
     ): BaseResponse<GetReviewDetailResponse>
 
-    @GET("/api/v1/users/{userId}/reviews/recent")
+    @GET("/api/v1/users/{userProfileId}/reviews/recent")
     suspend fun getUserRecentReviewList(
         @Path("userProfileId")
         userId: String,
