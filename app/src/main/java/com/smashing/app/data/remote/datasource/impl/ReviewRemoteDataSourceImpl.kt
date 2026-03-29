@@ -19,14 +19,14 @@ class ReviewRemoteDataSourceImpl @Inject constructor(
         reviewService.getReview(reviewId = reviewId)
 
     override suspend fun getUserRecentReviewList(
-        userId: String,
+        userProfileId: String,
         sportCode: String?,
         cursor: String?,
         size: Int?,
         snapshotAt: String?,
     ): BaseResponse<CursorDto<GetUserRecentReviewListResponse>> =
         reviewService.getUserRecentReviewList(
-            userId = userId,
+            userId = userProfileId,
             sportCode = sportCode,
             cursor = cursor,
             size = size,

@@ -1,19 +1,14 @@
 package com.smashing.app.presentation.profile.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.smashing.app.core.common.navigation.MainTabRoute
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
-import com.smashing.app.presentation.home.navigation.navigateToHome
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.profile.myprofile.MyProfileRoute
@@ -72,7 +67,7 @@ fun NavGraphBuilder.profileGraph(
                     )
                 },
                 navigateToReport = {
-                    navController.navigateToReport(userProfile.userId)
+                    navController.navigateToReport(userProfile.userProfileId)
                 },
             )
         }
@@ -93,13 +88,13 @@ data object MyProfile : Route
 
 @Serializable
 data class UserProfile(
-    val userId: String,
+    val userProfileId: String,
     val sportCode: String?,
 ) : Route
 
 @Serializable
 data class Review(
-    val userId: String?,
+    val userProfileId: String?,
     val sportCode: String?,
     val isUser: Boolean = true,
 ) : Route

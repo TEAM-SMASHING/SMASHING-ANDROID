@@ -34,7 +34,7 @@ class UserProfileViewModel @Inject constructor(
 
     private val userInfo = savedStateHandle.toRoute<UserProfile>()
 
-    private val userId = userInfo.userId
+    private val userProfileId = userInfo.userProfileId
     private val sportCode = userInfo.sportCode
 
     private val _uiState = MutableStateFlow(UserProfileContract.State())
@@ -53,7 +53,7 @@ class UserProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
             userRepository.getUserInfoDetail(
-                userId = userId,
+                userProfileId= userProfileId,
                 sportCode = sportCode,
             ).onSuccess { data ->
                 _uiState.update { currentState ->
@@ -76,13 +76,13 @@ class UserProfileViewModel @Inject constructor(
 
     fun navigateToAllReview() = viewModelScope.launch {
         _sideEffect.emit(
-            NavigateToAllReview(userId)
+            NavigateToAllReview(userProfileId)
         )
     }
 
     fun fetchUserRecentReviewStats() = viewModelScope.launch {
         userRepository.getUserRecentReviewStats(
-            userId = userId,
+            userProfileId = userProfileId,
             sportCode = sportCode,
         ).onSuccess { data ->
             _uiState.update { currentState ->
@@ -115,7 +115,7 @@ class UserProfileViewModel @Inject constructor(
         _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
 
         reviewRepository.getUserRecentReviewList(
-            userId = userId,
+            userProfileId = userProfileId,
             sportCode = sportCode,
             cursor = null,
             size = CURSOR_SIZE,
@@ -237,7 +237,7 @@ class UserProfileViewModel @Inject constructor(
     fun postBlockUser() = viewModelScope.launch {
         _uiState.update { it.copy(loadState = UserProfileUiState.Loading) }
         moderationRepository.postBlockUser(
-            blockedUserProfileId = userId,
+            blockedUserProfileId = userProfileId,
         ).onSuccess {
             _uiState.update { it.copy(loadState = UserProfileUiState.Success) }
             _sideEffect.emit(
