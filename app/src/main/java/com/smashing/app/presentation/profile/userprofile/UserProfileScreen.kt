@@ -85,7 +85,7 @@ fun UserProfileRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToAllReview -> navigateToReview(sideEffect.userId)
+                    is NavigateToAllReview -> navigateToReview(sideEffect.userProfileId)
                     is NavigateUp -> navigateUp()
                     is ShowToast -> show.invoke(sideEffect.content)
                 }
