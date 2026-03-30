@@ -6,7 +6,7 @@ import com.smashing.app.data.model.review.ReviewDetail
 
 interface ReviewRepository {
     suspend fun getUserRecentReviewList(
-        userId: String,
+        userProfileId: String,
         sportCode: String?,
         cursor: String?,
         size: Int?,

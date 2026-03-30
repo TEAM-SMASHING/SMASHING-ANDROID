@@ -27,7 +27,7 @@ class AllReviewViewModel @Inject constructor(
 
     private val userData = savedStateHandle.toRoute<Review>()
 
-    private val userId = userData.userId
+    private val userProfileId = userData.userProfileId
     private val sportCode = userData.sportCode
     private val isUser = userData.isUser
 
@@ -35,7 +35,7 @@ class AllReviewViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        if (userId == null && isUser) {
+        if (userProfileId == null && isUser) {
             fetchMyProfileReviewList(true)
             fetchMyRecentReviewStats()
         } else {
@@ -45,7 +45,7 @@ class AllReviewViewModel @Inject constructor(
     }
 
     fun loadMoreReviewList() {
-        if (userId == null && isUser) {
+        if (userProfileId == null && isUser) {
             fetchMyProfileReviewList()
         } else {
             fetchUserProfileReviewList()
@@ -63,9 +63,9 @@ class AllReviewViewModel @Inject constructor(
 
         _uiState.update { it.copy(loadState = ReviewUiState.Loading) }
 
-        if (userId != null) {
+        if (userProfileId != null) {
             reviewRepository.getUserRecentReviewList(
-                userId = userId,
+                userProfileId = userProfileId,
                 sportCode = sportCode,
                 cursor = if (isRefresh) null else currentState.reviewCursor.nextCursor,
                 size = CURSOR_SIZE,
@@ -99,9 +99,9 @@ class AllReviewViewModel @Inject constructor(
     }
 
     fun fetchUserRecentReviewStats() = viewModelScope.launch {
-        if (userId != null) {
+        if (userProfileId != null) {
             userRepository.getUserRecentReviewStats(
-                userId = userId,
+                userProfileId = userProfileId,
                 sportCode = sportCode,
             ).onSuccess { data ->
                 _uiState.update { currentState ->

@@ -9,11 +9,11 @@ interface UserRepository {
     suspend fun setUserInfo(userProfileId: String, userNickname: String)
     suspend fun clearUserInfo()
     suspend fun getUserInfoDetail(
-        userId: String,
+        userProfileId: String,
         sportCode: String?,
     ): Result<UserProfileInfo>
     suspend fun getUserRecentReviewStats(
-        userId: String,
+        userProfileId: String,
         sportCode: String?,
     ): Result<GameReviewResult>
 }

@@ -12,15 +12,15 @@ class UserRemoteDataSourceImpl @Inject constructor(
 ) : UserRemoteDataSource {
 
     override suspend fun getUserInfoDetail(
-        userId: String,
+        userProfileId: String,
         sportCode: String?
     ): BaseResponse<GetUserInfoDetailResponse> =
-        userService.getUserInfoDetail(userId, sportCode)
+        userService.getUserInfoDetail(userProfileId, sportCode)
 
     override suspend fun getUserRecentReviewStats(
-        userId: String,
+        userProfileId: String,
         sportCode: String?
     ): BaseResponse<GetUserRecentReviewStatsResponse> =
-        userService.getUserRecentReviewStats(userId, sportCode)
+        userService.getUserRecentReviewStats(userProfileId, sportCode)
 
 }
