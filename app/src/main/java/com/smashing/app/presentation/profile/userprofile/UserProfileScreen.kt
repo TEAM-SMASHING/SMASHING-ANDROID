@@ -39,8 +39,12 @@ import com.smashing.app.R.string.profile_go_to_link
 import com.smashing.app.R.string.accept
 import com.smashing.app.R.string.skip
 import com.smashing.app.R.string.confirm
+import com.smashing.app.R.string.no
 import com.smashing.app.R.string.profile_not_found_title
 import com.smashing.app.R.string.profile_not_found_subtitle
+import com.smashing.app.R.string.profile_block_dialog_title
+import com.smashing.app.R.string.profile_block_dialog_subtitle
+import com.smashing.app.R.string.profile_block_dialog_confirm
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
@@ -266,12 +270,12 @@ private fun UserProfileScreen(
 
         if (showBlockDialog) {
             SmashingDialog(
-                title = "정말 차단하시겠습니까?",
+                title = stringResource(profile_block_dialog_title),
                 onDismissClick = { showBlockDialog = false },
-                subtitle = "차단 시 서로 프로필과 매칭에서\n보이지 않게 됩니다.",
+                subtitle = stringResource(profile_block_dialog_subtitle),
                 type = DialogStyle.DESTRUCTIVE,
-                confirmText = "차단하기",
-                dismissText = "아니요",
+                confirmText = stringResource(profile_block_dialog_confirm),
+                dismissText = stringResource(no),
                 onConfirmClick = {
                     showBlockDialog = false
                     onBlockClick()
