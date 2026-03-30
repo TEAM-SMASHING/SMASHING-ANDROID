@@ -70,11 +70,8 @@ fun Ranker(
             .fillMaxWidth()
     ) {
 
-        val sidePadding = SIDE_PADDING
-        val centerExtraWidth = RANKER_FIRST_EXTRA_WIDTH
-
-        val contentAreaWidth = maxWidth - sidePadding * 2 - centerExtraWidth
-        val firstWidth = contentAreaWidth * RANKER_FIRST_WIDTH_RATIO + centerExtraWidth
+        val contentAreaWidth = maxWidth - SIDE_PADDING * 2 - RANKER_FIRST_EXTRA_WIDTH
+        val firstWidth = contentAreaWidth * RANKER_FIRST_WIDTH_RATIO + RANKER_FIRST_EXTRA_WIDTH
         val otherWidth = contentAreaWidth * RANKER_OTHER_WIDTH_RATIO
 
         val onProfileClick: (String) -> Unit = { userId ->
@@ -90,7 +87,7 @@ fun Ranker(
             rankerType = FIRST,
             onProfileClick = onProfileClick,
             contentWidth = firstWidth,
-            sidePadding = sidePadding,
+            sidePadding = SIDE_PADDING,
             modifier = Modifier
                 .align(Alignment.BottomCenter),
         )
@@ -99,7 +96,7 @@ fun Ranker(
             rankerType = SECOND,
             onProfileClick = onProfileClick,
             contentWidth = otherWidth,
-            sidePadding = sidePadding,
+            sidePadding = SIDE_PADDING,
             modifier = Modifier
                 .align(Alignment.BottomStart),
         )
@@ -108,7 +105,7 @@ fun Ranker(
             rankerType = THIRD,
             onProfileClick = onProfileClick,
             contentWidth = otherWidth,
-            sidePadding = sidePadding,
+            sidePadding = SIDE_PADDING,
             modifier = Modifier
                 .align(Alignment.BottomEnd),
         )
