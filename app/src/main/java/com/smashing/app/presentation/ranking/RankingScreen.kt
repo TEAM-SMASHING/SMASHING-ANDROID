@@ -123,7 +123,7 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
-                userProfileId = uiState.userInfo?.userProfileId,
+                myProfileId = uiState.myRankInfo?.userProfileId,
                 navigateToProfile = navigateToProfile,
                 navigateToMyProfile = navigateToMyProfile,
             )
@@ -161,7 +161,7 @@ private fun RankingScreen(
                             tier = user.tier,
                             lp = user.lp,
                             onClick = {
-                                if (user.userProfileId != uiState.userInfo?.userProfileId) {
+                                if (user.userProfileId != uiState.myRankInfo?.userProfileId) {
                                     navigateToProfile(user.userProfileId)
                                 } else {
                                     navigateToMyProfile()
@@ -195,9 +195,9 @@ private fun RankingScreen(
 
 
         }
-        if (uiState.userInfo != null) {
+        if (uiState.myRankInfo != null) {
             MyRanking(
-                myRank = uiState.userInfo,
+                myRank = uiState.myRankInfo,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)

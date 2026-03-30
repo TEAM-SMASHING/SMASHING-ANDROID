@@ -60,7 +60,7 @@ private const val RANKER_OTHER_WIDTH_RATIO = 0.33f
 @Composable
 fun Ranker(
     rankerList: ImmutableList<UserRank>?,
-    userProfileId: String?,
+    myProfileId: String?,
     navigateToMyProfile: () -> Unit,
     navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -78,7 +78,7 @@ fun Ranker(
         val otherWidth = contentAreaWidth * RANKER_OTHER_WIDTH_RATIO
 
         val onProfileClick: (String) -> Unit = { userProfileId ->
-            if (userProfileId != userProfileId) {
+            if (userProfileId != myProfileId) {
                 navigateToProfile(userProfileId)
             } else {
                 navigateToMyProfile()
@@ -347,7 +347,7 @@ private fun RankerPreview_AllThree() {
                 color = colors.bgCanvas,
             ),
         navigateToProfile = {},
-        userProfileId = null,
+        myProfileId = null,
         navigateToMyProfile = {},
     )
 }
@@ -373,7 +373,7 @@ private fun RankerPreview_FirstAndSecond() {
             ),
         ).toImmutableList(),
         navigateToProfile = {},
-        userProfileId = null,
+        myProfileId = null,
         navigateToMyProfile = {},
     )
 }
@@ -384,7 +384,7 @@ private fun RankerPreview_Empty() {
     Ranker(
         rankerList = null,
         navigateToProfile = {},
-        userProfileId = null,
+        myProfileId = null,
         navigateToMyProfile = {},
     )
 }
