@@ -131,7 +131,7 @@ fun RegionDropdown(
             isDivided = isDivide,
             minWidthExtra = 23.dp,
             bgColor = colors.bgOverlay,
-            bolderColor = colors.borderSecondary,
+            borderColor = colors.borderSecondary,
         )
 
     }

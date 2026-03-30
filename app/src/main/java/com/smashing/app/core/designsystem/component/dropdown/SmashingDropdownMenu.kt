@@ -53,7 +53,7 @@ import kotlinx.collections.immutable.toImmutableList
  * @param isDivided 항목 사이에 구분선을 표시할지 여부 (기본값: true)
  * @param minWidthExtra 트리거 너비 기준 최소 너비에 추가할 값 (기본값: 0.dp)
  * @param bgColor 드롭다운 메뉴 배경 색상 (기본값: colors.bgSurface)
- * @param bolderColor 항목 사이 구분선 색상 (기본값: colors.borderPrimary)
+ * @param borderColor 항목 사이 구분선 색상 (기본값: colors.borderPrimary)
  */
 @Composable
 fun SmashingDropdownMenu(
@@ -69,7 +69,7 @@ fun SmashingDropdownMenu(
     isDivided: Boolean = true,
     minWidthExtra: Dp = 0.dp,
     bgColor: Color = colors.bgSurface,
-    bolderColor: Color = colors.borderPrimary,
+    borderColor: Color = colors.borderPrimary,
 ) {
     if (!isExpanded || items.isEmpty()) {
         return
@@ -116,7 +116,7 @@ fun SmashingDropdownMenu(
                 if (index < items.size - 1 && isDivided) {
                     HorizontalDivider(
                         modifier = Modifier.fillMaxWidth(),
-                        color = bolderColor,
+                        color = borderColor,
                         thickness = 1.dp,
                     )
                 }
