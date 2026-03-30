@@ -281,7 +281,7 @@ private fun HomeScreen(
                                 text = if (uiState.matchedUser != null) stringResource(
                                     home_close_matching_txt
                                 ) else stringResource(home_new_matching_txt),
-                                style = SmashingTheme.typography.md.medium16,
+                                style = SmashingTheme.typography.lg.semibold18,
                                 color = SmashingTheme.colors.txtPrimary,
                             )
                         }
