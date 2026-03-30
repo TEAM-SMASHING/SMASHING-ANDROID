@@ -86,7 +86,7 @@ private fun SearchInputScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .noRippleClickable(
-                                    onClick = { onSuggestionItemClick(item.userId) },
+                                    onClick = { onSuggestionItemClick(item.userProfileId) },
                                 )
                                 .padding(vertical = 12.dp)
                                 .padding(start = 16.dp),
