@@ -106,7 +106,7 @@ fun SmashingBottomSheet(
             modifier = Modifier
                 .padding(
                     top = 16.dp,
-                    bottom = 47.dp,
+                    bottom = 12.dp,
                 ),
         ) {
 
@@ -139,9 +139,8 @@ fun SmashingBottomSheet(
                                     ),
                         )
                         .padding(
-                            start = 16.dp,
-                            top = 17.dp,
-                            bottom = 17.dp,
+                            horizontal = 17.dp,
+                            vertical = 16.dp,
                         ),
                     color = itemTextColor(item) ?: colors.txtSecondary,
                     style = typography.sm.regular14,
@@ -161,6 +160,7 @@ fun SmashingBottomSheet(
                         .padding(horizontal = 16.dp),
                     isEnabled = selectedItem.isNotEmpty(),
                 )
+                Spacer(modifier = Modifier.height(35.dp))
             }
         }
     }
