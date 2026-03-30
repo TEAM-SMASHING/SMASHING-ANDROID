@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smashing.app.data.model.moderation.ReportSubmitResult
 import com.smashing.app.data.repository.api.ModerationRepository
-import com.smashing.app.presentation.report.navigation.ReportPage
 import com.smashing.app.data.type.ReportType
+import com.smashing.app.presentation.report.navigation.ReportPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +24,7 @@ class ReportViewModel @Inject constructor(
     private val moderationRepository: ModerationRepository,
 ) : ViewModel() {
 
-    private val reportedUserId = savedStateHandle.toRoute<ReportPage>().reportedUserId
+    private val reportedUserProfileId = savedStateHandle.toRoute<ReportPage>().reportedUserProfileId
 
     private val _uiState = MutableStateFlow(ReportContract.State())
     val uiState = _uiState.asStateFlow()
@@ -52,7 +52,7 @@ class ReportViewModel @Inject constructor(
                 null
             }
             moderationRepository.postReportUser(
-                reportedUserProfileId = reportedUserId,
+                reportedUserProfileId = reportedUserProfileId,
                 reportTypeCode = type.toString(),
                 reasonDetail = reasonDetail,
             ).let { result ->

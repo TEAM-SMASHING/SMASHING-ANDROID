@@ -41,8 +41,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.R.string.ranking_empty_title
-import com.smashing.app.R.string.ranking_title
 import com.smashing.app.R.string.ranking_tier_with_lp
+import com.smashing.app.R.string.ranking_title
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -123,7 +123,7 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
-                myUserId = uiState.userInfo?.userProfileId,
+                userProfileId = uiState.userInfo?.userProfileId,
                 navigateToProfile = navigateToProfile,
                 navigateToMyProfile = navigateToMyProfile,
             )
