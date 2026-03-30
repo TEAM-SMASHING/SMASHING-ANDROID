@@ -300,7 +300,6 @@ private fun HomeScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     CloseMatching(
-                        myProfileId = uiState.activeMyProfile.myProfileInfo.profileId,
                         myNickname = uiState.activeMyProfile.nickname,
                         matchedUser = uiState.matchedUser,
                         onClick = { matching ->
