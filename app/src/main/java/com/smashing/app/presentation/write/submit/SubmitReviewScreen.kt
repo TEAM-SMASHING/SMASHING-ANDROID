@@ -145,12 +145,14 @@ private fun SubmitReviewScreen(
             )
         }
 
-        // TODO 임시 기능, 결과 제출 예외 정책시 띄움(ex.HOST 가 아닌 경우)
         if (isConfirmDialogOpen) {
+            val submitFailMessage = (uiState.submitUiState as? SubmitContract.SubmitUiState.Failure)?.msg
+                    ?: "매칭 결과를 확인해주세요."
+
             SmashingDialog(
                 title = "경기 결과 제출 오류입니다.",
                 onDismissClick = onConfirmDialogDismiss,
-                subtitle = "매칭 결과를 확인해주세요.",
+                subtitle = submitFailMessage,
                 type = DialogStyle.CONFIRM,
                 confirmText = "확인",
                 onConfirmClick = onConfirmDialogClick,

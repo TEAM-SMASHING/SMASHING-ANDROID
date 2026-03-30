@@ -337,7 +337,7 @@ class MatchingViewModel @Inject constructor(
     private fun handleMatchingReceived(event: SseEvent.MatchingReceived) {
         val newMatching = ReceivedMatching(
             matchingId = event.matchingId,
-            profileId = event.requester.userId,
+            profileId = event.requester.profileId,
             nickname = event.requester.nickname,
             genderType = event.requester.genderType,
             tierType = event.requester.tierType,
@@ -358,7 +358,8 @@ class MatchingViewModel @Inject constructor(
 
     private fun handleGameUpdated(event: SseEvent.GameUpdated) {
         when (event.resultStatus) {
-            GameResultStatusType.RESULT_CONFIRMED -> {
+            GameResultStatusType.RESULT_CONFIRMED,
+            GameResultStatusType.CANCELED -> {
                 _uiState.update { currentState ->
                     val updatedList = currentState.acceptedList
                         .filter { it.gameId != event.gameId }

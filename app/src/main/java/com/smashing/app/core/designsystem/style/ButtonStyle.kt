@@ -65,7 +65,7 @@ enum class ButtonStyle {
 }
 
 @Composable
-fun GameResultStatusType.getMatchButtonColor() = when(this) {
+fun GameResultStatusType.getMatchButtonColor() = when (this) {
     GameResultStatusType.PENDING_RESULT -> SmashingBtnColor(
         backgroundColor = colors.btnBgPrimaryActive,
         textColor = colors.txtEmphasis,
@@ -91,20 +91,22 @@ fun GameResultStatusType.getMatchButtonColor() = when(this) {
         textColor = colors.btnTxtPrimaryDisabled,
     )
 
-    GameResultStatusType.UNKNOWN -> SmashingBtnColor(
+    GameResultStatusType.UNKNOWN,
+    GameResultStatusType.CANCELED -> SmashingBtnColor(
         backgroundColor = colors.btnBgPrimaryDisabled,
         textColor = colors.btnTxtPrimaryDisabled
     )
 }
 
 @Composable
-fun GameResultStatusType.getMatchButtonTitle() = when(this) {
+fun GameResultStatusType.getMatchButtonTitle() = when (this) {
     GameResultStatusType.PENDING_RESULT -> stringResource(matching_btn_write)
     GameResultStatusType.RESULT_REJECTED -> stringResource(matching_btn_rejected)
     GameResultStatusType.WAITING_CONFIRMATION -> stringResource(matching_btn_confirm)
     GameResultStatusType.PENDING_RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
     GameResultStatusType.RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
-    GameResultStatusType.UNKNOWN -> stringResource(matching_btn_unknown)
+    GameResultStatusType.UNKNOWN,
+    GameResultStatusType.CANCELED -> stringResource(matching_btn_unknown)
 }
 
 @Immutable

@@ -6,6 +6,7 @@ enum class GameResultStatusType {
     RESULT_CONFIRMED,
     RESULT_REJECTED,
     PENDING_RESULT_CONFIRMED,
+    CANCELED,
     UNKNOWN;
 
     companion object {

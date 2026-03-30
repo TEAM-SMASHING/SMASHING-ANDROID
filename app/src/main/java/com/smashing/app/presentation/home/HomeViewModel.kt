@@ -8,7 +8,6 @@ import com.smashing.app.data.repository.api.MatchingRepository
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.data.repository.api.RankingRepository
 import com.smashing.app.data.repository.api.SearchRepository
-import com.smashing.app.data.repository.api.UserRepository
 import com.smashing.app.data.type.GameResultStatusType
 import com.smashing.app.data.type.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -189,7 +188,8 @@ class HomeViewModel @Inject constructor(
         if (currentMatchedUser.gameId != event.gameId) return
 
         when (event.resultStatus) {
-            GameResultStatusType.RESULT_CONFIRMED -> {
+            GameResultStatusType.RESULT_CONFIRMED,
+            GameResultStatusType.CANCELED -> {
                 _uiState.update { it.copy(matchedUser = null) }
                 fetchMatchedUser()
             }

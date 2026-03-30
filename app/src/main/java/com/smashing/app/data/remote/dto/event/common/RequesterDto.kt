@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RequesterDto(
-    @SerialName("userId")
-    val userId: String,
+    @SerialName("requesterProfileId")
+    val requesterProfileId: String,
     @SerialName("nickname")
     val nickname: String,
     @SerialName("gender")
