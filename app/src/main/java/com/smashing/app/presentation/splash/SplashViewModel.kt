@@ -2,6 +2,7 @@ package com.smashing.app.presentation.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smashing.app.core.network.sse.SseManager
 import com.smashing.app.core.util.suspendRunCatching
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
 import com.smashing.app.data.remote.dto.auth.PostTokenReissueRequest
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val tokenDataSource: LocalTokenDataSource,
     private val authRepository: AuthRepository,
+    private val sseManager: SseManager,
 ) : ViewModel() {
 
     private val _sideEffect = MutableSharedFlow<SplashContract.SideEffect>()
@@ -40,6 +42,7 @@ class SplashViewModel @Inject constructor(
             reissueToken.await()
                 .onSuccess {
                     Timber.tag(AUTHORIZATION).d("자동 로그인 성공")
+                    sseManager.onUserLoggedIn() // TODO 임시 로직 추후 리팩 예정
                     _sideEffect.emit(NavigateToHome)
                 }
                 .onFailure { error ->

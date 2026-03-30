@@ -23,68 +23,11 @@ sealed interface SseEvent {
         val status: MatchingStatusType,
     ) : SseEvent
 
-    // 매칭 요청 알림
-    data class MatchingRequestNotification(
-        val notificationId: String,
-        val notificationType: NotificationType,
-        val notificationCreatedAt: String,
-        val matchingId: String,
-        val sportType: SportType,
-        val receiverProfileId: String,
-        val requester: UserSummary,
-    ) : SseEvent
-
-    // 매칭 수락 알림
-    data class MatchingAcceptNotification(
-        val notificationId: String,
-        val notificationType: NotificationType,
-        val notificationCreatedAt: String,
-        val matchingId: String,
-        val sportType: SportType,
-        val receiverProfileId: String,
-        val acceptor: UserSummary,
-    ) : SseEvent
-
     // 게임 상태 업데이트
     data class GameUpdated(
         val gameId: String,
         val submissionId: String?,
         val attemptNo: Int?,
         val resultStatus: GameResultStatusType,
-    ) : SseEvent
-
-    // 게임 결과 제출 알림
-    data class GameResultSubmittedNotification(
-        val notificationId: String,
-        val notificationType: NotificationType,
-        val notificationCreatedAt: String,
-        val sportType: SportType,
-        val receiverProfileId: String,
-        val gameId: String,
-        val submissionId: String,
-        val submitter: UserSummary,
-    ) : SseEvent
-
-    // 게임 결과 거절 알림
-    data class GameResultRejectedNotification(
-        val notificationId: String,
-        val notificationType: NotificationType,
-        val notificationCreatedAt: String,
-        val sportType: SportType,
-        val receiverProfileId: String,
-        val gameId: String,
-        val rejector: UserSummary,
-    ) : SseEvent
-
-    // 후기 수신 알림
-    data class ReviewReceivedNotification(
-        val notificationId: String,
-        val notificationType: NotificationType,
-        val notificationCreatedAt: String,
-        val sportType: SportType,
-        val receiverProfileId: String,
-        val gameId: String,
-        val reviewId: String,
-        val reviewer: UserSummary,
     ) : SseEvent
 }

@@ -10,8 +10,8 @@ data class MatchingReceivedDto(
     val type: String,
     @SerialName("matchingId")
     val matchingId: String,
-    @SerialName("sportId")
-    val sportId: Long,
+    @SerialName("sportCode")
+    val sportCode: String,
     @SerialName("receiverProfileId")
     val receiverProfileId: String,
     @SerialName("requester")
