@@ -44,9 +44,7 @@ fun SearchInputRoute(
         items = uiState.suggestions,
         searchState = viewModel.searchInputState,
         onBackClick = navigateToSearchMain,
-        onSuggestionItemClick = { userId ->
-            navigateToUserProfile(userId)
-        },
+        onSuggestionItemClick = navigateToUserProfile,
         modifier = modifier,
     )
 }

@@ -12,7 +12,7 @@ interface RankingContract {
         val totalRankingList: ImmutableList<UserRank> = persistentListOf(),
         val topRankingList: ImmutableList<UserRank> = persistentListOf(),
         val restRankingList: ImmutableList<UserRank> = persistentListOf(),
-        val userInfo: UserRank? = null,
+        val myRankInfo: UserRank? = null,
     )
 }
 
