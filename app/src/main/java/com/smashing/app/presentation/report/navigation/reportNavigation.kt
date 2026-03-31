@@ -12,9 +12,9 @@ import com.smashing.app.presentation.report.ReportRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToReport(
-    reportedUserId: String,
+    reportedUserProfileId: String,
     navOptions: NavOptions? = null,
-) = navigate(ReportPage(reportedUserId), navOptions)
+) = navigate(ReportPage(reportedUserProfileId), navOptions)
 
 fun NavGraphBuilder.reportGraph(
     innerPadding: PaddingValues,
@@ -30,5 +30,5 @@ fun NavGraphBuilder.reportGraph(
 
 @Serializable
 data class ReportPage(
-    val reportedUserId: String,
+    val reportedUserProfileId: String,
 ) : Route

@@ -26,9 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.smashing.app.R.drawable.img_dummy_versus
+import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.R.string.home_btn_go_to_matching_search
 import com.smashing.app.R.string.home_no_matching
-import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.core.designsystem.component.button.SmashingBaseButton
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.style.SmashingBtnColor
@@ -40,7 +40,6 @@ import com.smashing.app.data.model.matching.AcceptedMatching
 @Composable
 fun CloseMatching(
     myNickname: String,
-    myProfileId: String,
     onClick: (AcceptedMatching) -> Unit,
     modifier: Modifier = Modifier,
     matchedUser: AcceptedMatching? = null,
@@ -78,13 +77,11 @@ fun CloseMatching(
                 )
 
                 MatchedUserItem(
-                    userId = myProfileId,
                     nickname = myNickname,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
 
                 MatchedUserItem(
-                    userId = matchedUser.profileId,
                     nickname = matchedUser.nickname,
                     modifier = Modifier.align(Alignment.CenterEnd)
                 )
@@ -145,7 +142,6 @@ fun CloseMatching(
 
 @Composable
 private fun MatchedUserItem(
-    userId: String,
     nickname: String,
     modifier: Modifier = Modifier,
 ) {
