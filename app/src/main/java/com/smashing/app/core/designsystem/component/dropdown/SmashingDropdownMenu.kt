@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +51,9 @@ import kotlinx.collections.immutable.toImmutableList
  * @param itemAlignment 드롭다운 메뉴의 정렬 위치 (기본값: TopEnd)
  * @param offsetY 트리거 요소로부터의 수직 오프셋 (기본값: 10.dp)
  * @param isDivided 항목 사이에 구분선을 표시할지 여부 (기본값: true)
+ * @param minWidthExtra 트리거 너비 기준 최소 너비에 추가할 값 (기본값: 0.dp)
+ * @param bgColor 드롭다운 메뉴 배경 색상 (기본값: colors.bgSurface)
+ * @param borderColor 항목 사이 구분선 색상 (기본값: colors.borderPrimary)
  */
 @Composable
 fun SmashingDropdownMenu(
@@ -63,6 +67,9 @@ fun SmashingDropdownMenu(
     itemAlignment: Alignment = Alignment.TopEnd,
     offsetY: Dp = 10.dp,
     isDivided: Boolean = true,
+    minWidthExtra: Dp = 0.dp,
+    bgColor: Color = colors.bgSurface,
+    borderColor: Color = colors.borderPrimary,
 ) {
     if (!isExpanded || items.isEmpty()) {
         return
@@ -90,11 +97,11 @@ fun SmashingDropdownMenu(
         Column(
             modifier = modifier
                 .background(
-                    color = colors.bgSurface,
+                    color = bgColor,
                     shape = RoundedCornerShape(8.dp),
                 )
                 .wrapContentSize()
-                .widthIn(min = triggerWidth)
+                .widthIn(min = triggerWidth + minWidthExtra)
                 .width(IntrinsicSize.Max),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,7 +116,7 @@ fun SmashingDropdownMenu(
                 if (index < items.size - 1 && isDivided) {
                     HorizontalDivider(
                         modifier = Modifier.fillMaxWidth(),
-                        color = colors.borderPrimary,
+                        color = borderColor,
                         thickness = 1.dp,
                     )
                 }

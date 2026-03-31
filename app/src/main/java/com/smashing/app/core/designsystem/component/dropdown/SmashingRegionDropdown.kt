@@ -48,7 +48,9 @@ import kotlinx.collections.immutable.toImmutableList
  * @param onClick 지역 항목이 클릭되었을 때 호출되는 콜백 (선택된 지역 이름을 전달)
  * @param onRegionChange "지역 선택" 추가 항목이 클릭되었을 때 호출되는 콜백 (지역 선택 화면으로 이동하는 등의 동작)
  * @param modifier 적용할 Modifier
- * @param isDivide 항목 사이에 구분선을 표시할지 여부 (기본값: false)
+ * @param isDivide 항목 사이에 구분선을 표시할지 여부 (기본값: true)
+ *
+ * 내부적으로 드롭다운 메뉴의 최소 너비를 트리거 너비보다 추가로 넓혀(현재 23.dp) 표시합니다.
  */
 @Composable
 fun RegionDropdown(
@@ -57,7 +59,7 @@ fun RegionDropdown(
     onClick: (String) -> Unit,
     onRegionChange: () -> Unit,
     modifier: Modifier = Modifier,
-    isDivide: Boolean = false,
+    isDivide: Boolean = true,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -127,6 +129,9 @@ fun RegionDropdown(
             onDismiss = { isExpanded = false },
             itemAlignment = Alignment.TopStart,
             isDivided = isDivide,
+            minWidthExtra = 23.dp,
+            bgColor = colors.bgOverlay,
+            borderColor = colors.borderSecondary,
         )
 
     }
