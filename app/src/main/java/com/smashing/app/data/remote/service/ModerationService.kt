@@ -8,7 +8,7 @@ import retrofit2.http.POST
 
 interface ModerationService {
 
-    @POST("/api/v1/reports")
+    @POST("/api/v1/users/report")
     suspend fun postReportUser(
         @Body request: ReportUserRequest,
     ): BaseResponse<Unit>
