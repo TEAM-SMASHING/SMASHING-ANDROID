@@ -31,7 +31,7 @@
     <string name="ranking_empty_title">아직 동네 랭커가 없어요.</string>
 
     <!--Card  -->
-    <string name="record">기록</string>
+    <string name="record">전적</string>
     <string name="review">후기</string>
     <string name="accept">수락</string>
     <string name="skip">건너뛰기</string>
