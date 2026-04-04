@@ -318,7 +318,7 @@
     <string name="home_new_matching_txt">새로운 매칭을 잡아볼까요?</string>
 
     <!--RegionChange -->
-    <string name="region_change_title">지역 변경</string>
+    <string name="region_change_title">내 지역 변경</string>
     <string name="region_change_description">활동 지역을 변경해주세요</string>
     <string name="region_change_subtitle">서울 소재 주소만 입력 가능해요</string>
     <string name="region_change_placeholder">주소를 검색해주세요</string>
