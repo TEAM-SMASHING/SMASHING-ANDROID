@@ -136,7 +136,6 @@ fun SmashingRankingItem(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        //TODO 티어 뱃지 TierType 사용해 이미지 수정 예정
         Image(
             painter = painterResource(id = tier.img()),
             contentDescription = null,
