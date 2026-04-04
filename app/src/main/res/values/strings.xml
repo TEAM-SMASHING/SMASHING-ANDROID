@@ -323,6 +323,7 @@
     <string name="region_change_subtitle">서울 소재 주소만 입력 가능해요</string>
     <string name="region_change_placeholder">주소를 검색해주세요</string>
     <string name="region_change_dialog_title">지역을 변경하시겠습니까?</string>
+    <string name="region_change_confirm">변경하기</string>
 
     <!--Withdraw -->
     <string name="withdraw_title_question">정말 탈퇴하시겠습니까?</string>

@@ -30,11 +30,11 @@ import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.done
 import com.smashing.app.R.string.no
 import com.smashing.app.R.string.region_change_description
+import com.smashing.app.R.string.region_change_confirm
 import com.smashing.app.R.string.region_change_dialog_title
 import com.smashing.app.R.string.region_change_placeholder
 import com.smashing.app.R.string.region_change_subtitle
 import com.smashing.app.R.string.region_change_title
-import com.smashing.app.R.string.yes
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -182,7 +182,7 @@ fun RegionChangeScreen(
             title = stringResource(region_change_dialog_title),
             onDismissClick = { showDialog = false },
             type = DialogStyle.ALERT,
-            confirmText = stringResource(yes),
+            confirmText = stringResource(region_change_confirm),
             dismissText = stringResource(no),
             onConfirmClick = {
                 showDialog = false
