@@ -83,7 +83,6 @@ fun RegionChangeRoute(
         navigateToRegion = viewModel::updateToRegion,
         onConfirmRegionChange = viewModel::changeRegion,
         navigateUp = navigateUp,
-        navigateToHome = navigateUp
     )
 }
 
@@ -92,7 +91,6 @@ fun RegionChangeScreen(
     navigateToRegion: () -> Unit,
     navigateUp: () -> Unit,
     onConfirmRegionChange: () -> Unit,
-    navigateToHome: () -> Unit,
     uiState: RegionChangeContract.State,
     modifier: Modifier = Modifier,
 ) {
@@ -165,7 +163,7 @@ fun RegionChangeScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             SmashingButton(
-                buttonStyle = if (uiState.selectedRegion != null) ButtonStyle.PRIMARY else ButtonStyle.DISABLED_ACTIVE,
+                buttonStyle = if (uiState.selectedRegion != null) ButtonStyle.PRIMARY else ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = stringResource(done),
                 onClick = {
                     showDialog = true
@@ -205,7 +203,6 @@ private fun RegionChangeScreenPreview_Empty() {
             ),
             navigateToRegion = {},
             navigateUp = {},
-            navigateToHome = {},
             onConfirmRegionChange = {}
         )
     }
@@ -226,7 +223,6 @@ private fun RegionChangeScreenPreview_Selected() {
             ),
             navigateToRegion = {},
             navigateUp = {},
-            navigateToHome = {},
             onConfirmRegionChange = {},
         )
     }
