@@ -178,7 +178,7 @@ private fun WithdrawScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             SmashingButton(
-                buttonStyle = if (uiState.isWithdrawalAgreed) ButtonStyle.WARNING else ButtonStyle.DISABLED_ACTIVE,
+                buttonStyle = if (uiState.isWithdrawalAgreed) ButtonStyle.WARNING else ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = stringResource(withdraw_btn_withdraw),
                 onClick = onWithdrawClick,
                 modifier = Modifier
