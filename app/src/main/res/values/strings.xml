@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
     <!--Common  -->
     <string name="home">홈</string>
     <string name="matching_search">매칭 탐색</string>
