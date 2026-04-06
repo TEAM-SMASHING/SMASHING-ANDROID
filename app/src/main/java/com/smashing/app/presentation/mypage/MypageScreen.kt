@@ -167,7 +167,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = onLogoutClick)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -185,7 +185,7 @@ private fun MyPageScreen(
                         .noRippleClickable(onClick = onWithDrawClick)
                 )
             }
-            Spacer(modifier = Modifier.height(26.dp))
+            Spacer(modifier = Modifier.height(31.dp))
             HorizontalDivider(
                 thickness = 2.dp,
                 color = colors.bgSurface,
@@ -204,7 +204,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = { onPolicyPrivacyClick(policyPrivacyLink) })
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(mypage_policy_terms),
                 style = typography.sm.medium14,
@@ -212,7 +212,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = { onPolicyTermsClick(policyTermsLink) })
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(11.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
