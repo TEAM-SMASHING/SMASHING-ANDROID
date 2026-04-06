@@ -385,6 +385,9 @@
 
     <!--Notice  -->
     <string name="notice">알림</string>
+    <string name="notice_change_dialog_title">%s 종목을 변경하시겠어요?</string>
+    <string name="notice_change_dialog_subtitle">종목은 내 프로필에서 재변경 가능합니다.</string>
+    <string name="notice_change_dialog_change_btn">변경하기</string>
 
     <!--Profile-->
     <string name="profile_add_sports_label">+</string>
@@ -444,7 +447,6 @@
     <string name="mypage_info_version">버전 정보</string>
     <string name="mypage_my_profile">내 프로필</string>
     <string name="mypage_logout_message">정말 로그아웃하시겠습니까?</string>
-
 
 
 </resources>
