@@ -362,14 +362,14 @@
     <string name="matching_btn_canceled">매칭 취소 대기 중</string>
     <string name="matching_btn_unknown">unknown</string>
     <string name="matching_receive">받은 매칭</string>
-    <string name="matching_receive_empty">받은 요청이 없어요</string>
+    <string name="matching_receive_empty">받은 매칭이 없어요</string>
     <string name="matching_send">보낸 매칭</string>
-    <string name="matching_send_empty">보낸 요청이 없어요</string>
+    <string name="matching_send_empty">보낸 매칭이 없어요</string>
     <string name="matching_confirm">매칭 확정</string>
     <string name="matching_confirm_empty">확정된 매칭이 없어요</string>
     <string name="matching_empty_description">직접 경쟁을 신청해보세요!</string>
     <string name="matching_send_dialog_title">요청을 취소하시겠습니까?</string>
-    <string name="matching_send_dialog_description">요청 취소 시 24시간 후 재요청할 수 있습니다.</string>
+    <string name="matching_send_dialog_description">취소 시 24시간 후 재요청할 수 있습니다.</string>
     <string name="matching_accepted_dialog_title">정말 매칭을 취소하시겠습니까?</string>
     <string name="matching_accepted_dialog_description">매칭 상대도 동의해야 취소가 완료됩니다.</string>
 
