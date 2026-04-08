@@ -159,7 +159,7 @@ private fun MyPageScreen(
                 style = typography.xs.medium12,
                 color = colors.txtTertiary,
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(21.dp))
             Text(
                 text = stringResource(mypage_account_logout),
                 style = typography.sm.medium14,
@@ -167,7 +167,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = onLogoutClick)
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(11.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -196,7 +196,7 @@ private fun MyPageScreen(
                 style = typography.xs.medium12,
                 color = colors.txtTertiary,
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(18.dp))
             Text(
                 text = stringResource(mypage_policy_privacy),
                 style = typography.sm.medium14,
@@ -204,7 +204,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = { onPolicyPrivacyClick(policyPrivacyLink) })
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(11.dp))
             Text(
                 text = stringResource(mypage_policy_terms),
                 style = typography.sm.medium14,
