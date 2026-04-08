@@ -44,9 +44,7 @@ fun SearchInputRoute(
         items = uiState.suggestions,
         searchState = viewModel.searchInputState,
         onBackClick = navigateToSearchMain,
-        onSuggestionItemClick = { userId ->
-            navigateToUserProfile(userId)
-        },
+        onSuggestionItemClick = navigateToUserProfile,
         modifier = modifier,
     )
 }
@@ -86,7 +84,7 @@ private fun SearchInputScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .noRippleClickable(
-                                    onClick = { onSuggestionItemClick(item.userId) },
+                                    onClick = { onSuggestionItemClick(item.userProfileId) },
                                 )
                                 .padding(vertical = 12.dp)
                                 .padding(start = 16.dp),

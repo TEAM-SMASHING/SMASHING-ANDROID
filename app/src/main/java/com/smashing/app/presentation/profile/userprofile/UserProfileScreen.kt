@@ -39,8 +39,12 @@ import com.smashing.app.R.string.profile_go_to_link
 import com.smashing.app.R.string.accept
 import com.smashing.app.R.string.skip
 import com.smashing.app.R.string.confirm
+import com.smashing.app.R.string.no
 import com.smashing.app.R.string.profile_not_found_title
 import com.smashing.app.R.string.profile_not_found_subtitle
+import com.smashing.app.R.string.profile_block_dialog_title
+import com.smashing.app.R.string.profile_block_dialog_subtitle
+import com.smashing.app.R.string.profile_block_dialog_confirm
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.toast.LocalToastTrigger
@@ -58,6 +62,7 @@ import com.smashing.app.presentation.profile.component.ProfileTierBox
 import com.smashing.app.presentation.profile.component.ReviewCard
 import com.smashing.app.presentation.profile.component.UserProfileCard
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateToAllReview
+import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.NavigateUp
 import com.smashing.app.presentation.profile.userprofile.UserProfileContract.SideEffect.ShowToast
 import com.smashing.app.presentation.profile.userprofile.type.UserProfileMenu
 import kotlinx.collections.immutable.ImmutableList
@@ -71,7 +76,6 @@ fun UserProfileRoute(
     navigateToReview: (String?) -> Unit,
     navigateToSentMatching: () -> Unit,
     navigateToReport: () -> Unit,
-    onBlockClick: () -> Unit,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserProfileViewModel = hiltViewModel(),
@@ -85,7 +89,8 @@ fun UserProfileRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToAllReview -> navigateToReview(sideEffect.userId)
+                    is NavigateToAllReview -> navigateToReview(sideEffect.userProfileId)
+                    is NavigateUp -> navigateUp()
                     is ShowToast -> show.invoke(sideEffect.content)
                 }
             }
@@ -102,7 +107,7 @@ fun UserProfileRoute(
         onConfirmClick = navigateToSentMatching,
         onDialogDismissClick = viewModel::dismissDialog,
         navigateToReport = navigateToReport,
-        onBlockClick = onBlockClick,
+        onBlockClick = viewModel::postBlockUser,
         modifier = modifier,
     )
 }
@@ -265,12 +270,12 @@ private fun UserProfileScreen(
 
         if (showBlockDialog) {
             SmashingDialog(
-                title = "정말 차단하시겠습니까?",
+                title = stringResource(profile_block_dialog_title),
                 onDismissClick = { showBlockDialog = false },
-                subtitle = "차단 시 서로 프로필과 매칭에서\n보이지 않게 됩니다.",
+                subtitle = stringResource(profile_block_dialog_subtitle),
                 type = DialogStyle.DESTRUCTIVE,
-                confirmText = "차단하기",
-                dismissText = "아니요",
+                confirmText = stringResource(profile_block_dialog_confirm),
+                dismissText = stringResource(no),
                 onConfirmClick = {
                     showBlockDialog = false
                     onBlockClick()

@@ -15,6 +15,7 @@ import com.smashing.app.presentation.login.navigation.Login
 import com.smashing.app.presentation.main.component.MainTab
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.search.navigation.navigateToSearch
+import com.smashing.app.presentation.splash.navigation.Splash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +27,7 @@ class MainAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope,
 ) {
-    val startDestination = Login
+    val startDestination = Splash
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }

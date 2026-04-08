@@ -247,7 +247,7 @@ class MatchingViewModel @Inject constructor(
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.profileId,
+                        opponentUserProfileId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = true,
                     )
@@ -259,7 +259,7 @@ class MatchingViewModel @Inject constructor(
                 _sideEffect.emit(
                     SideEffect.NavigateToSubmit(
                         gameId = matching.gameId,
-                        opponentUserId = matching.profileId,
+                        opponentUserProfileId = matching.profileId,
                         opponentNickname = matching.nickname,
                         isFirstAttempt = false,
                         submissionId = submissionId,
@@ -337,7 +337,7 @@ class MatchingViewModel @Inject constructor(
     private fun handleMatchingReceived(event: SseEvent.MatchingReceived) {
         val newMatching = ReceivedMatching(
             matchingId = event.matchingId,
-            profileId = event.requester.userId,
+            profileId = event.requester.profileId,
             nickname = event.requester.nickname,
             genderType = event.requester.genderType,
             tierType = event.requester.tierType,
@@ -358,7 +358,8 @@ class MatchingViewModel @Inject constructor(
 
     private fun handleGameUpdated(event: SseEvent.GameUpdated) {
         when (event.resultStatus) {
-            GameResultStatusType.RESULT_CONFIRMED -> {
+            GameResultStatusType.RESULT_CONFIRMED,
+            GameResultStatusType.CANCELED -> {
                 _uiState.update { currentState ->
                     val updatedList = currentState.acceptedList
                         .filter { it.gameId != event.gameId }
@@ -366,20 +367,6 @@ class MatchingViewModel @Inject constructor(
                     currentState.copy(
                         acceptedList = updatedList,
                         acceptedUiState = if (updatedList.isEmpty()) MatchingUiState.Empty else MatchingUiState.Success,
-                    )
-                }
-            }
-
-            GameResultStatusType.CANCELED -> {
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        acceptedList = currentState.acceptedList.map { matching ->
-                            if (matching.gameId == event.gameId) {
-                                matching.copy(resultStatus = GameResultStatusType.CANCELED)
-                            } else {
-                                matching
-                            }
-                        }.toImmutableList()
                     )
                 }
             }

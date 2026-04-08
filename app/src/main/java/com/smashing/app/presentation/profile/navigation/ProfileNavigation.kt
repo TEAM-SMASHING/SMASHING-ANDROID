@@ -1,16 +1,13 @@
 package com.smashing.app.presentation.profile.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.smashing.app.core.common.navigation.MainTabRoute
+import androidx.navigation.toRoute
 import com.smashing.app.core.common.navigation.Route
-import com.smashing.app.core.extension.clearBackStackWithRestoreNavOptions
 import com.smashing.app.presentation.addsports.navigation.navigateToAddSports
 import com.smashing.app.presentation.matching.navigation.navigateToMatching
 import com.smashing.app.presentation.matching.type.MatchingType
@@ -26,16 +23,16 @@ fun NavController.navigateToMyProfile(
 ) = navigate(Profile, navOptions)
 
 fun NavController.navigateToUserProfile(
-    userId: String,
+    userProfileId: String,
     sportCode: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(UserProfile(userId, sportCode), navOptions)
+) = navigate(UserProfile(userProfileId, sportCode), navOptions)
 
 fun NavController.navigateToReview(
-    userId: String? = null,
+    userProfileId: String? = null,
     sportCode: String? = null,
     navOptions: NavOptions? = null,
-) = navigate(Review(userId, sportCode), navOptions)
+) = navigate(Review(userProfileId, sportCode), navOptions)
 
 
 fun NavGraphBuilder.profileGraph(
@@ -59,7 +56,8 @@ fun NavGraphBuilder.profileGraph(
             )
         }
 
-        composable<UserProfile> {
+        composable<UserProfile> { backStackEntry ->
+            val userProfile = backStackEntry.toRoute<UserProfile>()
             UserProfileRoute(
                 navigateToReview = navController::navigateToReview,
                 navigateUp = navController::navigateUp,
@@ -68,8 +66,9 @@ fun NavGraphBuilder.profileGraph(
                         initTab = MatchingType.SEND,
                     )
                 },
-                navigateToReport = navController::navigateToReport,
-                onBlockClick = { /* TODO: 차단 API 연동 */ },
+                navigateToReport = {
+                    navController.navigateToReport(userProfile.userProfileId)
+                },
             )
         }
 
@@ -89,13 +88,13 @@ data object MyProfile : Route
 
 @Serializable
 data class UserProfile(
-    val userId: String,
+    val userProfileId: String,
     val sportCode: String?,
 ) : Route
 
 @Serializable
 data class Review(
-    val userId: String?,
+    val userProfileId: String?,
     val sportCode: String?,
     val isUser: Boolean = true,
 ) : Route

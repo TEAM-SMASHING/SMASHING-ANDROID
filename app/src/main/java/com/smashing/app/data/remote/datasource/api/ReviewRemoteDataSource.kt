@@ -13,7 +13,7 @@ interface ReviewRemoteDataSource {
     ): BaseResponse<GetReviewDetailResponse>
 
     suspend fun getUserRecentReviewList(
-        userId: String,
+        userProfileId: String,
         sportCode: String?,
         cursor: String?,
         size: Int?,

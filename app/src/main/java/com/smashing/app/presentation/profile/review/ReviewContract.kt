@@ -13,7 +13,7 @@ class ReviewContract {
         val loadState: ReviewUiState = ReviewUiState.Idle,
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
-        val userId: String = "",
+        val userProfileId: String = "",
         val isMatchingRequest: Boolean = true,
         val isCompeteButtonEnabled: Boolean = false,
         val reviewCursor: Cursor = Cursor(),

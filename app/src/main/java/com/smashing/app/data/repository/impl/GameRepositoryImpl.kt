@@ -8,12 +8,15 @@ import com.smashing.app.data.model.game.GameSubmissionDetail
 import com.smashing.app.data.model.game.SubmissionConfirm
 import com.smashing.app.data.remote.datasource.api.GameRemoteDataSource
 import com.smashing.app.data.remote.dto.requireData
+import com.smashing.app.data.remote.dto.toNetworkErrorResponse
 import com.smashing.app.data.repository.api.GameRepository
 import com.smashing.app.data.type.ConfirmDenyType
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(
     private val gameRemoteDataSource: GameRemoteDataSource,
+    private val json: Json,
 ) : GameRepository {
 
     override suspend fun postGameSubmission(
@@ -23,7 +26,10 @@ class GameRepositoryImpl @Inject constructor(
         gameRemoteDataSource.postGameSubmission(
             gameId = gameId,
             request = gameSubmission.toRequest(),
-        ).requireData().reviewId
+        ).requireData().submissionId
+    }.recoverCatching { error ->
+        val networkError = error.toNetworkErrorResponse(json)
+        throw IllegalStateException(networkError.message)
     }
 
     override suspend fun postConfirmSubmission(

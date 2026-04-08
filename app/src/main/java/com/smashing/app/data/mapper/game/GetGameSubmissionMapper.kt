@@ -9,16 +9,15 @@ fun GetGameSubmissionResponse.toModel(): GameSubmissionDetail {
         submitter = GameSubmissionDetail.SubmitterInfo(
             userId = submitter.userId,
             nickname = submitter.nickname,
+            profileId = submitter.profileId,
         ),
         winner = GameSubmissionDetail.PlayerInfo(
-            userId = winner.userId,
+            profileId = winner.profileId,
             nickname = winner.nickname,
-            score = winner.score,
         ),
         loser = GameSubmissionDetail.PlayerInfo(
-            userId = loser.userId,
+            profileId = loser.profileId,
             nickname = loser.nickname,
-            score = loser.score,
         ),
     )
 }

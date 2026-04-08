@@ -53,6 +53,7 @@ import com.smashing.app.presentation.region.navigation.regionGraph
 import com.smashing.app.presentation.report.navigation.reportGraph
 import com.smashing.app.presentation.search.navigation.searchGraph
 import com.smashing.app.presentation.signup.navigation.signUpGraph
+import com.smashing.app.presentation.splash.navigation.splashGraph
 import com.smashing.app.presentation.tierinfo.navigation.tierInfoGraph
 import com.smashing.app.presentation.withdraw.navigation.withdrawGraph
 import com.smashing.app.presentation.write.navigation.writeGraph
@@ -188,6 +189,10 @@ private fun MainNavHost(
         navController = appState.navController,
         startDestination = appState.startDestination,
     ) {
+        splashGraph(
+            navController = appState.navController,
+        )
+
         homeGraph(
             navController = appState.navController,
             innerPadding = innerPadding,

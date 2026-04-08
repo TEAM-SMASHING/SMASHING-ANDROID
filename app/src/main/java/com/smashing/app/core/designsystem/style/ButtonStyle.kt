@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.smashing.app.R.string.matching_btn_canceled
 import com.smashing.app.R.string.matching_btn_confirm
 import com.smashing.app.R.string.matching_btn_rejected
 import com.smashing.app.R.string.matching_btn_unknown
@@ -66,7 +65,7 @@ enum class ButtonStyle {
 }
 
 @Composable
-fun GameResultStatusType.getMatchButtonColor() = when(this) {
+fun GameResultStatusType.getMatchButtonColor() = when (this) {
     GameResultStatusType.PENDING_RESULT -> SmashingBtnColor(
         backgroundColor = colors.btnBgPrimaryActive,
         textColor = colors.txtEmphasis,
@@ -87,31 +86,27 @@ fun GameResultStatusType.getMatchButtonColor() = when(this) {
         textColor = colors.txtEmphasis,
     )
 
-    GameResultStatusType.CANCELED -> SmashingBtnColor(
-        backgroundColor = colors.btnBgPrimaryDisabled,
-        textColor = colors.btnTxtPrimaryDisabled
-    )
-
     GameResultStatusType.RESULT_CONFIRMED -> SmashingBtnColor(
         backgroundColor = colors.btnBgPrimaryDisabled,
         textColor = colors.btnTxtPrimaryDisabled,
     )
 
-    GameResultStatusType.UNKNOWN -> SmashingBtnColor(
+    GameResultStatusType.UNKNOWN,
+    GameResultStatusType.CANCELED -> SmashingBtnColor(
         backgroundColor = colors.btnBgPrimaryDisabled,
         textColor = colors.btnTxtPrimaryDisabled
     )
 }
 
 @Composable
-fun GameResultStatusType.getMatchButtonTitle() = when(this) {
+fun GameResultStatusType.getMatchButtonTitle() = when (this) {
     GameResultStatusType.PENDING_RESULT -> stringResource(matching_btn_write)
     GameResultStatusType.RESULT_REJECTED -> stringResource(matching_btn_rejected)
     GameResultStatusType.WAITING_CONFIRMATION -> stringResource(matching_btn_confirm)
     GameResultStatusType.PENDING_RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
-    GameResultStatusType.CANCELED -> stringResource(matching_btn_canceled)
     GameResultStatusType.RESULT_CONFIRMED -> stringResource(matching_btn_waiting_confirm)
-    GameResultStatusType.UNKNOWN -> stringResource(matching_btn_unknown)
+    GameResultStatusType.UNKNOWN,
+    GameResultStatusType.CANCELED -> stringResource(matching_btn_unknown)
 }
 
 @Immutable

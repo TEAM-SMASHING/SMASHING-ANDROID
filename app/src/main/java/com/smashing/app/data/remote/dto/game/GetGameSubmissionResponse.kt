@@ -20,15 +20,15 @@ data class GetGameSubmissionResponse(
         val userId: String,
         @SerialName("nickname")
         val nickname: String,
+        @SerialName("profileId")
+        val profileId: String,
     )
 
     @Serializable
     data class UserSummary(
-        @SerialName("userId")
-        val userId: String,
+        @SerialName("profileId")
+        val profileId: String,
         @SerialName("nickname")
         val nickname: String,
-        @SerialName("score")
-        val score: Int,
     )
 }

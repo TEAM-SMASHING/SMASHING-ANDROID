@@ -15,24 +15,24 @@ class UserRepositoryImpl @Inject constructor(
     private val localUserDataSource: LocalUserDataSource,
     private val userRemoteDataSource: UserRemoteDataSource,
 ) : UserRepository {
-    override suspend fun getUserId(): String? =
-        localUserDataSource.getUserId()
+    override suspend fun getUserProfileId(): String? =
+        localUserDataSource.getUserProfileId()
 
     override suspend fun getUserNickname(): String? =
         localUserDataSource.getUserNickName()
 
-    override suspend fun setUserInfo(userId: String, userNickname: String) =
-        localUserDataSource.setUserInfo(userId, userNickname)
+    override suspend fun setUserInfo(userProfileId: String, userNickname: String) =
+        localUserDataSource.setUserInfo(userProfileId, userNickname)
 
     override suspend fun clearUserInfo() =
         localUserDataSource.clearUserInfo()
 
     override suspend fun getUserInfoDetail(
-        userId: String,
+        userProfileId: String,
         sportCode: String?
     ): Result<UserProfileInfo> =
         suspendRunCatching {
-            userRemoteDataSource.getUserInfoDetail(userId, sportCode).requireData()
+            userRemoteDataSource.getUserInfoDetail(userProfileId, sportCode).requireData()
                 .toUserProfileInfo()
         }.recoverCatching { exception ->
             if (exception is retrofit2.HttpException) {
@@ -53,11 +53,11 @@ class UserRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getUserRecentReviewStats(
-        userId: String,
+        userProfileId: String,
         sportCode: String?
     ): Result<GameReviewResult> =
         suspendRunCatching {
-            userRemoteDataSource.getUserRecentReviewStats(userId, sportCode).requireData()
+            userRemoteDataSource.getUserRecentReviewStats(userProfileId, sportCode).requireData()
                 .toGameReviewResult()
         }
 

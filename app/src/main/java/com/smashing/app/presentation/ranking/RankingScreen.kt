@@ -41,8 +41,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.img_profile
 import com.smashing.app.R.string.ranking_empty_title
-import com.smashing.app.R.string.ranking_title
 import com.smashing.app.R.string.ranking_tier_with_lp
+import com.smashing.app.R.string.ranking_title
 import com.smashing.app.core.designsystem.component.image.UrlImage
 import com.smashing.app.core.designsystem.component.ranking.SmashingRankingItem
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -123,7 +123,7 @@ private fun RankingScreen(
 
             Ranker(
                 rankerList = uiState.topRankingList,
-                myUserId = uiState.userInfo?.userProfileId,
+                myProfileId = uiState.myRankInfo?.userProfileId,
                 navigateToProfile = navigateToProfile,
                 navigateToMyProfile = navigateToMyProfile,
             )
@@ -161,7 +161,7 @@ private fun RankingScreen(
                             tier = user.tier,
                             lp = user.lp,
                             onClick = {
-                                if (user.userProfileId != uiState.userInfo?.userProfileId) {
+                                if (user.userProfileId != uiState.myRankInfo?.userProfileId) {
                                     navigateToProfile(user.userProfileId)
                                 } else {
                                     navigateToMyProfile()
@@ -195,9 +195,9 @@ private fun RankingScreen(
 
 
         }
-        if (uiState.userInfo != null) {
+        if (uiState.myRankInfo != null) {
             MyRanking(
-                myRank = uiState.userInfo,
+                myRank = uiState.myRankInfo,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)

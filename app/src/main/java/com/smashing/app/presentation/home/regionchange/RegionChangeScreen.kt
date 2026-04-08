@@ -30,11 +30,11 @@ import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R.string.done
 import com.smashing.app.R.string.no
 import com.smashing.app.R.string.region_change_description
+import com.smashing.app.R.string.region_change_confirm
 import com.smashing.app.R.string.region_change_dialog_title
 import com.smashing.app.R.string.region_change_placeholder
 import com.smashing.app.R.string.region_change_subtitle
 import com.smashing.app.R.string.region_change_title
-import com.smashing.app.R.string.yes
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -83,7 +83,6 @@ fun RegionChangeRoute(
         navigateToRegion = viewModel::updateToRegion,
         onConfirmRegionChange = viewModel::changeRegion,
         navigateUp = navigateUp,
-        navigateToHome = navigateUp
     )
 }
 
@@ -92,7 +91,6 @@ fun RegionChangeScreen(
     navigateToRegion: () -> Unit,
     navigateUp: () -> Unit,
     onConfirmRegionChange: () -> Unit,
-    navigateToHome: () -> Unit,
     uiState: RegionChangeContract.State,
     modifier: Modifier = Modifier,
 ) {
@@ -165,7 +163,7 @@ fun RegionChangeScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             SmashingButton(
-                buttonStyle = if (uiState.selectedRegion != null) ButtonStyle.PRIMARY else ButtonStyle.DISABLED_ACTIVE,
+                buttonStyle = if (uiState.selectedRegion != null) ButtonStyle.PRIMARY else ButtonStyle.PRIMARY_WITH_DISABLED,
                 text = stringResource(done),
                 onClick = {
                     showDialog = true
@@ -184,7 +182,7 @@ fun RegionChangeScreen(
             title = stringResource(region_change_dialog_title),
             onDismissClick = { showDialog = false },
             type = DialogStyle.ALERT,
-            confirmText = stringResource(yes),
+            confirmText = stringResource(region_change_confirm),
             dismissText = stringResource(no),
             onConfirmClick = {
                 showDialog = false
@@ -205,7 +203,6 @@ private fun RegionChangeScreenPreview_Empty() {
             ),
             navigateToRegion = {},
             navigateUp = {},
-            navigateToHome = {},
             onConfirmRegionChange = {}
         )
     }
@@ -226,7 +223,6 @@ private fun RegionChangeScreenPreview_Selected() {
             ),
             navigateToRegion = {},
             navigateUp = {},
-            navigateToHome = {},
             onConfirmRegionChange = {},
         )
     }

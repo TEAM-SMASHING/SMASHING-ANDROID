@@ -18,7 +18,7 @@ class UserProfileContract {
         val selectedSportProfileId: String = "",
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
-        val userId: String = "",
+        val userProfileId: String = "",
         val isMatchingRequest: Boolean = true,
         val userProfileCursor: Cursor = Cursor(),
         val isDialogVisible: Boolean = false,
@@ -44,7 +44,8 @@ class UserProfileContract {
     }
 
     sealed interface SideEffect {
-        data class NavigateToAllReview(val userId: String?) : SideEffect
+        data class NavigateToAllReview(val userProfileId: String?) : SideEffect
+        data object NavigateUp : SideEffect
         data class ShowToast(val content: String) : SideEffect
     }
 }

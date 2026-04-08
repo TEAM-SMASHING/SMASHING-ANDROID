@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.smashing.app.R.string.blank_label
 import com.smashing.app.core.designsystem.style.DialogStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
@@ -124,7 +126,7 @@ private fun SmashingDialogContent(
 
                 DialogStyle.ALERT -> {
                     SmashingAlertButton(
-                        text = dismissText ?: "",
+                        text = dismissText ?: stringResource(blank_label),
                         onClick = onDismissClick,
                         containerColor = SmashingTheme.colors.btnBgTertiaryActive,
                         modifier = Modifier.weight(1f),
@@ -139,7 +141,7 @@ private fun SmashingDialogContent(
 
                 DialogStyle.DESTRUCTIVE -> {
                     SmashingAlertButton(
-                        text = dismissText ?: "",
+                        text = dismissText ?: stringResource(blank_label),
                         onClick = onDismissClick,
                         containerColor = SmashingTheme.colors.btnBgTertiaryActive,
                         modifier = Modifier.weight(1f),

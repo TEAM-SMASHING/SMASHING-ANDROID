@@ -1,8 +1,8 @@
 package com.smashing.app.data.model.game
 
 data class GameSubmission(
-    val winnerUserId: String,
-    val loserUserId: String,
+    val winnerProfileId: String,
+    val loserProfileId: String,
     val review: Review?,
 ) {
     data class Review(

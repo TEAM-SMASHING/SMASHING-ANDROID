@@ -146,10 +146,13 @@ private fun SubmitReviewScreen(
         }
 
         if (isConfirmDialogOpen) {
+            val submitFailMessage = (uiState.submitUiState as? SubmitContract.SubmitUiState.Failure)?.msg
+                    ?: "매칭 결과를 확인해주세요."
+
             SmashingDialog(
-                title = "매칭 상대가 작성 완료한 경기입니다",
+                title = "경기 결과 제출 오류입니다.",
                 onDismissClick = onConfirmDialogDismiss,
-                subtitle = "매칭 결과를 확인해주세요.",
+                subtitle = submitFailMessage,
                 type = DialogStyle.CONFIRM,
                 confirmText = "확인",
                 onConfirmClick = onConfirmDialogClick,

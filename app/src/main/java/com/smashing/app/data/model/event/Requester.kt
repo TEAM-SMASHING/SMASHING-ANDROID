@@ -4,7 +4,7 @@ import com.smashing.app.data.type.GenderType
 import com.smashing.app.data.type.TierType
 
 data class Requester(
-    val userId: String,
+    val profileId: String,
     val nickname: String,
     val genderType: GenderType,
     val tierType: TierType,

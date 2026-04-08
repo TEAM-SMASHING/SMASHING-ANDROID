@@ -60,7 +60,7 @@ private const val RANKER_OTHER_WIDTH_RATIO = 0.33f
 @Composable
 fun Ranker(
     rankerList: ImmutableList<UserRank>?,
-    myUserId: String?,
+    myProfileId: String?,
     navigateToMyProfile: () -> Unit,
     navigateToProfile: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -70,16 +70,13 @@ fun Ranker(
             .fillMaxWidth()
     ) {
 
-        val sidePadding = SIDE_PADDING
-        val centerExtraWidth = RANKER_FIRST_EXTRA_WIDTH
-
-        val contentAreaWidth = maxWidth - sidePadding * 2 - centerExtraWidth
-        val firstWidth = contentAreaWidth * RANKER_FIRST_WIDTH_RATIO + centerExtraWidth
+        val contentAreaWidth = maxWidth - SIDE_PADDING * 2 - RANKER_FIRST_EXTRA_WIDTH
+        val firstWidth = contentAreaWidth * RANKER_FIRST_WIDTH_RATIO + RANKER_FIRST_EXTRA_WIDTH
         val otherWidth = contentAreaWidth * RANKER_OTHER_WIDTH_RATIO
 
-        val onProfileClick: (String) -> Unit = { userId ->
-            if (userId != myUserId) {
-                navigateToProfile(userId)
+        val onProfileClick: (String) -> Unit = { userProfileId ->
+            if (userProfileId != myProfileId) {
+                navigateToProfile(userProfileId)
             } else {
                 navigateToMyProfile()
             }
@@ -90,7 +87,7 @@ fun Ranker(
             rankerType = FIRST,
             onProfileClick = onProfileClick,
             contentWidth = firstWidth,
-            sidePadding = sidePadding,
+            sidePadding = SIDE_PADDING,
             modifier = Modifier
                 .align(Alignment.BottomCenter),
         )
@@ -99,7 +96,7 @@ fun Ranker(
             rankerType = SECOND,
             onProfileClick = onProfileClick,
             contentWidth = otherWidth,
-            sidePadding = sidePadding,
+            sidePadding = SIDE_PADDING,
             modifier = Modifier
                 .align(Alignment.BottomStart),
         )
@@ -108,7 +105,7 @@ fun Ranker(
             rankerType = THIRD,
             onProfileClick = onProfileClick,
             contentWidth = otherWidth,
-            sidePadding = sidePadding,
+            sidePadding = SIDE_PADDING,
             modifier = Modifier
                 .align(Alignment.BottomEnd),
         )
@@ -347,7 +344,7 @@ private fun RankerPreview_AllThree() {
                 color = colors.bgCanvas,
             ),
         navigateToProfile = {},
-        myUserId = null,
+        myProfileId = null,
         navigateToMyProfile = {},
     )
 }
@@ -373,7 +370,7 @@ private fun RankerPreview_FirstAndSecond() {
             ),
         ).toImmutableList(),
         navigateToProfile = {},
-        myUserId = null,
+        myProfileId = null,
         navigateToMyProfile = {},
     )
 }
@@ -384,7 +381,7 @@ private fun RankerPreview_Empty() {
     Ranker(
         rankerList = null,
         navigateToProfile = {},
-        myUserId = null,
+        myProfileId = null,
         navigateToMyProfile = {},
     )
 }
