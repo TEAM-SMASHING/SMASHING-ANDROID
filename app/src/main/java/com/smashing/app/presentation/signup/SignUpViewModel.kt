@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.smashing.app.core.network.sse.SseManager
+import com.smashing.app.core.network.token.AuthManager
 import com.smashing.app.core.util.TextInputValidator
 import com.smashing.app.data.remote.dto.auth.PostOpenchatValidRequest
 import com.smashing.app.data.remote.dto.auth.PostSignUpRequest
@@ -33,7 +33,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val authRepository: AuthRepository,
-    private val sseManager: SseManager,
+    private val authManager: AuthManager,
 ) : ViewModel() {
 
     private val kakaoId = savedStateHandle.toRoute<SignUp>().kakaoId
@@ -197,7 +197,7 @@ class SignUpViewModel @Inject constructor(
             )
             authRepository.postSignUp(request = request)
                 .onSuccess {
-                    sseManager.onUserLoggedIn()
+                    authManager.onUserLoggedIn()
                     updateCurrentStep()
                 }
                 .onFailure { error ->

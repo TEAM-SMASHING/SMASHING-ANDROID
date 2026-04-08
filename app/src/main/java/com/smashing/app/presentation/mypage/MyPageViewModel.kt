@@ -2,7 +2,7 @@ package com.smashing.app.presentation.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.network.sse.SseManager
+import com.smashing.app.core.network.token.AuthManager
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.presentation.mypage.MyPageContract.MyPageUiState
 import com.smashing.app.presentation.mypage.MyPageContract.State
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val myRepository: MyRepository,
-    private val sseManager: SseManager,
+    private val authManager: AuthManager,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(State())
     val uiState: StateFlow<State> = _uiState.asStateFlow()
@@ -67,7 +67,7 @@ class MyPageViewModel @Inject constructor(
                             logoutLoadState = MyPageUiState.Success,
                         )
                     }
-                    sseManager.onUserLoggedOut() // TODO 임시 로직 추후 리팩 예정
+                    authManager.onUserLoggedOut()
                     _sideEffect.emit(MyPageUiState.MyPageSideEffect.NavigateToLogin)
                 }
                 .onFailure { error ->

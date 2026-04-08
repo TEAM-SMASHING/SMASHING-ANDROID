@@ -46,6 +46,7 @@ class TokenAuthenticator @Inject constructor(
 
         if (refreshToken == null) {
             handleReissueFailure()
+            return null
         } else {
             authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
                 .onSuccess {
@@ -70,7 +71,7 @@ class TokenAuthenticator @Inject constructor(
 
     private suspend fun handleReissueFailure() {
         tokenDataStore.clearTokens()
-        authManager.emitAuthEvent()
+        authManager.onAuthFailure()
     }
 
     private fun responseCount(response: Response): Int {

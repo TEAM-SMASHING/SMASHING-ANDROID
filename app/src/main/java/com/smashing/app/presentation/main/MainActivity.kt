@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 val appState = rememberMainAppState()
 
                 LaunchedEffect(Unit) {
-                    authManager.authEvent.collect {
+                    authManager.forceLogoutEvent.collect {
                         appState.navController.navigateToLogin(
                             appState.navController.clearBackStackNavOptions()
                         )

@@ -1,11 +1,10 @@
 package com.smashing.app.core.network.sse
 
 import com.smashing.app.core.common.di.ApplicationScope
+import com.smashing.app.core.network.token.AuthManager
 import com.smashing.app.data.repository.api.EventRepository
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -16,34 +15,26 @@ import javax.inject.Singleton
 @Singleton
 class SseManager @Inject constructor(
     private val eventRepository: EventRepository,
+    private val authManager: AuthManager,
     @ApplicationScope private val scope: CoroutineScope,
 ) {
-    private var isConnected = false
+    private var shouldMaintainConnection = false
+    private var isAppInForeground = false
     private val mutex = Mutex()
 
-    private val _isUserLoggedIn = MutableStateFlow(false)
-    val isUserLoggedIn: StateFlow<Boolean> = _isUserLoggedIn.asStateFlow()
-
-    fun onUserLoggedIn() {
+    init {
         scope.launch {
-            mutex.withLock {
-                isConnected = true
-                _isUserLoggedIn.value = true
-
-                Timber.tag(TAG).d("User logged in - connecting SSE")
-                eventRepository.connect()
-            }
-        }
-    }
-
-    fun onUserLoggedOut() {
-        scope.launch {
-            mutex.withLock {
-                isConnected = false
-                _isUserLoggedIn.value = false
-
-                Timber.tag(TAG).d("User logged out - disconnecting SSE")
-                eventRepository.disconnect()
+            authManager.isUserLoggedIn.collectLatest { isLoggedIn ->
+                mutex.withLock {
+                    shouldMaintainConnection = isLoggedIn
+                    if (!isLoggedIn) {
+                        Timber.tag(TAG).d("Auth state changed to logged out - disconnecting SSE")
+                        eventRepository.disconnect()
+                    } else if (isAppInForeground) {
+                        Timber.tag(TAG).d("Auth state changed to logged in - connecting SSE")
+                        eventRepository.connect()
+                    }
+                }
             }
         }
     }
@@ -51,9 +42,10 @@ class SseManager @Inject constructor(
     fun connect() {
         scope.launch {
             mutex.withLock {
-                if (!isConnected) {
+                isAppInForeground = true
+                if (!shouldMaintainConnection) {
                     Timber.tag(TAG).d("Connect - user not logged in, skipping")
-                    return@launch
+                    return@withLock
                 }
 
                 Timber.tag(TAG).d("Connect - starting SSE")
@@ -65,6 +57,7 @@ class SseManager @Inject constructor(
     fun disconnect() {
         scope.launch {
             mutex.withLock {
+                isAppInForeground = false
                 Timber.tag(TAG).d("Disconnect - stopping SSE")
                 eventRepository.disconnect()
             }
