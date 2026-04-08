@@ -57,18 +57,18 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        sseManager.connect()
+        sseManager.onAppForegrounded()
     }
 
     override fun onStop() {
         super.onStop()
-        sseManager.disconnect()
+        sseManager.onAppBackgrounded()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         if (!isChangingConfigurations) {
-            sseManager.disconnect()
+            sseManager.onAppBackgrounded()
         }
     }
 }

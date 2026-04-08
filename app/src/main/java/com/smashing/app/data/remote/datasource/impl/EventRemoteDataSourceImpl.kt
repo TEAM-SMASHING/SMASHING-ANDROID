@@ -29,7 +29,7 @@ class EventRemoteDataSourceImpl @Inject constructor(
 
     private val _connectionState =
         MutableStateFlow<SseConnectionState>(SseConnectionState.Disconnected)
-    val connectionState: StateFlow<SseConnectionState> = _connectionState.asStateFlow()
+    override val connectionState: StateFlow<SseConnectionState> = _connectionState.asStateFlow()
 
     @Volatile
     private var eventSource: EventSource? = null
@@ -69,7 +69,11 @@ class EventRemoteDataSourceImpl @Inject constructor(
                 t: Throwable?,
                 response: Response?
             ) {
-                _connectionState.value = SseConnectionState.Error(t, 0)
+                _connectionState.value = SseConnectionState.Error(
+                    error = t,
+                    retryAttempt = 0,
+                    statusCode = response?.code,
+                )
                 eventSource.cancel()
                 this@EventRemoteDataSourceImpl.eventSource = null
             }

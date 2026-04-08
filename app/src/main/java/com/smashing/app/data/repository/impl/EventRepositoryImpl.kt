@@ -1,6 +1,7 @@
 package com.smashing.app.data.repository.impl
 
 import com.smashing.app.core.common.di.ApplicationScope
+import com.smashing.app.core.network.sse.SseConnectionState
 import com.smashing.app.data.mapper.event.toEvent
 import com.smashing.app.data.model.event.SseEvent
 import com.smashing.app.data.remote.datasource.api.EventRemoteDataSource
@@ -12,6 +13,7 @@ import com.smashing.app.data.type.SseEventType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.json.Json
@@ -31,6 +33,7 @@ class EventRepositoryImpl @Inject constructor(
         extraBufferCapacity = 64,
     )
     override val events: SharedFlow<SseEvent> = _events
+    override val connectionState: StateFlow<SseConnectionState> = eventDataSource.connectionState
 
     init {
         eventDataSource.rawEvents
