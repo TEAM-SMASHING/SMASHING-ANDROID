@@ -159,7 +159,7 @@ private fun MyPageScreen(
                 style = typography.xs.medium12,
                 color = colors.txtTertiary,
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(21.dp))
             Text(
                 text = stringResource(mypage_account_logout),
                 style = typography.sm.medium14,
@@ -167,7 +167,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = onLogoutClick)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(11.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -185,7 +185,7 @@ private fun MyPageScreen(
                         .noRippleClickable(onClick = onWithDrawClick)
                 )
             }
-            Spacer(modifier = Modifier.height(26.dp))
+            Spacer(modifier = Modifier.height(31.dp))
             HorizontalDivider(
                 thickness = 2.dp,
                 color = colors.bgSurface,
@@ -196,7 +196,7 @@ private fun MyPageScreen(
                 style = typography.xs.medium12,
                 color = colors.txtTertiary,
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(18.dp))
             Text(
                 text = stringResource(mypage_policy_privacy),
                 style = typography.sm.medium14,
@@ -204,7 +204,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = { onPolicyPrivacyClick(policyPrivacyLink) })
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(11.dp))
             Text(
                 text = stringResource(mypage_policy_terms),
                 style = typography.sm.medium14,
@@ -212,7 +212,7 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .noRippleClickable(onClick = { onPolicyTermsClick(policyTermsLink) })
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(11.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -236,9 +236,9 @@ private fun MyPageScreen(
 }
 
 private const val policyPrivacyLink =
-    "https://elated-piccolo-63b.notion.site/30b4556d60d18092b22ad0e23a84eee2?pvs=143"
-private const val policyTermsLink =
     "https://elated-piccolo-63b.notion.site/30b4556d60d18015a556ed889292a6e4?pvs=143"
+private const val policyTermsLink =
+    "https://elated-piccolo-63b.notion.site/30b4556d60d18092b22ad0e23a84eee2?pvs=143"
 private const val versionLink =
     "https://elated-piccolo-63b.notion.site/30b4556d60d18010bb2aff85c555cd9e?pvs=143"
 
