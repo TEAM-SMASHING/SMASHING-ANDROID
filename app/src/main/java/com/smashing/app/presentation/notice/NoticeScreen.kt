@@ -21,6 +21,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.smashing.app.R
+import com.smashing.app.R.string.no
+import com.smashing.app.R.string.notice_change_dialog_change_btn
+import com.smashing.app.R.string.notice_change_dialog_subtitle
+import com.smashing.app.R.string.notice_change_dialog_title
 import com.smashing.app.core.designsystem.component.appicon.AppIcon
 import com.smashing.app.core.designsystem.component.dialog.SmashingDialog
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
@@ -30,8 +34,10 @@ import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.core.extension.onBottomReached
 import com.smashing.app.data.model.notification.Notification
+import com.smashing.app.data.type.SportType
 import com.smashing.app.presentation.matching.type.MatchingType
 import com.smashing.app.presentation.notice.component.NoticeItem
+
 
 @Composable
 fun NoticeRoute(
@@ -136,14 +142,16 @@ private fun NoticeScreen(
             )
 
             if (uiState.isChangeDialogVisible) {
-                val sportName = uiState.targetChangeSport.sportType.sportName
+                val sport = uiState.targetChangeSport.sportType
+                val sportText = sport.sportName + if (sport == SportType.BADMINTON) "으로" else "로"
+
                 SmashingDialog(
-                    title = "${sportName}로 종목을 변경하시겠어요?",
+                    title = stringResource(notice_change_dialog_title, sportText),
                     onDismissClick = onDismissChangeProfile,
-                    subtitle = "종목은 재변경 가능합니다.",
+                    subtitle = stringResource(notice_change_dialog_subtitle),
                     type = DialogStyle.ALERT,
-                    confirmText = "변경하기",
-                    dismissText = "아니요",
+                    confirmText = stringResource(notice_change_dialog_change_btn),
+                    dismissText = stringResource(no),
                     onConfirmClick = onConfirmChangeProfile,
                 )
             }
