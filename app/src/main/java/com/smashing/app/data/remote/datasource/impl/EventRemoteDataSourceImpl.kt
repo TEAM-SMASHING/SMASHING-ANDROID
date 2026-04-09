@@ -33,61 +33,70 @@ class EventRemoteDataSourceImpl @Inject constructor(
 
     @Volatile
     private var eventSource: EventSource? = null
+    private val eventSourceLock = Any()
 
     override fun connect() {
-        if (eventSource != null) {
-            return
-        }
-
-        val request = Request.Builder()
-            .url(SSE_URL)
-            .build()
-
-        eventSource = eventSourceFactory.newEventSource(request, object : EventSourceListener() {
-            override fun onOpen(eventSource: EventSource, response: Response) {
-                _connectionState.value = SseConnectionState.Connected
+        synchronized(eventSourceLock) {
+            if (eventSource != null) {
+                return
             }
 
-            override fun onEvent(
-                eventSource: EventSource,
-                id: String?,
-                type: String?,
-                data: String
-            ) {
-                val eventName = type ?: return
+            val request = Request.Builder()
+                .url(SSE_URL)
+                .build()
 
-                _rawEvents.tryEmit(
-                    RawEventResponse(
-                        eventName = eventName,
-                        data = data,
+            eventSource = eventSourceFactory.newEventSource(request, object : EventSourceListener() {
+                override fun onOpen(eventSource: EventSource, response: Response) {
+                    _connectionState.value = SseConnectionState.Connected
+                }
+
+                override fun onEvent(
+                    eventSource: EventSource,
+                    id: String?,
+                    type: String?,
+                    data: String
+                ) {
+                    val eventName = type ?: return
+
+                    _rawEvents.tryEmit(
+                        RawEventResponse(
+                            eventName = eventName,
+                            data = data,
+                        )
                     )
-                )
-            }
+                }
 
-            override fun onFailure(
-                eventSource: EventSource,
-                t: Throwable?,
-                response: Response?
-            ) {
-                _connectionState.value = SseConnectionState.Error(
-                    error = t,
-                    retryAttempt = 0,
-                    statusCode = response?.code,
-                )
-                eventSource.cancel()
-                this@EventRemoteDataSourceImpl.eventSource = null
-            }
+                override fun onFailure(
+                    eventSource: EventSource,
+                    t: Throwable?,
+                    response: Response?
+                ) {
+                    _connectionState.value = SseConnectionState.Error(
+                        error = t,
+                        retryAttempt = 0,
+                        statusCode = response?.code,
+                    )
+                    eventSource.cancel()
+                    synchronized(eventSourceLock) {
+                        this@EventRemoteDataSourceImpl.eventSource = null
+                    }
+                }
 
-            override fun onClosed(eventSource: EventSource) {
-                this@EventRemoteDataSourceImpl.eventSource = null
-                _connectionState.value = SseConnectionState.Disconnected
-            }
-        })
+                override fun onClosed(eventSource: EventSource) {
+                    synchronized(eventSourceLock) {
+                        this@EventRemoteDataSourceImpl.eventSource = null
+                    }
+                    _connectionState.value = SseConnectionState.Disconnected
+                }
+            })
+        }
     }
 
     override fun disconnect() {
-        eventSource?.cancel()
-        eventSource = null
+        synchronized(eventSourceLock) {
+            eventSource?.cancel()
+            eventSource = null
+        }
         _connectionState.value = SseConnectionState.Disconnected
     }
 
