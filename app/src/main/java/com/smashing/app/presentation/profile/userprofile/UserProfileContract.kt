@@ -19,7 +19,7 @@ class UserProfileContract {
         val gameReview: ImmutableList<GameReview> = persistentListOf(),
         val gameReviewResult: GameReviewResult = GameReviewResult(),
         val userProfileId: String = "",
-        val isMatchingRequest: Boolean = true,
+        val isMatchingPossible: Boolean = true,
         val userProfileCursor: Cursor = Cursor(),
         val isDialogVisible: Boolean = false,
         val isUserNotFound: Boolean = false,

@@ -219,8 +219,10 @@ class UserProfileViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         loadState = UserProfileUiState.Success,
+                        //isMatchingPossible = false
                     )
                 }
+                fetchProfileInfo()
             }.onFailure { exception ->
                 _uiState.update {
                     it.copy(

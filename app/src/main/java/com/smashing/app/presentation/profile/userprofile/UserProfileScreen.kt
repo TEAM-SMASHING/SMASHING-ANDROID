@@ -171,7 +171,7 @@ private fun UserProfileScreen(
                     loseCount = uiState.activeProfile.loseCount,
                     reviewCount = uiState.userProfileInfo.reviewCount,
                     onCompeteClick = onCompeteClick,
-                    isCompeteEnabled = uiState.isChallengeable,
+                    isCompeteEnabled = uiState.isChallengeable && uiState.isMatchingPossible,
                 )
 
                 if (uiState.isDialogVisible) {
