@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 class AuthManagerImpl @Inject constructor() : AuthManager {
@@ -15,7 +14,9 @@ class AuthManagerImpl @Inject constructor() : AuthManager {
      * 로그아웃 전환(forceLogoutEvent emit)은 최초 1회만 허용한다.
      * 사용자가 다시 로그인하면 false로 리셋한다.
      */
-    private val authFailureHandled = AtomicBoolean(false)
+    private val stateLock = Any()
+
+    private var authFailureHandled = false
 
     private val _isUserLoggedIn = MutableStateFlow(false)
     override val isUserLoggedIn = _isUserLoggedIn.asStateFlow()
@@ -25,20 +26,18 @@ class AuthManagerImpl @Inject constructor() : AuthManager {
     )
     override val forceLogoutEvent = _forceLogoutEvent.asSharedFlow()
 
-    override fun onUserLoggedIn() {
-        authFailureHandled.set(false)
+    override fun onUserLoggedIn() = synchronized(stateLock) {
+        authFailureHandled = false
         _isUserLoggedIn.value = true
     }
 
-    override fun onUserLoggedOut() {
+    override fun onUserLoggedOut() = synchronized(stateLock) {
         _isUserLoggedIn.value = false
     }
 
-    override fun onAuthFailure() {
-        if (!authFailureHandled.compareAndSet(false, true)) {
-            return
-        }
-
+    override fun onAuthFailure() = synchronized(stateLock) {
+        if (authFailureHandled) return@synchronized
+        authFailureHandled = true
         _isUserLoggedIn.value = false
         _forceLogoutEvent.tryEmit(Unit)
     }
