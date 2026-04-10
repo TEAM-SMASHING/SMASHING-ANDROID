@@ -62,11 +62,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         super.onStop()
-        sseManager.onAppBackgrounded()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         if (!isChangingConfigurations) {
             sseManager.onAppBackgrounded()
         }
