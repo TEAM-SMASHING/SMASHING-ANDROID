@@ -20,13 +20,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.smashing.app.R.drawable.ic_thumbs_down_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_double_lg
 import com.smashing.app.R.drawable.ic_thumbs_up_lg
-import com.smashing.app.R.string.review
 import com.smashing.app.R.string.confirm
 import com.smashing.app.R.string.confirm_review_arrived_with_nickname
+import com.smashing.app.R.string.review
 import com.smashing.app.core.designsystem.component.button.SmashingButton
 import com.smashing.app.core.designsystem.component.topbar.SmashingDefaultTopBar
-import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.state.TopBarState
+import com.smashing.app.core.designsystem.style.ButtonStyle
 import com.smashing.app.core.designsystem.theme.SmashingAndroidTheme
 import com.smashing.app.core.designsystem.theme.SmashingTheme
 import com.smashing.app.data.type.ReviewRatingType
@@ -43,7 +43,6 @@ fun ConfirmReviewRoute(
 
     ConfirmReviewScreen(
         uiState = uiState,
-        onBackClick = navigateUp,
         onConfirmClick = navigateUp,
         modifier = modifier,
     )
@@ -52,7 +51,6 @@ fun ConfirmReviewRoute(
 @Composable
 private fun ConfirmReviewScreen(
     uiState: ConfirmReviewContract.State,
-    onBackClick: () -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -126,7 +124,6 @@ private fun ConfirmReviewScreenPreview() {
                 reviewText = "매너가 좋으셨습니다. 다음에 또 해요!",
                 tags = persistentListOf("시간 약속을 잘 지켜요", "경기 매너가 좋아요"),
             ),
-            onBackClick = {},
             onConfirmClick = {},
         )
     }
