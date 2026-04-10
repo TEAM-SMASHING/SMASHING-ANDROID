@@ -37,58 +37,9 @@ class EventRemoteDataSourceImpl @Inject constructor(
 
     override fun connect() {
         synchronized(eventSourceLock) {
-            if (eventSource != null) {
-                return
-            }
-
-            val request = Request.Builder()
-                .url(SSE_URL)
-                .build()
-
-            eventSource = eventSourceFactory.newEventSource(request, object : EventSourceListener() {
-                override fun onOpen(eventSource: EventSource, response: Response) {
-                    _connectionState.value = SseConnectionState.Connected
-                }
-
-                override fun onEvent(
-                    eventSource: EventSource,
-                    id: String?,
-                    type: String?,
-                    data: String
-                ) {
-                    val eventName = type ?: return
-
-                    _rawEvents.tryEmit(
-                        RawEventResponse(
-                            eventName = eventName,
-                            data = data,
-                        )
-                    )
-                }
-
-                override fun onFailure(
-                    eventSource: EventSource,
-                    t: Throwable?,
-                    response: Response?
-                ) {
-                    _connectionState.value = SseConnectionState.Error(
-                        error = t,
-                        retryAttempt = 0,
-                        statusCode = response?.code,
-                    )
-                    eventSource.cancel()
-                    synchronized(eventSourceLock) {
-                        this@EventRemoteDataSourceImpl.eventSource = null
-                    }
-                }
-
-                override fun onClosed(eventSource: EventSource) {
-                    synchronized(eventSourceLock) {
-                        this@EventRemoteDataSourceImpl.eventSource = null
-                    }
-                    _connectionState.value = SseConnectionState.Disconnected
-                }
-            })
+            if (eventSource != null) return
+            val request = Request.Builder().url(SSE_URL).build()
+            eventSource = eventSourceFactory.newEventSource(request, SseListener())
         }
     }
 
@@ -96,8 +47,56 @@ class EventRemoteDataSourceImpl @Inject constructor(
         synchronized(eventSourceLock) {
             eventSource?.cancel()
             eventSource = null
+
+            _connectionState.value = SseConnectionState.Disconnected
         }
-        _connectionState.value = SseConnectionState.Disconnected
+    }
+
+    private inner class SseListener : EventSourceListener() {
+        override fun onOpen(eventSource: EventSource, response: Response) {
+            synchronized(eventSourceLock) {
+                if (!isCurrentSource(eventSource)) return
+                _connectionState.value = SseConnectionState.Connected
+            }
+        }
+
+        override fun onEvent(
+            eventSource: EventSource,
+            id: String?,
+            type: String?,
+            data: String,
+        ) {
+            if (!isCurrentSource(eventSource)) return
+            val eventName = type ?: return
+            _rawEvents.tryEmit(RawEventResponse(eventName = eventName, data = data))
+        }
+
+        override fun onFailure(
+            eventSource: EventSource,
+            t: Throwable?,
+            response: Response?,
+        ) {
+            synchronized(eventSourceLock) {
+                if (!isCurrentSource(eventSource)) return
+                this@EventRemoteDataSourceImpl.eventSource = null
+                _connectionState.value = SseConnectionState.Error(
+                    error = t,
+                    statusCode = response?.code,
+                )
+            }
+        }
+
+        override fun onClosed(eventSource: EventSource) {
+            synchronized(eventSourceLock) {
+                if (!isCurrentSource(eventSource)) return
+                this@EventRemoteDataSourceImpl.eventSource = null
+                _connectionState.value = SseConnectionState.Disconnected
+            }
+        }
+    }
+
+    private fun isCurrentSource(source: EventSource): Boolean {
+        return this.eventSource === source
     }
 
     companion object {

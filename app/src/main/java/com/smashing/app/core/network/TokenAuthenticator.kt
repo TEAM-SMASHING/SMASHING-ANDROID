@@ -37,8 +37,7 @@ class TokenAuthenticator @Inject constructor(
                 .build()
         }
 
-        val newAccessToken = tokenReissueUseCase(previousAccessToken = oldAccessToken)
-            .getOrElse { return null }
+        val newAccessToken = tokenReissueUseCase().getOrElse { return null }
 
         return response.request.newBuilder()
             .header(AUTHORIZATION, "$BEARER_SUFFIX $newAccessToken")
