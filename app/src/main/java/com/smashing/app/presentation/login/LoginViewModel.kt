@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
                     sseManager.onUserLoggedIn()
                     _sideEffect.emit(NavigateToHome)
                 } else {
-                    _sideEffect.emit(NavigateToSignUp(it.kakaoId))
+                    _sideEffect.emit(NavigateToSignUp(it.socialId))
                 }
                 Timber.tag("KakaoLogin").d("로그인 성공 $token")
             }

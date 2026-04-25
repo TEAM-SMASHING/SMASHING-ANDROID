@@ -50,7 +50,7 @@ fun LoginRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
-                    is NavigateToSignUp -> navigateToSignUp(sideEffect.kakaoId)
+                    is NavigateToSignUp -> navigateToSignUp(sideEffect.socialId)
                 }
             }
     }
