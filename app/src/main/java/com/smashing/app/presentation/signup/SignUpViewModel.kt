@@ -188,6 +188,7 @@ class SignUpViewModel @Inject constructor(
             && selectedSkill != null && selectedRegion != null) {
             val request = PostSignUpRequest(
                 socialId = socialId,
+                provider = KAKAO_PROVIDER,
                 nickname = nickNameState.text.toString(),
                 gender = selectedGender.name,
                 openChatUrl = openChatState.text.toString(),
@@ -208,6 +209,7 @@ class SignUpViewModel @Inject constructor(
 
     companion object SignUpConstants {
         private const val NETWORK_DEBOUNCE = 500L
+        private const val KAKAO_PROVIDER = "KAKAO"
         private const val INVALID_NICKNAME_FORMAT = "특수문자는 사용할 수 없습니다."
         private const val VALID_NICKNAME_FORMAT = "사용 가능한 닉네임입니다."
         private const val DUPLICATE_NICKNAME = "이미 존재하는 닉네임입니다."
