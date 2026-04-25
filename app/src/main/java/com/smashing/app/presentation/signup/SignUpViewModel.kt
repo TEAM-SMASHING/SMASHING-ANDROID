@@ -36,7 +36,7 @@ class SignUpViewModel @Inject constructor(
     private val sseManager: SseManager,
 ) : ViewModel() {
 
-    private val kakaoId = savedStateHandle.toRoute<SignUp>().kakaoId
+    private val socialId = savedStateHandle.toRoute<SignUp>().socialId
 
     private val _uiState = MutableStateFlow(SignUpContract.State())
     val uiState = _uiState.asStateFlow()
@@ -187,7 +187,7 @@ class SignUpViewModel @Inject constructor(
         if (selectedGender != null && selectedSport != null
             && selectedSkill != null && selectedRegion != null) {
             val request = PostSignUpRequest(
-                kakaoId = kakaoId,
+                socialId = socialId,
                 nickname = nickNameState.text.toString(),
                 gender = selectedGender.name,
                 openChatUrl = openChatState.text.toString(),

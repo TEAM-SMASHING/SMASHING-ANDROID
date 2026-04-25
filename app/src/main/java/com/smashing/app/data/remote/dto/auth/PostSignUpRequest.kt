@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostSignUpRequest(
-    @SerialName("kakaoId")
-    val kakaoId: String,
+    @SerialName("socialId")
+    val socialId: String,
     @SerialName("nickname")
     val nickname: String,
     @SerialName("gender")
