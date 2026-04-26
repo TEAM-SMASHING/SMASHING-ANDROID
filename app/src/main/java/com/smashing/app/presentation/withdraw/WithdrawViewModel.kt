@@ -2,7 +2,7 @@ package com.smashing.app.presentation.withdraw
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.network.sse.SseManager
+import com.smashing.app.core.network.token.AuthManager
 import com.smashing.app.data.repository.api.MyRepository
 import com.smashing.app.presentation.withdraw.WithdrawContract.WithdrawSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WithdrawViewModel @Inject constructor(
     private val myRepository: MyRepository,
-    private val sseManager: SseManager,
+    private val authManager: AuthManager,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(WithdrawContract.State())
     val uiState = _uiState.asStateFlow()
@@ -40,7 +40,7 @@ class WithdrawViewModel @Inject constructor(
             myRepository.postWithdraw()
                 .onSuccess {
                     updateWithdrawUiState(WithdrawUiState.Success)
-                    sseManager.onUserLoggedOut() // TODO 임시 로직 추후 리팩 예정
+                    authManager.onUserLoggedOut()
                     _sideEffect.emit(WithdrawSideEffect.NavigateToLogin)
                 }
                 .onFailure { error ->

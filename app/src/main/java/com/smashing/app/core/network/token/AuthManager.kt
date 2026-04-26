@@ -1,9 +1,13 @@
 package com.smashing.app.core.network.token
 
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 interface AuthManager {
-    val authEvent: SharedFlow<Unit>
+    val isUserLoggedIn: StateFlow<Boolean>
+    val forceLogoutEvent: SharedFlow<Unit>
 
-    fun emitAuthEvent()
+    fun onUserLoggedIn()
+    fun onUserLoggedOut()
+    fun onAuthFailure()
 }

@@ -76,8 +76,14 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun postTokenReissue(request: PostTokenReissueRequest): Result<TokenReissueModel> =
         suspendRunCatching {
             val response = authRemoteDataSource.postTokenReissue(request).requireData()
+            val tokenReissueModel = response.toTokenReissueModel()
 
-            response.toTokenReissueModel()
+            tokenDataStore.setTokens(
+                accessToken = tokenReissueModel.accessToken,
+                refreshToken = tokenReissueModel.refreshToken,
+            )
+
+            tokenReissueModel
         }
 
 }

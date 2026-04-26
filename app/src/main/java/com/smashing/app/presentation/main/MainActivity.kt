@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 val appState = rememberMainAppState()
 
                 LaunchedEffect(Unit) {
-                    authManager.authEvent.collect {
+                    authManager.forceLogoutEvent.collect {
                         appState.navController.navigateToLogin(
                             appState.navController.clearBackStackNavOptions()
                         )
@@ -57,18 +57,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        sseManager.connect()
+        sseManager.onAppForegrounded()
     }
 
     override fun onStop() {
         super.onStop()
-        sseManager.disconnect()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         if (!isChangingConfigurations) {
-            sseManager.disconnect()
+            sseManager.onAppBackgrounded()
         }
     }
 }

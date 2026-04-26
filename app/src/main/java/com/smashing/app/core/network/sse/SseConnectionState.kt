@@ -7,23 +7,18 @@ sealed class SseConnectionState {
 
     data class Error(
         val error: Throwable?,
-        val retryAttempt: Int,
+        val statusCode: Int?,
     ) : SseConnectionState()
 
     data class Retrying(
-        val retryAttempt: Int,
-        val maxRetries: Int,
-        val isPeriodic: Boolean = false,
+        val attempt: Int,
+        val delayMs: Long,
     ) : SseConnectionState()
 
     override fun toString(): String = when (this) {
         is Connected -> "Connected"
         is Disconnected -> "Disconnected (normal)"
-        is Error -> "Disconnected (error) - attempt $retryAttempt, error: ${error?.message}"
-        is Retrying -> if (isPeriodic) {
-            "Retrying (periodic) - attempt $retryAttempt"
-        } else {
-            "Retrying - attempt $retryAttempt/$maxRetries"
-        }
+        is Error -> "Disconnected (error) - status: $statusCode, error: ${error?.message}"
+        is Retrying -> "Retrying - attempt $attempt, delayMs: $delayMs"
     }
 }

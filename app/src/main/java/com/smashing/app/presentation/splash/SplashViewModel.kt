@@ -2,11 +2,8 @@ package com.smashing.app.presentation.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smashing.app.core.network.sse.SseManager
-import com.smashing.app.core.util.suspendRunCatching
-import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
-import com.smashing.app.data.remote.dto.auth.PostTokenReissueRequest
-import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.core.network.token.AuthManager
+import com.smashing.app.domain.usecase.auth.TokenReissueUseCase
 import com.smashing.app.presentation.splash.SplashContract.SideEffect.NavigateToHome
 import com.smashing.app.presentation.splash.SplashContract.SideEffect.NavigateToLogin
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,9 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val tokenDataSource: LocalTokenDataSource,
-    private val authRepository: AuthRepository,
-    private val sseManager: SseManager,
+    private val tokenReissueUseCase: TokenReissueUseCase,
+    private val authManager: AuthManager,
 ) : ViewModel() {
 
     private val _sideEffect = MutableSharedFlow<SplashContract.SideEffect>()
@@ -34,15 +30,13 @@ class SplashViewModel @Inject constructor(
                 delay(SPLASH_DELAY)
             }
 
-            val reissueToken = async {
-                suspendRunCatching { postTokenReissue() }
-            }
+            val reissueToken = async { tokenReissueUseCase() }
 
             delayTime.await()
             reissueToken.await()
                 .onSuccess {
                     Timber.tag(AUTHORIZATION).d("자동 로그인 성공")
-                    sseManager.onUserLoggedIn() // TODO 임시 로직 추후 리팩 예정
+                    authManager.onUserLoggedIn()
                     _sideEffect.emit(NavigateToHome)
                 }
                 .onFailure { error ->
@@ -50,24 +44,6 @@ class SplashViewModel @Inject constructor(
                     _sideEffect.emit(NavigateToLogin)
                 }
         }
-    }
-
-
-    private suspend fun postTokenReissue() {
-        val refreshToken = tokenDataSource.getRefreshToken() ?: throw IllegalArgumentException()
-
-        authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
-            .onSuccess {
-                Timber.tag(AUTHORIZATION).d("토큰 재발급 성공")
-                tokenDataSource.setTokens(
-                    accessToken = it.accessToken,
-                    refreshToken = it.refreshToken,
-                )
-            }
-            .onFailure { error ->
-                Timber.tag(AUTHORIZATION).e("토큰 재발급 실패 : ${error.message}")
-                throw error
-            }
     }
 
     companion object {

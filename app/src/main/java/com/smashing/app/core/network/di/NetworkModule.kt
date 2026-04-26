@@ -139,8 +139,10 @@ object NetworkModule {
     @SSE
     fun provideSSEOkhttpClient(
         @Auth headerInterceptor: AuthInterceptor,
+        authenticator: TokenAuthenticator,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(headerInterceptor)
+        .authenticator(authenticator)
         .readTimeout(0, TimeUnit.MILLISECONDS)
         .retryOnConnectionFailure(true)
         .build()

@@ -1,9 +1,7 @@
 package com.smashing.app.core.network
 
-import com.smashing.app.core.network.token.AuthManager
 import com.smashing.app.data.local.datasource.api.LocalTokenDataSource
-import com.smashing.app.data.remote.dto.auth.PostTokenReissueRequest
-import com.smashing.app.data.repository.api.AuthRepository
+import com.smashing.app.domain.usecase.auth.TokenReissueUseCase
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -11,13 +9,11 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
-import timber.log.Timber
 import javax.inject.Inject
 
 class TokenAuthenticator @Inject constructor(
-    private val authRepository: AuthRepository,
     private val tokenDataStore: LocalTokenDataSource,
-    private val authManager: AuthManager,
+    private val tokenReissueUseCase: TokenReissueUseCase,
 ) : Authenticator {
 
     private val mutex = Mutex()
@@ -41,36 +37,11 @@ class TokenAuthenticator @Inject constructor(
                 .build()
         }
 
-        val refreshToken = tokenDataStore.getRefreshToken()
-        var newAccessToken: String? = null
-
-        if (refreshToken == null) {
-            handleReissueFailure()
-        } else {
-            authRepository.postTokenReissue(PostTokenReissueRequest(refreshToken))
-                .onSuccess {
-                    Timber.tag(AUTHORIZATION).d("토큰 재발급 성공")
-                    tokenDataStore.setTokens(
-                        accessToken = it.accessToken,
-                        refreshToken = it.refreshToken,
-                    )
-                    newAccessToken = it.accessToken
-                }
-                .onFailure { error ->
-                    Timber.tag(AUTHORIZATION).e("토큰 재발급 실패 : ${error.message}")
-                    handleReissueFailure()
-                    return null
-                }
-        }
+        val newAccessToken = tokenReissueUseCase().getOrElse { return null }
 
         return response.request.newBuilder()
             .header(AUTHORIZATION, "$BEARER_SUFFIX $newAccessToken")
             .build()
-    }
-
-    private suspend fun handleReissueFailure() {
-        tokenDataStore.clearTokens()
-        authManager.emitAuthEvent()
     }
 
     private fun responseCount(response: Response): Int {
